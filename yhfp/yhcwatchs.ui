@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>yhcWatchs</class>
+ <widget class="QWidget" name="yhcWatchs">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>702</width>
+    <height>538</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QFrame" name="frame">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>702</width>
+     <height>538</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/pic/组37.png);
+background-position:center;
+background-repeat:no-repeat;</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="YlzsPlate" name="ylzsplateWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>17</x>
+      <y>3</y>
+      <width>260</width>
+      <height>260</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: transparent; </string>
+    </property>
+   </widget>
+   <widget class="WdywPlate" name="wdywplateWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>429</x>
+      <y>3</y>
+      <width>260</width>
+      <height>260</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: transparent; </string>
+    </property>
+   </widget>
+   <widget class="DydlPlate" name="dydlplateWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>17</x>
+      <y>277</y>
+      <width>260</width>
+      <height>260</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: transparent; </string>
+    </property>
+   </widget>
+   <widget class="lrzsPlate" name="zsplateWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>429</x>
+      <y>277</y>
+      <width>260</width>
+      <height>260</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: transparent; </string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>YlzsPlate</class>
+   <extends>QWidget</extends>
+   <header>ylzsplate.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>WdywPlate</class>
+   <extends>QWidget</extends>
+   <header>wdywplate.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DydlPlate</class>
+   <extends>QWidget</extends>
+   <header>dydlplate.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>lrzsPlate</class>
+   <extends>QWidget</extends>
+   <header location="global">lrzsplate.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

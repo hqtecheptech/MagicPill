@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<devices connection="S7_Connection_1">
+  <device location="db1" id="1" name="FERMENTATION_TANK" capacity="500" amount="10" start="0">
+    <Areas>
+      <area name="FERMENTATION" datatype="r" start="0">
+        <node name="FER_HT_R" cname="发酵池高点温度" offset="0" diff="0.5"/>
+        <node name="FER_MT_R" cname="发酵池中点温度" offset="1" diff="0.5"/>
+        <node name="FER_LT_R" cname="发酵池低点温度" offset="2" diff="0.5"/>
+        <node name="FER_WT_R" cname="发酵池权重温度" offset="3" diff="0.5"/>
+        <node name="FER_ET_R" cname="发酵池环境温度" offset="4" diff="0.5"/>
+        <node name="FER_EH_R" cname="发酵池环境湿度" offset="5" diff="0.5"/>
+        <node name="FER_CO_R" cname="发酵池氧气浓度" offset="6" diff="0.5"/>
+        <node name="FER_RO_R" cname="发酵池耗氧速率" offset="7" diff="0.5"/>
+        <node name="FER_RF_R" cname="发酵池风机运行频率" offset="8" diff="0.5"/>
+        <node name="FER_OV_R" cname="发酵池风机输出电压" offset="9" diff="0.5"/>
+        <node name="FER_OI_R" cname="发酵池风机输出电流" offset="10" diff="0.5"/>
+        <node name="FER_OP_R" cname="发酵池风机输出功率" offset="12" diff="0.5"/>
+        <node name="FER_OF_R" cname="发酵池风机输出频率" offset="13" diff="0.5"/>
+      </area>
+      <area name="TEMPTURE_SETTING" datatype="r" start="52">
+        <node name="Fer_T_1_2_Set" cname="第1-2阶段跳步温度设定" offset="0" diff="0.5"/>
+        <node name="Fer_T_2_3_Set" cname="第2-3阶段跳步温度设定" offset="1" diff="0.5"/>
+        <node name="Fer_T_3_4_Set" cname="第3-4阶段跳步温度设定" offset="2" diff="0.5"/>
+        <node name="Fer_T_4_5_Set" cname="第4-5阶段跳步温度设定" offset="3" diff="0.5"/>
+        <node name="Fer_T_1_High_Set" cname="第一阶段温度高值设定" offset="4" diff="0.5"/>
+        <node name="Fer_T_1_Low_Set" cname="第一阶段温度低值设定" offset="5" diff="0.5"/>
+        <node name="Fer_T_2_High_Set" cname="第二阶段温度高值设定" offset="6" diff="0.5"/>
+        <node name="Fer_T_2_Low_Set" cname="第二阶段温度低值设定" offset="7" diff="0.5"/>
+        <node name="Fer_T_3_High_Set" cname="第三阶段温度高值设定" offset="8" diff="0.5"/>
+        <node name="Fer_T_3_Low_Set" cname="第三阶段温度低值设定" offset="9" diff="0.5"/>
+        <node name="Fer_T_4_High_Set" cname="第四阶段温度高值设定" offset="10" diff="0.5"/>
+        <node name="Fer_T_4_Low_Set" cname="第四阶段温度低值设定" offset="11" diff="0.5"/>
+      </area>
+      <area name="STEP" datatype="w" start="200">
+        <node name="FER_STEPCTR_UI" cname="发酵池阶段" offset="0" diff="0"/>
+        <node name="FER_LOCATION_UI" cname="发酵池位置" offset="0" diff="0"/>
+      </area>
+      <area name="RUNNING_TIME" datatype="dw" start="256">
+        <node name="FER_START_UDI" cname="发酵池开始时间" offset="0" diff="300"/>
+        <node name="FER_END_UDI" cname="发酵池结束时间" offset="1" diff="300"/>
+        <node name="FER_TOT_UDI" cname="发酵池累计运行时间" offset="2" diff="300"/>
+        <node name="FER_STEP1_UDI" cname="发酵池第一步耗时" offset="3" diff="300"/>
+        <node name="FER_STEP2_UDI" cname="发酵池第二步耗时" offset="4" diff="300"/>
+        <node name="FER_STEP3_UDI" cname="发酵池第三步耗时" offset="5" diff="300"/>
+        <node name="FER_STEP4_UDI" cname="发酵池第四步耗时" offset="6" diff="300"/>
+        <node name="FER_AE_UDI" cname="曝气耗时" offset="7" diff="300"/>
+        <node name="FER_STA_UDI" cname="静止耗时" offset="8" diff="300"/>
+        <node name="FER_STEP5T_UDI" cname="发酵池第五阶段运行时间" offset="9" diff="300"/>
+        <node name="FER_STEP6T_UDI" cname="发酵池第六阶段运行时间" offset="10" diff="300"/>
+      </area>
+      <area name="FER_TIME_SETTING" datatype="dw" start="300">
+        <node name="FER_TIME_1_SET_UDI" cname="第一阶段时间设定" offset="0" diff="300"/>
+        <node name="FER_TIME_2_SET_UDI" cname="第二阶段时间设定" offset="1" diff="300"/>
+        <node name="FER_TIME_3_SET_UDI" cname="第三阶段时间设定" offset="2" diff="300"/>
+        <node name="FER_TIME_4_SET_UDI" cname="第四阶段时间设定" offset="3" diff="300"/>
+        <node name="FER_TIME_5_SET_UDI" cname="第五阶段时间设定" offset="4" diff="300"/>
+      </area>
+      <area name="AERATION_RUNTIME_SETTING" datatype="dw" start="320" diff="300">
+        <node name="AerationRunTime1_High_Set" cname="第一阶段髙值运行时长设定" offset="0" diff="300"/>
+        <node name="AerationRunTime1_Mid_Set" cname="第一阶段中间值运行时长设定" offset="1" diff="300"/>
+        <node name="AerationRunTime1_Low_Set" cname="第一阶段低值运行时长设定" offset="2" diff="300"/>
+        <node name="AerationRunTime2_High_Set" cname="第二阶段髙值运行时长设定" offset="3" diff="300"/>
+        <node name="AerationRunTime2_Mid_Set" cname="第二阶段中间值运行时长设定" offset="4" diff="300"/>
+        <node name="AerationRunTime2_Low_Set" cname="第二阶段低值运行时长设定" offset="5" diff="300"/>
+        <node name="AerationRunTime3_High_Set" cname="第三阶段髙值运行时长设定" offset="6" diff="300"/>
+        <node name="AerationRunTime3_Mid_Set" cname="第三阶段中间值运行时长设定" offset="7" diff="300"/>
+        <node name="AerationRunTime3_Low_Set" cname="第三阶段低值运行时长设定" offset="8" diff="300"/>
+        <node name="AerationRunTime4_High_Set" cname="第四阶段髙值运行时长设定" offset="9" diff="300"/>
+        <node name="AerationRunTime4_Mid_Set" cname="第四阶段中间值运行时长设定" offset="10" diff="300"/>
+        <node name="AerationRunTime4_Low_Set" cname="第四阶段低值运行时长设定" offset="11" diff="300"/>
+        <node name="AerationSpaceTime1_High_Set" cname="第一阶段髙值运行间隔设定" offset="12" diff="300"/>
+        <node name="AerationSpaceTime1_Mid_Set" cname="第一阶段中间值运行间隔设定" offset="13" diff="300"/>
+        <node name="AerationSpaceTime1_Low_Set" cname="第一阶段低值运行间隔设定" offset="14" diff="300"/>
+        <node name="AerationSpaceTime2_High_Set" cname="第二阶段髙值运行间隔设定" offset="15" diff="300"/>
+        <node name="AerationSpaceTime2_Mid_Set" cname="第二阶段中间值运行间隔设定" offset="16" diff="300"/>
+        <node name="AerationSpaceTime2_Low_Set" cname="第二阶段低值运行间隔设定" offset="17" diff="300"/>
+        <node name="AerationSpaceTime3_High_Set" cname="第三阶段髙值运行间隔设定" offset="18" diff="300"/>
+        <node name="AerationSpaceTime3_Mid_Set" cname="第三阶段中间值运行间隔设定" offset="19" diff="300"/>
+        <node name="AerationSpaceTime3_Low_Set" cname="第三阶段低值运行间隔设定" offset="20" diff="300"/>
+        <node name="AerationSpaceTime4_High_Set" cname="第四阶段髙值运行间隔设定" offset="21" diff="300"/>
+        <node name="AerationSpaceTime4_Mid_Set" cname="第四阶段中间值运行间隔设定" offset="22" diff="300"/>
+        <node name="AerationSpaceTime4_Low_Set" cname="第四阶段低值运行间隔设定" offset="23" diff="300"/>
+        <node name="AerationRunTime_S5_Set" cname="第五阶段运行时长设定" offset="24" diff="300"/>
+        <node name="AerationRunTime_S6_Set" cname="第六阶段运行时长设定" offset="25" diff="300"/>
+        <node name="AerationSpaceTime_S5_Set" cname="第五阶段运行间隔设定" offset="26" diff="300"/>
+        <node name="AerationSpaceTime_S6_Set" cname="第六阶段运行间隔设定" offset="27" diff="300"/>
+      </area>
+      <area name="CUSTOM_FER_SETTING" datatype="dw" start="432">
+        <node name="FER_Hand_RunTime" cname="手动发酵曝气时长" offset="0" diff="0"/>
+        <node name="FER_Hand_SpaceTime" cname="手动发酵曝气间隔" offset="1" diff="0"/>
+      </area>
+      <area name="RUNCTR" datatype="x" start="480">
+        <node name="FAN_Remote_BOOL" cname="风机远程信号" offset="0" diff="0" alert0="风机就地控制启动" alert1="风机远程控制启动"  priority="1"/>
+        <node name="FAN_Run_BOOL" cname="风机运行停止状态" offset="1" diff="0" alert0="风机已停止运行" alert1="风机开始运行" priority="0"/>
+        <node name="FAN_FAULT_BOOL" cname="风机故障状态" offset="2" diff="0" alert0="风机故障解除" alert1="风机故障" priority="0"/>
+        <node name="VALVE_Remote_BOOL" cname="阀门远程信号" offset="3" diff="0" alert0="阀门就地控制启动" alert1="阀门远程控制启动" priority="0"/>
+        <node name="VALVE_Opened_BOOL" cname="阀门开到位信号" offset="4" diff="0" alert0="阀门未开到位" alert1="阀门已开到位" priority="1"/>
+        <node name="VALVE_Closed_BOOL" cname="阀门关到位信号" offset="5" diff="0" alert0="阀门未关到位信号" alert1="阀门已关到位信号" priority="1"/>
+        <node name="VALVE_Opening_BOOL" cname="阀门正在开信号" offset="6" diff="0" alert0="阀门开未运行" alert1="阀门正在开" priority="0"/>
+        <node name="VALVE_Closing_BOOL" cname="阀门正在关信号" offset="7" diff="0" alert0="阀门关未运行" alert1="阀门正在关" priority="0"/>
+        <node name="VALVE_Fault_BOOL" cname="阀门故障信号" offset="8" diff="0" alert0="阀门无故障信号" alert1="阀门故障" priority="0"/>
+        <node name="FER_State_BOOL" cname="发酵池发酵状态" offset="9" diff="0" alert0="发酵池发酵中止" alert1="发酵池发酵进行中" priority="0"/>
+        <node name="FER_AERATION_BOOL" cname="发酵池曝气状态" offset="10" diff="0" alert0="发酵池曝气中止" alert1="发酵池曝气进行中" priority="0"/>
+        <node name="FER_SENSOR_BOOL" cname="发酵池传感器状态" offset="11" diff="0" alert0="发酵池传感器状态0" alert1="发酵池传感器状态1" priority="0"/>
+        <node name="FAN_Auto_BOOL" cname="风机自动手动状态" offset="12" diff="0" alert0="风机自动" alert1="风机手动" priority="0"/>
+        <node name="FER_Auto_BOOL" cname="发酵手动自动状态" offset="13" diff="0" alert0="手动发酵状态" alert1="发酵自动状态" priority="0"/>
+        <node name="FER_Startctr_BOOL" cname="开始发酵使能" offset="14" diff="0" alert0="无动作" alert1="开始发酵使能" priority="0"/>
+        <node name="FER_STOPCTR_BOOL" cname="结束发酵使能" offset="15" diff="0" alert0="无动作" alert1="结束发酵使能" priority="0"/>
+        <node name="FAN_HandStart_BOOL" cname="风机手动启动" offset="16" diff="0" alert0="无动作" alert1="风机手动启动" priority="0"/>
+        <node name="FAN_HandStop_BOOL" cname="风机手动停止" offset="17" diff="0" alert0="无动作" alert1="风机手动停止" priority="0"/>
+        <node name="FAN_HandOut_BOOL" cname="风机手动输出" offset="18" diff="0" alert0="风机手动输出0" alert1="风机手动输出1" priority="0"/>
+        <node name="FAN_AutoOut_BOOL" cname="风机自动输出" offset="19" diff="0" alert0="风机自动输出0" alert1="风机自动输出1" priority="0"/>
+        <node name="Aeration_Start" cname="曝气开始" offset="20" diff="0" alert0="曝气开始0" alert1="曝气开始1" priority="0"/>
+        <node name="Aeration_MidTrag" cname="曝气中间变量" offset="21" diff="0" alert0="曝气中间变量0" alert1="曝气中间变量1" priority="0"/>
+        <node name="Aeration_Stop" cname="曝气结束" offset="16" diff="22" alert0="曝气结束0" alert1="曝气结束1" priority="0"/>
+      </area>
+    </Areas>
+  </device>
+</devices>

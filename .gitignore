@@ -1,0 +1,4 @@
+# Not track building created files
+*-Debug/
+*-Release/
+**/*.pro.user
