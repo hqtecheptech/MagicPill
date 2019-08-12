@@ -6,8 +6,8 @@
 #endif /* __cplusplus */
 
 //#define  HQ_FPJ
-#define  HQ_YXC
-//#define  HQ_HLXT
+//#define  HQ_YXC
+#define  HQ_HLXT
 
 
 

@@ -17,7 +17,7 @@ int  main(void)
 //    {
 //        usleep(10000);
 //    }
-     testgobalvalve();
+     //testgobalvalve();
 
 
 //#if defined HQ_FPJ
@@ -48,7 +48,7 @@ int  main(void)
 
 //    while(1)
 //    {
-//        mHD_keyboard_Cmd();
+        mHD_keyboard_Cmd();
 //        mHD_Readmsg_Poll(wangzy);
 //        mHD_CompDev_SigToRPU();
 //        Dev_data.MData[1].DOutData[6] =1;
