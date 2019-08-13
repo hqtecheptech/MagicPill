@@ -54,5 +54,8 @@ int  main(void)
 //        Dev_data.MData[1].DOutData[6] =1;
 //        Dev_data.MData[1].PulseData[6] =10;
 //    }
+
+    // Add New Feature
+
     return 0;
 }
