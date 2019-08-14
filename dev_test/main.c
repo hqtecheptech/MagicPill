@@ -46,13 +46,13 @@ int  main(void)
 //     sleep(1);
 //     mHD_Send_Msg_Cmd(Msg_StartScan,wangzy);
 
-    while(1)
-    {
-        mHD_keyboard_Cmd();
-        mHD_Readmsg_Poll(wangzy);
-        mHD_CompDev_SigToRPU();
-        Dev_data.MData[1].DOutData[6] =1;
-        Dev_data.MData[1].PulseData[6] =10;
-    }
+//    while(1)
+//    {
+//        mHD_keyboard_Cmd();
+//        mHD_Readmsg_Poll(wangzy);
+//        mHD_CompDev_SigToRPU();
+//        Dev_data.MData[1].DOutData[6] =1;
+//        Dev_data.MData[1].PulseData[6] =10;
+//    }
     return 0;
 }
