@@ -43,11 +43,11 @@
 #define SIGTRPU     SIGRTMIN+2   //发送给PRU的数据更新信号
 
 /* DB datas length */
-#define DB_FLOAT_LEN 500
+#define DB_FLOAT_LEN 200
+#define DB_INT_LEN 200
 #define DB_UINT16_LEN 500
-#define DB_UINT8_LEN 500
-#define DB_INT_LEN 500
-#define DB_BOOL_LEN 500
+#define DB_UINT8_LEN 200
+#define DB_BOOL_LEN 200
 
 struct Data8_sBit{
      uint8_t B0:1; uint8_t B1:1; uint8_t B2:1; uint8_t B3:1;
@@ -288,10 +288,10 @@ typedef struct {
 //
 typedef struct {
     float f_data[DB_FLOAT_LEN];
+    int i_data[DB_INT_LEN];
     uint16_t dw_data[DB_UINT16_LEN];
     uint8_t w_data[DB_UINT8_LEN];
-    int i_data[DB_INT_LEN];
-    int b_data[DB_BOOL_LEN];
+    uint8_t b_data[DB_BOOL_LEN];
  }Hq_Plc_Db;
 
 
