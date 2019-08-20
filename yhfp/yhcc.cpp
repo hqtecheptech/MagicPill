@@ -9,18 +9,7 @@ Yhcc::Yhcc(QWidget *parent) :
 
     setWindowFlags(Qt::FramelessWindowHint);
 
-    nsmWorker = new NetStateManageWorker;
-    nsmWorker->moveToThread(&netManageThread);
-    connect(&netManageThread, &QThread::finished, nsmWorker, &QObject::deleteLater);
-    connect(this, SIGNAL(checkNetState(QString)), nsmWorker, SLOT(checkNetState(QString)));
-    connect(nsmWorker, SIGNAL(checkNetFinished(bool)), this, SLOT(netStatChecked(bool)));
-
-    pdmWorker = new PlcDataManageWorker;
-    pdmWorker->moveToThread(&plcdataManageThread);
-    connect(&plcdataManageThread, &QThread::finished, pdmWorker, &QObject::deleteLater);
-    connect(this, SIGNAL(pollingDatas()), pdmWorker, SLOT(getSharedDatas()));
-    qRegisterMetaType<PlcData>("PlcData");
-    connect(pdmWorker, SIGNAL(sharedDatasReady(PlcData)), this, SLOT(updateUI(PlcData)));
+    qRegisterMetaType<Plc_Db>("Hq_Plc_Db");
 
     QString eixtStyleStr="QPushButton#yhcExitButton{background: transparent; background-image: url(:/pic/退出.png);}"
                          "QPushButton#yhcExitButton:hover{background: transparent; background-image: url(:/pic/退出.png);}"
@@ -152,10 +141,20 @@ void Yhcc::showEvent(QShowEvent *)
 {
     if(!netManageThread.isRunning())
     {
+        nsmWorker = new NetStateManageWorker;
+        nsmWorker->moveToThread(&netManageThread);
+        connect(&netManageThread, &QThread::finished, nsmWorker, &QObject::deleteLater);
+        connect(this, SIGNAL(checkNetState(QString)), nsmWorker, SLOT(checkNetState(QString)));
+        connect(nsmWorker, SIGNAL(checkNetFinished(bool)), this, SLOT(netStatChecked(bool)));
         netManageThread.start();
     }
     if(!plcdataManageThread.isRunning())
     {
+        pdmWorker = new PlcDataManageWorker;
+        pdmWorker->moveToThread(&plcdataManageThread);
+        connect(&plcdataManageThread, &QThread::finished, pdmWorker, &QObject::deleteLater);
+        connect(this, SIGNAL(pollingDatas()), pdmWorker, SLOT(getSharedDatas()));
+        connect(pdmWorker, SIGNAL(sharedDatasReady(Plc_Db)), this, SLOT(updateUI(Plc_Db)));
         plcdataManageThread.start();
     }
 
@@ -191,7 +190,7 @@ void Yhcc::closeEvent(QCloseEvent *)
     plcdataManageThread.wait();
 }
 
-void Yhcc::updateUI(const PlcData newDatas)
+void Yhcc::updateUI(const Plc_Db newDatas)
 {
-    ui->test_label->setText(QString::number(newDatas.values[8]));
+    ui->test_label->setText(QString::number(newDatas.f_data[0]));
 }

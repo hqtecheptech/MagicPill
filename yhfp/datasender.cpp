@@ -3,6 +3,7 @@
 #include "iostream"
 
 #include "data.h"
+#include "dataformat.h"
 #include "datasender.h"
 
 using namespace std;

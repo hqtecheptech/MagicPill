@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<system>
+  <server>
+    <ip>192.168.0.106</ip>
+    <port>8500</port>
+  </server>
+  <data_share>
+    <pathname>/home/hqtech/test/</pathname>
+    <proj_id>99</proj_id>
+  </data_share>
+  <data_sem>
+    <pathname>/home/hqtech/test/</pathname>
+    <proj_id>98</proj_id>
+  </data_sem>
+  <data_msg>
+    <pathname>/home/hqtech/test/</pathname>
+    <proj_id>97</proj_id>
+  </data_msg>
+  <control_share>
+    <pathname>/home/hqtech/control/</pathname>
+    <proj_id>99</proj_id>
+  </control_share>
+  <control_sem>
+    <pathname>/home/hqtech/control/</pathname>
+    <proj_id>98</proj_id>
+  </control_sem>
+  <control_msg>
+    <pathname>/home/hqtech/control/</pathname>
+    <proj_id>97</proj_id>
+  </control_msg>
+</system>

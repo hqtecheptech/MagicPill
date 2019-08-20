@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 #include "datasender.h"
 #include "data.h"
+#include "sharehelper.h"
+#include "global.h"
+
 #include <QVariant>
 #include <QTextDecoder>
 #include <QByteArray>
@@ -13,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     setWindowFlags(Qt::FramelessWindowHint|Qt::Tool);
-
 
     QString yhccStyleStr="QPushButton#yhccButton{background: transparent; background-image: url(:/pic/车1..png);}"
                          "QPushButton#yhccButton:hover{background: transparent; background-image: url(:/pic/车2.png);}"
@@ -47,6 +49,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(startListenTask()), taskManager, SLOT(listeningTask()));
 
     emit(startListenTask());
+
+    Syscontroller::getInstance();
+
+    pruCheckTimer = new QTimer();
+    connect(pruCheckTimer, SIGNAL(timeout()), this, SLOT(checkPruState()));
+    pruCheckTimer->start(10000);
 }
 
 MainWindow::~MainWindow()
@@ -55,7 +63,25 @@ MainWindow::~MainWindow()
     taskManageThread.quit();
     taskManageThread.wait();
 
+    delete taskManager;
+    delete pruCheckTimer;
     delete ui;
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+//    if(!pruCheckTimer->isActive())
+//    {
+//        pruCheckTimer->start(10000);
+//    }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+//    if(pruCheckTimer->isActive())
+//    {
+//        pruCheckTimer->stop();
+//    }
 }
 
 void MainWindow::on_yhccButton_clicked()
@@ -98,4 +124,17 @@ void MainWindow::on_syssButton_clicked()
     out << scrc;
 
     ds.sendRequestWithResults(SData);
+}
+
+void MainWindow::checkPruState()
+{
+    ControllerInfo info = Syscontroller::getInstance()->getControllerStatus();
+    if(!info.isPruConnected)
+    {
+        ui->pru_status_label->setText("Pru has not connected. Please wait ...");
+    }
+    else
+    {
+        ui->pru_status_label->setText("Pru has connected!");
+    }
 }

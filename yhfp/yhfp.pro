@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui charts network
+QT       += core gui charts network xml sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -31,7 +31,15 @@ SOURCES += main.cpp\
     plcdatamanageworker.cpp \
     datasender.cpp \
     taskmanager.cpp \
-    datareceiver.cpp
+    datareceiver.cpp \
+    global.cpp \
+    ../mhd_lib/src/ComFun.c \
+    ../mhd_lib/src/CRC16.c \
+    ../mhd_lib/src/File_ReadandWrite.c \
+    ../mhd_lib/src/Mpu_gpio.c \
+    ../mhd_lib/src/Public_DataType.c \
+    ../mhd_lib/src/Share_Memory.c \
+    syscontroller.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -49,7 +57,17 @@ HEADERS  += mainwindow.h \
     plcdatamanageworker.h \
     datasender.h \
     taskmanager.h \
-    datareceiver.h
+    datareceiver.h \
+    global.h \
+    dataformat.h \
+    ../mhd_lib/inc/ComFun.h \
+    ../mhd_lib/inc/CRC16.h \
+    ../mhd_lib/inc/File_ReadandWrite.h \
+    ../mhd_lib/inc/mhd_lib.h \
+    ../mhd_lib/inc/Mpu_gpio.h \
+    ../mhd_lib/inc/Public_DataType.h \
+    ../mhd_lib/inc/Share_Memory.h \
+    syscontroller.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \

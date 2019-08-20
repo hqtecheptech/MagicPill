@@ -55,7 +55,7 @@ signals:
     void pollingDatas();
 
 public slots:
-    void updateUI(const PlcData newDatas);
+    void updateUI(const Plc_Db newDatas);
 
 private:
     Ui::Yhcc *ui;

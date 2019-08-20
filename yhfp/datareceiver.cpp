@@ -1,6 +1,7 @@
 #include "datareceiver.h"
-#include <QDataStream>
 #include "data.h"
+#include "dataformat.h"
+#include <QDataStream>
 
 DataReceiver::DataReceiver(QObject *parent) : QObject(parent)
 {

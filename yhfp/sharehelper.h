@@ -40,14 +40,16 @@ class ShareHelper
 {
 public:
     ShareHelper(key_t shared_key);
+    ShareHelper(key_t shared_key, key_t sem_key);
     ~ShareHelper();
+    static key_t GenKey(const char *pathname, int proj_id);
     bool SetSharedStr(string str);//修改共享内存中的字符串
     string GetSharedStr();//获取共享内存中的字符串
     void DeleteSharedMemory(); //Clear shared memory
     void LockShare();//锁定临界区
     void UnlockShare();//解锁临界区
-    bool SetSharedMemory(PlcData* data);
-    PlcData GetShardMemory();
+    bool SetSharedMemory(void *data, int length);
+    bool GetShardMemory(void *data, int length);
 
 private:
     int DelSem();//删除信号量
