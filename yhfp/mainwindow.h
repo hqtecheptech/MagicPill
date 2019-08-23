@@ -41,6 +41,7 @@ private:
     QThread taskManageThread;
     TaskManager* taskManager;
     QTimer* pruCheckTimer;
+    Syscontroller *controller;
 };
 
 #endif // MAINWINDOW_H

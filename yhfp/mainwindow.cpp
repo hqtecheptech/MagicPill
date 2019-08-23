@@ -50,11 +50,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     emit(startListenTask());
 
-    Syscontroller::getInstance();
-
     pruCheckTimer = new QTimer();
     connect(pruCheckTimer, SIGNAL(timeout()), this, SLOT(checkPruState()));
     pruCheckTimer->start(10000);
+
+    controller = Syscontroller::getInstance();
 }
 
 MainWindow::~MainWindow()
@@ -70,18 +70,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::showEvent(QShowEvent *event)
 {
-//    if(!pruCheckTimer->isActive())
-//    {
-//        pruCheckTimer->start(10000);
-//    }
+    if(controller == Q_NULLPTR)
+    {
+        controller = Syscontroller::getInstance();
+    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-//    if(pruCheckTimer->isActive())
-//    {
-//        pruCheckTimer->stop();
-//    }
+
 }
 
 void MainWindow::on_yhccButton_clicked()

@@ -15,20 +15,24 @@ class Syscontroller : public QObject
 public:
     static Syscontroller* getInstance();
     ControllerInfo getControllerStatus();
+    Plc_Db getPlcDb();
+    void parseFerServerData(Plc_Db dbData);
 
 signals:
+    void resultReady();
+    void plcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
 
 public slots:
-    void checkSysStatus();
+    void updateSysStatus();
 
 private:
-    Syscontroller();
-    Syscontroller(const Syscontroller&);
+    Syscontroller(QObject *parent = 0);
     static Syscontroller* instance;
     static QMutex* mutex;
     QTimer *updateStatusTimer;
-    ShareHelper* sp;
+    ShareHelper *ctrlShare, *dbShare;
     ControllerInfo ctrlInfo;
+    Plc_Db plcDb;
 };
 
 #endif // SYSCONTROLLER_H

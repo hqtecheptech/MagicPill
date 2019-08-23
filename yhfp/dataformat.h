@@ -89,6 +89,25 @@ struct StreamPack
     quint32 bEndTime;       //Pack_10
 };
 
+struct YhcDeviceInfo
+{
+    quint32 Device_Number;                  //设备总数
+    quint32 RunCtr_Block_Size;              //使能参数总数
+    quint32 Yhc_Address;                    //变量起始地址
+    quint32 Yhc_Num;                        //变量个数
+    quint32 Yhc_Category;                   //变量种类
+    QString Yhc_Type;                       //变量数据类型
+    quint32 Yhc_Setting_Address;            //设定起始地址
+    quint32 Yhc_Setting_Num;                //设定变量个数
+    quint32 Yhc_Setting_Display_Num;        //发酵设定界面显示个数
+    quint32 Yhc_Setting_Category;           //发酵设定变量种类
+    QString Yhc_Setting_Type;               //发酵设定数据类型
+    quint32 Runctr_Address;                 //使能变量起始地址
+    quint32 Runctr_Num;                     //使能变量个数
+    quint32 Runctr_Category;                //使能变量种类
+    QString Runctr_Type;                    //使能变量数据类型
+};
+
 struct FermenationDeviceInfo
 {
     quint32 Device_Number;                //设备总数

@@ -6,6 +6,7 @@
 #include <QTimer>
 #include "netstatemanageworker.h"
 #include "plcdatamanageworker.h"
+#include "syscontroller.h"
 
 #include "data.h"
 
@@ -56,6 +57,8 @@ signals:
 
 public slots:
     void updateUI(const Plc_Db newDatas);
+    void handleControllerResult();
+    void handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
 
 private:
     Ui::Yhcc *ui;
@@ -67,6 +70,12 @@ private:
     QTimer *checkNetStateTimer;
     QTimer *pollDatasTimer;
     int uca = 0;
+    Syscontroller* controller;
+    Plc_Db oldPlcDb;
+    int deviceIndex = 0;
+
+    void parseYhcData(QMap<float,QString> dataMap);
+    void parseYhcRunCtrData(QMap<float,QString> dataMap);
 };
 
 #endif // YHCC_H

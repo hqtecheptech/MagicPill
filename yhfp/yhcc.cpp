@@ -1,5 +1,9 @@
 #include "yhcc.h"
 #include "ui_yhcc.h"
+#include "syscontroller.h"
+
+#include <QMap>
+#include <QVector>
 
 Yhcc::Yhcc(QWidget *parent) :
     QDialog(parent),
@@ -8,6 +12,8 @@ Yhcc::Yhcc(QWidget *parent) :
     ui->setupUi(this);
 
     setWindowFlags(Qt::FramelessWindowHint);
+
+    deviceIndex = 0;
 
     qRegisterMetaType<Plc_Db>("Hq_Plc_Db");
 
@@ -34,11 +40,19 @@ Yhcc::Yhcc(QWidget *parent) :
      //                            "color:rgb(200, 200, 200);";
 
     //ui->titleLabel->setStyleSheet(titleLabelStypeStr);
+
     checkNetStateTimer = new QTimer(this);
     connect(checkNetStateTimer, SIGNAL(timeout()), this, SLOT(getNetState()));
 
     pollDatasTimer = new QTimer(this);
-    connect(pollDatasTimer, SIGNAL(timeout()), this, SLOT(pollPlcDatas()));
+    //connect(pollDatasTimer, SIGNAL(timeout()), this, SLOT(pollPlcDatas()));
+
+    controller = Syscontroller::getInstance();
+    if(controller != Q_NULLPTR)
+    {
+        connect(controller, SIGNAL(resultReady()), this, SLOT(handleControllerResult()));
+        connect(controller, &Syscontroller::plcDbUpdated, this, &Yhcc::handlePlcDataUpdate);
+    }
 }
 
 Yhcc::~Yhcc()
@@ -193,4 +207,29 @@ void Yhcc::closeEvent(QCloseEvent *)
 void Yhcc::updateUI(const Plc_Db newDatas)
 {
     ui->test_label->setText(QString::number(newDatas.f_data[0]));
+}
+
+void Yhcc::handleControllerResult()
+{
+
+}
+
+
+void Yhcc::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap)
+{
+    if(changedDeviceSet.contains(deviceIndex))
+    {
+        parseYhcData(dataMap);
+        parseYhcRunCtrData(dataMap);
+    }
+}
+
+void Yhcc::parseYhcData(QMap<float, QString> dataMap)
+{
+    pollPlcDatas();
+}
+
+void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
+{
+
 }
