@@ -260,6 +260,8 @@ YhcDeviceInfo Global::readYhcDeviceInfo()
 {
     YhcDeviceInfo retValue;
 
+    retValue.Device_Number = 1;
+
     return retValue;
 }
 
@@ -818,15 +820,18 @@ QVector<DeviceNode> readDeviceNodes(QString filename)
 
 QVector<DeviceGroupInfo> readDeviceGroupInfo(QString filename)
 {
-    QFile file(filename);
-    //QFile file("deo_device_group.xml");
+    QString cp = QDir::currentPath();
+    qDebug()<<cp;
 
     QVector<DeviceGroupInfo> nodes;
 
+    QFile file(filename);
     if(!file.open(QFile::ReadOnly | QFile::Text))
     {
         return nodes;
     }
+
+    qDebug() << "Read " << filename << "succesfully!";
 
     QDomDocument document;
     QString error;
@@ -1052,7 +1057,7 @@ int Global::getYhcDeviceIndexByAddress(ushort address)
     int index = -1;
     if(yhcDeviceInfo.Device_Number == 1)
     {
-        index = 1;
+        index = 0;
     }
     else
     {
@@ -1105,7 +1110,7 @@ int Global::getYhcDeviceIndexByRunctrAddress(float address)
     int index = -1;
     if(yhcDeviceInfo.Device_Number == 1)
     {
-        index = 1;
+        index = 0;
     }
     else
     {
@@ -1337,7 +1342,7 @@ QVector<DeviceGroupInfo> Global::fanDeviceGroupInfos = readDeviceGroupInfo("fan_
 
 QVector<DeviceGroupInfo> Global::ferDeviceGroupInfos = readDeviceGroupInfo("fer_device_group.xml");
 
-QVector<DeviceGroupInfo> Global::yhcDeviceGroupInfos = readDeviceGroupInfo("yhc_device_group.xml");
+QVector<DeviceGroupInfo> Global::yhcDeviceGroupInfos = readDeviceGroupInfo("./yhc_devices_group.xml");
 
 QStandardItemModel* Global::alertsModel = new QStandardItemModel(0,4);
 

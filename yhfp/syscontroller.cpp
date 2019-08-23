@@ -44,6 +44,13 @@ Syscontroller::Syscontroller(QObject *parent) : QObject(parent)
     //注册PRU Update 信号函数
     signal(SIGFRPU,sig_handler_rpuData);
 
+    pdmWorker = new PlcDataManageWorker;
+    pdmWorker->moveToThread(&plcdataManageThread);
+    connect(&plcdataManageThread, &QThread::finished, pdmWorker, &QObject::deleteLater);
+    connect(this, SIGNAL(pollingDatas()), pdmWorker, SLOT(getSharedDatas()));
+    connect(pdmWorker, &PlcDataManageWorker::plcDbUpdated, this, &Syscontroller::handlePlcDbUpdated, Qt::QueuedConnection);
+    plcdataManageThread.start();
+
     updateStatusTimer = new QTimer(this);
     connect( updateStatusTimer, SIGNAL(timeout()), this, SLOT(updateSysStatus()) );
     updateStatusTimer->start(2000);
@@ -73,148 +80,16 @@ Plc_Db Syscontroller::getPlcDb()
     return plcDb;
 }
 
-void Syscontroller::parseFerServerData(Plc_Db dbData)
+Syscontroller::~Syscontroller()
 {
-    Plc_Db newPlcDb = dbData;
-
-    bool diff = false;
-    QMap<float,QString> dataMap;
-    QVector<float> changedAddressArray;
-
-    int temp = 0;
-    for(int i=0; i < DB_FLOAT_LEN; i++, temp++)
-    {
-        dataMap.insert(i,QString::number(newPlcDb.f_data[i]));
-        if(!Global::currentYhcDataMap.contains(i))
-        {
-            diff = true;
-            Global::currentYhcDataMap.insert(temp,QString::number(newPlcDb.f_data[i]));
-            changedAddressArray.append(temp);
-        }
-        else
-        {
-            if(Global::currentYhcDataMap[temp] != QString::number(newPlcDb.f_data[i]))
-            {
-                diff = true;
-                changedAddressArray.append(temp);
-                Global::currentYhcDataMap[temp] = QString::number(newPlcDb.f_data[i]);
-            }
-        }
-    }
-
-    for(int i=0; i < DB_INT_LEN; i++, temp++)
-    {
-        dataMap.insert(i,QString::number(newPlcDb.i_data[i]));
-        if(!Global::currentYhcDataMap.contains(i))
-        {
-            diff = true;
-            Global::currentYhcDataMap.insert(temp,QString::number(newPlcDb.i_data[i]));
-            changedAddressArray.append(temp);
-        }
-        else
-        {
-            if(Global::currentYhcDataMap[temp] != QString::number(newPlcDb.i_data[i]))
-            {
-                diff = true;
-                changedAddressArray.append(temp);
-                Global::currentYhcDataMap[temp] = QString::number(newPlcDb.i_data[i]);
-            }
-        }
-    }
-
-    for(int i=0; i < DB_UINT16_LEN; i++, temp++)
-    {
-        dataMap.insert(i,QString::number(newPlcDb.dw_data[i]));
-        if(!Global::currentYhcDataMap.contains(i))
-        {
-            diff = true;
-            Global::currentYhcDataMap.insert(temp,QString::number(newPlcDb.dw_data[i]));
-            changedAddressArray.append(temp);
-        }
-        else
-        {
-            if(Global::currentYhcDataMap[temp] != QString::number(newPlcDb.dw_data[i]))
-            {
-                diff = true;
-                changedAddressArray.append(temp);
-                Global::currentYhcDataMap[temp] = QString::number(newPlcDb.dw_data[i]);
-            }
-        }
-    }
-
-    for(int i=0; i < DB_UINT8_LEN; i++, temp++)
-    {
-        dataMap.insert(i,QString::number(newPlcDb.w_data[i]));
-        if(!Global::currentYhcDataMap.contains(i))
-        {
-            diff = true;
-            Global::currentYhcDataMap.insert(temp,QString::number(newPlcDb.w_data[i]));
-            changedAddressArray.append(temp);
-        }
-        else
-        {
-            if(Global::currentYhcDataMap[temp] != QString::number(newPlcDb.w_data[i]))
-            {
-                diff = true;
-                changedAddressArray.append(temp);
-                Global::currentYhcDataMap[temp] = QString::number(newPlcDb.w_data[i]);
-            }
-        }
-    }
-
-    for(int i=0; i < DB_BOOL_LEN; i++, temp++)
-    {
-        QString strValue = "false";
-        if(newPlcDb.b_data[i] == 1)
-        {
-            strValue = "true";
-        }
-
-        dataMap.insert(i,strValue);
-        if(!Global::currentYhcDataMap.contains(i))
-        {
-            diff = true;
-            Global::currentYhcDataMap.insert(temp,strValue);
-            changedAddressArray.append(temp);
-        }
-        else
-        {
-            if(Global::currentYhcDataMap[temp] != strValue)
-            {
-                diff = true;
-                changedAddressArray.append(temp);
-                Global::currentYhcDataMap[temp] = strValue;
-            }
-        }
-    }
-
-    int startIndex = Global::getYhcDeviceStartIndex(
-                Global::getYhcDeviceGroupInfo(0).deviceId, Global::getYhcDeviceGroupInfo(0).groupId);
-    if(startIndex >=0 && diff)
-    {
-        QSet<int> changedDeviceSet;
-        foreach(float address, changedAddressArray)
-        {
-            if(address < Global::yhcDeviceInfo.Runctr_Address)
-            {
-                changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByAddress(address));
-            }
-            else
-            {
-                changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByRunctrAddress(address));
-            }
-        }
-
-        emit plcDbUpdated(changedDeviceSet, dataMap);
-    }
+    plcdataManageThread.requestInterruption();
+    plcdataManageThread.quit();
+    plcdataManageThread.wait();
 }
 
 void Syscontroller::updateSysStatus()
 {
-    QMap<float,QString> dataMap;
-    QSet<int> ch;
-    ch.insert(0);
-    emit plcDbUpdated(ch, dataMap);
+    emit pollingDatas();
 
     int pid;
     int cmd;
@@ -264,10 +139,15 @@ void Syscontroller::updateSysStatus()
         {
             if(dbShare->GetShardMemory((void*)&plcDb, sizeof(Plc_Db)))
             {
-                parseFerServerData(plcDb);
+                emit pollingDatas();
             }
         }
     }
+}
+
+void Syscontroller::handlePlcDbUpdated(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
+{
+    emit plcDbUpdated(changedDeviceSet, dataMap);
 }
 
 Syscontroller* Syscontroller::instance = Q_NULLPTR;

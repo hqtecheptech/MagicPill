@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QTimer>
 #include <QMutex>
+#include <QThread>
+#include "netstatemanageworker.h"
+#include "plcdatamanageworker.h"
 #include "data.h"
 #include "global.h"
 #include "sharehelper.h"
@@ -16,14 +19,16 @@ public:
     static Syscontroller* getInstance();
     ControllerInfo getControllerStatus();
     Plc_Db getPlcDb();
-    void parseFerServerData(Plc_Db dbData);
+    ~Syscontroller();
 
 signals:
     void resultReady();
+    void pollingDatas();
     void plcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
 
 public slots:
     void updateSysStatus();
+    void handlePlcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
 
 private:
     Syscontroller(QObject *parent = 0);
@@ -33,6 +38,8 @@ private:
     ShareHelper *ctrlShare, *dbShare;
     ControllerInfo ctrlInfo;
     Plc_Db plcDb;
+    QThread plcdataManageThread;
+    PlcDataManageWorker* pdmWorker;
 };
 
 #endif // SYSCONTROLLER_H

@@ -130,6 +130,7 @@ void Yhcc::getNetState()
 
 void Yhcc::pollPlcDatas()
 {
+    updateUI();
     uca ++;
     if(uca == 5)
     {
@@ -147,8 +148,6 @@ void Yhcc::pollPlcDatas()
 
         uca = 0;
     }
-
-    emit pollingDatas();
 }
 
 void Yhcc::showEvent(QShowEvent *)
@@ -161,15 +160,6 @@ void Yhcc::showEvent(QShowEvent *)
         connect(this, SIGNAL(checkNetState(QString)), nsmWorker, SLOT(checkNetState(QString)));
         connect(nsmWorker, SIGNAL(checkNetFinished(bool)), this, SLOT(netStatChecked(bool)));
         netManageThread.start();
-    }
-    if(!plcdataManageThread.isRunning())
-    {
-        pdmWorker = new PlcDataManageWorker;
-        pdmWorker->moveToThread(&plcdataManageThread);
-        connect(&plcdataManageThread, &QThread::finished, pdmWorker, &QObject::deleteLater);
-        connect(this, SIGNAL(pollingDatas()), pdmWorker, SLOT(getSharedDatas()));
-        connect(pdmWorker, SIGNAL(sharedDatasReady(Plc_Db)), this, SLOT(updateUI(Plc_Db)));
-        plcdataManageThread.start();
     }
 
     QTimer::singleShot(5000, this, SLOT(getNetState()));
@@ -198,15 +188,11 @@ void Yhcc::closeEvent(QCloseEvent *)
     netManageThread.requestInterruption();
     netManageThread.quit();
     netManageThread.wait();
-
-    plcdataManageThread.requestInterruption();
-    plcdataManageThread.quit();
-    plcdataManageThread.wait();
 }
 
-void Yhcc::updateUI(const Plc_Db newDatas)
+void Yhcc::updateUI()
 {
-    ui->test_label->setText(QString::number(newDatas.f_data[0]));
+    ui->test_label->setText(Global::currentYhcDataMap[0]);
 }
 
 void Yhcc::handleControllerResult()

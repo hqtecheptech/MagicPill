@@ -2,10 +2,7 @@
 #define YHCC_H
 
 #include <QDialog>
-#include <QThread>
 #include <QTimer>
-#include "netstatemanageworker.h"
-#include "plcdatamanageworker.h"
 #include "syscontroller.h"
 
 #include "data.h"
@@ -56,7 +53,7 @@ signals:
     void pollingDatas();
 
 public slots:
-    void updateUI(const Plc_Db newDatas);
+    void updateUI();
     void handleControllerResult();
     void handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
 
@@ -65,8 +62,6 @@ private:
 
     QThread netManageThread;
     NetStateManageWorker* nsmWorker;
-    QThread plcdataManageThread;
-    PlcDataManageWorker* pdmWorker;
     QTimer *checkNetStateTimer;
     QTimer *pollDatasTimer;
     int uca = 0;

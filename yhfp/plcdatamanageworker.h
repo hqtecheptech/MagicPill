@@ -22,6 +22,7 @@ public:
 
 signals:
     void sharedDatasReady(const Plc_Db datas);
+    void plcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
 
 public slots:
     void getSharedDatas();
@@ -31,6 +32,7 @@ private:
     DataSender ds;
 
     void sendPlcdataToServer(const Plc_Db data);
+    void parseYhcServerData(Plc_Db dbData);
 };
 
 #endif // PLCDATAMANAGEWORKER_H

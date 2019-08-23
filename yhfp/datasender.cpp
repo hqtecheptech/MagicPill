@@ -10,7 +10,7 @@ using namespace std;
 
 DataSender::DataSender()
 {
-    port = 8000;
+    port = 8500;
     serverIP = new QHostAddress("192.168.0.106");
     _tcpSocket = new QTcpSocket();
     connect(_tcpSocket,SIGNAL(readyRead()),this,SLOT(dataReceive()));
