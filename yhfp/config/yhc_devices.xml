@@ -2,40 +2,21 @@
 <device>
   <areas devicenumber="1" runctrnumber="32">
     <area name="YHC" datatype="r" start="0" diff="0.5">
-        <node id="1" name="FER_WT_R" cname="发酵池权重温度" length="18" offset="0" diff="0.5"/>
-        <node id="1" name="Fer_Stuff_Height" cname="发酵池环境温度" length="90" offset="72" diff="0.5"/>
+        <node id="6" name="Speed" cname="行进速度" length="1" offset="0" diff="0.5"/>
+        <node id="6" name="Pressure" cname="油缸压力" length="1" offset="1" diff="0.5"/>
+        <node id="6" name="Tempture" cname="油缸温度" length="1" offset="2" diff="0.5"/>
+        <node id="6" name="Level" cname="液油高度" length="1" offset="3" diff="0.5"/>
     </area>
-    <area name="FER_TIME_SETTING" datatype="dw" start="2000" diff="300">
-        <node id="1" name="FER_TIME_1_SET_UDI" cname="第一阶段时间设定" length="1" offset="2000" diff="0"/>
-        <node id="1" name="FER_TIME_2_SET_UDI" cname="第二阶段时间设定" length="1" offset="2004" diff="0"/>
-        <node id="1" name="FER_TIME_3_SET_UDI" cname="第三阶段时间设定" length="1" offset="2008" diff="0"/>
-        <node id="1" name="FER_TIME_4_SET_UDI" cname="第四阶段时间设定" length="1" offset="2012" diff="0"/>
-        <node id="1" name="FER_TIME_5_SET_UDI" cname="第五阶段时间设定" length="1" offset="2016" diff="0"/>
+    <area name="YHC_SETTING" datatype="dw" start="800" diff="300">
+        <node id="6" name="FER_TIME_1_SET_UDI" cname="第一阶段时间设定" length="1" offset="800" diff="0"/>
+        <node id="6" name="FER_TIME_2_SET_UDI" cname="第二阶段时间设定" length="1" offset="804" diff="0"/>
+        <node id="6" name="FER_TIME_3_SET_UDI" cname="第三阶段时间设定" length="1" offset="808" diff="0"/>
+        <node id="6" name="FER_TIME_4_SET_UDI" cname="第四阶段时间设定" length="1" offset="812" diff="0"/>
+        <node id="6" name="FER_TIME_5_SET_UDI" cname="第五阶段时间设定" length="1" offset="816" diff="0"/>
     </area>
-    <area name="RUNCTR" datatype="x0" start="5000" diff="0">
-        <node id="1" name="FAN_Remote_BOOL" cname="风机远程信号" length="32" offset="0" diff="0" alert0="风机就地控制启动" alert1="风机远程控制启动"  priority="1"/>
-        <node id="1" name="FAN_Run_BOOL" cname="风机运行停止状态" length="32" offset="1" diff="0" alert0="风机已停止运行" alert1="风机开始运行" priority="0"/>
-        <node id="1" name="FAN_Fault_BOOL" cname="风机故障状态" length="32" offset="2" diff="0" alert0="风机故障解除" alert1="风机故障" priority="0"/>
-        <node id="1" name="VALVE_Remote_BOOL" cname="阀门远程信号" length="32" offset="3" diff="0" alert0="阀门就地控制启动" alert1="阀门远程控制启动" priority="0"/>
-        <node id="1" name="VALVE_Opened_BOOL" cname="阀门开到位信号" length="32" offset="4" diff="0" alert0="阀门未开到位" alert1="阀门已开到位" priority="1"/>
-        <node id="1" name="VALVE_Closed_BOOL" cname="阀门关到位信号" length="32" offset="5" diff="0" alert0="阀门未关到位信号" alert1="阀门已关到位信号" priority="1"/>
-        <node id="1" name="VALVE_Opening_BOOL" cname="阀门正在开信号" length="32" offset="6" diff="0" alert0="阀门开未运行" alert1="阀门正在开" priority="0"/>
-        <node id="1" name="VALVE_Closing_BOOL" cname="阀门正在关信号" length="32" offset="7" diff="0" alert0="阀门关未运行" alert1="阀门正在关" priority="0"/>
-        <node id="1" name="VALVE_Fault_BOOL" cname="阀门故障信号" length="32" offset="8" diff="0" alert0="阀门无故障信号" alert1="阀门故障" priority="0"/>
-        <node id="1" name="FER_State_BOOL" cname="发酵池发酵状态" length="32" offset="9" diff="0" alert0="发酵池发酵中止" alert1="发酵池发酵进行中" priority="0"/>
-        <node id="1" name="FER_AERATION_BOOL" cname="发酵池曝气状态" length="32" offset="10" diff="0" alert0="发酵池曝气中止" alert1="发酵池曝气进行中" priority="0"/>
-        <node id="1" name="FER_SENSOR_BOOL" cname="发酵池传感器状态" length="32" offset="11" diff="0" alert0="发酵池传感器状态0" alert1="发酵池传感器状态1" priority="0"/>
-        <node id="1" name="FAN_Auto_BOOL" cname="风机自动手动状态" length="32" offset="12" diff="0" alert0="风机手动" alert1="风机自动" priority="0"/>
-        <node id="1" name="FER_Auto_BOOL" cname="发酵手动自动状态" length="32" offset="13" diff="0" alert0="手动发酵状态" alert1="发酵自动状态" priority="0"/>
-        <node id="1" name="FER_Startctr_BOOL" cname="开始发酵使能" length="32" offset="14" diff="0" alert0="无动作" alert1="开始发酵使能" priority="0"/>
-        <node id="1" name="FER_STOPCTR_BOOL" cname="结束发酵使能" length="32" offset="15" diff="0" alert0="无动作" alert1="结束发酵使能" priority="0"/>
-        <node id="1" name="FAN_HandStart_BOOL" cname="风机手动启动" length="32" offset="16" diff="0" alert0="无动作" alert1="风机手动启动" priority="0"/>
-        <node id="1" name="FAN_HandStop_BOOL" cname="风机手动停止" length="32" offset="17" diff="0" alert0="无动作" alert1="风机手动停止" priority="0"/>
-        <node id="1" name="FAN_HandOut_BOOL" cname="风机手动输出" length="32" offset="18" diff="0" alert0="风机手动输出0" alert1="风机手动输出1" priority="0"/>
-        <node id="1" name="FAN_AutoOut_BOOL" cname="风机自动输出" length="32" offset="19" diff="0" alert0="风机自动输出0" alert1="风机自动输出1" priority="0"/>
-        <node id="1" name="Aeration_Start" cname="曝气开始" length="32" offset="20" diff="0" alert0="曝气开始0" alert1="曝气开始1" priority="0"/>
-        <node id="1" name="Aeration_MidTrag" cname="曝气中间变量" length="32" offset="21" diff="0" alert0="曝气中间变量0" alert1="曝气中间变量1" priority="0"/>
-        <node id="1" name="Aeration_Stop" cname="曝气结束" length="32" offset="22" diff="0" alert0="曝气结束0" alert1="曝气结束1" priority="0"/>
+    <area name="RUNCTR" datatype="x0" start="2800" diff="0">
+        <node id="6" name="Run_Signal" cname="1#移行机运行信号" length="32" offset="0" diff="0" alert0="1#移行机结束运行" alert1="1#移行机开始运行"  priority="1"/>
+        <node id="6" name="False_Signal" cname="1#移行机故障信号" length="32" offset="1" diff="0" alert0="1#移行机无故障" alert1="1#移行机故障"  priority="1"/>
     </area>
   </areas>
 </device>

@@ -260,8 +260,81 @@ YhcDeviceInfo Global::readYhcDeviceInfo()
 {
     YhcDeviceInfo retValue;
 
-    retValue.Device_Number = 1;
+    QFile file("yhc_devices.xml");
+    if(!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        return retValue;
+    }
 
+    QDomDocument document;
+    QString error;
+    int row = 0, column = 0;
+    if(!document.setContent(&file, false, &error, &row, &column))
+    {
+        return retValue;
+    }
+    if(document.isNull())
+    {
+        return retValue;
+    }
+
+    QDomElement root = document.documentElement();
+    if(root.isNull())
+    {
+        return retValue;
+    }
+
+    QDomElement areaSection = root.firstChildElement();
+    if(areaSection.isNull())
+    {
+        return retValue;
+    }
+    retValue.Device_Number = areaSection.attribute("devicenumber").toInt();
+    retValue.RunCtr_Block_Size = areaSection.attribute("runctrnumber").toInt();
+
+    QDomNodeList areaList = areaSection.elementsByTagName("area");
+    int count = areaList.count();
+    for(int i=0; i<count; i++)
+    {
+        QDomNode dom_node = areaList.item(i);
+        QDomElement element = dom_node.toElement();
+        QDomNodeList child_list = element.childNodes();
+        int child_count = child_list.count();
+        if(element.attribute("name")=="YHC")
+        {
+            retValue.Yhc_Type = element.attribute("datatype");
+            retValue.Yhc_Address = element.attribute("start").toInt();
+            int varNum = 0;
+            int categoryNum = 0;
+            for(int j=0; j<child_count; j++)
+            {
+                varNum += child_list.item(j).toElement().attribute("length").toInt();
+                categoryNum += 1;
+            }
+            retValue.Yhc_Num = varNum;
+            retValue.Yhc_Category = categoryNum;
+        }
+        if(element.attribute("name")=="YHC_SETTING")
+        {
+            retValue.Yhc_Setting_Type = element.attribute("datatype");
+            retValue.Yhc_Setting_Address = element.attribute("start").toInt();
+            int varNum = 0;
+            int categoryNum = 0;
+            for(int j=0; j<child_count; j++)
+            {
+                varNum += child_list.item(j).toElement().attribute("length").toInt();
+                categoryNum += 1;
+            }
+            retValue.Yhc_Setting_Num = varNum;
+            retValue.Yhc_Setting_Category = categoryNum;
+        }
+        if(element.attribute("name")=="RUNCTR")
+        {
+            retValue.Runctr_Type = element.attribute("datatype");
+            retValue.Runctr_Address = element.attribute("start").toInt();
+            retValue.Runctr_Num = retValue.Device_Number * retValue.RunCtr_Block_Size;
+        }
+    }
     return retValue;
 }
 
@@ -1114,7 +1187,7 @@ int Global::getYhcDeviceIndexByRunctrAddress(float address)
     }
     else
     {
-        uint blockSize = deoDeviceInfo.RunCtr_Block_Size;
+        uint blockSize = yhcDeviceInfo.RunCtr_Block_Size  / 8;
 
         int index = -1;
         for(uint i=0; i < yhcDeviceInfo.Device_Number; i++)
@@ -1216,6 +1289,22 @@ bool Global::getDeoRunctrValueByName(int deviceIndex, QString name, QMap<float, 
     return tempValue.toBool();
 }
 
+bool Global::getYhcRunctrValueByName(int deviceIndex, QString name, QMap<float, QString> dataMap)
+{
+    DeviceGroupInfo groupInfo = getYhcDeviceGroupInfo(deviceIndex);
+    int startAddrss = yhcDeviceInfo.Runctr_Address +
+            yhcDeviceInfo.RunCtr_Block_Size / 8 * (deviceIndex - groupInfo.startIndex);
+
+    DeviceNode deviceNode = getYhcNodeInfoByName(name);
+    int offset = deviceNode.Offset;
+    uint step = offset / 8;
+    uint temp = offset % 8;
+    float index = float(temp) / 10;
+    float dictAddress = index + startAddrss + step;
+    QVariant tempValue = dataMap[dictAddress];
+    return tempValue.toBool();
+}
+
 int Global::getFerDeviceStartIndex(int deviceId, int deviceGroup)
 {
     foreach(DeviceGroupInfo info, ferDeviceGroupInfos)
@@ -1274,6 +1363,18 @@ int Global::getYhcDeviceStartIndex(int deviceId, int deviceGroup)
         }
     }
     return -1;
+}
+
+float Global::getYhcRunctrAdressByNumber(int number)
+{
+    int address;
+    int startAddress = yhcDeviceInfo.Runctr_Address;
+
+    int step = number / 8;
+    address = startAddress + step;
+    int index = number % 8;
+
+    return (float)index / 10 + address;
 }
 
 uint Global::getLengthByDataType(QString dataType)

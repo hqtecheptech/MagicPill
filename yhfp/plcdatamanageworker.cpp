@@ -34,7 +34,37 @@ void PlcDataManageWorker::getSharedDatas()
 
     qDebug() << "plcdata.f_data[0] = " << plcdata.f_data[0];
     qDebug() << "Begin set memory ----";
-    plcdata.f_data[0] += 1;
+    //plcdata.f_data[0] += 1;
+    //plcdata.f_data[1] += 0.5;
+    //plcdata.f_data[2] += 0.5;
+
+    if(plcdata.b_data[0] == 1)
+    {
+       plcdata.b_data[0] = 0;
+    }
+    else
+    {
+        plcdata.b_data[0] = 1;
+    }
+
+    if(plcdata.b_data[2] == 1)
+    {
+       plcdata.b_data[2] = 0;
+    }
+    else
+    {
+        plcdata.b_data[2] = 1;
+    }
+
+    if(plcdata.b_data[9] == 1)
+    {
+       plcdata.b_data[9] = 0;
+    }
+    else
+    {
+        plcdata.b_data[9] = 1;
+    }
+
     qDebug() << "plcdata.f_data[0] = " << plcdata.f_data[0];
     serverDataSh->LockShare();
     qDebug() << "sizeof(Plc_Db) = " << sizeof(Plc_Db);
@@ -143,20 +173,22 @@ void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
             strValue = "true";
         }
 
-        dataMap.insert(i,strValue);
-        if(!Global::currentYhcDataMap.contains(i))
+        float address = Global::getYhcRunctrAdressByNumber(i);
+
+        dataMap.insert(address,strValue);
+        if(!Global::currentYhcDataMap.contains(address))
         {
             diff = true;
-            Global::currentYhcDataMap.insert(temp,strValue);
-            changedAddressArray.append(temp);
+            Global::currentYhcDataMap.insert(address,strValue);
+            changedAddressArray.append(address);
         }
         else
         {
-            if(Global::currentYhcDataMap[temp] != strValue)
+            if(Global::currentYhcDataMap[address] != strValue)
             {
                 diff = true;
-                changedAddressArray.append(temp);
-                Global::currentYhcDataMap[temp] = strValue;
+                changedAddressArray.append(address);
+                Global::currentYhcDataMap[address] = strValue;
             }
         }
     }
@@ -194,7 +226,7 @@ void PlcDataManageWorker::sendPlcdataToServer(const Plc_Db data)
     uint stime =currentdt.toTime_t();
     uint etime =currentdt.toTime_t();
 
-    bpack = {sizeof(StreamPack),6,0,w_Update_Plcdata,0,0,0,sizeof(Plc_Db),0,stime,etime};
+    bpack = {sizeof(StreamPack),6,0,w_Update_Plcdata,yhfpsw,0,0,sizeof(Plc_Db),0,stime,etime};
     bpack.bStreamLength += sizeof(Plc_Db) + 4;
 
     QByteArray allPackData, SData, crcData;

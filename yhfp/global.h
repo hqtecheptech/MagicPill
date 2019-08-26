@@ -78,12 +78,15 @@ public:
 
     static bool getFerRunctrValueByName(int deviceIndex, QString name, QMap<float,QString> dataMap);
     static bool getDeoRunctrValueByName(int deviceIndex, QString name, QMap<float,QString> dataMap);
+    static bool getYhcRunctrValueByName(int deviceIndex, QString name, QMap<float,QString> dataMap);
 
     static int getFerDeviceStartIndex(int deviceId, int deviceGroup);
     static int getFanDeviceStartIndex(int deviceId, int deviceGroup);
     static int getFanValveDeviceStartIndex(int deviceId, int deviceGroup);
     static int getDeoDeviceStartIndex(int deviceId, int deviceGroup);
     static int getYhcDeviceStartIndex(int deviceId, int deviceGroup);
+
+    static float getYhcRunctrAdressByNumber(int number);
 
     static uint getLengthByDataType(QString dataType);
 
