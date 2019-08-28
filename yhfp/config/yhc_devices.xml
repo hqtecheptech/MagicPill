@@ -17,6 +17,21 @@
     <area name="RUNCTR" datatype="x0" start="2800" diff="0">
         <node id="6" name="Run_Signal" cname="1#移行机运行信号" length="32" offset="0" diff="0" alert0="1#移行机结束运行" alert1="1#移行机开始运行"  priority="1"/>
         <node id="6" name="False_Signal" cname="1#移行机故障信号" length="32" offset="1" diff="0" alert0="1#移行机无故障" alert1="1#移行机故障"  priority="1"/>
+        <node id="6" name="FAN_VALVE_Remote" cname="风机组阀门远程信号" length="32" offset="0" diff="0" alert0="风机组阀门就地控制启动" alert1="风机组阀门远程控制启动" priority="0"/>
+        <node id="6" name="FAN_VALVE_Opened" cname="风机组阀门开到位信号" length="32" offset="1" diff="0" alert0="风机组阀门开未到位" alert1="风机组阀门已开到位" priority="0"/>
+        <node id="6" name="FAN_VALVE_Closed" cname="风机组阀门关到位信号" length="32" offset="2" diff="0" alert0="风机组阀门未关到位" alert1="风机组阀门已关到位" priority="0"/>
+        <node id="6" name="FAN_VALVE_Opening" cname="风机组阀门正在开信号" length="32" offset="3" diff="0" alert0="风机组阀门正在开信号" alert1="风机组阀门正在开信号" priority="0"/>
+        <node id="6" name="FAN_VALVE_Closing" cname="风机组阀门正在关信号" length="32" offset="4" diff="0" alert0="风机组阀门正在关信号" alert1="风机组阀门正在关信号" priority="0"/>
+        <node id="6" name="FAN_VALVE_Fault" cname="风机组阀门故障信号" length="32" offset="5" diff="0" alert0="风机组阀门无故障" alert1="风机组阀门故障" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_Remote" cname="风机组备用阀门远程信号" length="32" offset="6" diff="0" alert0="风机组备用阀门就地控制启动" alert1="风机组备用阀门远程控制启动" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_Opened" cname="风机组备用阀门开到位信号" length="32" offset="7" diff="0" alert0="风机组备用阀门未开到位" alert1="风机组备用阀门已开到位" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_Closed" cname="风机组备用阀门关到位信号" length="32" offset="8" diff="0" alert0="风机组备用阀门未关到位" alert1="风机组备用阀门已关到位" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_Opening" cname="风机组备用阀门正在开信号" length="32" offset="9" diff="0" alert0="风机组备用阀门正在开信号" alert1="风机组备用阀门正在开信号" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_Closing" cname="风机组备用阀门正在关信号" length="32" offset="10" diff="0" alert0="风机组备用阀门正在关信号" alert1="风机组备用阀门正在关信号" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_Fault" cname="风机组备用阀门故障信号" length="32" offset="11" diff="0" alert0="风机组备用阀门无故障" alert1="风机组备用阀门故障" priority="0"/>
+        <node id="6" name="FAN_VALVE_HAND_OPEN" cname="风机组阀门手动开阀" length="32" offset="12" diff="0" alert0="无动作" alert1="风机组阀门手动开阀" priority="0"/>
+        <node id="6" name="FAN_VALVE_HAND_CLOSE" cname="风机组阀门手动关阀" length="32" offset="13" diff="0" alert0="无动作" alert1="风机组阀门手动关阀" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_HAND_OPEN" cname="风机组备用阀门手动开阀" length="32" offset="14" diff="0" alert0="无动作" alert1="风机组备用阀门手动开阀" priority="0"/>
     </area>
   </areas>
 </device>

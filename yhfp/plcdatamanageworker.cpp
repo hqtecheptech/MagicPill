@@ -34,9 +34,9 @@ void PlcDataManageWorker::getSharedDatas()
 
     qDebug() << "plcdata.f_data[0] = " << plcdata.f_data[0];
     qDebug() << "Begin set memory ----";
-    //plcdata.f_data[0] += 1;
-    //plcdata.f_data[1] += 0.5;
-    //plcdata.f_data[2] += 0.5;
+    plcdata.f_data[0] += 1;
+    plcdata.f_data[1] += 0.5;
+    plcdata.f_data[2] += 0.5;
 
     if(plcdata.b_data[0] == 1)
     {

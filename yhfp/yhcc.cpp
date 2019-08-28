@@ -193,6 +193,12 @@ void Yhcc::closeEvent(QCloseEvent *)
 void Yhcc::updateUI()
 {
     ui->test_label->setText(Global::currentYhcDataMap[0]);
+    bool value = Global::getYhcRunctrValueByName(0, "Run_Signal", Global::currentYhcDataMap);
+    ui->test_label_2->setText(QString::number(value));
+    value = Global::getYhcRunctrValueByName(0, "False_Signal", Global::currentYhcDataMap);
+    ui->test_label_3->setText(QString::number(value));
+    value = Global::getYhcRunctrValueByName(0, "FAN_SPAREVALVE_Opened", Global::currentYhcDataMap);
+    ui->test_label_4->setText(QString::number(value));
 }
 
 void Yhcc::handleControllerResult()
