@@ -16,6 +16,8 @@
 #include "Local_app/MPU_GlobalData.h"
 #include "Local_app/Module_GlobalData.h"
 
+#include"../dev_app_conf.h"  //配置文件
+
 /*** 按键及LED板连接设置****/
 #define KEYLED_UART             "/dev/ttyS1"    //按键LED板连接的 串口2 RS232电平
 #define KEYLED_BAUD             115200           //按键LED板串口2 通信波特率
@@ -121,6 +123,8 @@ int  mHD_Sys_Dev_Init(void)
    }
     return 0;
 }
+
+
 
 
 

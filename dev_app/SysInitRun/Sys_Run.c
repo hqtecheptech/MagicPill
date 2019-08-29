@@ -13,8 +13,10 @@
 #include "Sys_Run.h"
 #include "../mhd_lib/inc/mhd_lib.h"
 #include "../HqDeviceDriver/HqDeviceDriver.h"
+#include"../dev_app_conf.h"  //配置文件
 
-extern msgname Msg_ModType;      //设置消息类型
+extern msgname Msg_ModType;      //设置消息类型、
+
 
 /************* 系统设备任务轮询 **********************************************
  * 名称：             mHD_Sys_Dev_Run
@@ -34,6 +36,11 @@ int  mHD_Sys_Dev_Run(void)
     mHD_MPUGPIO_FUN_InputValue(); //控制器本体 GPIO 输入轮询
     /*** 控制器顶部 LED 指示灯 输出轮询 ****/
     mHD_MPUTOPLED_FUN_OutValue(); //控制器顶部 LED 指示灯 输出轮询
+    /***接遥控器数据***/
+    mHD_Remote_433_Recv(); // 接收遥控器数据
+    /*** 按键及LED板数据收发 ***/
+     mHD_Keyboare_LED_Recv();//读取按键及LED板状态
+     mHD_Keyboare_WriteData_Poll(); //按键及LED板发送轮询任务
 
 
 

@@ -47,6 +47,9 @@
  int mHD_Keyboare_LED_Recv(void); // 接收按键板数据 recv_buf 接收缓存区
  int mHD_Keyboare_LED_Send(void);  //写入按键及LED板LED指示灯状态
 
+ int mHD_Keyboare_WriteData_Poll(void); //按键及LED板发送轮询任务
+extern  Keyboard_data mHD_KBData;
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
