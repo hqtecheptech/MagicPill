@@ -97,19 +97,14 @@ void mHD_timer_sleep (unsigned long seconds,unsigned long microsecs)
     } while (err<0 && errno==EINTR);
 }
 
-//static void test_timer(void)
-//{
-//    timer_ms_cnt++;
-//    printf("time = %ld\n",timer_ms_cnt );
-//}
-
+extern  void mHD_Systme_Handle(void);
 //系统中断定时器
 static void mHD_Sig_Timeout_Handle(int tmp)
 {
     int i;
     if(tmp == SIGALRM)
     {
-        //test_timer();
+        mHD_Systme_Handle();  //定时应用入口函数
         for(i=0;i<TONMAX;i++)
         {
             if((mTON[i].enable ==1)&&(mTON[i].et !=0))

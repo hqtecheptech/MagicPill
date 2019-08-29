@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#include "dev_app_conf.h"  //配置文件
+
 #include "SysInitRun/Sys_Init.h"
 #include "SysInitRun/Sys_Run.h"
 
@@ -18,7 +20,6 @@ int  main(void)
 {
     /*** 初始化系统 ***/
     mHD_Sys_Dev_Init();  //系统设备初始化
-
     /*** 添加应用初始化 ***/
 
 
@@ -29,7 +30,6 @@ int  main(void)
     {
         /*** 系统轮询任务  ***/
         mHD_Sys_Dev_Run(); //系统轮询任务
-
         /*** 添加应用轮询任务 ***/
 
     }
@@ -37,4 +37,10 @@ int  main(void)
     return 0;
 }
 
+/*** 系统定时中断调用函数 *****/
+void mHD_Systme_Handle(void)
+{
+    mHD_mHD_Remote_433_TopLed(); //遥控器指示等功能
+
+}
 

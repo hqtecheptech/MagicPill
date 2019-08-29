@@ -69,6 +69,7 @@ int mHD_Remote_433_Set(uint16_t add,uint8_t speed,uint8_t chan,uint8_t option); 
 
 int mHD_Remote_433Dev_Set(uint8_t dev);  //设置遥控器对应的设备
 int mHD_Remote_433_Recv(void);   //接收遥控器数据
+void mHD_mHD_Remote_433_TopLed(void); //TOP 指示等功能
 
 #ifdef __cplusplus
 }
