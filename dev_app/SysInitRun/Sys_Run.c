@@ -15,7 +15,6 @@
 #include "../HqDeviceDriver/HqDeviceDriver.h"
 #include"../dev_app_conf.h"  //配置文件
 
-extern msgname Msg_ModType;      //设置消息类型、
 
 
 /************* 系统设备任务轮询 **********************************************
@@ -27,21 +26,25 @@ extern msgname Msg_ModType;      //设置消息类型、
 int  mHD_Sys_Dev_Run(void)
 {
     /* Debug 键盘输入命令轮询 */
-    if(HqDev_CmdSys.debug ==1)  mHD_keyboard_Cmd(Msg_ModType);
-    /*** 消息队列轮询 ***/
-    mHD_Readmsg_Poll(Msg_ModType );
-    /* 连接模块数据轮询*/
-     if(HqDev_CmdSys.linkmodule ==1) mHD_CompDev_SigToRPU();
+    if(HqDev_CmdSys.debug ==1)  mHD_keyboard_Cmd(MSG_MOD_TYPE);
+    /* 连接IO模块数据消息轮询*/
+     if((HqDev_CmdSys.linkmodule ==1)&&(MODULE_DEVIO ==1))
+     {
+         mHD_Readmsg_Poll(MSG_MOD_TYPE );   /*** 消息队列轮询 ***/
+         mHD_CompDev_SigToRPU();
+     }
     /* 控制器本体GPIO 输入状态轮询*/
     mHD_MPUGPIO_FUN_InputValue(); //控制器本体 GPIO 输入轮询
     /*** 控制器顶部 LED 指示灯 输出轮询 ****/
-    mHD_MPUTOPLED_FUN_OutValue(); //控制器顶部 LED 指示灯 输出轮询
+    if(KEYLED_ENABLE) mHD_MPUTOPLED_FUN_OutValue(); //控制器顶部 LED 指示灯 输出轮询
     /***接遥控器数据***/
-    mHD_Remote_433_Recv(); // 接收遥控器数据
+    if(REMOTE433_ENABLE) mHD_Remote_433_Recv(); // 接收遥控器数据
     /*** 按键及LED板数据收发 ***/
-     mHD_Keyboare_LED_Recv();//读取按键及LED板状态
-     mHD_Keyboare_WriteData_Poll(); //按键及LED板发送轮询任务
-
+    if(KEYLED_ENABLE)
+    {
+        mHD_Keyboare_LED_Recv();//读取按键及LED板状态
+        mHD_Keyboare_WriteData_Poll(); //按键及LED板发送轮询任务
+    }
 
 
     return 0;

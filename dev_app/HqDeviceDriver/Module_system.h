@@ -5,6 +5,13 @@
  extern "C" {
 #endif /* __cplusplus */
 
+#define MSG_CTRSOFT       7
+#define MSG_MANSOFT     8
+#define MSG_REMSOFT      9
+#define MSG_NETSOFT      10
+#define MSG_USER1          11
+#define MSG_USER2          12
+
 typedef enum  {
      msg_CtrSoft  =  7,    //控制软件
      msg_ManSoft,           //人机界面
