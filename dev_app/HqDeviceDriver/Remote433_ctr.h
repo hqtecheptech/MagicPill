@@ -22,6 +22,14 @@
  #define AS62_TX_NUM        11     	 //发送数据的数量
  #define AS62_DEV_NUM     32         //传感器数量
 
+ #define    RATS62_FPXT         0x0B         //翻抛系统
+ #define    RATS62_HLXT        0x17        //混料系统
+ #define    RATS62_SLXT         0x15          //上料系统
+ #define    RATS62_YTHXT      0x19      //一体化系统
+ #define    RATS62_FLXT         0x1B         //制肥系统
+
+
+
  typedef struct {
      uint8_t    BT_JT;                     //急停按键,按下为0
      uint8_t    BT_11;                    //第1排左起第1个按键 按下为1
@@ -61,6 +69,7 @@ int mHD_Remote_433_Set(uint16_t add,uint8_t speed,uint8_t chan,uint8_t option); 
 
 int mHD_Remote_433Dev_Set(uint8_t dev);  //设置遥控器对应的设备
 int mHD_Remote_433_Recv(void);   //接收遥控器数据
+void mHD_mHD_Remote_433_TopLed(void); //TOP 指示等功能
 
 #ifdef __cplusplus
 }

@@ -195,4 +195,25 @@ int mstrcmp(const char *ina,const char *inb)
 //    return 0;
 //   /********************************************
 }
+/*测试变量某一位是否为‘1’，是返回1，否返回0
+ * num为需要修改的数，bit为位数，其值从0到7 */
+uint8_t  mHD_Bit8Test(uint8_t  num,uint8_t bit)
+{
+    if(((num>>bit)&0x01)==1) return 1;
+    else return 0;
+}
+/*设置位值 num为需要修改的数，bit为位数，其值从0到7 */
+uint8_t  mHD_Bit8Set(uint8_t  num,uint8_t bit,uint8_t value)
+{
+    uint8_t  bit_value[]={1,2,4,8,16,32,64,128};
+    if(value==0) return num&~bit_value[bit];
+    else return num|bit_value[bit];
+}
+/*取反某一位 num为需要修改的数，bit为位数，其值从0到7*/
+uint8_t mHD_Bit8Cpl(uint8_t  num,uint8_t  bit)
+{
+    uint8_t  bit_value[]={1,2,4,8,16,32,64,128};
+    if(((num>>bit)&0x01)==1) return num&~bit_value[bit];
+    else return num|bit_value[bit];
+}
 

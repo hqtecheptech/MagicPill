@@ -13,29 +13,34 @@
 //MPUIO设置参数初始化信息
 void mHD_MPU_ConfigData_Init(void)
 {
+    /******* OUT CH0 - CH1 只能设置为 GPIO 输出模式 ****/
     //输出0 通道配置
     Mpu_data.config.DOutFunSet[0] = 1;  //1=DO,2=PWM
     Mpu_data.config.DOutPullSet[0] =0;   //0=downpull,1=pupull
     //输出1 通道配置
     Mpu_data.config.DOutFunSet[1] = 1;  //1=DO,2=PWM
     Mpu_data.config.DOutPullSet[1] =0;   //0=downpull,1=pupull
+
+     /******* OUT CH2 - CH3 可设置为 GPIO或Pulse 输出模式 ****/
     //输出2 通道配置
     Mpu_data.config.DOutFunSet[2] = 1;  //1=DO,2=PWM
     Mpu_data.config.DOutPullSet[2] =0;   //0=downpull,1=pupull
     //输出3 通道配置
     Mpu_data.config.DOutFunSet[3] = 1;  //1=DO,2=PWM
     Mpu_data.config.DOutPullSet[3] =0;   //0=downpull,1=pupull
+
+    /******* OUT CH4 - CH7 只能设置为 Pulse 脉冲输出模式 ****/
     //输出4 通道配置
-    Mpu_data.config.DOutFunSet[4] = 1;  //1=DO,2=PWM
+    Mpu_data.config.DOutFunSet[4] = 2;  //1=DO,2=PWM
     Mpu_data.config.DOutPullSet[4] =0;   //0=downpull,1=pupull
     //输出5 通道配置
-    Mpu_data.config.DOutFunSet[5] = 1;  //1=DO,2=PWM
+    Mpu_data.config.DOutFunSet[5] = 2;  //1=DO,2=PWM
     Mpu_data.config.DOutPullSet[5] =0;   //0=downpull,1=pupull
     //输出6 通道配置
-    Mpu_data.config.DOutFunSet[6] = 1;  //1=DO,2=PWM
+    Mpu_data.config.DOutFunSet[6] = 2;  //1=DO,2=PWM
     Mpu_data.config.DOutPullSet[6] =0;   //0=downpull,1=pupull
     //输出7 通道配置
-    Mpu_data.config.DOutFunSet[7] = 1;  //1=DO,2=PWM
+    Mpu_data.config.DOutFunSet[7] = 2;  //1=DO,2=PWM
     Mpu_data.config.DOutPullSet[7] =0;   //0=downpull,1=pupull
 
     //输入0通道配置 注:编码器模式需要占2个通道 0,1

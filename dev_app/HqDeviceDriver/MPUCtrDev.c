@@ -9,6 +9,8 @@
 #include "../mhd_lib/inc/mhd_lib.h"
 #include "../HqDeviceDriver/HqDeviceDriver.h"
 
+#define MHD_NS 1000000000
+
 /******** MPU GPIO Channels Configuration*********
  * Features: Set input and output functions
  * parameter:
@@ -96,7 +98,7 @@ int mHD_Write_MPUGPIO_Value(int ch,char * fun,int value,int delayon,int delayoff
         fd= open(buf, O_WRONLY);   if(fd == -1) return -1;   //打开timer delay_on
         sprintf(vbuf,"%d",delayon);  wlen = write(fd,vbuf,strlen(vbuf));   close(fd); //写入delay_on 时间
     }
-    else if((strcmp(fun,MPU_DO_TF) ==0) ||(strcmp(fun,MPU_DO_HEART))||(strcmp(fun,MPU_DO_CPU)))
+    else if((strcmp(fun,MPU_DO_TF) ==0) ||(strcmp(fun,MPU_DO_HEART)==0))
     {
         sprintf(buf,"/sys/class/leds/gpio_out%d/trigger",ch);
         fd= open(buf, O_WRONLY);   if(fd == -1) return -1;   //打开GPIO触发
@@ -134,15 +136,16 @@ int mHD_Read_MPUGPIO_Value(int ch)
     }
      return  -1;
 }
-/******** MPU Pulse Channels SET  *******************
- * Features: Set the output Pulse Funtion
+/******** MPU Pulse Channels Request  *******************
+ * Features: Requestthe output Pulse Funtion
  * parameter:
  *      int ch  Input and output value = out(0-7ch)
  *      int exp     1= install,0=uninstall
  * return： erro = -1, success = write byte number;
  * *******************************************/
-int mHD_Write_MPUPulse_Config(int ch,int exp)
+int mHD_Write_MPUPulse_Request(int ch,int exp)
 {
+    if(ch <=1) return -1;
     const int mch[8]= {0,0,6,9,7,3,4,1};
     int fd;
 
@@ -156,49 +159,88 @@ int mHD_Write_MPUPulse_Config(int ch,int exp)
         fd= open(buf, O_WRONLY);   if(fd == -1) return -1;   //打开Plus通道
         sprintf(vbuf,"0");
         write(fd,vbuf,strlen(vbuf));    //卸载通道Pulse 功能
-        close(fd);  //关闭操作通道
+        close(fd);  //关闭
     }  else
         {
             sprintf(buf,"/sys/class/pwm/pwmchip%d/export",mch[ch]);
             fd= open(buf, O_WRONLY);   if(fd == -1) return -1;   //打开Plus通道
             sprintf(vbuf,"0");
             write(fd,vbuf,strlen(vbuf));    //申请通道
-            close(fd);  //关闭操作通道
+            close(fd);  //关闭
         }
     return 0;
 }
+/******** MPU Pulse Channels ENable  *******************
+ * Features: Enable the output Pulse
+ * parameter:
+ *      0 = close
+ *      1=  open
+ * return： erro = -1, success = write byte number;
+ * *******************************************/
+int mHD_Write_MPUPulse_Enable(int ch,int enable)
+{
+    const int mch[8]= {0,0,6,9,7,3,4,1};
+    char buf[64] = {'\0'};
+     int fd;
+
+     if(enable ==0)
+     {
+         sprintf(buf,"/sys/class/pwm/pwmchip%d/pwm0/enable",mch[ch]);
+         fd= open(buf, O_WRONLY);   if(fd == -1) return -1;   //打开占空比通道
+         write(fd,"0",1);    //打开输出
+         close(fd);  //关闭操作通道
+         mHD_Write_MPUPulse_Request(ch,enable);  //申请PWM通道
+     }
+     else
+     {
+         mHD_Write_MPUPulse_Request(ch,enable);  //申请PWM通道
+         sprintf(buf,"/sys/class/pwm/pwmchip%d/pwm0/enable",mch[ch]);
+         fd= open(buf, O_WRONLY);   if(fd == -1) return -1;   //打开占空比通道
+         write(fd,"1",1);    //打开输出
+         close(fd);  //关闭操作通道
+     }
+    return 0;
+}
+
 /******** MPU Pulse Channels output  *******************
  * Features: Set the output Pulse Enable
  * parameter:
  *      int ch  Input and output value = out(2-7ch)
  *      int enable  1=open,0=close
- *      int period  (ns)
+ *      int period  (Hz)
  *      int duty (%) Duty cycle
- *      int polarty   = normal(Negative output),
- *                          = inversed(Positive output)
+ *      int polarty   1= normal(Negative output),
+ *                          0= inversed(Positive output)
  * return： erro = -1, success = write byte number;
  * *******************************************/
-int mHD_Write_MPUPulse_Value(int ch,int enable,uint32_t period ,uint8_t duty,uint8_t polarty)
+int mHD_Write_MPUPulse_Value(int ch,uint32_t period ,uint8_t duty,uint8_t polarty)
 {
     int fd;
     const int mch[8]= {0,0,6,9,7,3,4,1};
     char buf[64] = {'\0'};
     char vbuf[64] = {'\0'};
     uint32_t md_duty;
+    uint32_t m_period;
 
     if(ch<2) return -1;
+    if((ch==21)||(ch==3))
+    {
+         if((period < 2) && (period >300000) ) return -1 ;  //输出范围2Hz - 300KHz
+    }
+    if((period < 2) && (period >4000000) ) return -1 ;  //输出范围2Hz - 4MHz
 
-    sprintf(buf,"/sys/class/pwm/pwmchip%d/pwm0/duty_cycle",mch[ch]);
+    sprintf(buf,"/sys/class/pwm/pwmchip%d/pwm0/duty_cycle",mch[ch]);  //占空比设置为0
     fd= open(buf, O_WRONLY);   if(fd == -1) return -1;   //打开占空比通道
     sprintf(vbuf,"0");  write(fd,vbuf,strlen(vbuf));            //复位占空比
     close(fd);  //关闭操作通道
 
+    m_period = (1*1000000000)/period;
     sprintf(buf,"/sys/class/pwm/pwmchip%d/pwm0/period",mch[ch]);
     fd= open(buf, O_WRONLY);   if(fd == -1) return -1;   //打开周期通道
-    sprintf(vbuf,"%d",period);  write(fd,vbuf,strlen(vbuf));            //写入周期
+    sprintf(vbuf,"%d",m_period);  write(fd,vbuf,strlen(vbuf));            //写入周期
     close(fd);  //关闭操作通道
 
-    md_duty = period * ((int)duty/100.0);   //计算占空比
+    md_duty = (uint32_t)((double)m_period*((double)duty/100.0));  //计算占空比
     sprintf(buf,"/sys/class/pwm/pwmchip%d/pwm0/duty_cycle",mch[ch]);
     fd= open(buf, O_WRONLY);   if(fd == -1) return -1;   //打开占空比通道
     sprintf(vbuf,"%d",md_duty);  write(fd,vbuf,strlen(vbuf));    //写入占空比
@@ -210,12 +252,6 @@ int mHD_Write_MPUPulse_Value(int ch,int enable,uint32_t period ,uint8_t duty,uin
     if( polarty ==0) strcat(vbuf,"inversedl");
     else strcat(vbuf,"normal");
     write(fd,vbuf,strlen(vbuf));            //写入极性
-    close(fd);  //关闭操作通道
-
-    sprintf(buf,"/sys/class/pwm/pwmchip%d/pwm0/enable",mch[ch]);
-    fd= open(buf, O_WRONLY);   if(fd == -1) return -1;   //打开占空比通道
-    if(enable ==0) write(fd,"0",1);    //关闭输出
-    else write(fd,"1",1);    //打开输出
     close(fd);  //关闭操作通道
 
     return 0;

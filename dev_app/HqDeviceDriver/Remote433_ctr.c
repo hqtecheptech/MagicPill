@@ -173,12 +173,15 @@ int mHD_Remote_433_Recv(void)
     len = mHD_Uart_Recv(mHD_Rem433Data.fd, rcv_buf,sizeof(rcv_buf));
     if(len>0)
     {
-        //控制台显示接收到的遥控器数据
-//        printf("Remote data= ");
-//        for(i=0;i<len;i++) {
-//            if(i !=len-1)  printf("%X,",rcv_buf[i]);
-//            else printf("%X\n",rcv_buf[i]);
-//        }
+        if(HqDev_CmdSys.debug ==1)
+        {
+            printf("Remote data= ");  //控制台显示接收到的遥控器数据
+            for(i=0;i<len;i++)
+            {
+                if(i !=len-1)  printf("%X,",rcv_buf[i]);
+                else printf("%X\n",rcv_buf[i]);
+            }
+        }
         //解析接收到的数据
         if(rcv_buf[0] !=AS62_RX_CMD) return -1;  //头命令错误退出
         for(i=0;i<AS62_RX_NUM-1;i++) sum +=rcv_buf[i]; //求校验和
@@ -209,6 +212,8 @@ int mHD_Remote_433_Recv(void)
          mHD_Rem433Data.speed = (rcv_buf[3]>>3) & 0x07;
          mHD_Rem433Data.dev = (rcv_buf[3]>>6) & 0x03;
 
+         HqTopLED_Data.fun = mHD_Bit8Set(HqTopLED_Data.fun,0,1);     //fun 指示灯第0个指示遥控器是否接收到数据
+          HqTopLED_Data.encnt = 2;  //500ms
          //控制台显示解析后遥控器数据
           if(HqDev_CmdSys.debug ==1)
           {
@@ -223,6 +228,16 @@ int mHD_Remote_433_Recv(void)
           }
     }
     return 0;
+}
+
+/****  TOP 指示等功能 ****/
+void mHD_mHD_Remote_433_TopLed(void)
+{
+    if(HqTopLED_Data.encnt  !=0 )
+    {
+        HqTopLED_Data.encnt--;
+        if(HqTopLED_Data.encnt ==0) HqTopLED_Data.fun = mHD_Bit8Set(HqTopLED_Data.fun,0,0);
+    }
 }
 
 

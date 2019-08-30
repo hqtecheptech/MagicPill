@@ -67,7 +67,7 @@ int  mHD_MPUGPIO_FUN_OUTValue(void)
 
 /************* 控制器本体 GPIO 输入轮询 **********************************************
  * 名称：             mHD_MPUGPIO_FUN_OUTValue(void)
- * 功能：             控制器本体 GPIO 输出轮询
+ * 功能：             控制器本体 GPIO 输入轮询
  * 入口参数：      无
  * 出口参数：      无
  * return :             FALSE -1  错误，正确返回0
@@ -91,6 +91,18 @@ int  mHD_MPUGPIO_FUN_InputValue(void)
     return 0;
 }
 
+/************* 控制器本体 GPIO 输出轮询 **********************************************
+ * 名称：             mHD_MPUGPIO_FUN_OutputValue(void)
+ * 功能：             控制器本体 GPIO 输出轮询
+ * 入口参数：      无
+ * 出口参数：      无
+ * return :             FALSE -1  错误，正确返回0
+ * ********************************************************************************/
+int  mHD_MPUGPIO_FUN_OutputValue(void)
+{
+    return 0;
+}
+
 /************* 控制器顶部 LED 指示灯 输出轮询 **********************************************
  * 名称：             mHD_MPUTOPLED_FUN_OutValue(void)
  * 功能：             控制器本体 GPIO 输出轮询
@@ -108,8 +120,6 @@ void  mHD_MPUTOPLED_FUN_OutValue(void)
 
     HqTopLED_Data.out =0;
     for(i=0;i<8;i++)  HqTopLED_Data.out |= (Mpu_data.Data.DOutData[i] &0x01) << i;  //输出状态赋值
-
-    HqTopLED_Data.fun =0;
 
     if((old_Data.in != HqTopLED_Data.in) ||(old_Data.out !=HqTopLED_Data.out) ||(old_Data.fun !=HqTopLED_Data.fun))
     {

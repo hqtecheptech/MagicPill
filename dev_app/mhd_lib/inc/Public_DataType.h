@@ -300,9 +300,10 @@ typedef struct {
  }Hq_Plc_Db;
 
 typedef  struct   {
-    int     in;              //调试模式  1=开启调试模式，0=关闭调试模式
-    int     out;     //连接模块系统 1=连接模块，0=不连接模块
-    int     fun;       //模块参赛配置 1=配置参赛     0=不配置参赛
+    int     in;              //输入指示灯
+    int     out;          //输出指示灯
+    int     fun;        //功能指示灯 bit0 遥控器收发
+    volatile int     encnt;     //功能计数
 }  HqTopLED_Cmd;
 
 extern Hq_Dev_Data Dev_data;             //模块 IO 数据定义

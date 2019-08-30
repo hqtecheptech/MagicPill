@@ -58,4 +58,5 @@ HEADERS += \
     Local_app/HQDevApp_conf.h \
     HqDeviceDriver/Wireless24_Comm.h \
     HqDeviceDriver/ConFile_conf.h \
-    HqDeviceDriver/MPU_system.h
+    HqDeviceDriver/MPU_system.h \
+    dev_app_conf.h

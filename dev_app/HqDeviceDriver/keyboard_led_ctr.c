@@ -81,12 +81,16 @@ int mHD_Keyboare_LED_Send(void)
     txbuf[10] = crcL; txbuf[11] = crcH;
     txlen =12;
     len = mHD_Uart_Send(mHD_KBData.fd,(char *)txbuf,txlen);
-//     printf("send data= ");
-//     for(i=0;i<len;i++)
-//     {
-//         if(i !=len-1) printf("%d,",txbuf[i]);
-//         else printf("%d\n",txbuf[i]);
-//     }
+     if(HqDev_CmdSys.debug ==1)
+     {
+         printf("send data= ");
+         for(i=0;i<len;i++)
+         {
+             if(i !=len-1) printf("%d,",txbuf[i]);
+             else printf("%d\n",txbuf[i]);
+         }
+     }
+
     if(len <1) return FALSE;
     else return len;
 }
@@ -104,21 +108,20 @@ int mHD_Keyboare_LED_Recv(void)
     int i,y;
     uint16_t crc;
     uint8_t crcL,crcH;
-
     uint8_t *indata[9];
-    indata[0] = mHD_KBData.InPort1;
-    indata[1] = mHD_KBData.InPort2;
-    indata[2] = mHD_KBData.InPort3;
-    indata[3] = mHD_KBData.InPort4;
-    indata[4] = mHD_KBData.InPort5;
-    indata[5] = mHD_KBData.InPort6;
-    indata[6] = mHD_KBData.InPort7;
-    indata[7] = mHD_KBData.InPort8;
-    indata[8] = mHD_KBData.InPort9;
 
     len = mHD_Uart_Recv(mHD_KBData.fd, rcv_buf,sizeof(rcv_buf));
     if(len>0)
     {
+        indata[0] = mHD_KBData.InPort1;
+        indata[1] = mHD_KBData.InPort2;
+        indata[2] = mHD_KBData.InPort3;
+        indata[3] = mHD_KBData.InPort4;
+        indata[4] = mHD_KBData.InPort5;
+        indata[5] = mHD_KBData.InPort6;
+        indata[6] = mHD_KBData.InPort7;
+        indata[7] = mHD_KBData.InPort8;
+        indata[8] = mHD_KBData.InPort9;
         if(((rcv_buf[0] ==0x01) && (rcv_buf[2] ==0x01)&&(rcv_buf[3] ==0x15))&& ( (rcv_buf[1] ==0x17)||(rcv_buf[1] ==0x1F)))
         {
            crc =  mHD_RTU_CRC16((uint8_t *)rcv_buf,len-2);
@@ -128,12 +131,15 @@ int mHD_Keyboare_LED_Recv(void)
            {
                for(y=0;y<9;y++)  //InputData
                {
-                   //printf("port%d data= ",y+1);
+                   if(HqDev_CmdSys.debug ==1) printf("portkeyled %d data= ",y+1);
                    for(i=0;i<8;i++)
                    {
                        *(indata[y]+i) = (rcv_buf[4+y] >>i) & 0x01;
-//                       if(i !=7)  printf("%d,",*(indata[y]+i));
-//                       else printf("%d.\n",*(indata[y]+i));
+                       if(HqDev_CmdSys.debug ==1)
+                       {
+                           if(i !=7)  printf("%d,",*(indata[y]+i));
+                          else printf("%d.\n",*(indata[y]+i));
+                       }
                    }
                }
                mHD_KBData.EnPort1Data = rcv_buf[13];
@@ -142,29 +148,49 @@ int mHD_Keyboare_LED_Recv(void)
                mHD_KBData.EnPort1Dir =  rcv_buf[14];
                mHD_KBData.EnPort2Dir =  rcv_buf[16];
                mHD_KBData.EnPort3Dir =  rcv_buf[18];
-               //printf("En data= %d,%d,%d,%d,%d,%d\n",rcv_buf[13],rcv_buf[14],rcv_buf[15],rcv_buf[16],rcv_buf[17],rcv_buf[18]);
+               if(HqDev_CmdSys.debug ==1)  printf("En data= %d,%d,%d,%d,%d,%d\n",rcv_buf[13],rcv_buf[14],rcv_buf[15],rcv_buf[16],rcv_buf[17],rcv_buf[18]);
            } else return -1;
         } else return -1;
     } else return -1;
     return len;
 }
 
-/**************** 按键及LED板 轮询任务 ****************************************
-* 名称：            mHD_Keyboare_LED_Poll(void)
+/**************** 按键及LED板发送轮询任务 ****************************************
+* 名称：            mHD_Keyboare_WriteData_Poll(void)
 *******************************************************************/
-int mHD_Keyboare_LED_Poll(void)
+int mHD_Keyboare_WriteData_Poll(void)
 {
-    return 0;
+    static uint8_t old_KBData[6][8];
+    uint8_t *outdata[6];
+    int i,y;
+    int en = 0;
+
+    outdata[0] = mHD_KBData.OutPort1;
+    outdata[1] = mHD_KBData.OutPort2;
+    outdata[2] = mHD_KBData.OutPort3;
+    outdata[3] = mHD_KBData.OutPort4;
+    outdata[4] = mHD_KBData.OutPort5;
+    outdata[5] = mHD_KBData.OutPort6;
+
+    for(y=0;y<6;y++)
+    {
+        for(i=0;i<8;i++)
+        {
+            if(old_KBData[y][i] != *(outdata[y]+i))   en =1;
+             if(en ==1) break;
+        }
+        if(en ==1) break;
+    }
+
+    if(en ==1)
+    {
+        for(y=0;y<6;y++)
+        {
+            for(i=0;i<8;i++) old_KBData[y][i] = *(outdata[y]+i);
+        }
+        return mHD_Keyboare_LED_Send();
+    }else return -1;
 }
-
-
-
-
-
-
-
-
-
 
 
 
