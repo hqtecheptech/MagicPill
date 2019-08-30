@@ -7,14 +7,22 @@
         <node id="6" name="Tempture" cname="油缸温度" length="1" offset="2" diff="0.5"/>
         <node id="6" name="Level" cname="液油高度" length="1" offset="3" diff="0.5"/>
     </area>
-    <area name="YHC_SETTING" datatype="dw" start="800" diff="300">
+    <area name="YHC_SETTING" datatype="dw" start="1600" diff="0.5">
         <node id="6" name="FER_TIME_1_SET_UDI" cname="第一阶段时间设定" length="1" offset="800" diff="0"/>
         <node id="6" name="FER_TIME_2_SET_UDI" cname="第二阶段时间设定" length="1" offset="804" diff="0"/>
         <node id="6" name="FER_TIME_3_SET_UDI" cname="第三阶段时间设定" length="1" offset="808" diff="0"/>
         <node id="6" name="FER_TIME_4_SET_UDI" cname="第四阶段时间设定" length="1" offset="812" diff="0"/>
         <node id="6" name="FER_TIME_5_SET_UDI" cname="第五阶段时间设定" length="1" offset="816" diff="0"/>
     </area>
-    <area name="RUNCTR" datatype="x0" start="2800" diff="0">
+    <area name="YHC_LOCATION" datatype="di" start="800" diff="0">
+      <node id="6" name="Start" length="1" offset="0" diff="0"/>
+      <node id="6" name="End" length="1" offset="1" diff="0"/>
+    </area>
+    <area name="TANK_STATE" datatype="w" start="2400" diff="0">
+      <node id="6" name="STEPCTR_UI" length="1" offset="0" diff="0"/>
+      <node id="6" name="STUFF_ID" length="1" offset="1" diff="0"/>
+    </area>
+    <area name="RUNCTR" datatype="x0" start="2600" diff="0">
         <node id="6" name="Run_Signal" cname="1#移行机运行信号" length="32" offset="0" diff="0" alert0="1#移行机结束运行" alert1="1#移行机开始运行"  priority="1"/>
         <node id="6" name="False_Signal" cname="1#移行机故障信号" length="32" offset="1" diff="0" alert0="1#移行机无故障" alert1="1#移行机故障"  priority="1"/>
         <node id="6" name="FAN_VALVE_Remote" cname="风机组阀门远程信号" length="32" offset="0" diff="0" alert0="风机组阀门就地控制启动" alert1="风机组阀门远程控制启动" priority="0"/>

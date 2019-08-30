@@ -104,7 +104,7 @@ static void mHD_Sig_Timeout_Handle(int tmp)
     int i;
     if(tmp == SIGALRM)
     {
-        mHD_Systme_Handle();  //定时应用入口函数
+        //mHD_Systme_Handle();  //定时应用入口函数
         for(i=0;i<TONMAX;i++)
         {
             if((mTON[i].enable ==1)&&(mTON[i].et !=0))

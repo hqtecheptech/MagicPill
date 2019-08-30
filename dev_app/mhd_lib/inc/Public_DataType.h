@@ -45,8 +45,8 @@
 /* DB datas length */
 #define DB_FLOAT_LEN 200
 #define DB_INT_LEN 200
-#define DB_UINT16_LEN 500
-#define DB_UINT8_LEN 200
+#define DB_UINT32_LEN 200
+#define DB_UINT16_LEN 200
 #define DB_BOOL_LEN 200
 
 //struct Data8_sBit{
@@ -294,16 +294,16 @@ typedef  struct   {
 typedef struct {
     float f_data[DB_FLOAT_LEN];
     int i_data[DB_INT_LEN];
-    uint16_t dw_data[DB_UINT16_LEN];
-    uint8_t w_data[DB_UINT8_LEN];
+    uint32_t dw_data[DB_UINT32_LEN];
+    uint16_t w_data[DB_UINT16_LEN];
     uint8_t b_data[DB_BOOL_LEN];
  }Hq_Plc_Db;
 
 typedef  struct   {
-    int     in;              //输入指示灯
-    int     out;          //输出指示灯
-    int     fun;        //功能指示灯 bit0 遥控器收发
-    volatile int     encnt;     //功能计数
+     int     in;              //输入指示灯
+     int     out;          //输出指示灯
+     int     fun;        //功能指示灯 bit0 遥控器收发
+     volatile int     encnt;     //功能计数
 }  HqTopLED_Cmd;
 
 extern Hq_Dev_Data Dev_data;             //模块 IO 数据定义

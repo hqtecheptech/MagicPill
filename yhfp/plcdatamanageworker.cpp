@@ -35,8 +35,20 @@ void PlcDataManageWorker::getSharedDatas()
     qDebug() << "plcdata.f_data[0] = " << plcdata.f_data[0];
     qDebug() << "Begin set memory ----";
     plcdata.f_data[0] += 1;
-    plcdata.f_data[1] += 0.5;
     plcdata.f_data[2] += 0.5;
+
+    if(plcdata.i_data[1] == 5)
+    {
+       plcdata.i_data[1] = -4;
+    }
+    else
+    {
+        plcdata.i_data[1] = 5;
+    }
+
+    plcdata.dw_data[3] += 2;
+
+    plcdata.w_data[1] += 2;
 
     if(plcdata.b_data[0] == 1)
     {
@@ -64,6 +76,7 @@ void PlcDataManageWorker::getSharedDatas()
     {
         plcdata.b_data[9] = 1;
     }
+
 
     qDebug() << "plcdata.f_data[0] = " << plcdata.f_data[0];
     serverDataSh->LockShare();
@@ -125,7 +138,7 @@ void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
         }
     }
 
-    for(int i=0; i < DB_UINT16_LEN; i++, temp++)
+    for(int i=0; i < DB_UINT32_LEN; i++, temp++)
     {
         dataMap.insert(i,QString::number(newPlcDb.dw_data[i]));
         if(!Global::currentYhcDataMap.contains(i))
@@ -145,7 +158,7 @@ void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
         }
     }
 
-    for(int i=0; i < DB_UINT8_LEN; i++, temp++)
+    for(int i=0; i < DB_UINT16_LEN; i++, temp++)
     {
         dataMap.insert(i,QString::number(newPlcDb.w_data[i]));
         if(!Global::currentYhcDataMap.contains(i))
@@ -248,11 +261,11 @@ void PlcDataManageWorker::sendPlcdataToServer(const Plc_Db data)
     {
         out << data.i_data[i];
     }
-    for(int i=0; i < DB_UINT16_LEN; i++)
+    for(int i=0; i < DB_UINT32_LEN; i++)
     {
         out << data.dw_data[i];
     }
-    for(int i=0; i < DB_UINT8_LEN; i++)
+    for(int i=0; i < DB_UINT16_LEN; i++)
     {
         out << data.w_data[i];
     }

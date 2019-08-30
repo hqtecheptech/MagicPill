@@ -17,15 +17,15 @@
 /* DB datas length */
 #define DB_FLOAT_LEN 200
 #define DB_INT_LEN 200
-#define DB_UINT16_LEN 500
-#define DB_UINT8_LEN 200
+#define DB_UINT32_LEN 200
+#define DB_UINT16_LEN 200
 #define DB_BOOL_LEN 200
 
 typedef struct {
     float f_data[DB_FLOAT_LEN];
     int i_data[DB_INT_LEN];
-    uint16_t dw_data[DB_UINT16_LEN];
-    uint8_t w_data[DB_UINT8_LEN];
+    uint32_t dw_data[DB_UINT32_LEN];
+    uint16_t w_data[DB_UINT16_LEN];
     uint8_t b_data[DB_BOOL_LEN];
  } Plc_Db;
 

@@ -10,7 +10,7 @@
 #include "data.h"
 #include "global.h"
 #include "sharehelper.h"
-#include "../mhd_lib/inc/Share_Memory.h"
+#include "../dev_app/mhd_lib/inc/Share_Memory.h"
 
 class Syscontroller : public QObject
 {
