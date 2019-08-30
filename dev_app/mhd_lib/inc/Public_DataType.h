@@ -42,7 +42,12 @@
 #define SIGFRPU     SIGRTMIN+1   //来自PRU的数据更新信号
 #define SIGTRPU     SIGRTMIN+2   //发送给PRU的数据更新信号
 
-
+ /* DB datas length */
+ #define DB_FLOAT_LEN 200
+ #define DB_INT_LEN 200
+ #define DB_UINT32_LEN 200
+ #define DB_UINT16_LEN 200
+ #define DB_BOOL_LEN 200
 
 //struct Data8_sBit{
 //     uint8_t B0:1; uint8_t B1:1; uint8_t B2:1; uint8_t B3:1;
@@ -285,6 +290,14 @@ typedef  struct   {
     int     setmodule;       //模块参赛配置 1=配置参赛     0=不配置参赛
     int     readmodule;    //读取参赛配置  1=读取参赛配置 0= 不读取参赛配置信息
 }  HqDevRun_Cmd;
+
+typedef struct {
+ float f_data[DB_FLOAT_LEN];
+ int i_data[DB_INT_LEN];
+ uint32_t dw_data[DB_UINT32_LEN];
+ uint16_t w_data[DB_UINT16_LEN];
+ uint8_t b_data[DB_BOOL_LEN];
+} Hq_Plc_Db;
 
 typedef  struct   {
     int     in;              //输入指示灯
