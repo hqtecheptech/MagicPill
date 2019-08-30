@@ -120,7 +120,6 @@
 //     uint64_t	sVal;
 //     struct Data64_sBit sbit;
 // };
->>>>>>> 30c84a77a0f4e92b30beffd6774782f1734faa5b:dev_app/mhd_lib/inc/Public_DataType.h
 
 typedef enum {
      Msg_None,                                //无消息
