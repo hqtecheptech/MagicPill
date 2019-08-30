@@ -30,7 +30,8 @@ SOURCES += main.c \
     Local_app/MPU_GlobalData.c \
     HqDeviceDriver/Wireless24_Comm.c \
     HqDeviceDriver/ConFile_conf.c \
-    HqDeviceDriver/MPU_system.c
+    HqDeviceDriver/MPU_system.c \
+    SysTime_Callback.c
 
 HEADERS += \
     Dev/FPJ/FPJ.h \
@@ -59,4 +60,5 @@ HEADERS += \
     HqDeviceDriver/Wireless24_Comm.h \
     HqDeviceDriver/ConFile_conf.h \
     HqDeviceDriver/MPU_system.h \
-    dev_app_conf.h
+    dev_app_conf.h \
+    SysTime_Callback.h

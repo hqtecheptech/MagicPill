@@ -25,19 +25,20 @@
  *                                                                           |                                     |
  *                                                                           ->阻塞(返回错误)           ->非终端(返回错误)
  * *********************************************************************/
-int  mHD_Uart__Open(char *port)
+int  mHD_Uart_Open(char *port)
 {
     int fd;
     fd = open(port,O_RDWR|O_NOCTTY|O_NDELAY) ;
+    //fd = open(port,O_RDWR|O_NOCTTY|O_NONBLOCK) ;
     if (fd<0)
     {
         perror("Can't Open Serial Port");
         return(FALSE);
     }
-    //判断串口的状态是否为阻塞状态
-    if(fcntl(fd, F_SETFL, 0) < 0) return(FALSE);
-    //测试是否为终端设备
-    if(0 == isatty(STDIN_FILENO)) return(FALSE);
+//    //判断串口的状态是否为阻塞状态
+//    if(fcntl(fd, F_SETFL, 0) < 0) return(FALSE);
+//    //测试是否为终端设备
+//    if(0 == isatty(STDIN_FILENO)) return(FALSE);
    return fd;
 }
 
@@ -48,7 +49,7 @@ int  mHD_Uart__Open(char *port)
  * 打开参数：
  * 出口参数：void
  * ****************************************/
-void mHD_Uart__Close(int fd)
+void mHD_Uart_Close(int fd)
 {
     close(fd);
 }
@@ -236,7 +237,7 @@ void mHD_Uart_RSTest(char *port)
     char rcv_buf[256];
     char send_buf[256] =  "Please enter data";;
 
-    fd = mHD_Uart__Open(port);  //打开串口
+    fd = mHD_Uart_Open(port);  //打开串口
     if(fd<0 )
     {
          if(HqDev_CmdSys.debug ==1) printf("Can't Open Serial Port");

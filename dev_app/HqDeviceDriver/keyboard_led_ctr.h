@@ -6,6 +6,10 @@
 #endif /* __cplusplus */
 
  #include     <stdint.h>      /*数据类型宏定义 */
+ #include <pthread.h>     //线程数据
+
+#define  KEYLED_RX_MAX  128
+#define  KEYLED_TX_MAX  128
 
  typedef struct {
      uint8_t  InPort1[8];             //Port1输入通道值
@@ -32,10 +36,20 @@
      uint8_t EnPort1Dir;                //CN1旋转编码器方向  0=未选择 1=正向选择 2=反向旋转
      uint8_t EnPort2Dir;                //CN1旋转编码器方向
      uint8_t EnPort3Dir;                //CN1旋转编码器方向
-
-     int fd;                                      //设备串口文件描述
-     int linkstatus;                         //按键指示灯板连接状态
  } Keyboard_data;
+
+ typedef struct {
+     uint8_t Rxbuf[KEYLED_RX_MAX];    //串口接收缓存区
+     int RxComplete;                   //串口接收完成
+     int RxNum;                           //串口接收数量
+     uint8_t Txbuf[KEYLED_RX_MAX];    //串口发送缓存区
+     int TxComplete;                   //串口发送完成
+     int TxNum;                            //串口发送数量
+     int linkstatus;                        //按键指示灯板连接状态
+     int fd;                                     //串口设备标识
+     pthread_t Thread_Rev_ID;    //接收线程ID
+     pthread_t Thread_Send_ID;    //发送线程ID
+ } Keyboard_Uart;
 
  /************* mHD_Keyboard_Led__Init **********************************************
   *  char * port      串口号(ttyS0,ttyS1,ttyS3,ttyS4,ttyS5,ttyS6,ttyS7)
@@ -48,6 +62,11 @@
  int mHD_Keyboare_LED_Send(void);  //写入按键及LED板LED指示灯状态
 
  int mHD_Keyboare_WriteData_Poll(void); //按键及LED板发送轮询任务
+ int mHD_Keyboard_LEDRXData_AnalysisPoll(void); //接收按键面板数据解析
+
+ void  mHD_Keyboard_LED_Thread(void); //线程接收按键面板数据
+ int mHD_Keyboard_LED_CreatThread(void); //创建线程接收按键面板数据
+
 extern  Keyboard_data mHD_KBData;
 
 #ifdef __cplusplus

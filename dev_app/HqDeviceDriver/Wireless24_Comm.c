@@ -28,7 +28,7 @@ int mHD_Wireless_24_Init(char *port,int speed)
     int fd = -1;           //文件描述符，先定义一个与程序无关的值，防止fd为任意值导致程序出bug
     int err;               //返回调用函数的状态
 
-    fd = mHD_Uart__Open(port);  //打开串口
+    fd = mHD_Uart_Open(port);  //打开串口
     if(fd<0 )
     {
          if(HqDev_CmdSys.debug ==1) printf("Can't Open Serial Port");

@@ -23,7 +23,6 @@
 #define REMOTE433_UART      "/dev/ttyS3"   //无线遥控器连接的串口 4 TTL电平
 #define WIRELESS24_UART     "/dev/ttyS4"    //按键LED板连接的 串口5 TTL电平
 
-
 /************* 系统设备初始化 **********************************************
  * 名称：             mHD_Sys_Dev_Init
  * 功能：             系统设备初始化
@@ -40,6 +39,9 @@
 int  mHD_Sys_Dev_Init(void)
 {
     int gpio_run2 = -1;
+    //初始化系统主定时器及延时定时器
+    mHD_Timer_SystemMaster_Init(SYSTEM_MASTIMERM);  //设定并启动系统主定时器
+    mHD_TimeTON_Init(); //初始化开延时定时器及关延时定时器
      /*** 运行配置文件初始化 ***/
     mHD_Read_Config_Conf();       //初始化运行配置文件
     /*** step0: 初始化 控制器本体功能 ***/
@@ -47,12 +49,17 @@ int  mHD_Sys_Dev_Init(void)
     mHD_MPU_ConfigData_Init();  //MPU控制器IO配置参赛赋值
     mHD_MPU_ConfigModule_Set();     //写入控制器系统 通过配置驱动模块hq_gpio_set 写入系统内核配置GPIO功能
         //0.1: 初始化控制器控制模块按键驱动板
-    if(KEYLED_ENABLE ==1) mHD_Keyboard_Led_Init(KEYLED_UART,KEYLED_BAUD);                 //设置连接按键LED板的串口,及通信波特率
+    if(KEYLED_ENABLE ==1)
+    {
+        mHD_Keyboard_Led_Init(KEYLED_UART,KEYLED_BAUD);  //设置连接按键LED板的串口,及通信波特率
+        mHD_Keyboard_LED_CreatThread(); //创建线程接收按键面板数据
+    }
         //0.2:初始化无线遥控器433MHz接口
     if(REMOTE433_ENABLE ==1)
     {
         mHD_Remote_433_Init(REMOTE433_UART,REMOTE433_BAUD);   //设置接收433MHz遥控器的串口,及通信波特率
         mHD_Remote_433Dev_Set(REMOTE_SYS_SET );                                           //设置接收遥控器的类型
+        mHD_Remote_433Recv_CreatThread(); //创建线程接收遥控器数据
     }
         //0.3:初始化无线通讯2.4G接口
     if(WIRELESS24_ENABLE == 1) mHD_Wireless_24_Init(WIRELESS24_UART,WIRELESS24_BAUD);
@@ -62,10 +69,7 @@ int  mHD_Sys_Dev_Init(void)
 
         //0.6:初始化远程IO模块连接接口
 
-        //0.7:初始化系统主定时器及延时定时器
-    mHD_Timer_SystemMaster_Init(SYSTEM_MASTIMERM);  //设定并启动系统主定时器
-    mHD_TimeTON_Init(); //初始化开延时定时器及关延时定时器
-        //0.8:初始化键盘调试环境 Debug 开关设置
+        //0.7:初始化键盘调试环境 Debug 开关设置
    if(HqDev_CmdSys.debug ==1) mHD_Debug_KeyboardInput_Init(); //键盘输入 调试
 
     /* step1: 初始化控制器连接模块*/
@@ -114,6 +118,9 @@ int  mHD_Sys_Dev_Init(void)
        }
        mHD_Read_Shm_ShareMemory_DevData(Run_data.Shmkey,Run_data.Semkey,&Dev_data);  //读取共享内存区
    }
+
+
+
     return 0;
 }
 

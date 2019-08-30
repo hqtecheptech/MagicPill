@@ -36,15 +36,18 @@ int  mHD_Sys_Dev_Run(void)
     /*** 控制器顶部 LED 指示灯 输出轮询 ****/
     mHD_MPUTOPLED_FUN_OutValue(); //控制器顶部 LED 指示灯 输出轮询
     /***接遥控器数据***/
-    if(REMOTE433_ENABLE) mHD_Remote_433_Recv(); // 接收遥控器数据
-    /*** 按键及LED板数据收发 ***/
-    if(KEYLED_ENABLE)
+    if(REMOTE433_ENABLE==1)
     {
-        mHD_Keyboare_LED_Recv();//读取按键及LED板状态
-        mHD_Keyboare_WriteData_Poll(); //按键及LED板发送轮询任务
+        //mHD_Remote_433_Recv(); // 接收遥控器数据
+        mHD_Remote_433RXData_AnalysisPoll(); // 接收遥控器数据解析
     }
-
-
+    /*** 按键及LED板数据收发 ***/
+    if(KEYLED_ENABLE==1)
+    {
+//        mHD_Keyboare_LED_Recv();//读取按键及LED板状态
+           mHD_Keyboard_LEDRXData_AnalysisPoll(); //接收按键面板数据解析
+           mHD_Keyboare_WriteData_Poll(); //按键及LED板发送轮询任务
+    }
     return 0;
 
 }

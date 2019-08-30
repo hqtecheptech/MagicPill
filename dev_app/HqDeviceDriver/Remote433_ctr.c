@@ -14,6 +14,7 @@
 #define WIRE433_SETEN   94   //控制引脚 GPIO3_30 拉高设置模式，拉低通讯模式
 
 Remote433_data mHD_Rem433Data;
+Remote433_Uart mHD_Rem433Port;
 
 /************* 433MHz遥控器接收初始化 **********************************************
  * 名称：             mHD_Keyboare_LED_Init
@@ -36,12 +37,16 @@ int  mHD_Remote_433_Init(char *port,int speed)
     mHD_SetGPIO_Direction(WIRE433_SETEN,"out");           //设置GPIO方向为输出
     mHD_SetGPIO_Value(WIRE433_SETEN,ATS62_Comm);    //设置GIPO状态为通讯模式
 
-    fd = mHD_Uart__Open(port);  //打开串口
-    if(fd<0 ) { printf("Can't Open Serial Port");return -1;}
+    fd = mHD_Uart_Open(port);  //打开串口
+    if(fd<0 )
+    {
+        printf("Can't Open Serial Port");
+        return -1;
+    }
 
     err = mHD_Uart_Init(fd,speed,0,8,1,'N'); //初始化串口
     if(err <0) {printf("set serial parameter error!\n"); return -1;}
-    mHD_Rem433Data.fd = fd;
+    mHD_Rem433Port.fd = fd;
     return fd; //返回文件串口设备文件描述
 }
 /****************设置433MHz遥控器无线参数*************
@@ -85,7 +90,7 @@ int mHD_Remote_433_Set(uint16_t add,uint8_t speed,uint8_t chan,uint8_t option )
 
     mHD_SetGPIO_Value(WIRE433_SETEN,ATS62_Setting);    //设置GIPO状态
     mHD_msleep(100);
-    len = mHD_Uart_Send(mHD_Rem433Data.fd,(char *)txbuf,txlen);
+    len = mHD_Uart_Send(mHD_Rem433Port.fd,(char *)txbuf,txlen);
     if(len <1) return FALSE;
     else return TRUE;
 }
@@ -113,7 +118,7 @@ int mHD_Remote_433Dev_Set(uint8_t dev)
     txlen =6;
     mHD_SetGPIO_Value(WIRE433_SETEN,ATS62_Setting);    //设置GIPO状态
     mHD_msleep(100);
-    len = mHD_Uart_Send(mHD_Rem433Data.fd,(char *)txbuf,txlen);
+    len = mHD_Uart_Send(mHD_Rem433Port.fd,(char *)txbuf,txlen);
     if(len <1) return FALSE;
 
     /* 打印设置数据*/
@@ -156,61 +161,50 @@ int mHD_Remote_433Dev_Set(uint8_t dev)
    return 0;
 }
 
-/**************** 接受遥控器数据****************************************
-* 名称：            mHD_Remote_433_Recv
-* 功能：            读取遥控器数据
+/**************** 接收遥控器数据解析****************************************
+* 名称：            mHD_Remote_433RXData_Analysis(void)
+* 功能：            接受到的 串口数据解析
 * 入口参数：     无
 * 出口参数：    正确返回发送数据的长度，错误返回为-1
 *******************************************************************/
-int mHD_Remote_433_Recv(void)
+int mHD_Remote_433RXData_AnalysisPoll(void)
 {
-    char rcv_buf[256];
-    int len = 0;
     int i;
     uint16_t sum =0;
     uint8_t   sumL =0;
 
-    len = mHD_Uart_Recv(mHD_Rem433Data.fd, rcv_buf,sizeof(rcv_buf));
-    if(len>0)
+    if(mHD_Rem433Port.RxComplete ==1)
     {
-        if(HqDev_CmdSys.debug ==1)
-        {
-            printf("Remote data= ");  //控制台显示接收到的遥控器数据
-            for(i=0;i<len;i++)
-            {
-                if(i !=len-1)  printf("%X,",rcv_buf[i]);
-                else printf("%X\n",rcv_buf[i]);
-            }
-        }
+        mHD_Rem433Port.RxComplete = 0;
         //解析接收到的数据
-        if(rcv_buf[0] !=AS62_RX_CMD) return -1;  //头命令错误退出
-        for(i=0;i<AS62_RX_NUM-1;i++) sum +=rcv_buf[i]; //求校验和
+        if(mHD_Rem433Port.Rxbuf [0] !=AS62_RX_CMD) return -1;  //头命令错误退出
+        for(i=0;i<AS62_RX_NUM-1;i++) sum +=mHD_Rem433Port.Rxbuf[i]; //求校验和
         sumL = sum & 0xFF;
-        if(rcv_buf[AS62_RX_NUM-1] != sumL) return -1; 		//校验和错误
+        if(mHD_Rem433Port.Rxbuf[AS62_RX_NUM-1] != sumL) return -1; 		//校验和错误
         //数据正确赋值
-        mHD_Rem433Data.BT_11 = rcv_buf[1] & 0x01;
-        mHD_Rem433Data.BT_12 = (rcv_buf[1]>>1) & 0x01;
-        mHD_Rem433Data.BT_13 = (rcv_buf[1]>>2) & 0x01;
-        mHD_Rem433Data.BT_JT  = (rcv_buf[1]>>3) & 0x01;
+        mHD_Rem433Data.BT_11 = mHD_Rem433Port.Rxbuf[1] & 0x01;
+        mHD_Rem433Data.BT_12 = (mHD_Rem433Port.Rxbuf[1]>>1) & 0x01;
+        mHD_Rem433Data.BT_13 = (mHD_Rem433Port.Rxbuf[1]>>2) & 0x01;
+        mHD_Rem433Data.BT_JT  = (mHD_Rem433Port.Rxbuf[1]>>3) & 0x01;
 
-         mHD_Rem433Data.BT_21 = (rcv_buf[1]>>4) & 0x01;
-         mHD_Rem433Data.BT_22 = (rcv_buf[1]>>5) & 0x01;
-         mHD_Rem433Data.BT_23 = (rcv_buf[1]>>6) & 0x01;
-         mHD_Rem433Data.BT_24 = (rcv_buf[1]>>7) & 0x01;
+         mHD_Rem433Data.BT_21 = (mHD_Rem433Port.Rxbuf[1]>>4) & 0x01;
+         mHD_Rem433Data.BT_22 = (mHD_Rem433Port.Rxbuf[1]>>5) & 0x01;
+         mHD_Rem433Data.BT_23 = (mHD_Rem433Port.Rxbuf[1]>>6) & 0x01;
+         mHD_Rem433Data.BT_24 = (mHD_Rem433Port.Rxbuf[1]>>7) & 0x01;
 
-         mHD_Rem433Data.BT_31 = (rcv_buf[2]>>0) & 0x01;
-         mHD_Rem433Data.BT_32 = (rcv_buf[2]>>1) & 0x01;
-         mHD_Rem433Data.BT_33 = (rcv_buf[2]>>2) & 0x01;
-         mHD_Rem433Data.BT_34 = (rcv_buf[2]>>3) & 0x01;
+         mHD_Rem433Data.BT_31 = (mHD_Rem433Port.Rxbuf[2]>>0) & 0x01;
+         mHD_Rem433Data.BT_32 = (mHD_Rem433Port.Rxbuf[2]>>1) & 0x01;
+         mHD_Rem433Data.BT_33 = (mHD_Rem433Port.Rxbuf[2]>>2) & 0x01;
+         mHD_Rem433Data.BT_34 = (mHD_Rem433Port.Rxbuf[2]>>3) & 0x01;
 
-         mHD_Rem433Data.BT_41 = (rcv_buf[2]>>4) & 0x01;
-         mHD_Rem433Data.BT_42 = (rcv_buf[2]>>5) & 0x01;
-         mHD_Rem433Data.BT_43 = (rcv_buf[2]>>6) & 0x01;
-         mHD_Rem433Data.BT_44 = (rcv_buf[2]>>7) & 0x01;
+         mHD_Rem433Data.BT_41 = (mHD_Rem433Port.Rxbuf[2]>>4) & 0x01;
+         mHD_Rem433Data.BT_42 = (mHD_Rem433Port.Rxbuf[2]>>5) & 0x01;
+         mHD_Rem433Data.BT_43 = (mHD_Rem433Port.Rxbuf[2]>>6) & 0x01;
+         mHD_Rem433Data.BT_44 = (mHD_Rem433Port.Rxbuf[2]>>7) & 0x01;
 
-         mHD_Rem433Data.sec_dev = (rcv_buf[3]>>0) & 0x07;
-         mHD_Rem433Data.speed = (rcv_buf[3]>>3) & 0x07;
-         mHD_Rem433Data.dev = (rcv_buf[3]>>6) & 0x03;
+         mHD_Rem433Data.sec_dev = (mHD_Rem433Port.Rxbuf[3]>>0) & 0x07;
+         mHD_Rem433Data.speed = (mHD_Rem433Port.Rxbuf[3]>>3) & 0x07;
+         mHD_Rem433Data.dev = (mHD_Rem433Port.Rxbuf[3]>>6) & 0x03;
 
          HqTopLED_Data.fun = mHD_Bit8Set(HqTopLED_Data.fun,0,1);     //fun 指示灯第0个指示遥控器是否接收到数据
           HqTopLED_Data.encnt = 2;  //500ms
@@ -226,6 +220,77 @@ int mHD_Remote_433_Recv(void)
               printf("3:  %d, %d, %d, %d\n",mHD_Rem433Data.BT_31,mHD_Rem433Data.BT_32,mHD_Rem433Data.BT_33,mHD_Rem433Data.BT_34);
               printf("4:  %d, %d, %d, %d\n",mHD_Rem433Data.BT_41,mHD_Rem433Data.BT_42,mHD_Rem433Data.BT_43,mHD_Rem433Data.BT_44);
           }
+          return 0;
+    }
+    return -1;
+}
+
+
+/**************** 接收遥控器数据****************************************
+* 名称：            mHD_Remote_433_Recv
+* 功能：            读取遥控器数据
+* 入口参数：     无
+* 出口参数：    正确返回发送数据的长度，错误返回为-1
+*******************************************************************/
+int mHD_Remote_433_Recv(void)
+{
+    int i;
+    int len;
+    len = mHD_Uart_Recv(mHD_Rem433Port.fd, (char *)mHD_Rem433Port.Rxbuf,AS62_RX_MAX);
+    if(len>0)
+    {
+        mHD_Rem433Port.RxComplete =1;
+        mHD_Rem433Port.RxNum = len;
+        if(HqDev_CmdSys.debug ==1)
+        {
+            printf("Remote data= ");  //控制台显示接收到的遥控器数据
+            for(i=0;i<mHD_Rem433Port.RxNum;i++)
+            {
+                if(i !=mHD_Rem433Port.RxNum-1)  printf("%X,",mHD_Rem433Port.Rxbuf[i]);
+                else printf("%X\n",mHD_Rem433Port.Rxbuf[i]);
+            }
+        }
+        return mHD_Rem433Port.RxNum;
+    }
+    return -1;
+}
+
+/**************** 线程接收遥控器数据****************************************
+* 名称：            mHD_Remote_433_Recv
+* 功能：            读取遥控器数据
+* 入口参数：     无
+* 出口参数：    正确返回发送数据的长度，错误返回为-1
+*******************************************************************/
+void  mHD_Remote_433_Recv_Thread(void)
+{
+    int len;
+    while(1)
+    {
+        len = mHD_Uart_Recv(mHD_Rem433Port.fd, (char *)mHD_Rem433Port.Rxbuf,AS62_RX_MAX);
+        if(len>0)
+        {
+            mHD_Rem433Port.RxComplete =1;
+            mHD_Rem433Port.RxNum = len;
+        }
+    }
+}
+/**************** 创建线程接收遥控器数据****************************************
+* 名称：            int mHD_Remote_433Recv_CreatThread(void)
+* 功能：            创建线程接收遥控器数据
+* 入口参数：     无
+* 出口参数：    正确返回发送数据的长度，错误返回为-1
+*******************************************************************/
+int mHD_Remote_433Recv_CreatThread(void)
+{
+    int ret;
+    ret = pthread_create(&mHD_Rem433Port.Thread_Rev_ID,NULL,(void *) mHD_Remote_433_Recv_Thread,NULL);
+    if(ret !=0)
+    {
+        if(HqDev_CmdSys.debug ==1)
+        {
+            printf("Create Uart_Receive_thread error!\n");
+            return -1;
+        }
     }
     return 0;
 }

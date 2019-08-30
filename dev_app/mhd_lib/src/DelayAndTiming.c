@@ -23,6 +23,8 @@
 
 #include "../inc/DelayAndTiming.h"
 #include "../inc/Public_DataType.h"
+#include "../../SysTime_Callback.h"
+
 
 volatile unsigned  long timer_ms_cnt = 0;
 static mHD_TimerON  mTON[TONMAX];
@@ -97,7 +99,6 @@ void mHD_timer_sleep (unsigned long seconds,unsigned long microsecs)
     } while (err<0 && errno==EINTR);
 }
 
-extern  void mHD_Systme_Handle(void);
 //系统中断定时器
 static void mHD_Sig_Timeout_Handle(int tmp)
 {
