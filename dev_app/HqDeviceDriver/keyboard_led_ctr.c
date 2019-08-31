@@ -188,8 +188,10 @@ void mHD_Keyboard_LED_Thread(void)
             len = mHD_Uart_Recv(mHD_KBPort.fd, (char *)mHD_KBPort.Rxbuf,KEYLED_RX_MAX);
             if(len>0)
             {
+
                 mHD_KBPort.RxComplete =1;
                 mHD_KBPort.RxNum = len;
+                mHD_Keyboard_LEDRXData_AnalysisPoll();
             }
         }
     }

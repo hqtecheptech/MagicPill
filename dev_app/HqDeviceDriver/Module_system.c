@@ -17,8 +17,8 @@
 
 #include  "../mhd_lib/inc/mhd_lib.h"
 #include "../HqDeviceDriver/HqDeviceDriver.h"
-
-
+#include "../PRUSoft_Ctl/PRU_Fun.h"
+#include "../PRUSoft_Ctl/PRU_Protocol.h"
 
 #define PRUDATA_MAX   22
 
@@ -87,7 +87,7 @@ int mHD_ModuleSoftware_Init(int type,int *prupid)
 }
 
 //键盘输入控制
-void mHD_keyboard_Cmd(int msgtype)
+void mHD_keyboard_Cmd(void)
 {
     char tfg[1024] ;
     char analysis[64][128];
@@ -111,12 +111,12 @@ void mHD_keyboard_Cmd(int msgtype)
      //keyboard_prudata(analysis);
 
     //处理PRU数据
-    if(mstrcmp(&analysis[1][0],"pru") ==0)
-    {
-        if((mstrcmp(&analysis[3][0],"msg") ==0) &&(atoi(&analysis[2][0]) ==0)) {  keyboard_prumsg(analysis,msgtype) ;  return;}     //Pru msg
-        else if((mstrcmp(&analysis[3][0],"data") ==0) &&(atoi(&analysis[2][0]) ==0)) { keyboard_prudata(analysis) ;  return;}    //Pru data
-        else {mHD_printf_err(); return;}
-    }
+//    if(mstrcmp(&analysis[1][0],"pru") ==0)
+//    {
+//        if((mstrcmp(&analysis[3][0],"msg") ==0) &&(atoi(&analysis[2][0]) ==0)) {  keyboard_prumsg(analysis,msgtype) ;  return;}     //Pru msg
+//        else if((mstrcmp(&analysis[3][0],"data") ==0) &&(atoi(&analysis[2][0]) ==0)) { keyboard_prudata(analysis) ;  return;}    //Pru data
+//        else {mHD_printf_err(); return;}
+//    }
     //处理Module数据
     else if(mstrcmp(&analysis[1][0],"module")==0 )
     {
@@ -157,14 +157,14 @@ void mHD_CompDev_SigToRPU(void)
     int i;
     int cmp = 0;
 
-    if(Run_data.Pid[1]  == 0)  return;
-
+    if (Dev_data.Pru.RStatus ==1) return;
     nummax = Dev_data.Pru.MEndBit;
     for(i=1;i<= nummax;i++)
     {
         if(Dev_data.Mconfig[i].Name == 0x7122)
         {
-            if(memcmp(Dev_data.MData[i].DOutData,old_Dev_data.MData[i].DOutData,16) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
+            if(memcmp(Dev_data.MData[i].DOutData,old_Dev_data.MData[i].DOutData,16) !=0)
+            {Dev_data.Pru.MWData[i] =1;cmp =1;}
         }
        else  if(Dev_data.Mconfig[i].Name == 0x8012)
         {
@@ -185,17 +185,122 @@ void mHD_CompDev_SigToRPU(void)
     }
     if(cmp ==1)
     {
-        //mHD_Read_Shm_ShareMemory_DevData(Run_data.Shmkey ,&Dev_data);
-        if(Run_data.Pid[0] !=0)
-        {
-            memcpy((void *)&old_Dev_data,&Dev_data,sizeof(Hq_Dev_Data));
-            Dev_data.Pru.RStatus =1;  //PRU任务状态,0=无任务处理，1=有未完成的任务。
-            mHD_Write_Shm_ShareMemory_DevData(Run_data.Shmkey ,Run_data.Semkey,&Dev_data);  //写入共享内存值
-            mHD_Send_Signal(Run_data.Pid[1],SIGTRPU);  //发送信号到PRU 处理器
-        }
+        memcpy((void *)&old_Dev_data,&Dev_data,sizeof(Hq_Dev_Data));
+        Dev_data.Pru.RStatus =1;  //PRU任务状态,0=无任务处理，1=有未完成的任务。
+        Run_data.DataChangeEN = 1;    //有任务处理任务状态
         cmp =0;
     }
 }
+
+//Dev 数据比较 更新到共享内存 同时发送 数据更新到PRU 处理器信号
+void mHD_CompDev_DataToRPU_Thread(void)
+{
+    static Hq_Dev_Data old_Dev_data;
+     Hq_Dev_Data mDev_data;
+    int nummax;
+    int i,y;
+
+    while(1)
+    {
+        memcpy((void *)&mDev_data,&Dev_data,sizeof(Hq_Dev_Data));
+        nummax = Dev_data.Pru.MEndBit;
+        for(i=1;i<= nummax;i++)
+        {
+            if(Dev_data.Mconfig[i].Name == 0x7122)
+            {
+                if(memcmp(mDev_data.MData[i].DOutData,old_Dev_data.MData[i].DOutData,16) !=0)
+                {
+                    m_UpdateModule_SingeData(i,0x7122);
+                    for(y=0;y<16;y++) old_Dev_data.MData[i].DOutData[y] = mDev_data.MData[i].DOutData[y]; //赋旧值
+                }
+            }
+            else  if(Dev_data.Mconfig[i].Name == 0x8012)
+            {
+                if(memcmp(mDev_data.MData[i].AOutData,old_Dev_data.MData[i].AOutData,8) !=0)
+                {
+                    m_UpdateModule_SingeData(i,0x8012);
+                    for(y=0;y<8;y++) old_Dev_data.MData[i].AOutData[y] = mDev_data.MData[i].AOutData[y]; //赋旧值
+                }
+            }
+            else if(Dev_data.Mconfig[i].Name == 0x7313)
+            {
+                if((memcmp(mDev_data.MData[i].DOutData,old_Dev_data.MData[i].DOutData,16) !=0) ||
+                        (memcmp(mDev_data.MData[i].EnInClear,old_Dev_data.MData[i].EnInClear,6) !=0)    ||
+                        (memcmp(mDev_data.MData[i].PulseData,old_Dev_data.MData[i].PulseData,32) !=0))
+                {
+                    m_UpdateModule_SingeData(i,0x7313);
+                    for(y=0;y<16;y++) old_Dev_data.MData[i].DOutData[y] = mDev_data.MData[i].DOutData[y]; //赋旧值
+                    for(y=0;y<6;y++) old_Dev_data.MData[i].EnInClear[y] = mDev_data.MData[i].EnInClear[y]; //赋旧值
+                    for(y=0;y<8;y++) old_Dev_data.MData[i].PulseData[y] = mDev_data.MData[i].PulseData[y]; //赋旧值
+                }
+            }
+            else if(Dev_data.Mconfig[i].Name == 0x7314)
+            {
+                if((memcmp(mDev_data.MData[i].DOutData,old_Dev_data.MData[i].DOutData,16) !=0) ||
+                        (memcmp(mDev_data.MData[i].EnInClear,old_Dev_data.MData[i].EnInClear,3) !=0)    ||
+                        (memcmp(mDev_data.MData[i].PulseData,old_Dev_data.MData[i].PulseData,32) !=0) )
+                    m_UpdateModule_SingeData(i,0x7314);
+                for(y=0;y<16;y++) old_Dev_data.MData[i].DOutData[y] = mDev_data.MData[i].DOutData[y]; //赋旧值
+                for(y=0;y<3;y++) old_Dev_data.MData[i].EnInClear[y] = mDev_data.MData[i].EnInClear[y]; //赋旧值
+                for(y=0;y<8;y++) old_Dev_data.MData[i].PulseData[y] = mDev_data.MData[i].PulseData[y]; //赋旧值
+            }
+        }
+    }
+}
+
+/**************** 创建线程收发模块数据****************************************
+* 名称：            mHD_Module_Send_CreatThread(void)
+* 功能：            创建线程发送模块数据
+* 入口参数：     无
+* 出口参数：    正确返回发送数据的长度，错误返回为-1
+*******************************************************************/
+pthread_t Thread_ModuleData_ID;    //接收线程ID
+int mHD_Module_Send_CreatThread(void)
+{
+    int ret;
+    ret = pthread_create(&Thread_ModuleData_ID,NULL,(void *) mHD_CompDev_DataToRPU_Thread,NULL);
+    if(ret !=0)
+    {
+        if(HqDev_CmdSys.debug ==1)
+        {
+            printf("Create Uart_Receive_thread error!\n");
+            return -1;
+        }
+    }
+    return 0;
+}
+
+//Module 接受数据线程函数
+void mHD_ReadModule_Data_Thread(void)
+{
+    while(1)
+    {
+        mHD_Pru_Protocol_ReadRunData();  //接收模块返回数据
+        //mHD_CompDev_DataToRPU_Thread();  //发送模块数据线程
+    }
+}
+/**************** 创建线程接收模块数据****************************************
+* 名称：            mHD_Module_Send_CreatThread(void)
+* 功能：            创建线程发送模块数据
+* 入口参数：     无
+* 出口参数：    正确返回发送数据的长度，错误返回为-1
+*******************************************************************/
+pthread_t Thread_ModuleRead_ID;    //接收线程ID
+int mHD_Module_Read_CreatThread(void)
+{
+    int ret;
+    ret = pthread_create(&Thread_ModuleRead_ID,NULL,(void *) mHD_ReadModule_Data_Thread,NULL);
+    if(ret !=0)
+    {
+        if(HqDev_CmdSys.debug ==1)
+        {
+            printf("Create Uart_Receive_thread error!\n");
+            return -1;
+        }
+    }
+    return 0;
+}
+
 
 
 

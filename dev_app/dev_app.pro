@@ -31,7 +31,10 @@ SOURCES += main.c \
     HqDeviceDriver/Wireless24_Comm.c \
     HqDeviceDriver/ConFile_conf.c \
     HqDeviceDriver/MPU_system.c \
-    SysTime_Callback.c
+    SysTime_Callback.c \
+    PRUSoft_Ctl/PRU_Protocol.c \
+    PRUSoft_Ctl/PRU_ConfigWrite.c \
+    PRUSoft_Ctl/PRU_Fun.c
 
 HEADERS += \
     Dev/FPJ/FPJ.h \
@@ -61,4 +64,7 @@ HEADERS += \
     HqDeviceDriver/ConFile_conf.h \
     HqDeviceDriver/MPU_system.h \
     dev_app_conf.h \
-    SysTime_Callback.h
+    SysTime_Callback.h \
+    PRUSoft_Ctl/PRU_Protocol.h \
+    PRUSoft_Ctl/PRU_ConfigWrite.h \
+    PRUSoft_Ctl/PRU_Fun.h

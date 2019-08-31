@@ -14,9 +14,10 @@
 #include "SysTime_Callback.h"
 #include "HqDeviceDriver/Remote433_ctr.h"
 
-
+extern  int module_cnt_test;
 /*** 系统定时中断调用函数 *****/
 void mHD_Systme_Handle(void)
 {
+    module_cnt_test++;
     mHD_mHD_Remote_433_TopLed(); //遥控器指示等功能
 }

@@ -138,7 +138,7 @@ static int mHD_Uart_Set (int fd,int speed,int flow_ctrl,int databits,int stopbit
     options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG); //关闭规范输入,回送，可见搽除字符,终端产生的信号
     options.c_oflag &= ~OPOST;  //修改输出模式，原始数据输出
     //设置等待时间和最小接收字符
-    options.c_cc[VTIME] = 1; // 读取一个字符等待1*(1/10)s
+    options.c_cc[VTIME] = 0; // 读取一个字符等待1*(1/10)s
     options.c_cc[VMIN] = 1; // 读取字符的最少个数为1
     tcflush(fd,TCIFLUSH);   //如果发生数据溢出，接收数据，但是不再读取 刷新收到的数据但是不读
     //激活配置 (将修改后的termios数据设置到串口中）
@@ -186,7 +186,7 @@ int mHD_Uart_Recv(int fd, char *rcv_buf,int data_len)
     FD_SET(fd,&fs_read);    //用于在文件描述符集合中增加一个新的文件描述符
 
     time.tv_sec = 0;
-    time.tv_usec = 0;
+    time.tv_usec = 120;
 
     //使用select实现串口的多路通信
     fs_sel = select(fd+1,&fs_read,NULL,NULL,&time);

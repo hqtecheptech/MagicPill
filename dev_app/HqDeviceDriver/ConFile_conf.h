@@ -5,7 +5,7 @@
  extern "C" {
 #endif /* __cplusplus */
 
- int  mHD_Read_Config_Conf(void); //读取系统运行配置文本文件
+int  mHD_Read_RUNConfig_Conf(void); //读取系统运行配置文本文件
 
 
 
