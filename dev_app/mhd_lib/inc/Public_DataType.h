@@ -42,12 +42,12 @@
 #define SIGFRPU     SIGRTMIN+1   //来自PRU的数据更新信号
 #define SIGTRPU     SIGRTMIN+2   //发送给PRU的数据更新信号
 
-/* DB datas length */
-#define DB_FLOAT_LEN 200
-#define DB_INT_LEN 200
-#define DB_UINT32_LEN 200
-#define DB_UINT16_LEN 200
-#define DB_BOOL_LEN 200
+ /* DB datas length */
+ #define DB_FLOAT_LEN 200
+ #define DB_INT_LEN 200
+ #define DB_UINT32_LEN 200
+ #define DB_UINT16_LEN 200
+ #define DB_BOOL_LEN 200
 
 //struct Data8_sBit{
 //     uint8_t B0:1; uint8_t B1:1; uint8_t B2:1; uint8_t B3:1;
@@ -281,6 +281,7 @@ typedef struct {
     int                  MsgStatus[MODULE_LINK_MAX];     //消息处理状态
     msg_update  Msg_Update_CMD;                              //消息处理命令
     uint8_t           ModuleNum;                                       //模块数量
+    uint8_t          DataChangeEN;                                    //Dev 数据有变化
     int                  SigEn;                                                    //有需要处理的更新数据
 }Hq_Run_Data;
 
@@ -297,7 +298,7 @@ typedef struct {
     uint32_t dw_data[DB_UINT32_LEN];
     uint16_t w_data[DB_UINT16_LEN];
     uint8_t b_data[DB_BOOL_LEN];
- }Hq_Plc_Db;
+ } Hq_Plc_Db;
 
 typedef  struct   {
      int     in;              //输入指示灯
@@ -306,11 +307,24 @@ typedef  struct   {
      volatile int     encnt;     //功能计数
 }  HqTopLED_Cmd;
 
+ //仅RPU模块软件使用
+ typedef struct    {
+     uint8_t  setmodule;       //模块参赛配置 1=配置参赛     0=不配置参赛
+     uint8_t  setstatus;          //参赛设置状态 1= 已完成，0=未设置
+     uint8_t  Devbaud;
+     uint8_t  Modbaud;
+     uint8_t MStartBit;
+     uint8_t  MEndBit;
+     uint8_t  back;
+     uint8_t user1;
+ }  HqRpuRun_Cmd;
+
 extern Hq_Dev_Data Dev_data;             //模块 IO 数据定义
 extern Hq_Mpu_Data Mpu_data;          //MPU IO 数据定义
 extern Hq_Run_Data Run_data;            //本地运行 数据定义
 extern HqDevRun_Cmd HqDev_CmdSys;           //系统运行参数
 extern HqTopLED_Cmd  HqTopLED_Data;           //控制器顶部LED指示灯状态输出
+extern HqRpuRun_Cmd HqRpuRun_data;         //RPU运行配置文件
 
 
 

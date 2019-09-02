@@ -9,12 +9,14 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "Sys_Init.h"
 #include "../mhd_lib/inc/mhd_lib.h"
 #include "../HqDeviceDriver/HqDeviceDriver.h"
 #include "Local_app/MPU_GlobalData.h"
 #include "Local_app/Module_GlobalData.h"
+#include "../PRUSoft_Ctl/PRU_Fun.h"
 
 #include"../dev_app_conf.h"  //配置文件
 
@@ -22,7 +24,8 @@
 #define KEYLED_UART             "/dev/ttyS1"    //按键LED板连接的 串口2 RS232电平
 #define REMOTE433_UART      "/dev/ttyS3"   //无线遥控器连接的串口 4 TTL电平
 #define WIRELESS24_UART     "/dev/ttyS4"    //按键LED板连接的 串口5 TTL电平
-
+#define MODULE_MPUGPIO   "insmod /home/hqtech/hqmod/hq_gpio_set.ko"
+#define MODULE_GPIOLED    "insmod /home/hqtech/hqmod/hq_gpioled_tca6424.ko"
 
 /************* 系统设备初始化 **********************************************
  * 名称：             mHD_Sys_Dev_Init
@@ -39,81 +42,56 @@
 
 int  mHD_Sys_Dev_Init(void)
 {
-    int gpio_run2 = -1;
-     /*** 运行配置文件初始化 ***/
-    mHD_Read_Config_Conf();       //初始化运行配置文件
-    /*** step0: 初始化 控制器本体功能 ***/
-        //0.0: 初始化 控制器本体GPIO输入输出功能
-    mHD_MPU_ConfigData_Init();  //MPU控制器IO配置参赛赋值
-    mHD_MPU_ConfigModule_Set();     //写入控制器系统 通过配置驱动模块hq_gpio_set 写入系统内核配置GPIO功能
-        //0.1: 初始化控制器控制模块按键驱动板
-    if(KEYLED_ENABLE ==1) mHD_Keyboard_Led_Init(KEYLED_UART,KEYLED_BAUD);                 //设置连接按键LED板的串口,及通信波特率
-        //0.2:初始化无线遥控器433MHz接口
-    if(REMOTE433_ENABLE ==1)
-    {
-        mHD_Remote_433_Init(REMOTE433_UART,REMOTE433_BAUD);   //设置接收433MHz遥控器的串口,及通信波特率
-        mHD_Remote_433Dev_Set(REMOTE_SYS_SET );                                           //设置接收遥控器的类型
-    }
-        //0.3:初始化无线通讯2.4G接口
-    if(WIRELESS24_ENABLE == 1) mHD_Wireless_24_Init(WIRELESS24_UART,WIRELESS24_BAUD);
-        //0.4:初始化激光开关扫描传感器接口
-
-        //0.5:初始化无线热电堆温度传感器接口
-
-        //0.6:初始化远程IO模块连接接口
-
-        //0.7:初始化系统主定时器及延时定时器
+    //初始化系统主定时器及延时定时器
     mHD_Timer_SystemMaster_Init(SYSTEM_MASTIMERM);  //设定并启动系统主定时器
     mHD_TimeTON_Init(); //初始化开延时定时器及关延时定时器
-        //0.8:初始化键盘调试环境 Debug 开关设置
-   if(HqDev_CmdSys.debug ==1) mHD_Debug_KeyboardInput_Init(); //键盘输入 调试
+    /***** 加载模块****************/
+    system(MODULE_MPUGPIO);   //加载MPU GPIO SET 模块
+    system(MODULE_GPIOLED);     //加载 MPU TOP LED SET 模块
+     /*** 运行配置文件初始化 ***/
+    mHD_Read_RUNConfig_Conf();       //初始化运行配置文件
+    /*** 初始化 控制器本体功能 ***/
+        // 初始化 控制器本体GPIO输入输出功能
+    mHD_MPU_ConfigData_Init();  //MPU控制器IO配置参赛赋值
+    mHD_MPU_ConfigModule_Set();     //写入控制器系统 通过配置驱动模块hq_gpio_set 写入系统内核配置GPIO功能
+        //初始化控制器控制模块按键驱动板
 
     /* step1: 初始化控制器连接模块*/
-        //1.0:初始化接收信号,初始化共享内存通信系统
-   gpio_run2 = mHD_Read_GPIO(BUTRUN_MPU_2);  //读取设置按键 RUN_2 状态
    if((HqDev_CmdSys.linkmodule ==1) &&(MODULE_DEVIO ==1))//如果连接外设IO模块系统
    {
-       mHD_ModuleSoftware_Init(MSG_MOD_TYPE,&Run_data.Pid[1]);   //初始化模块系统
-       mHD_Read_Shm_ShareMemory_DevData(Run_data.Shmkey,Run_data.Semkey,&Dev_data);  //读取共享内存区
-       if(gpio_run2 == 0)  //Run_2 引脚设在为ON 按键控制设置参数
-       {
-           mHD_Module_ConfigData_Init();   //初始化配置参数
-           mHD_Write_Shm_ShareMemory_DevData(Run_data.Shmkey,Run_data.Semkey,&Dev_data);  //写入共享内存区
-           mHD_Send_Msg_Cmd(Msg_WritePara,MSG_MOD_TYPE);  //发送写入配置命令同时读取参数
-       } else  //配置运行文件设置
-       {
-           if(HqDev_CmdSys.setmodule ==1)  //软件运行配置文件 设置模块参数
-           {
-               mHD_Module_ConfigData_Init();   //初始化配置参数
-               mHD_Write_Shm_ShareMemory_DevData(Run_data.Shmkey,Run_data.Semkey,&Dev_data);  //写入共享内存区
-               mHD_Send_Msg_Cmd(Msg_WritePara,MSG_MOD_TYPE);  //发送写入配置命令
-           }
-           if(HqDev_CmdSys.readmodule ==1 ) //软件运行配置文件 读取模块参数
-           {
-               mHD_Send_Msg_Cmd(Msg_ReadPara,MSG_MOD_TYPE);  //读取模块设置参数
-           }
-       }
-       /* 检测模块运行状态 */
-       mHD_msleep(500);
-       mHD_Read_Shm_ShareMemory_DevData(Run_data.Shmkey,Run_data.Semkey,&Dev_data);  //读取共享内存区
-
-       /* 检测模块参数配置状态 */
-       if(Dev_data.Pru.MRSetStatus !=1)   //如果没有设置 根据设置参数设置模块参数
-       {
-           mHD_Module_ConfigData_Init();   //初始化配置参数
-           mHD_Write_Shm_ShareMemory_DevData(Run_data.Shmkey,Run_data.Semkey,&Dev_data);  //写入共享内存区
-           mHD_Send_Msg_Cmd(Msg_WritePara,MSG_MOD_TYPE);  //发送写入配置命令
-       }
-       if(Dev_data.Pru.MRSetStatus !=1) //如果没有读取 读取模块参数
-       {
-           mHD_Send_Msg_Cmd(Msg_ReadPara,MSG_MOD_TYPE);  //读取模块设置参数
-       }
-       if(Dev_data.Pru.MScanStatus !=1)  //如果自动扫描没有开启,开启扫描
-       {
-           mHD_Send_Msg_Cmd(Msg_StartScan,MSG_MOD_TYPE);   //启动模块自动运行命令
-       }
-       mHD_Read_Shm_ShareMemory_DevData(Run_data.Shmkey,Run_data.Semkey,&Dev_data);  //读取共享内存区
+        mHD_Module_ConfigData_Init();
+        mHD_RPU_Init();  //初始化模块
+        mHD_Module_Send_CreatThread();   //创建Module数据发送线程
+        mHD_Module_Read_CreatThread();    //创建线程接收模块数据
    }
+
+   if(KEYLED_ENABLE ==1)
+   {
+       mHD_Keyboard_Led_Init(KEYLED_UART,KEYLED_BAUD);  //设置连接按键LED板的串口,及通信波特率
+       mHD_Keyboard_LED_CreatThread(); //创建线程接收按键面板数据
+   }
+       //初始化无线遥控器433MHz接口
+   if(REMOTE433_ENABLE ==1)
+   {
+       mHD_Remote_433_Init(REMOTE433_UART,REMOTE433_BAUD);   //设置接收433MHz遥控器的串口,及通信波特率
+       mHD_Remote_433Dev_Set(REMOTE_SYS_SET );                                           //设置接收遥控器的类型
+       mHD_Remote_433Recv_CreatThread(); //创建线程接收遥控器数据
+   }
+       //初始化无线通讯2.4G接口
+   if(WIRELESS24_ENABLE == 1) mHD_Wireless_24_Init(WIRELESS24_UART,WIRELESS24_BAUD);
+       //初始化激光开关扫描传感器接口
+
+       //初始化无线热电堆温度传感器接口
+
+       //初始化远程IO模块连接接口
+
+       //初始化键盘调试环境 Debug 开关设置
+  if(HqDev_CmdSys.debug ==1) mHD_Debug_KeyboardInput_Init(); //键盘输入 调试
+
+
+
+
+
     return 0;
 }
 

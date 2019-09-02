@@ -4,7 +4,8 @@
 #ifdef __cplusplus
  extern "C" {
 #endif /* __cplusplus */
-#include     <stdint.h>      /*数据类型宏定义 */
+#include <stdint.h>         //数据类型宏定义
+#include <pthread.h>     //线程数据
 
  /* 通讯参数定义---------------------------------------------------------------------*/
  //RX
@@ -22,12 +23,14 @@
  #define AS62_TX_NUM        11     	 //发送数据的数量
  #define AS62_DEV_NUM     32         //传感器数量
 
- #define    RATS62_FPXT         0x0B         //翻抛系统
- #define    RATS62_HLXT        0x17        //混料系统
- #define    RATS62_SLXT         0x15          //上料系统
- #define    RATS62_YTHXT      0x19      //一体化系统
- #define    RATS62_FLXT         0x1B         //制肥系统
+#define AS62_TX_MAX          128       //发送缓存区数量
+#define AS62_RX_MAX          128       //接收缓存区数量
 
+#define    RATS62_FPXT         0x0B         //翻抛系统
+#define    RATS62_HLXT        0x17        //混料系统
+#define    RATS62_SLXT         0x15          //上料系统
+#define    RATS62_YTHXT      0x19      //一体化系统
+#define    RATS62_FLXT         0x1B         //制肥系统
 
 
  typedef struct {
@@ -49,10 +52,21 @@
      uint8_t    BT_44;                    //第4排左起第4个按键
      uint8_t    speed;                    //速度 0-7
      uint8_t    dev;                        //设备选择 0-3
-     uint8_t    sec_dev;                 //子设备选择 0-7
+     uint8_t    sec_dev;                 //子设备选择 0-7     
+ } Remote433_data;
+
+ typedef struct {
+     uint8_t Rxbuf[AS62_RX_MAX];    //串口接收缓存区
+     int RxComplete;                   //串口接收完成
+     int RxNum;                           //串口接收数量
+     uint8_t Txbuf[AS62_TX_MAX];    //串口发送缓存区
+     int TxComplete;                   //串口发送完成
+     int TxNum;                            //串口发送数量
      int linkstatus;                        //按键指示灯板连接状态
      int fd;                                     //串口设备标识
- } Remote433_data;
+     pthread_t Thread_Rev_ID;    //接收线程ID
+     pthread_t Thread_Send_ID;    //发送线程ID
+ } Remote433_Uart;
 
  typedef enum {
      ATS62_Comm      =0,           //通信模式
@@ -64,12 +78,17 @@
      ATS62_FLXT         = 0x1B,          //制肥系统
  } W433Hz_ModuleCtr;
 
+extern Remote433_data mHD_Rem433Data;
+
 int  mHD_Remote_433_Init(char *port,int speed); //433MHz遥控器接收初始化
 int mHD_Remote_433_Set(uint16_t add,uint8_t speed,uint8_t chan,uint8_t option);  //设置433MHz遥控器无线参数
+int mHD_Remote_433RXData_AnalysisPoll(void); // 接收遥控器数据解析
+int mHD_Remote_433Recv_CreatThread(void); //创建线程接收遥控器数据
 
 int mHD_Remote_433Dev_Set(uint8_t dev);  //设置遥控器对应的设备
 int mHD_Remote_433_Recv(void);   //接收遥控器数据
 void mHD_mHD_Remote_433_TopLed(void); //TOP 指示等功能
+
 
 #ifdef __cplusplus
 }

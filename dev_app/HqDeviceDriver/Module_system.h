@@ -5,6 +5,8 @@
  extern "C" {
 #endif /* __cplusplus */
 
+#include <pthread.h>     //线程数据
+
 #define MSG_CTRSOFT       7
 #define MSG_MANSOFT     8
 #define MSG_REMSOFT      9
@@ -22,9 +24,15 @@ typedef enum  {
  } msgname;
 
 int mHD_ModuleSoftware_Init(int type,int *prupid);  //初始化
-void mHD_keyboard_Cmd(int msgtype);     //键盘输入控制
+void mHD_keyboard_Cmd(void);                  //键盘输入控制
 void mHD_Readmsg_Poll(int msgtype );  //消息队列读取轮询
 void mHD_CompDev_SigToRPU(void);  //Dev 数据比较 更新到共享内存 同时发送 数据更新到PRU 处理器信号
+
+pthread_t Thread_Module_ID;    //接收线程ID
+int mHD_Module_Send_CreatThread(void);  //发送模块数据
+int mHD_Module_Read_CreatThread(void); //创建线程接收模块数据
+
+
 void mHD_Module_ConfigData_Init(void); //模块设置参数初始化信息
 
 

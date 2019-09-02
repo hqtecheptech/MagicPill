@@ -25,19 +25,20 @@
  *                                                                           |                                     |
  *                                                                           ->阻塞(返回错误)           ->非终端(返回错误)
  * *********************************************************************/
-int  mHD_Uart__Open(char *port)
+int  mHD_Uart_Open(char *port)
 {
     int fd;
     fd = open(port,O_RDWR|O_NOCTTY|O_NDELAY) ;
+    //fd = open(port,O_RDWR|O_NOCTTY|O_NONBLOCK) ;
     if (fd<0)
     {
         perror("Can't Open Serial Port");
         return(FALSE);
     }
-    //判断串口的状态是否为阻塞状态
-    if(fcntl(fd, F_SETFL, 0) < 0) return(FALSE);
-    //测试是否为终端设备
-    if(0 == isatty(STDIN_FILENO)) return(FALSE);
+//    //判断串口的状态是否为阻塞状态
+//    if(fcntl(fd, F_SETFL, 0) < 0) return(FALSE);
+//    //测试是否为终端设备
+//    if(0 == isatty(STDIN_FILENO)) return(FALSE);
    return fd;
 }
 
@@ -48,7 +49,7 @@ int  mHD_Uart__Open(char *port)
  * 打开参数：
  * 出口参数：void
  * ****************************************/
-void mHD_Uart__Close(int fd)
+void mHD_Uart_Close(int fd)
 {
     close(fd);
 }
@@ -137,7 +138,7 @@ static int mHD_Uart_Set (int fd,int speed,int flow_ctrl,int databits,int stopbit
     options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG); //关闭规范输入,回送，可见搽除字符,终端产生的信号
     options.c_oflag &= ~OPOST;  //修改输出模式，原始数据输出
     //设置等待时间和最小接收字符
-    options.c_cc[VTIME] = 1; // 读取一个字符等待1*(1/10)s
+    options.c_cc[VTIME] = 0; // 读取一个字符等待1*(1/10)s
     options.c_cc[VMIN] = 1; // 读取字符的最少个数为1
     tcflush(fd,TCIFLUSH);   //如果发生数据溢出，接收数据，但是不再读取 刷新收到的数据但是不读
     //激活配置 (将修改后的termios数据设置到串口中）
@@ -185,7 +186,7 @@ int mHD_Uart_Recv(int fd, char *rcv_buf,int data_len)
     FD_SET(fd,&fs_read);    //用于在文件描述符集合中增加一个新的文件描述符
 
     time.tv_sec = 0;
-    time.tv_usec = 0;
+    time.tv_usec = 120;
 
     //使用select实现串口的多路通信
     fs_sel = select(fd+1,&fs_read,NULL,NULL,&time);
@@ -236,7 +237,7 @@ void mHD_Uart_RSTest(char *port)
     char rcv_buf[256];
     char send_buf[256] =  "Please enter data";;
 
-    fd = mHD_Uart__Open(port);  //打开串口
+    fd = mHD_Uart_Open(port);  //打开串口
     if(fd<0 )
     {
          if(HqDev_CmdSys.debug ==1) printf("Can't Open Serial Port");

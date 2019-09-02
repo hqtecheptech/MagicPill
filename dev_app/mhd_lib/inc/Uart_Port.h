@@ -8,8 +8,8 @@
 #define FALSE  -1
 #define TRUE   0
 
- int  mHD_Uart__Open(char *port);  //打开串口  char * port  串口号(ttyS0,ttyS1,ttyS3,ttyS4,ttyS5,ttyS6,ttyS7) return : FALSE -1  错误，正确返回文件描述符
- void mHD_Uart__Close(int fd);  //关闭串口 int fd 文件描述符
+ int  mHD_Uart_Open(char *port);  //打开串口  char * port  串口号(ttyS0,ttyS1,ttyS3,ttyS4,ttyS5,ttyS6,ttyS7) return : FALSE -1  错误，正确返回文件描述符
+ void mHD_Uart_Close(int fd);  //关闭串口 int fd 文件描述符
  /************mHD_Uart_Init***********************
   *fd 文件描述符 speed 串口速度, flow_ctrl  数据流控制 取值 0 无流控制,1 硬件流控制, 2软件流控制
   *databits   数据位   取值为 7 或者8, stopbits   停止位   取值为 1 或者2,stopbits   停止位   取值为 1 或者2

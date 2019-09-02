@@ -29,7 +29,7 @@
  * return :             FALSE -1  错误，正确返回文件描述符
  * ********************************************************************************/
 #define RUNSETMAX   4
-int  mHD_Read_Config_Conf(void)
+int  mHD_Read_RUNConfig_Conf(void)
 {
     int re;
     char  buf[1024];

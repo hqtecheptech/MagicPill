@@ -105,7 +105,7 @@ int mHD_Set_GPIO(int gpio,int value)
     mHD_Request_GPIO(gpio);                         //申请GPIO
     mHD_SetGPIO_Direction(gpio,"out");           //设置GPIO方向为输出
     status =  mHD_SetGPIO_Value(gpio,value);    //设置GIPO状态
-    //mHD_Uninstall_GPIO(gpio);                           //卸载GPIO
+    mHD_Uninstall_GPIO(gpio);                           //卸载GPIO
     return status;
 }
 

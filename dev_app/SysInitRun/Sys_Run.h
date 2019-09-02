@@ -5,7 +5,7 @@
  extern "C" {
 #endif /* __cplusplus */
 
- int  mHD_Sys_Dev_Run(void);  //系统设备任务轮询
+int  mHD_Sys_Dev_Run(void);  //系统设备任务轮询
 
 
 
