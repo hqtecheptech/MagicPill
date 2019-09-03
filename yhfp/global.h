@@ -88,6 +88,7 @@ public:
 
     static int getYhcDataStartByType(QString type);
     static int convertYhcAddressToIndex(float address, QString type);
+    static float convertYhcIndexToAddress(int index, QString type);
 
     static float getYhcRunctrAddressByIndex(int index);
 

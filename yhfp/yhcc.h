@@ -53,19 +53,21 @@ protected:
 signals:
     void checkNetState(QString type);
     void pollingDatas();
+    void requestControl();
 
 public slots:
     void updateUI();
     void handleControllerResult();
     void handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
+    void wirteTestData();
 
 private:
     Ui::Yhcc *ui;
 
     QThread netManageThread;
     NetStateManageWorker* nsmWorker;
-    QTimer *checkNetStateTimer;
-    QTimer *pollDatasTimer;
+    QTimer* checkNetStateTimer;
+    QTimer* testTimer;
     int uca = 0;
     Syscontroller* controller;
     Plc_Db oldPlcDb;

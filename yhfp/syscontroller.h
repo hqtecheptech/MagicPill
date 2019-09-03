@@ -18,7 +18,10 @@ class Syscontroller : public QObject
 public:
     static Syscontroller* getInstance();
     ControllerInfo getControllerStatus();
-    Plc_Db getPlcDb();
+    Plc_Db getPlcDataDb();
+    void setPlcControlDb(Plc_Db data);
+    void lockPlcDataDb();
+    void unlockPlcDataDb();
     ~Syscontroller();
 
 signals:
@@ -29,15 +32,16 @@ signals:
 public slots:
     void updateSysStatus();
     void handlePlcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
+    void applyControlRequest();
 
 private:
     Syscontroller(QObject *parent = 0);
     static Syscontroller* instance;
     static QMutex* mutex;
     QTimer *updateStatusTimer;
-    ShareHelper *ctrlShare, *dbShare;
+    ShareHelper *ctrlShare, *dbShare, *yhcCtrlShare;
     ControllerInfo ctrlInfo;
-    Plc_Db plcDb;
+    Plc_Db plcDataDb, plcControlDb;
     QThread plcdataManageThread;
     PlcDataManageWorker* pdmWorker;
 };

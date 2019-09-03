@@ -41,6 +41,18 @@ Syscontroller::Syscontroller(QObject *parent) : QObject(parent)
     msgKey = ShareHelper::GenKey(msgPath.toLatin1(), msgId);
     dbShare = new ShareHelper(shareKey, semKey);
 
+    sharePath = Global::systemConfig.yhcControlShareKey;
+    shareId = Global::systemConfig.yhcControlShareKey;
+    semPath = Global::systemConfig.yhcControlSemPath;
+    semId = Global::systemConfig.yhcControlSemKey;
+    msgPath = Global::systemConfig.yhcControlMsgPath;
+    msgId = Global::systemConfig.yhcControlMsgKey;
+
+    shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
+    semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
+    msgKey = ShareHelper::GenKey(msgPath.toLatin1(), msgId);
+    yhcCtrlShare = new ShareHelper(shareKey, semKey);
+
     //注册PRU Update 信号函数
     signal(SIGFRPU,sig_handler_rpuData);
 
@@ -75,9 +87,28 @@ ControllerInfo Syscontroller::getControllerStatus()
     return ctrlInfo;
 }
 
-Plc_Db Syscontroller::getPlcDb()
+Plc_Db Syscontroller::getPlcDataDb()
 {
-    return plcDb;
+    Plc_Db data;
+    dbShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
+    return data;
+}
+
+void Syscontroller::setPlcControlDb(Plc_Db data)
+{
+    ctrlShare->LockShare();
+    ctrlShare->SetSharedMemory((void*)&data, sizeof(Plc_Db));
+    ctrlShare->UnlockShare();
+}
+
+void Syscontroller::lockPlcDataDb()
+{
+    dbShare->LockShare();
+}
+
+void Syscontroller::unlockPlcDataDb()
+{
+    dbShare->UnlockShare();
 }
 
 Syscontroller::~Syscontroller()
@@ -129,7 +160,7 @@ void Syscontroller::updateSysStatus()
             emit resultReady();
         }
 
-        msgStatus = mHD_Read_Msg_Cmd(yhfpsw, &pid, &cmd);
+        /*msgStatus = mHD_Read_Msg_Cmd(yhfpsw, &pid, &cmd);
         if(msgStatus == -1)
         {
             return;
@@ -137,17 +168,28 @@ void Syscontroller::updateSysStatus()
 
         if(cmd == Msg_Updata_Data)
         {
-            if(dbShare->GetShardMemory((void*)&plcDb, sizeof(Plc_Db)))
+            if(dbShare->GetShardMemory((void*)&plcDataDb, sizeof(Plc_Db)))
             {
                 emit pollingDatas();
             }
-        }
+        }*/
     }
 }
 
 void Syscontroller::handlePlcDbUpdated(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
 {
     emit plcDbUpdated(changedDeviceSet, dataMap);
+}
+
+void Syscontroller::applyControlRequest()
+{
+    Plc_Db data;
+    ctrlShare->LockShare();
+    ctrlShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
+    dbShare->LockShare();
+    dbShare->SetSharedMemory((void*)&data, sizeof(Plc_Db));
+    dbShare->UnlockShare();
+    ctrlShare->UnlockShare();
 }
 
 Syscontroller* Syscontroller::instance = Q_NULLPTR;

@@ -32,59 +32,6 @@ void PlcDataManageWorker::getSharedDatas()
     serverDataSh->GetShardMemory((void *)&plcdata, sizeof(Plc_Db));
     serverDataSh->UnlockShare();
 
-    qDebug() << "plcdata.f_data[0] = " << plcdata.f_data[0];
-    qDebug() << "Begin set memory ----";
-    plcdata.f_data[0] += 1;
-    plcdata.f_data[2] += 0.5;
-
-    /*if(plcdata.i_data[1] == 5)
-    {
-       plcdata.i_data[1] = -4;
-    }
-    else
-    {
-        plcdata.i_data[1] = 5;
-    }*/
-
-    plcdata.dw_data[3] += 2;
-
-    plcdata.w_data[1] += 2;
-
-    if(plcdata.b_data[0] == 1)
-    {
-       plcdata.b_data[0] = 0;
-    }
-    else
-    {
-        plcdata.b_data[0] = 1;
-    }
-
-    if(plcdata.b_data[2] == 1)
-    {
-       plcdata.b_data[2] = 0;
-    }
-    else
-    {
-        plcdata.b_data[2] = 1;
-    }
-
-    if(plcdata.b_data[9] == 1)
-    {
-       plcdata.b_data[9] = 0;
-    }
-    else
-    {
-        plcdata.b_data[9] = 1;
-    }
-
-
-    qDebug() << "plcdata.f_data[0] = " << plcdata.f_data[0];
-    serverDataSh->LockShare();
-    qDebug() << "sizeof(Plc_Db) = " << sizeof(Plc_Db);
-    serverDataSh->SetSharedMemory((void *)&plcdata, sizeof(Plc_Db));
-    serverDataSh->UnlockShare();
-    qDebug() << "End set memory ----";
-
     parseYhcServerData(plcdata);
     sendPlcdataToServer(plcdata);
 }
@@ -96,89 +43,93 @@ void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
     bool diff = false;
     QMap<float,QString> dataMap;
     QVector<float> changedAddressArray;
+    float address = 0;
 
-    int temp = 0;
-    for(int i=0; i < DB_FLOAT_LEN; i++, temp++)
+    for(int i=0; i < DB_FLOAT_LEN; i++)
     {
+        address = Global::convertYhcIndexToAddress(i, "r");
         dataMap.insert(i,QString::number(newPlcDb.f_data[i]));
         if(!Global::currentYhcDataMap.contains(i))
         {
             diff = true;
-            Global::currentYhcDataMap.insert(temp,QString::number(newPlcDb.f_data[i]));
-            changedAddressArray.append(temp);
+            Global::currentYhcDataMap.insert(address,QString::number(newPlcDb.f_data[i]));
+            changedAddressArray.append(address);
         }
         else
         {
-            if(Global::currentYhcDataMap[temp] != QString::number(newPlcDb.f_data[i]))
+            if(Global::currentYhcDataMap[address] != QString::number(newPlcDb.f_data[i]))
             {
                 diff = true;
-                changedAddressArray.append(temp);
-                Global::currentYhcDataMap[temp] = QString::number(newPlcDb.f_data[i]);
+                changedAddressArray.append(address);
+                Global::currentYhcDataMap[address] = QString::number(newPlcDb.f_data[i]);
             }
         }
     }
 
-    for(int i=0; i < DB_INT_LEN; i++, temp++)
+    for(int i=0; i < DB_INT_LEN; i++)
     {
+        address = Global::convertYhcIndexToAddress(i, "di");
         dataMap.insert(i,QString::number(newPlcDb.i_data[i]));
         if(!Global::currentYhcDataMap.contains(i))
         {
             diff = true;
-            Global::currentYhcDataMap.insert(temp,QString::number(newPlcDb.i_data[i]));
-            changedAddressArray.append(temp);
+            Global::currentYhcDataMap.insert(address,QString::number(newPlcDb.i_data[i]));
+            changedAddressArray.append(address);
         }
         else
         {
-            if(Global::currentYhcDataMap[temp] != QString::number(newPlcDb.i_data[i]))
+            if(Global::currentYhcDataMap[address] != QString::number(newPlcDb.i_data[i]))
             {
                 diff = true;
-                changedAddressArray.append(temp);
-                Global::currentYhcDataMap[temp] = QString::number(newPlcDb.i_data[i]);
+                changedAddressArray.append(address);
+                Global::currentYhcDataMap[address] = QString::number(newPlcDb.i_data[i]);
             }
         }
     }
 
-    for(int i=0; i < DB_UINT32_LEN; i++, temp++)
+    for(int i=0; i < DB_UINT32_LEN; i++)
     {
+        address = Global::convertYhcIndexToAddress(i, "dw");
         dataMap.insert(i,QString::number(newPlcDb.dw_data[i]));
         if(!Global::currentYhcDataMap.contains(i))
         {
             diff = true;
-            Global::currentYhcDataMap.insert(temp,QString::number(newPlcDb.dw_data[i]));
-            changedAddressArray.append(temp);
+            Global::currentYhcDataMap.insert(address,QString::number(newPlcDb.dw_data[i]));
+            changedAddressArray.append(address);
         }
         else
         {
-            if(Global::currentYhcDataMap[temp] != QString::number(newPlcDb.dw_data[i]))
+            if(Global::currentYhcDataMap[address] != QString::number(newPlcDb.dw_data[i]))
             {
                 diff = true;
-                changedAddressArray.append(temp);
-                Global::currentYhcDataMap[temp] = QString::number(newPlcDb.dw_data[i]);
+                changedAddressArray.append(address);
+                Global::currentYhcDataMap[address] = QString::number(newPlcDb.dw_data[i]);
             }
         }
     }
 
-    for(int i=0; i < DB_UINT16_LEN; i++, temp++)
+    for(int i=0; i < DB_UINT16_LEN; i++)
     {
+        address = Global::convertYhcIndexToAddress(i, "w");
         dataMap.insert(i,QString::number(newPlcDb.w_data[i]));
         if(!Global::currentYhcDataMap.contains(i))
         {
             diff = true;
-            Global::currentYhcDataMap.insert(temp,QString::number(newPlcDb.w_data[i]));
-            changedAddressArray.append(temp);
+            Global::currentYhcDataMap.insert(address,QString::number(newPlcDb.w_data[i]));
+            changedAddressArray.append(address);
         }
         else
         {
-            if(Global::currentYhcDataMap[temp] != QString::number(newPlcDb.w_data[i]))
+            if(Global::currentYhcDataMap[address] != QString::number(newPlcDb.w_data[i]))
             {
                 diff = true;
-                changedAddressArray.append(temp);
-                Global::currentYhcDataMap[temp] = QString::number(newPlcDb.w_data[i]);
+                changedAddressArray.append(address);
+                Global::currentYhcDataMap[address] = QString::number(newPlcDb.w_data[i]);
             }
         }
     }
 
-    for(int i=0; i < DB_BOOL_LEN; i++, temp++)
+    for(int i=0; i < DB_BOOL_LEN; i++)
     {
         QString strValue = "false";
         if(newPlcDb.b_data[i] == 1)
@@ -186,7 +137,7 @@ void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
             strValue = "true";
         }
 
-        float address = Global::getYhcRunctrAddressByIndex(i);
+        address = Global::getYhcRunctrAddressByIndex(i);
 
         qDebug() << "i=" << i << "; address = " << address
                  << "; index = " << Global::convertYhcAddressToIndex(address, "x0");
@@ -218,15 +169,15 @@ void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
     if(startIndex >=0 && diff)
     {
         QSet<int> changedDeviceSet;
-        foreach(float address, changedAddressArray)
+        foreach(float ca, changedAddressArray)
         {
-            if(address < Global::yhcDeviceInfo.Runctr_Address)
+            if(ca < Global::yhcDeviceInfo.Runctr_Address)
             {
-                changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByAddress(address));
+                changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByAddress(ca));
             }
             else
             {
-                changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByRunctrAddress(address));
+                changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByRunctrAddress(ca));
             }
         }
 

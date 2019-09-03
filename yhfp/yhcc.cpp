@@ -44,14 +44,15 @@ Yhcc::Yhcc(QWidget *parent) :
     checkNetStateTimer = new QTimer(this);
     connect(checkNetStateTimer, SIGNAL(timeout()), this, SLOT(getNetState()));
 
-    pollDatasTimer = new QTimer(this);
-    //connect(pollDatasTimer, SIGNAL(timeout()), this, SLOT(pollPlcDatas()));
+    testTimer = new QTimer(this);
+    connect(testTimer, SIGNAL(timeout()), this, SLOT(wirteTestData()));
 
     controller = Syscontroller::getInstance();
     if(controller != Q_NULLPTR)
     {
         connect(controller, SIGNAL(resultReady()), this, SLOT(handleControllerResult()));
         connect(controller, &Syscontroller::plcDbUpdated, this, &Yhcc::handlePlcDataUpdate);
+        connect(this, SIGNAL(requestControl()), controller, SLOT(applyControlRequest()));
     }
 }
 
@@ -168,9 +169,9 @@ void Yhcc::showEvent(QShowEvent *)
         checkNetStateTimer->start(60000);
     }
 
-    if(!pollDatasTimer->isActive())
+    if(!testTimer->isActive())
     {
-        pollDatasTimer->start(2000);
+        testTimer->start(3000);
     }
 }
 
@@ -180,9 +181,10 @@ void Yhcc::closeEvent(QCloseEvent *)
     {
         checkNetStateTimer->stop();
     }
-    if(pollDatasTimer->isActive())
+
+    if(testTimer->isActive())
     {
-        pollDatasTimer->stop();
+        testTimer->stop();
     }
 
     netManageThread.requestInterruption();
@@ -192,7 +194,17 @@ void Yhcc::closeEvent(QCloseEvent *)
 
 void Yhcc::updateUI()
 {
-    ui->test_label->setText(Global::currentYhcDataMap[0]);
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Tempture");
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    ui->test_label->setText(Global::currentYhcDataMap[address]);
+
+    deviceNode = Global::getYhcNodeInfoByName("Speed");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    ui->speedLabel->setText(Global::currentYhcDataMap[address]);
+
     bool value = Global::getYhcRunctrValueByName(0, "Run_Signal", Global::currentYhcDataMap);
     ui->test_label_2->setText(QString::number(value));
     value = Global::getYhcRunctrValueByName(0, "False_Signal", Global::currentYhcDataMap);
@@ -216,6 +228,77 @@ void Yhcc::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> d
     }
 }
 
+void Yhcc::wirteTestData()
+{
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index = Global::convertYhcAddressToIndex(address, "r");
+
+    controller->lockPlcDataDb();
+    Plc_Db db = controller->getPlcDataDb();
+    controller->unlockPlcDataDb();
+
+    db.f_data[index] = db.f_data[index] + 5;
+    controller->setPlcControlDb(db);
+
+    emit requestControl();
+
+    /*plcdata.f_data[0] += 5;
+    plcdata.f_data[2] += 0.5;
+
+    qDebug() << "r 0 address " << Global::convertYhcIndexToAddress(0, "r");
+    qDebug() << "r 2 address " << Global::convertYhcIndexToAddress(2, "r");
+
+    if(plcdata.i_data[1] == 5)
+    {
+       plcdata.i_data[1] = -4;
+    }
+    else
+    {
+        plcdata.i_data[1] = 5;
+    }
+    qDebug() << "di 1 address " << Global::convertYhcIndexToAddress(1, "di");
+
+    plcdata.dw_data[3] += 2;
+    qDebug() << "dw 1 address " << Global::convertYhcIndexToAddress(3, "dw");
+
+    plcdata.w_data[1] += 2;
+    qDebug() << "w 1 address " << Global::convertYhcIndexToAddress(1, "w");
+
+    if(plcdata.b_data[0] == 1)
+    {
+       plcdata.b_data[0] = 0;
+    }
+    else
+    {
+        plcdata.b_data[0] = 1;
+    }
+
+    if(plcdata.b_data[2] == 1)
+    {
+       plcdata.b_data[2] = 0;
+    }
+    else
+    {
+        plcdata.b_data[2] = 1;
+    }
+    qDebug() << "x0 2 address " << Global::convertYhcIndexToAddress(2, "x0");
+
+    if(plcdata.b_data[9] == 1)
+    {
+       plcdata.b_data[9] = 0;
+    }
+    else
+    {
+        plcdata.b_data[9] = 1;
+    }
+    qDebug() << "x0 9 address " << Global::convertYhcIndexToAddress(9, "x0");
+
+    controller->setPlcControlDb(plcdata);
+    controller->unlockPlcDataDb();*/
+}
+
 void Yhcc::parseYhcData(QMap<float, QString> dataMap)
 {
     pollPlcDatas();
@@ -229,7 +312,16 @@ void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
 void Yhcc::on_speedDownButton_clicked()
 {
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
-    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Start");
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    int index = Global::convertYhcAddressToIndex(address, "x0");
+    int index = Global::convertYhcAddressToIndex(address, "r");
+
+    controller->lockPlcDataDb();
+    Plc_Db db = controller->getPlcDataDb();
+    controller->unlockPlcDataDb();
+
+    db.f_data[index] = db.f_data[index] + 1;
+    controller->setPlcControlDb(db);
+
+    emit requestControl();
 }

@@ -1478,6 +1478,26 @@ int Global::convertYhcAddressToIndex(float address, QString type)
     }
 }
 
+float Global::convertYhcIndexToAddress(int index, QString type)
+{
+    int start = getYhcDataStartByType(type);
+    if(type != "x0")
+    {
+        return start + index * getLengthByDataType(type);
+    }
+    else
+    {
+        int address;
+        int startAddress = yhcDeviceInfo.Runctr_Address;
+
+        int step = index / 8;
+        address = startAddress + step;
+        int offset = index % 8;
+
+        return (float)offset / 10 + address;
+    }
+}
+
 float Global::getYhcRunctrAddressByIndex(int index)
 {
     int address;
