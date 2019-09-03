@@ -3,6 +3,8 @@
 #include <QFile>
 #include <QStandardItemModel>
 
+#include "data.h"
+
 Global::Global()
 {
     alertsModel->setHeaderData(0,Qt::Horizontal,QStringLiteral("时间"));
@@ -67,7 +69,9 @@ ServerInfo Global::readServerInfo()
 
 SystemConfig Global::readSystemConfig()
 {
-    QFile file(":/config/sysconfig.xml");
+    qDebug() << "Reading readSystemConfig ...!";
+
+    QFile file("sysconfig.xml");
     SystemConfig retValue;
     QDomDocument document;
     QString error;
@@ -86,6 +90,8 @@ SystemConfig Global::readSystemConfig()
     {
         return retValue;
     }
+
+    qDebug() << "Reading readSystemConfig successful!";
 
     QDomNode node = root.firstChild();
     while(!node.isNull())
@@ -111,7 +117,6 @@ SystemConfig Global::readSystemConfig()
                 }
                 childNode = childNode.nextSibling();
             }
-            break;
         }
         else if(node.toElement().tagName()=="data_sem")
         {
@@ -134,7 +139,6 @@ SystemConfig Global::readSystemConfig()
                 }
                 childNode = childNode.nextSibling();
             }
-            break;
         }
         else if(node.toElement().tagName()=="data_msg")
         {
@@ -157,7 +161,6 @@ SystemConfig Global::readSystemConfig()
                 }
                 childNode = childNode.nextSibling();
             }
-            break;
         }
         else if(node.toElement().tagName()=="data_share")
         {
@@ -180,7 +183,6 @@ SystemConfig Global::readSystemConfig()
                 }
                 childNode = childNode.nextSibling();
             }
-            break;
         }
         else if(node.toElement().tagName()=="control_share")
         {
@@ -203,7 +205,6 @@ SystemConfig Global::readSystemConfig()
                 }
                 childNode = childNode.nextSibling();
             }
-            break;
         }
         else if(node.toElement().tagName()=="control_sem")
         {
@@ -226,7 +227,6 @@ SystemConfig Global::readSystemConfig()
                 }
                 childNode = childNode.nextSibling();
             }
-            break;
         }
         else if(node.toElement().tagName()=="control_msg")
         {
@@ -249,10 +249,80 @@ SystemConfig Global::readSystemConfig()
                 }
                 childNode = childNode.nextSibling();
             }
-            break;
         }
+        else if(node.toElement().tagName()=="yhc_control_share")
+        {
+            qDebug() << node.toElement().tagName();
+            QDomNode childNode = node.firstChild();
+            while(!childNode.isNull())
+            {
+                qDebug() << childNode.toElement().tagName();
+                if(childNode.toElement().tagName()=="pathname")
+                {
+                    QDomNode leafNode = childNode.firstChild();
+                    retValue.yhcControlSharePath = leafNode.toText().data();
+                    qDebug() << retValue.yhcControlSharePath;
+                }
+                if(childNode.toElement().tagName()=="proj_id")
+                {
+                    QDomNode leafNode = childNode.firstChild();
+                    retValue.yhcControlShareKey = leafNode.toText().data().toInt();
+                    qDebug() << leafNode.toText().data();
+                }
+                childNode = childNode.nextSibling();
+            }
+        }
+        else if(node.toElement().tagName()=="yhc_control_sem")
+        {
+            qDebug() << node.toElement().tagName();
+            QDomNode childNode = node.firstChild();
+            while(!childNode.isNull())
+            {
+                qDebug() << childNode.toElement().tagName();
+                if(childNode.toElement().tagName()=="pathname")
+                {
+                    QDomNode leafNode = childNode.firstChild();
+                    retValue.yhcControlSemPath = leafNode.toText().data();
+                    qDebug() << retValue.yhcControlSemPath;
+                }
+                if(childNode.toElement().tagName()=="proj_id")
+                {
+                    QDomNode leafNode = childNode.firstChild();
+                    retValue.yhcControlSemKey = leafNode.toText().data().toInt();
+                    qDebug() << retValue.yhcControlSemKey;
+                }
+                childNode = childNode.nextSibling();
+            }
+        }
+        else if(node.toElement().tagName()=="yhc_control_msg")
+        {
+            qDebug() << node.toElement().tagName();
+            QDomNode childNode = node.firstChild();
+            while(!childNode.isNull())
+            {
+                qDebug() << childNode.toElement().tagName();
+                if(childNode.toElement().tagName()=="pathname")
+                {
+                    QDomNode leafNode = childNode.firstChild();
+                    retValue.yhcControlMsgPath = leafNode.toText().data();
+                    qDebug() << retValue.yhcControlMsgPath;
+                }
+                if(childNode.toElement().tagName()=="proj_id")
+                {
+                    QDomNode leafNode = childNode.firstChild();
+                    retValue.yhcControlMsgKey = leafNode.toText().data().toInt();
+                    qDebug() << retValue.yhcControlMsgKey;
+                }
+                childNode = childNode.nextSibling();
+            }
+        }
+
         node = node.nextSibling();
     }
+
+    qDebug() << "dataMsgPath:" <<retValue.dataMsgPath;
+    qDebug() << "dataMsgKey:" <<retValue.dataMsgKey;
+
     return retValue;
 }
 
@@ -1365,16 +1435,59 @@ int Global::getYhcDeviceStartIndex(int deviceId, int deviceGroup)
     return -1;
 }
 
-float Global::getYhcRunctrAdressByNumber(int number)
+int Global::getYhcDataStartByType(QString type)
+{
+    if(type == "r")
+    {
+        return 0;
+    }
+    else if(type == "di")
+    {
+        return getYhcDataStartByType("r") + DB_FLOAT_LEN * getLengthByDataType("r");
+    }
+    else if(type == "dw")
+    {
+        return getYhcDataStartByType("di") + DB_INT_LEN * getLengthByDataType("di");
+    }
+    else if(type == "w")
+    {
+        return getYhcDataStartByType("dw") + DB_UINT32_LEN * getLengthByDataType("dw");
+    }
+    else if(type == "x0")
+    {
+        return getYhcDataStartByType("w") + DB_UINT16_LEN * getLengthByDataType("w");
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+int Global::convertYhcAddressToIndex(float address, QString type)
+{
+    int start = getYhcDataStartByType(type);
+    if(type != "x0")
+    {
+        return (int)address - start;
+    }
+    else
+    {
+        int temp = (int)floor(address);
+        int offset = (int)(address * 10.0 - temp * 10.0 + 0.5);
+        return (temp - start) * 8 + offset;
+    }
+}
+
+float Global::getYhcRunctrAddressByIndex(int index)
 {
     int address;
     int startAddress = yhcDeviceInfo.Runctr_Address;
 
-    int step = number / 8;
+    int step = index / 8;
     address = startAddress + step;
-    int index = number % 8;
+    int offset = index % 8;
 
-    return (float)index / 10 + address;
+    return (float)offset / 10 + address;
 }
 
 uint Global::getLengthByDataType(QString dataType)

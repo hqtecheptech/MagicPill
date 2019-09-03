@@ -44,6 +44,8 @@ private slots:
 
     void pollPlcDatas();
 
+    void on_speedDownButton_clicked();
+
 protected:
     void showEvent(QShowEvent *);
     void closeEvent(QCloseEvent *);

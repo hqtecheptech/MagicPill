@@ -28,4 +28,16 @@
     <pathname>/home/hqtech/control/</pathname>
     <proj_id>97</proj_id>
   </control_msg>
+  <yhc_control_share>
+    <pathname>/home/hqtech/yhc_control/</pathname>
+    <proj_id>99</proj_id>
+  </yhc_control_share>
+  <yhc_control_sem>
+    <pathname>/home/hqtech/yhc_control/</pathname>
+    <proj_id>98</proj_id>
+  </yhc_control_sem>
+  <yhc_control_msg>
+    <pathname>/home/hqtech/yhc_control/</pathname>
+    <proj_id>97</proj_id>
+  </yhc_control_msg>
 </system>

@@ -36,6 +36,11 @@ typedef struct {
     int msgStatus;
 } ControllerInfo;
 
+typedef struct {
+    int speed;
+    int move;
+} Yhc_Control;
+
 Q_DECLARE_METATYPE(Plc_Db)
 
 #endif // DATA_H

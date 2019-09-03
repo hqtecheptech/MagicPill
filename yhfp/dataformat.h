@@ -245,12 +245,18 @@ struct SystemConfig
     QString controlSharePath;
     QString controlSemPath;
     QString controlMsgPath;
+    QString yhcControlSharePath;
+    QString yhcControlSemPath;
+    QString yhcControlMsgPath;
     int dataShareKey;
     int dataSemKey;
     int dataMsgKey;
     int controlShareKey;
     int controlSemKey;
     int controlMsgKey;
+    int yhcControlShareKey;
+    int yhcControlSemKey;
+    int yhcControlMsgKey;
 };
 
 #endif // DATAFORMAT_H

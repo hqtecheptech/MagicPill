@@ -86,7 +86,10 @@ public:
     static int getDeoDeviceStartIndex(int deviceId, int deviceGroup);
     static int getYhcDeviceStartIndex(int deviceId, int deviceGroup);
 
-    static float getYhcRunctrAdressByNumber(int number);
+    static int getYhcDataStartByType(QString type);
+    static int convertYhcAddressToIndex(float address, QString type);
+
+    static float getYhcRunctrAddressByIndex(int index);
 
     static uint getLengthByDataType(QString dataType);
 

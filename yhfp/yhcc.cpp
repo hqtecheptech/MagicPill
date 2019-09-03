@@ -225,3 +225,11 @@ void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
 {
 
 }
+
+void Yhcc::on_speedDownButton_clicked()
+{
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Start");
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index = Global::convertYhcAddressToIndex(address, "x0");
+}

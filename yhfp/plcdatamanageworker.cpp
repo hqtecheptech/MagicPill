@@ -37,14 +37,14 @@ void PlcDataManageWorker::getSharedDatas()
     plcdata.f_data[0] += 1;
     plcdata.f_data[2] += 0.5;
 
-    if(plcdata.i_data[1] == 5)
+    /*if(plcdata.i_data[1] == 5)
     {
        plcdata.i_data[1] = -4;
     }
     else
     {
         plcdata.i_data[1] = 5;
-    }
+    }*/
 
     plcdata.dw_data[3] += 2;
 
@@ -186,7 +186,10 @@ void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
             strValue = "true";
         }
 
-        float address = Global::getYhcRunctrAdressByNumber(i);
+        float address = Global::getYhcRunctrAddressByIndex(i);
+
+        qDebug() << "i=" << i << "; address = " << address
+                 << "; index = " << Global::convertYhcAddressToIndex(address, "x0");
 
         dataMap.insert(address,strValue);
         if(!Global::currentYhcDataMap.contains(address))
