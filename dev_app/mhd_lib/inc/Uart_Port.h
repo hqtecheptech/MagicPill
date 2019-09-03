@@ -15,7 +15,7 @@
   *databits   数据位   取值为 7 或者8, stopbits   停止位   取值为 1 或者2,stopbits   停止位   取值为 1 或者2
   *返回 FALSE -1  错误，正确返回0
 ********************************************************/
- int mHD_Uart_Init(int fd, int speed,int flow_ctrl,int databits,int stopbits,int parity);  //初始化串口
+int mHD_Uart_Init(int fd, int speed,int flow_ctrl,int databits,int stopbits,int parity,uint8_t wtime,uint8_t wlen);  //初始化串口
  /****************mHD_Uart_Recv************************************
  * fd 文件描述符,  rcv_buf 接收串口数据缓冲区,data_len 接收长度
  * 返回：正确返回为接收到数据数量，错误返回为0
@@ -27,6 +27,9 @@
  * 返回：正确返回为发送数据长度，错误返回为-1
  *******************************************************************/
  int mHD_Uart_Send(int fd, char *send_buf,int data_len);  //串口发送数据
+
+ /*** 读取指定长度的数据 ***********/
+ int m_Uart_Safe_Recv_FixLen(int fd,void *buf,int n);
 
 
 

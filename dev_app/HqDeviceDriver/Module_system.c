@@ -161,27 +161,27 @@ void mHD_CompDev_SigToRPU(void)
     nummax = Dev_data.Pru.MEndBit;
     for(i=1;i<= nummax;i++)
     {
-        if(Dev_data.Mconfig[i].Name == 0x7122)
-        {
-            if(memcmp(Dev_data.MData[i].DOutData,old_Dev_data.MData[i].DOutData,16) !=0)
-            {Dev_data.Pru.MWData[i] =1;cmp =1;}
-        }
-       else  if(Dev_data.Mconfig[i].Name == 0x8012)
-        {
-             if(memcmp(Dev_data.MData[i].AOutData,old_Dev_data.MData[i].AOutData,8) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
-        }
-        else if(Dev_data.Mconfig[i].Name == 0x7313)
-        {
-            if(memcmp(Dev_data.MData[i].DOutData,old_Dev_data.MData[i].DOutData,16) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
-            else if(memcmp(Dev_data.MData[i].EnInClear,old_Dev_data.MData[i].EnInClear,6) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
-            else if(memcmp(Dev_data.MData[i].PulseData,old_Dev_data.MData[i].PulseData,32) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
-        }
-        else if(Dev_data.Mconfig[i].Name == 0x7314)
-        {
-            if(memcmp(Dev_data.MData[i].DOutData,old_Dev_data.MData[i].DOutData,16) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
-            else if(memcmp(Dev_data.MData[i].EnInClear,old_Dev_data.MData[i].EnInClear,3) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
-            else if(memcmp(Dev_data.MData[i].PulseData,old_Dev_data.MData[i].PulseData,32) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
-        }
+//        if(Dev_data.Mconfig[i].Name == 0x7122)
+//        {
+//            if(memcmp(Dev_data.MData[i].DOutData,old_Dev_data.MData[i].DOutData,16) !=0)
+//            {Dev_data.Pru.MWData[i] =1;cmp =1;}
+//        }
+//       else  if(Dev_data.Mconfig[i].Name == 0x8012)
+//        {
+//             if(memcmp(Dev_data.MData[i].AOutData,old_Dev_data.MData[i].AOutData,8) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
+//        }
+//        else if(Dev_data.Mconfig[i].Name == 0x7313)
+//        {
+//            if(memcmp(Dev_data.MData[i].DOutData,old_Dev_data.MData[i].DOutData,16) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
+//            else if(memcmp(Dev_data.MData[i].EnInClear,old_Dev_data.MData[i].EnInClear,6) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
+//            else if(memcmp(Dev_data.MData[i].PulseData,old_Dev_data.MData[i].PulseData,32) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
+//        }
+//        else if(Dev_data.Mconfig[i].Name == 0x7314)
+//        {
+//            if(memcmp(Dev_data.MData[i].DOutData,old_Dev_data.MData[i].DOutData,16) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
+//            else if(memcmp(Dev_data.MData[i].EnInClear,old_Dev_data.MData[i].EnInClear,3) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
+//            else if(memcmp(Dev_data.MData[i].PulseData,old_Dev_data.MData[i].PulseData,32) !=0) {Dev_data.Pru.MWData[i] =1;cmp =1;}
+//        }
     }
     if(cmp ==1)
     {
@@ -275,7 +275,7 @@ void mHD_ReadModule_Data_Thread(void)
 {
     while(1)
     {
-        mHD_Pru_Protocol_ReadRunData();  //接收模块返回数据
+        //mHD_Pru_Protocol_ReadRunData();  //接收模块返回数据
         //mHD_CompDev_DataToRPU_Thread();  //发送模块数据线程
     }
 }

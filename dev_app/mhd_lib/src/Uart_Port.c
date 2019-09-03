@@ -28,17 +28,24 @@
 int  mHD_Uart_Open(char *port)
 {
     int fd;
-    fd = open(port,O_RDWR|O_NOCTTY|O_NDELAY) ;
+    fd = open(port,O_RDWR|O_NOCTTY|O_NDELAY|O_NONBLOCK) ;
     //fd = open(port,O_RDWR|O_NOCTTY|O_NONBLOCK) ;
     if (fd<0)
     {
-        perror("Can't Open Serial Port");
+        printf("Can't Open Serial Port\n");
         return(FALSE);
     }
-//    //判断串口的状态是否为阻塞状态
-//    if(fcntl(fd, F_SETFL, 0) < 0) return(FALSE);
-//    //测试是否为终端设备
-//    if(0 == isatty(STDIN_FILENO)) return(FALSE);
+    //判断串口的状态是否为阻塞状态
+    if(fcntl(fd, F_SETFL, 0) < 0)
+    {
+        printf("fcntl return <0\n");
+        return(FALSE);
+    }
+    //测试是否为终端设备
+    if(isatty(fd) ==0)
+    {
+        printf("This is a terminal Device\n");
+    }
    return fd;
 }
 
@@ -63,14 +70,31 @@ void mHD_Uart_Close(int fd)
 *                         databits    数据位   取值为 7 或者8
 *                         stopbits    停止位   取值为 1 或者2
 *                         parity      效验类型 取值为N,E,O,,S
+*                         wtime     串口等待时间
+*                         wlen        串口接收字符数量
 *出口参数：正确返回为0，错误返回为-1
 * 设置流程：  开始 -> 设置波特率 -> 设置数据流控制 -> 设置帧的格式(即数据位个数，停止位，校验位)
 *******************************************************************/
-static int mHD_Uart_Set (int fd,int speed,int flow_ctrl,int databits,int stopbits,int parity)
+//#define  B57600   0010001
+//#define  B115200  0010002
+//#define  B230400  0010003
+//#define  B460800  0010004
+//#define  B500000  0010005
+//#define  B576000  0010006
+//#define  B921600  0010007
+//#define  B1000000 0010010
+//#define  B1152000 0010011
+//#define  B1500000 0010012
+//#define  B2000000 0010013
+//#define  B2500000 0010014
+//#define  B3000000 0010015
+//#define  B3500000 0010016
+//#define  B4000000 0010017
+static int mHD_Uart_Set (int fd,int speed,int flow_ctrl,int databits,int stopbits,int parity,uint8_t wtime,uint8_t wlen)
 {
     uint8_t i;
-    int   speed_arr[] = { B115200,B57600, B38400,B19200, B9600, B4800, B2400, B1200};
-    int   name_arr[] = {115200,57600,38400,19200,9600,4800,2400,1200};
+    int   speed_arr[] = { B500000,B230400,B115200,B57600, B38400,B19200, B9600, B4800, B2400, B1200};
+    int   name_arr[] = {500000,230400,115200,57600,38400,19200,9600,4800,2400,1200};
     struct termios options;
     /*  tcgetattr(fd,&options)得到与fd指向对象的相关参数，并将它们保存于options,该函数还可以测试配置是否正确，
             该串口是否可用等。若调用成功，函数返回值为0，若调用失败，函数返回值为1.  */
@@ -85,6 +109,7 @@ static int mHD_Uart_Set (int fd,int speed,int flow_ctrl,int databits,int stopbit
     }
     options.c_cflag |= CLOCAL; //忽略信号线路状态
     options.c_cflag |= CREAD;      //接收使能
+
     switch(flow_ctrl)    //设置数据流控制
     {
     case 0:     options.c_cflag &= ~CRTSCTS;  break;                           //不使用流控制
@@ -135,11 +160,18 @@ static int mHD_Uart_Set (int fd,int speed,int flow_ctrl,int databits,int stopbit
     case 2:  options.c_cflag |= CSTOPB; break;
     default:  options.c_cflag &= ~CSTOPB; break;
     }
+//    options.c_lflag =0;
+//    options.c_oflag=0;
     options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG); //关闭规范输入,回送，可见搽除字符,终端产生的信号
+    options.c_lflag &= ~(BRKINT | ICRNL|INPCK |ISTRIP | IXON);
+    //options.c_lflag &= ~(IGNPAR | IXON|IXOFF |IGNBRK | INLCR|IGNCR|ICRNL);
     options.c_oflag &= ~OPOST;  //修改输出模式，原始数据输出
+    options.c_oflag &= ~(ONLCR|OCRNL);
+
     //设置等待时间和最小接收字符
-    options.c_cc[VTIME] = 0; // 读取一个字符等待1*(1/10)s
-    options.c_cc[VMIN] = 1; // 读取字符的最少个数为1
+    options.c_cc[VTIME] = wtime; // 读取一个字符等待1*(1/10)s
+    options.c_cc[VMIN] = wlen; // 读取字符的最少个数为1
+    cfmakeraw(&options);   //串口设置为原始模式
     tcflush(fd,TCIFLUSH);   //如果发生数据溢出，接收数据，但是不再读取 刷新收到的数据但是不读
     //激活配置 (将修改后的termios数据设置到串口中）
     if (tcsetattr(fd,TCSANOW,&options) != 0)   return (FALSE);
@@ -157,9 +189,9 @@ static int mHD_Uart_Set (int fd,int speed,int flow_ctrl,int databits,int stopbit
 *                      parity     效验类型 取值为N,E,O,,S
 *出口参数：FALSE -1  错误，正确返回0
 *******************************************************************/
-int mHD_Uart_Init(int fd, int speed,int flow_ctrl,int databits,int stopbits,int parity)
+int mHD_Uart_Init(int fd, int speed,int flow_ctrl,int databits,int stopbits,int parity,uint8_t wtime,uint8_t wlen)
 {
-    if (mHD_Uart_Set(fd,speed,flow_ctrl,databits,stopbits, parity) == FALSE)  //设置串口数据帧格式
+    if (mHD_Uart_Set(fd,speed,flow_ctrl,databits,stopbits, parity,wtime,wlen) == FALSE)  //设置串口数据帧格式
     {
         return FALSE;
     }
@@ -168,6 +200,75 @@ int mHD_Uart_Init(int fd, int speed,int flow_ctrl,int databits,int stopbits,int 
         return  TRUE;
     }
 }
+/****************串口安全发送数据****************************************
+* 名称：            m_Uart_Safe_Send
+* 功能：            安全发送数据
+* 入口参数：        fd           文件描述符
+*                            send_buf     存放串口发送数据
+*                            data_len     一帧数据的个数
+* 出口参数：        正确返回为发送数据长度，错误返回为-1
+*******************************************************************/
+static int m_Uart_Safe_Send(int fd, void * buf,int n)
+{
+    int nleft;
+    int nwritten;
+    char * ptr;
+
+    ptr = buf;
+    nleft = n;
+    while(nleft >0)
+    {
+        if((nwritten = write(fd,ptr,nleft)) <=0)
+        {
+            if((nwritten <0 && errno == EINTR))  nwritten =0;
+            else return -1;
+        }
+        nleft  -= nwritten;
+        ptr    += nwritten;
+    }
+    return (n);
+}
+
+/****************串口安全读数据指定读取长度 带超时****************************************
+* 名称：            m_Uart_Safe_Send
+* 功能：            安全发送数据
+* 入口参数：        fd           文件描述符
+*                            send_buf     存放串口发送数据
+*                            data_len     一帧数据的个数
+* 出口参数：        正确返回为发送数据长度，错误返回为-1
+*******************************************************************/
+static int m_Uart_Safe_Recv(int fd, void * buf,int n)
+{
+    int nleft;
+    int nread;
+    char * ptr;
+    uint32_t timeout;
+
+    ptr = buf;
+    nleft = n;
+    timeout = 1000;
+
+    while((nleft > 0)&&(timeout>0))
+    {
+        if((nread = read(fd,ptr,nleft)) < 0)
+        {
+            if(errno == EINTR)  nread = 0; //被信号中断
+            else return -1;
+        } else  if (nread == 0)  break;
+        nleft -= nread;
+        ptr += nread;
+        timeout --;
+    }
+    if(timeout ==0)  return -1;
+    else return (n-nleft);
+}
+/*** 读取指定长度的数据 ***********/
+int m_Uart_Safe_Recv_FixLen(int fd,void *buf,int n)
+{
+    return m_Uart_Safe_Recv(fd,buf,n);
+}
+
+
 /****************串口接收数据************************************
 * 名称：            mHD_Uart_Recv
 * 功能：            接收串口数据
@@ -186,21 +287,66 @@ int mHD_Uart_Recv(int fd, char *rcv_buf,int data_len)
     FD_SET(fd,&fs_read);    //用于在文件描述符集合中增加一个新的文件描述符
 
     time.tv_sec = 0;
-    time.tv_usec = 120;
+    time.tv_usec = 2;
 
     //使用select实现串口的多路通信
-    fs_sel = select(fd+1,&fs_read,NULL,NULL,&time);
-    if(fs_sel)
+    do
     {
+        fs_sel = select(fd+1,&fs_read,NULL,NULL,&time);;
+    } while (fs_sel<0 && errno==EINTR);
+
+    if(fs_sel) {
         len = read(fd,rcv_buf,data_len);
         return len;
     }
-    else
-    {
-        return FALSE;
-    }
+    else return FALSE;
 }
 
+//int mHD_Uart_Recv(int fd, char *rcv_buf,int data_len)
+//{
+//    int len,fs_sel;
+//    fd_set fs_read;
+//    struct timeval time;
+
+//    FD_ZERO(&fs_read);      //指定的文件描述符集清空
+//    FD_SET(fd,&fs_read);    //用于在文件描述符集合中增加一个新的文件描述符
+
+//    time.tv_sec = 0;
+//    time.tv_usec = 2;
+
+//    //使用select实现串口的多路通信
+//    do
+//    {
+//        fs_sel = select(fd+1,&fs_read,NULL,NULL,&time);;
+//    } while (fs_sel<0 && errno==EINTR);
+
+//    if(fs_sel) {
+//        len = m_Uart_Safe_Recv(fd,rcv_buf,data_len);
+//        return len;
+//    }
+//    else return FALSE;
+//}
+
+//****************串口发送数据****************************************
+//* 名称：            mHD_Uart_Send
+//* 功能：            发送数据
+//* 入口参数：        fd           文件描述符
+//*                            send_buf     存放串口发送数据
+//*                            data_len     一帧数据的个数
+//* 出口参数：        正确返回为发送数据长度，错误返回为-1
+//*******************************************************************/
+//int mHD_Uart_Send(int fd, char *send_buf,int data_len)
+//{
+//    int len = 0;
+
+//    len = write(fd,send_buf,data_len);
+//    if (len == data_len )    return len;
+//    else
+//    {
+//        tcflush(fd,TCOFLUSH);   //输出缓冲器清空
+//        return FALSE;
+//    }
+//}
 /****************串口发送数据****************************************
 * 名称：            mHD_Uart_Send
 * 功能：            发送数据
@@ -213,7 +359,7 @@ int mHD_Uart_Send(int fd, char *send_buf,int data_len)
 {
     int len = 0;
 
-    len = write(fd,send_buf,data_len);
+    len = m_Uart_Safe_Send(fd, send_buf,data_len);
     if (len == data_len )    return len;
     else
     {
@@ -244,7 +390,7 @@ void mHD_Uart_RSTest(char *port)
          return;
     }
 
-    err = mHD_Uart_Init(fd,115200,0,8,1,'N'); //初始化串口
+    err = mHD_Uart_Init(fd,115200,0,8,1,'N',0,1); //初始化串口
     if(err <0) {printf("set serial parameter error!\n"); return;}
 
    //发送 输入提示符号

@@ -28,19 +28,13 @@ uint16_t module_data =0;
 uint8_t module_cnt =0;
 int  mHD_Sys_Dev_Run(void)
 {
+
     /* Debug 键盘输入命令轮询 */
-      if(HqDev_CmdSys.debug ==1)  mHD_keyboard_Cmd();
+      //if(HqDev_CmdSys.debug ==1)  mHD_keyboard_Cmd();
     /* 连接IO模块数据消息轮询*/
      if((HqDev_CmdSys.linkmodule ==1)&&(MODULE_DEVIO ==1))
      {
-         // mHD_CompDev_SigToRPU();              //Dev 数据比较
-          //mHD_CompDev_DataToRPU();
-          //mHD_Pru_Protocol_ReadRunData();  //接收模块返回数据
-//         if(Run_data.DataChangeEN ==1)
-//         {
-//             mHD_SigUpdate_Send();
-//             Run_data.DataChangeEN  = 0;
-//         }
+
      }
     /* 控制器本体GPIO 输入状态轮询*/
     mHD_MPUGPIO_FUN_InputValue(); //控制器本体 GPIO 输入轮询
@@ -59,19 +53,21 @@ int  mHD_Sys_Dev_Run(void)
     }
 
     /*** 流水灯 测试 *****/
-//    if(module_cnt_test>6)
-//    {
-//        module_cnt_test =0;
-//        module_data =  0x1<<module_cnt;
-//        module_cnt++;
-//        if(module_cnt>16) module_cnt =0;
-//        for(i=0;i<16;i++)
-//        {
-//            Dev_data.MData[1].DOutData[i]  = (module_data>>i) & 0x01;
-//            Dev_data.MData[2].DOutData[i]  = (module_data>>i) & 0x01;
-//            Dev_data.MData[3].DOutData[i]  = (module_data>>i) & 0x01;
-//        }
-//    }
+    int i;
+    if(module_cnt_test>1)
+    {
+        module_cnt_test =0;
+        module_data =  0x1<<module_cnt;
+        module_cnt++;
+        if(module_cnt>16) module_cnt =0;
+        for(i=0;i<16;i++)
+        {
+            Dev_data.MData[1].DOutData[i]  = (module_data>>i) & 0x01;
+            Dev_data.MData[2].DOutData[i]  = (module_data>>i) & 0x01;
+            Dev_data.MData[3].DOutData[i]  = (module_data>>i) & 0x01;
+        }
+    }
+     /*** 流水灯 测试 *****/
 
     return 0;
 
