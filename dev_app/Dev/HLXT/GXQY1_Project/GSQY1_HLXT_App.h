@@ -1,5 +1,5 @@
-#ifndef __FPJ_H
-#define __FPJ_H
+#ifndef __HLXT_H
+#define __HLXT_H
 
 #ifdef __cplusplus
  extern "C" {
