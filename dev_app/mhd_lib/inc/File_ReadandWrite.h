@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 
+int  mHD_Remove_File(char *pathname); //删除文件
 int  mHD_Create_File(char *pathname); //创建文件
 FILE *  mHD_Open_File(char *pathname,char * modes);  // 打开文件
 char *  mHD_ReadTXT_File_Row(FILE *fp,char *buf,int maxnum) ; //按行读取文本文件内容

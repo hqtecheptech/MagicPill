@@ -35,7 +35,7 @@ int mHD_Wireless_24_Init(char *port,int speed)
          return -1;
     }
 
-    err = mHD_Uart_Init(fd,speed,0,8,1,'N'); //初始化串口
+    err = mHD_Uart_Init(fd,speed,0,8,1,'N',0,1); //初始化串口
     if(err <0) {printf("set serial parameter error!\n"); return -1;}
     //mHD_Rem433Data.fd = fd;
     return fd; //返回文件串口设备文件描述

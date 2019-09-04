@@ -39,7 +39,7 @@ int  mHD_Keyboard_Led_Init(char *port,int speed)
         return -1;
     }
 
-    err = mHD_Uart_Init(fd,speed,0,8,1,'N'); //初始化串口
+    err = mHD_Uart_Init(fd,speed,0,8,1,'N',0,1); //初始化串口
     if(err <0)
     {
          if(HqDev_CmdSys.debug ==1) printf("set serial parameter error!\n");
@@ -114,12 +114,18 @@ int mHD_Keyboard_LEDRXData_AnalysisPoll(void)
     if(mHD_KBPort.RxComplete ==1)
     {
         mHD_KBPort.RxComplete =0;
-        printf("kbdat num = %d data = ",mHD_KBPort.RxNum);
-        for(i=0;i<mHD_KBPort.RxNum;i++)
-        {
-            printf("%d ",mHD_KBPort.Rxbuf[i]);
+
+        /*** Debug 打印信息  ****/
+        if(HqDev_CmdSys.debug ==1) {
+            printf("kbdat num = %d data = ",mHD_KBPort.RxNum);
+            for(i=0;i<mHD_KBPort.RxNum;i++)
+            {
+                printf("%d ",mHD_KBPort.Rxbuf[i]);
+            }
+            printf("\n ");
         }
-        printf("\n ");
+        /*** Debug 打印信息  ****/
+
         if(((mHD_KBPort.Rxbuf[0] ==0x01) && (mHD_KBPort.Rxbuf[2] ==0x01)&&(mHD_KBPort.Rxbuf[3] ==0x15))&& ( (mHD_KBPort.Rxbuf[1] ==0x17)||(mHD_KBPort.Rxbuf[1] ==0x1F)))
         {
            crc =  mHD_RTU_CRC16((uint8_t *)mHD_KBPort.Rxbuf,mHD_KBPort.RxNum-2);
@@ -146,6 +152,9 @@ int mHD_Keyboard_LEDRXData_AnalysisPoll(void)
                mHD_KBData.EnPort1Dir =  mHD_KBPort.Rxbuf[14];
                mHD_KBData.EnPort2Dir =  mHD_KBPort.Rxbuf[16];
                mHD_KBData.EnPort3Dir =  mHD_KBPort.Rxbuf[18];
+
+               HqTopLED_Data.fun = mHD_Bit8Set(HqTopLED_Data.fun,1,1);     //fun 指示灯第0个指示遥控器是否接收到数据
+               HqTopLED_Data.encnt = 2;  //500ms
                if(HqDev_CmdSys.debug ==1)  printf("En data= %d,%d,%d,%d,%d,%d\n",mHD_KBPort.Rxbuf[13],mHD_KBPort.Rxbuf[14],mHD_KBPort.Rxbuf[15],mHD_KBPort.Rxbuf[16],mHD_KBPort.Rxbuf[17],mHD_KBPort.Rxbuf[18]);
            } else return -1;
         } else return -1;
@@ -185,7 +194,7 @@ void mHD_Keyboard_LED_Thread(void)
     {
         if(mHD_KBPort.RxComplete !=1)
         {
-            len = mHD_Uart_Recv(mHD_KBPort.fd, (char *)mHD_KBPort.Rxbuf,KEYLED_RX_MAX);
+            len = m_Uart_Safe_Recv_FixLen(mHD_KBPort.fd, (char *)mHD_KBPort.Rxbuf,27);
             if(len>0)
             {
 

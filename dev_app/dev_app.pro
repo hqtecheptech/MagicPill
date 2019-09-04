@@ -34,7 +34,11 @@ SOURCES += main.c \
     SysTime_Callback.c \
     PRUSoft_Ctl/PRU_Protocol.c \
     PRUSoft_Ctl/PRU_ConfigWrite.c \
-    PRUSoft_Ctl/PRU_Fun.c
+    PRUSoft_Ctl/PRU_Fun.c \
+    PRUSoft_Ctl/PRU_Ctl.c \
+    PRUSoft_Ctl/PRU_Uart.c \
+    Module_ctl/Module_Ctl.c \
+    Module_ctl/Module_Uart.c
 
 HEADERS += \
     Dev/FPJ/FPJ.h \
@@ -67,4 +71,8 @@ HEADERS += \
     SysTime_Callback.h \
     PRUSoft_Ctl/PRU_Protocol.h \
     PRUSoft_Ctl/PRU_ConfigWrite.h \
-    PRUSoft_Ctl/PRU_Fun.h
+    PRUSoft_Ctl/PRU_Fun.h \
+    PRUSoft_Ctl/PRU_Ctl.h \
+    PRUSoft_Ctl/PRU_Uart.h \
+    Module_ctl/Module_Ctl.h \
+    Module_ctl/Module_Uart.h

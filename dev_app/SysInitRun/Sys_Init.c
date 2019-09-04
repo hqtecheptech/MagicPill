@@ -17,6 +17,9 @@
 #include "Local_app/MPU_GlobalData.h"
 #include "Local_app/Module_GlobalData.h"
 #include "../PRUSoft_Ctl/PRU_Fun.h"
+#include "../PRUSoft_Ctl/PRU_Ctl.h"
+#include "../Module_ctl/Module_Uart.h"
+
 
 #include"../dev_app_conf.h"  //配置文件
 
@@ -59,10 +62,7 @@ int  mHD_Sys_Dev_Init(void)
     /* step1: 初始化控制器连接模块*/
    if((HqDev_CmdSys.linkmodule ==1) &&(MODULE_DEVIO ==1))//如果连接外设IO模块系统
    {
-        mHD_Module_ConfigData_Init();
-        mHD_RPU_Init();  //初始化模块
-        mHD_Module_Send_CreatThread();   //创建Module数据发送线程
-        mHD_Module_Read_CreatThread();    //创建线程接收模块数据
+      mHD_Module_Init(115200);
    }
 
    if(KEYLED_ENABLE ==1)
@@ -86,11 +86,7 @@ int  mHD_Sys_Dev_Init(void)
        //初始化远程IO模块连接接口
 
        //初始化键盘调试环境 Debug 开关设置
-  if(HqDev_CmdSys.debug ==1) mHD_Debug_KeyboardInput_Init(); //键盘输入 调试
-
-
-
-
+  //if(HqDev_CmdSys.debug ==1) mHD_Debug_KeyboardInput_Init(); //键盘输入 调试
 
     return 0;
 }

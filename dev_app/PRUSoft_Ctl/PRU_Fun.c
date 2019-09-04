@@ -243,8 +243,8 @@ int m_Readpara_cmd(void)
 {
     uint8_t  pru_send_buf[10];
     int men;
-    int status;
-    uint8_t bitnum;
+    //int status;
+    //uint8_t bitnum;
 
     //发送读取设置参赛到PRU处理器
     pru_send_buf[0] = PRU_CMD_READ;  //发送读取模块命令
@@ -257,14 +257,14 @@ int m_Readpara_cmd(void)
     {
         men = 1;
         do{
-                status =   mHD_Pru_Protocol_ReadSetData(&bitnum);
-                if(Run_data.ModuleNum == bitnum)  men =0;
+                //status =   mHD_Pru_Protocol_ReadSetData(&bitnum);
+               // if(Run_data.ModuleNum == bitnum)  men =0;
         } while (men);
 
-        if(status ==0)
-        {
-            Dev_data.Pru.MRSetStatus = 1;
-       }
+//        if(status ==0)
+//        {
+//            Dev_data.Pru.MRSetStatus = 1;
+//       }
     }
     return 0;
 }
@@ -308,34 +308,36 @@ int m_StopModule_Scan(void)
 //返回0 无错误,返回-1 有错误
 static int m_UpdateModule_Data(void)
 {
-   uint8_t i;
-   int status;
-   uint8_t len;
-   uint16_t name;
-   int mreturn = 0;
+//   uint8_t i;
+//   //int status;
+//   uint8_t len;
+//   //uint16_t name;
+//   int mreturn = 0;
 
-   len = Dev_data.Pru.MEndBit;
+//   len = Dev_data.Pru.MEndBit;
 
-   for(i=1;i<len+1;i++)
-   {
-       if( Dev_data.Pru.MWData[i] ==1)
-       {
-           Dev_data.Pru.MWData[i]  =0;
-           name =Dev_data.Mconfig[i].Name;
-           status = mHD_Pru_Protocol_WriteRunData(i,name);
-           if(status !=0) mreturn = -1;
-       }
-       usleep(100);
-   }
-   Dev_data.Pru.RStatus =0;
-   return mreturn;
+//   for(i=1;i<len+1;i++)
+//   {
+////       if( Dev_data.Pru.MWData[i] ==1)
+////       {
+////           Dev_data.Pru.MWData[i]  =0;
+//           //name =Dev_data.Mconfig[i].Name;
+//           //status = mHD_Pru_Protocol_WriteRunData(i,name);
+//           //if(status !=0) mreturn = -1;
+//       }
+//       usleep(100);
+//   }
+//   Dev_data.Pru.RStatus =0;
+   return 0;
 }
 //发送运行数据到PRU处理器 但个数据
 //返回0 无错误,返回-1 有错误
 int m_UpdateModule_SingeData(int num,int name)
 {
-   if(mHD_Pru_Protocol_WriteRunData(num,name) !=0)  return -1;
-   else return 0;
+   //if(mHD_Pru_Protocol_WriteRunData(num,name) !=0)  return -1;
+    int i;
+    i= num+name;
+    return i;
 }
 
 //等待消息命令 执行任务
@@ -469,7 +471,7 @@ int mHD_RPU_Init(void)
 {
     int rdataen = -1;
     int re = -1;
-//    radrun =  mHD_Read_Run_Data();       //读取二进制配置文件
+    //radrun =  mHD_Read_Run_Data();       //读取二进制配置文件
 //    if(radrun ==0)  //读参数成功 赋值变量
 //    {
 //        Dev_data.Pru.MEndBit = HqRpuRun_data.MEndBit;  //模块数量
@@ -484,7 +486,7 @@ int mHD_RPU_Init(void)
     Run_data.ModuleNum = Dev_data.Pru.MEndBit;  //读取结束模块
     mHD_RPU_Start(rdataen);    //启动PRU处理器,等待直到启动完成，建立通信
     //RunSet_1 ON 位置 设置参数 ---> 读取设置参数 ---> 设置为模块扫描模式
-//    if(mHD_Read_GPIO(BUTRUN_RPU_1) ==0)  //RUNSET_1 开关 配置文件设置参数
+    if(mHD_Read_GPIO(BUTRUN_RPU_1) ==0)  //RUNSET_1 开关 配置文件设置参数
 //    {
 //         if(m_File_Setpara_cmd() >0)  //按配置文件设置模块参赛
 //         {

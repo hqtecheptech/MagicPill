@@ -330,6 +330,8 @@ int  mHD_Write_Run_Data(void)
     datalen = datatype * 8;   //读取8个数
     pos = 0;   //偏置0,从头开始读取
 
+    mHD_Remove_File(RPURUNDATA);  //首先删除文件
+
     fp = mHD_Open_File(RPURUNDATA,"wb+");  // 打开二进制文件不存在就创建,存在就截断为0
     if(fp == NULL)  //文件打开失败或者文件不存在
     {
@@ -343,8 +345,8 @@ int  mHD_Write_Run_Data(void)
     writebuf[3] = HqRpuRun_data.Modbaud;
     writebuf[4] = HqRpuRun_data.MStartBit;
     writebuf[5] = HqRpuRun_data.MEndBit ;
-    writebuf[6] = HqRpuRun_data.back = 8;
-    writebuf[7] = HqRpuRun_data.user1 = 30;
+    writebuf[6] = HqRpuRun_data.back = 9;
+    writebuf[7] = HqRpuRun_data.user1 = 3;
 
     //写入二进制文件
     writelen = mHD_Write_Data(fp,writebuf,datatype,datalen,pos); //读取指定数量的数据

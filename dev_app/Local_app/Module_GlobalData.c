@@ -10,12 +10,8 @@
 #include  "../mhd_lib/inc/mhd_lib.h"
 #include "../HqDeviceDriver/HqDeviceDriver.h"
 
-
-//测试模块配啊
-
-
-//模块设置参数初始化信息
-void mHD_Module_ConfigData_Init(void)
+//测试模块配配置
+static void m_Module_ConfigData_TestSys(void)
 {
     int i;
     // 初始化PRU处理器
@@ -70,6 +66,13 @@ void mHD_Module_ConfigData_Init(void)
     for(i=0;i<4;i++) Dev_data.Mconfig[4].AOutAReg[i] = 0x0B;
     for(i=0;i<4;i++) Dev_data.Mconfig[4].AOutVReg[i] = 0x01;
     for(i=0;i<12;i++) Dev_data.Mconfig[4].AInReg[i] = 0x01;
+}
+
+
+//模块设置参数初始化信息
+void mHD_Module_ConfigData_Init(void)
+{
+    m_Module_ConfigData_TestSys();  //Test 系统设置参数初始化
 }
 
 

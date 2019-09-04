@@ -253,7 +253,7 @@ void keyboard_prudata(char (*mtfg)[128])
 {
     int i;
     int tempdata;
-    int tempdata1;
+    //int tempdata1;
     if(strcmp(&mtfg[4][0],"rshmid") ==0)
     {
           if(strcmp(&mtfg[0][0],"write") ==0)  {mHD_printf_err(); return;}
@@ -405,43 +405,43 @@ void keyboard_prudata(char (*mtfg)[128])
              return;
          }
     }
-    else if(strcmp(&mtfg[4][0],"mrdata") ==0)
-    {
-         if(strcmp(&mtfg[0][0],"write") ==0)  {mHD_printf_err(); return;}
-         else if(strcmp(&mtfg[0][0],"read") ==0)
-         {
-             printf("PRU Data MRData = {");
-             for(i=0;i<=Dev_data.Pru.MEndBit ;i++)
-             {
-                  if(i== Dev_data.Pru.MEndBit)  printf("%d}\n", Dev_data.Pru.MRData[i]);
-                  else printf("%d, ", Dev_data.Pru.MRData[i]);
-             }
-             return;
-         }
-    }
-    else if(strcmp(&mtfg[4][0],"mwdata") ==0)
-    {
-        if(strcmp(&mtfg[0][0],"write") ==0)
-        {
-            tempdata = atoi(&mtfg[5][0]);
-            tempdata1 = atoi(&mtfg[6][0]);
-            if((tempdata>=1) &&(tempdata <=31 ) &&(tempdata1 >=0)&&(tempdata1<=1))
-            {
-                Dev_data.Pru.MWData[tempdata] = tempdata1;
-                printf("PRU Data MWData[%d]= %d\n",tempdata ,tempdata1); return;
-            } else {mHD_printf_err(); return;}
-        }
-        else if(strcmp(&mtfg[0][0],"read") ==0)
-        {
-            printf("PRU Data MWData[] = {");
-            for(i=0;i<=Dev_data.Pru.MEndBit;i++)
-            {
-                if(i== Dev_data.Pru.MEndBit)  printf("%d}\n",Dev_data.Pru.MWData[i]);
-                else printf("%d, ",Dev_data.Pru.MWData[i]);
-            }
-            return;
-        }
-    }
+//    else if(strcmp(&mtfg[4][0],"mrdata") ==0)
+//    {
+//         if(strcmp(&mtfg[0][0],"write") ==0)  {mHD_printf_err(); return;}
+//         else if(strcmp(&mtfg[0][0],"read") ==0)
+//         {
+//             printf("PRU Data MRData = {");
+//             for(i=0;i<=Dev_data.Pru.MEndBit ;i++)
+//             {
+//                  if(i== Dev_data.Pru.MEndBit)  printf("%d}\n", Dev_data.Pru.MRData[i]);
+//                  else printf("%d, ", Dev_data.Pru.MRData[i]);
+//             }
+//             return;
+//         }
+//    }
+//    else if(strcmp(&mtfg[4][0],"mwdata") ==0)
+//    {
+//        if(strcmp(&mtfg[0][0],"write") ==0)
+//        {
+//            tempdata = atoi(&mtfg[5][0]);
+//            tempdata1 = atoi(&mtfg[6][0]);
+//            if((tempdata>=1) &&(tempdata <=31 ) &&(tempdata1 >=0)&&(tempdata1<=1))
+//            {
+//                Dev_data.Pru.MWData[tempdata] = tempdata1;
+//                printf("PRU Data MWData[%d]= %d\n",tempdata ,tempdata1); return;
+//            } else {mHD_printf_err(); return;}
+//        }
+//        else if(strcmp(&mtfg[0][0],"read") ==0)
+//        {
+//            printf("PRU Data MWData[] = {");
+//            for(i=0;i<=Dev_data.Pru.MEndBit;i++)
+//            {
+//                if(i== Dev_data.Pru.MEndBit)  printf("%d}\n",Dev_data.Pru.MWData[i]);
+//                else printf("%d, ",Dev_data.Pru.MWData[i]);
+//            }
+//            return;
+//        }
+//    }
     else if(strcmp(&mtfg[4][0],"all") ==0)  //读取模块全部参数
     {
           if(strcmp(&mtfg[0][0],"write") ==0)  {mHD_printf_err(); return;}
@@ -481,18 +481,18 @@ void keyboard_prudata(char (*mtfg)[128])
                   if(i== Dev_data.Pru.MEndBit)  printf("%d}\n", Dev_data.Pru.MErrCode[i]);
                   else printf("%d, ", Dev_data.Pru.MErrCode[i]);
               }
-              printf("PRU Data MWData[] = {");
-              for(i=0;i<=Dev_data.Pru.MEndBit;i++)
-              {
-                  if(i== Dev_data.Pru.MEndBit)  printf("%d}\n",Dev_data.Pru.MWData[i]);
-                  else printf("%d, ",Dev_data.Pru.MWData[i]);
-              }
-              printf("PRU Data MRData[] = {");
-              for(i=0;i<=Dev_data.Pru.MEndBit ;i++)
-              {
-                   if(i== Dev_data.Pru.MEndBit)  printf("%d}\n", Dev_data.Pru.MRData[i]);
-                   else printf("%d, ", Dev_data.Pru.MRData[i]);
-              }
+//              printf("PRU Data MWData[] = {");
+//              for(i=0;i<=Dev_data.Pru.MEndBit;i++)
+//              {
+//                  if(i== Dev_data.Pru.MEndBit)  printf("%d}\n",Dev_data.Pru.MWData[i]);
+//                  else printf("%d, ",Dev_data.Pru.MWData[i]);
+//              }
+//              printf("PRU Data MRData[] = {");
+//              for(i=0;i<=Dev_data.Pru.MEndBit ;i++)
+//              {
+//                   if(i== Dev_data.Pru.MEndBit)  printf("%d}\n", Dev_data.Pru.MRData[i]);
+//                   else printf("%d, ", Dev_data.Pru.MRData[i]);
+//              }
           }
     }
     else  {mHD_printf_err(); return;}
@@ -855,18 +855,18 @@ void keyboard_moduledata(char (*mtfg)[128])
     else if(strcmp(&mtfg[4][0],"bitnum") ==0)
     {
           if(strcmp(&mtfg[0][0],"write") ==0)  {mHD_printf_err(); return;}
-          else if(strcmp(&mtfg[0][0],"read") ==0)  {printf("Module MData[%d] BitNum Value = %d\n",num,Dev_data.MData[num].BitNum); return;}
+          else if(strcmp(&mtfg[0][0],"read") ==0)  {printf("Module MData[%d] BitNum Value = %d\n",num,Dev_data.Mconfig[num].BitNum); return;}
     }
     else if(strcmp(&mtfg[4][0],"name") ==0)
     {
           if(strcmp(&mtfg[0][0],"write") ==0)  {mHD_printf_err(); return;}
-          else if(strcmp(&mtfg[0][0],"read") ==0)  {printf("Module MData[%d] Name Value = 0x%X\n",num,Dev_data.MData[num].Name); return;}
+          else if(strcmp(&mtfg[0][0],"read") ==0)  {printf("Module MData[%d] Name Value = 0x%X\n",num,Dev_data.Mconfig[num].Name); return;}
     }
-    else if(strcmp(&mtfg[4][0],"status") ==0)
-    {
-          if(strcmp(&mtfg[0][0],"write") ==0)  {mHD_printf_err(); return;}
-          else if(strcmp(&mtfg[0][0],"read") ==0)  {printf("Module MData[%d] Status Value = %d\n",num,Dev_data.MData[num].Status); return;}
-    }
+//    else if(strcmp(&mtfg[4][0],"status") ==0)
+//    {
+//          if(strcmp(&mtfg[0][0],"write") ==0)  {mHD_printf_err(); return;}
+//          else if(strcmp(&mtfg[0][0],"read") ==0)  {printf("Module MData[%d] Status Value = %d\n",num,Dev_data.MData[num].Status); return;}
+//    }
     else if(strcmp(&mtfg[4][0],"dindata") ==0)
     {
           if(strcmp(&mtfg[0][0],"write") ==0)  {mHD_printf_err(); return;}

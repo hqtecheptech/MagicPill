@@ -44,7 +44,7 @@ int  mHD_Remote_433_Init(char *port,int speed)
         return -1;
     }
 
-    err = mHD_Uart_Init(fd,speed,0,8,1,'N'); //初始化串口
+    err = mHD_Uart_Init(fd,speed,0,8,1,'N',0,1); //初始化串口
     if(err <0) {printf("set serial parameter error!\n"); return -1;}
     mHD_Rem433Port.fd = fd;
     return fd; //返回文件串口设备文件描述
@@ -206,7 +206,7 @@ int mHD_Remote_433RXData_AnalysisPoll(void)
          mHD_Rem433Data.speed = (mHD_Rem433Port.Rxbuf[3]>>3) & 0x07;
          mHD_Rem433Data.dev = (mHD_Rem433Port.Rxbuf[3]>>6) & 0x03;
 
-         HqTopLED_Data.fun = mHD_Bit8Set(HqTopLED_Data.fun,0,1);     //fun 指示灯第0个指示遥控器是否接收到数据
+          HqTopLED_Data.fun = mHD_Bit8Set(HqTopLED_Data.fun,0,1);     //fun 指示灯第0个指示遥控器是否接收到数据
           HqTopLED_Data.encnt = 2;  //500ms
          //控制台显示解析后遥控器数据
           if(HqDev_CmdSys.debug ==1)
@@ -266,7 +266,7 @@ void  mHD_Remote_433_Recv_Thread(void)
     int len;
     while(1)
     {
-        len = mHD_Uart_Recv(mHD_Rem433Port.fd, (char *)mHD_Rem433Port.Rxbuf,AS62_RX_MAX);
+        len = m_Uart_Safe_Recv_FixLen(mHD_Rem433Port.fd, (char *)mHD_Rem433Port.Rxbuf,5);
         if(len>0)
         {
             mHD_Rem433Port.RxComplete =1;
@@ -301,7 +301,11 @@ void mHD_mHD_Remote_433_TopLed(void)
     if(HqTopLED_Data.encnt  !=0 )
     {
         HqTopLED_Data.encnt--;
-        if(HqTopLED_Data.encnt ==0) HqTopLED_Data.fun = mHD_Bit8Set(HqTopLED_Data.fun,0,0);
+        if(HqTopLED_Data.encnt ==0)
+        {
+            HqTopLED_Data.fun = mHD_Bit8Set(HqTopLED_Data.fun,0,0);   //f.0  遥控器指示
+            HqTopLED_Data.fun = mHD_Bit8Set(HqTopLED_Data.fun,1,0);  //f.1  按键板指示
+        }
     }
 }
 

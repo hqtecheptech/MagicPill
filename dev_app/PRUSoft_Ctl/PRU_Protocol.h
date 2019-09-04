@@ -91,11 +91,17 @@ extern PRU_ProTocol PRU_Rpmsg;
 uint8_t  mHD_Pru_Protocol_SetCmd(uint8_t cmd,uint8_t *data);
 uint8_t  mHD_Pru_Protocol_SetData(Mod_set  setdata);
 uint8_t  mHD_Pru_Protocol_RWeadRegData(void);
-uint8_t  mHD_Pru_Protocol_ReadSetData(uint8_t *modnum);         //读取设置参数
+//uint8_t  mHD_Pru_Protocol_ReadSetData(uint8_t *modnum);         //读取设置参数
 void mHD_Debug_Printf(uint8_t *data,uint8_t len,uint8_t ser);
-uint8_t  mHD_Pru_Protocol_ReadRunData(void);
-int mHD_Pru_Protocol_WriteRunData(uint8_t mnum,uint16_t name);
+//uint8_t  mHD_Pru_Protocol_ReadRunData(void);
+//int mHD_Pru_Protocol_WriteRunData(uint8_t mnum,uint16_t name);
 void  mHD_Pru_Protocol_ReplyInit(uint8_t cmd,uint8_t *data);
+
+
+int  mHD_Pru_Protocol_ReadSetDataAnalysis(uint8_t *buf,int rxlen); //设置参数读取解析
+int  mHD_Pru_Protocol_WriteRunData(uint8_t mnum,uint8_t *buf);   //获取模块运行数据命令
+int  mHD_Pru_Protocol_ReadRunData(int mnum,uint8_t *buf); //读取模块运行数据
+
 
 #ifdef __cplusplus
 }

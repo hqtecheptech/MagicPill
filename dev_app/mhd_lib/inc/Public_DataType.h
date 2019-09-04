@@ -182,8 +182,6 @@ typedef enum {
      uint8_t       MBaud;                //模块PRU连接波特率代码 同RBaud.
      uint8_t       MSetSource;        //模块参赛设置源, 0 = 配置文件，1= 参数设置，
      uint8_t       MErrCode[MODULE_NUM_MAX];      //运行错误代码 下标0=PRU处理器错误代码,下标1-x模块错误代码。
-     uint8_t       MWData[MODULE_NUM_MAX];      //写入更新数据标识,下标0=PRU,下标1-x模块数据更新  1=有数据更新，0 =  无数据写入。
-     uint8_t       MRData[MODULE_NUM_MAX];       //读取更新数据标识,下标0=PRU,下标1-x模块数据更新  1=有数据更新，0 =  无数据写入。
  } PRU_set;
 
  typedef struct {
@@ -202,14 +200,13 @@ typedef enum {
      uint8_t     SSIFunSet[MODULE_SSIN_MAX];                      //SSI 借口功能设置 0=不启用，1=启用SSI编码器模式，2=启用串口模式 仅7314有效
      uint8_t     AOutAReg[MODULE_AOUT_MAX];                   //模拟量输出电流输出范围代码
      uint8_t     AOutVReg[MODULE_AOUT_MAX];                   //模拟量输出电压输出范围代码
-     uint8_t     AInReg[MODULE_AIN_MAX];                     //模拟量输入范围代码
+     uint8_t     AInReg[MODULE_AIN_MAX];                             //模拟量输入范围代码
+     uint8_t     MWPara;                    //写入参数错误;
+     uint8_t     MRPara;                    //读取参数错误;
  } Mod_config;
 
  typedef struct {
-     uint8_t      BitNum;                                                 //位号
-     uint16_t    Name;                                                     //模块名词
-     uint8_t      Status;                                                    //设置任务状态,0=已完成写入，1=未完成写入。
-     uint8_t      ErrCode;                                                 //设置错误代码 详见错误代码表。
+     uint8_t      ErrCode;                                        //设置错误代码 详见错误代码表。
      uint8_t      DInData[MODULE_DIN_MAX ];   //开关量输入状态,  只读
      uint8_t      DOutData[MODULE_DOUT_MAX ];                        //开关量输出状态,  读写
      uint8_t      EnInClear[MODULE_EIN_MAX];                             //旋转编码器清零。按位操作 读写
@@ -301,10 +298,10 @@ typedef struct {
  } Hq_Plc_Db;
 
 typedef  struct   {
-     int     in;              //输入指示灯
-     int     out;          //输出指示灯
-     int     fun;        //功能指示灯 bit0 遥控器收发
-     volatile int     encnt;     //功能计数
+    int     in;              //输入指示灯
+    int     out;          //输出指示灯
+    int     fun;        //功能指示灯 bit0 遥控器收发 1=按键板指示  2= 2.4G传输指示   3=故障指示  4= 参数配置完成指示 5=参数读取完成指示
+    volatile int     encnt;     //功能计数
 }  HqTopLED_Cmd;
 
  //仅RPU模块软件使用

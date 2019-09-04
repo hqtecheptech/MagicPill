@@ -36,6 +36,7 @@
      uint8_t EnPort1Dir;                //CN1旋转编码器方向  0=未选择 1=正向选择 2=反向旋转
      uint8_t EnPort2Dir;                //CN1旋转编码器方向
      uint8_t EnPort3Dir;                //CN1旋转编码器方向
+     uint8_t encnt;
  } Keyboard_data;
 
  typedef struct {
