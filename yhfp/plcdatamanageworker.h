@@ -28,7 +28,7 @@ public slots:
     void getSharedDatas();
 
 private:
-    ShareHelper* serverDataSh;
+    ShareHelper* yhcDbSh;
     DataSender ds;
 
     void sendPlcdataToServer(const Plc_Db data);

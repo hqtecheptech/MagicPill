@@ -5,32 +5,32 @@
 
 PlcDataManageWorker::PlcDataManageWorker(QObject *parent) : QObject(parent)
 {
-    QString sharePath = Global::systemConfig.controlSharePath;
-    int shareId = Global::systemConfig.controlShareKey;
-    QString semPath = Global::systemConfig.controlSemPath;
-    int semId = Global::systemConfig.controlSemKey;
-    QString msgPath = Global::systemConfig.controlMsgPath;
-    int msgId = Global::systemConfig.controlMsgKey;
+    QString sharePath = Global::systemConfig.dataSharePath;
+    int shareId = Global::systemConfig.dataShareKey;
+    QString semPath = Global::systemConfig.dataSemPath;
+    int semId = Global::systemConfig.dataSemKey;
+    QString msgPath = Global::systemConfig.dataMsgPath;
+    int msgId = Global::systemConfig.dataMsgKey;
 
     key_t shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
     key_t semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
-    serverDataSh = new ShareHelper(shareKey, semKey);
+    yhcDbSh = new ShareHelper(shareKey, semKey);
 
     qRegisterMetaType<Plc_Db>("Hq_Plc_Db");
 }
 
 PlcDataManageWorker::~PlcDataManageWorker()
 {
-    delete serverDataSh;
+    delete yhcDbSh;
 }
 
 void PlcDataManageWorker::getSharedDatas()
 {
     Plc_Db plcdata;
 
-    serverDataSh->LockShare();
-    serverDataSh->GetShardMemory((void *)&plcdata, sizeof(Plc_Db));
-    serverDataSh->UnlockShare();
+    yhcDbSh->LockShare();
+    yhcDbSh->GetShardMemory((void *)&plcdata, sizeof(Plc_Db));
+    yhcDbSh->UnlockShare();
 
     parseYhcServerData(plcdata);
     sendPlcdataToServer(plcdata);
@@ -139,8 +139,8 @@ void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
 
         address = Global::getYhcRunctrAddressByIndex(i);
 
-        qDebug() << "i=" << i << "; address = " << address
-                 << "; index = " << Global::convertYhcAddressToIndex(address, "x0");
+        //qDebug() << "i=" << i << "; address = " << address
+                 //<< "; index = " << Global::convertYhcAddressToIndex(address, "x0");
 
         dataMap.insert(address,strValue);
         if(!Global::currentYhcDataMap.contains(address))
@@ -163,8 +163,8 @@ void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
     int startIndex = Global::getYhcDeviceStartIndex(
                 Global::getYhcDeviceGroupInfo(0).deviceId, Global::getYhcDeviceGroupInfo(0).groupId);
 
-    qDebug() << "startIndex = " << startIndex;
-    qDebug() << "diff = " << diff;
+    //qDebug() << "startIndex = " << startIndex;
+    //qDebug() << "diff = " << diff;
 
     if(startIndex >=0 && diff)
     {

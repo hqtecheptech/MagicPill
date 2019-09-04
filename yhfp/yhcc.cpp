@@ -15,6 +15,8 @@ Yhcc::Yhcc(QWidget *parent) :
 
     deviceIndex = 0;
 
+    st.start();
+
     qRegisterMetaType<Plc_Db>("Hq_Plc_Db");
 
     QString eixtStyleStr="QPushButton#yhcExitButton{background: transparent; background-image: url(:/pic/退出.png);}"
@@ -129,28 +131,6 @@ void Yhcc::getNetState()
     emit checkNetState("wlan");
 }
 
-void Yhcc::pollPlcDatas()
-{
-    updateUI();
-    uca ++;
-    if(uca == 5)
-    {
-        qsrand(time(NULL));
-        int n = qrand() % 20 + 5;
-        ui->widget_2->updateUI(n);
-
-        int leftValue = qrand() % 400 + 100;
-        int rightValue = qrand() % 400 + 100;
-        ui->yhcWatchsWidget->updateDydl(leftValue, rightValue);
-
-        leftValue = qrand() % 120 - 30;
-        rightValue = qrand() % 1000 + 300;
-        ui->yhcWatchsWidget->updateWdyw(leftValue, rightValue);
-
-        uca = 0;
-    }
-}
-
 void Yhcc::showEvent(QShowEvent *)
 {
     if(!netManageThread.isRunning())
@@ -205,12 +185,30 @@ void Yhcc::updateUI()
     index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
     ui->speedLabel->setText(Global::currentYhcDataMap[address]);
 
-    bool value = Global::getYhcRunctrValueByName(0, "Run_Signal", Global::currentYhcDataMap);
+    bool value = Global::getYhcRunctrValueByName(deviceIndex, "Run_Signal", Global::currentYhcDataMap);
     ui->test_label_2->setText(QString::number(value));
-    value = Global::getYhcRunctrValueByName(0, "False_Signal", Global::currentYhcDataMap);
+    value = Global::getYhcRunctrValueByName(deviceIndex, "False_Signal", Global::currentYhcDataMap);
     ui->test_label_3->setText(QString::number(value));
-    value = Global::getYhcRunctrValueByName(0, "FAN_SPAREVALVE_Opened", Global::currentYhcDataMap);
+    value = Global::getYhcRunctrValueByName(deviceIndex, "FAN_SPAREVALVE_Opened", Global::currentYhcDataMap);
     ui->test_label_4->setText(QString::number(value));
+
+    uca ++;
+    if(uca == 5)
+    {
+        qsrand(time(NULL));
+        int n = qrand() % 20 + 5;
+        ui->widget_2->updateUI(n);
+
+        int leftValue = qrand() % 400 + 100;
+        int rightValue = qrand() % 400 + 100;
+        ui->yhcWatchsWidget->updateDydl(leftValue, rightValue);
+
+        leftValue = qrand() % 120 - 30;
+        rightValue = qrand() % 1000 + 300;
+        ui->yhcWatchsWidget->updateWdyw(leftValue, rightValue);
+
+        uca = 0;
+    }
 }
 
 void Yhcc::handleControllerResult()
@@ -230,19 +228,8 @@ void Yhcc::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> d
 
 void Yhcc::wirteTestData()
 {
-    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
-    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
-    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    int index = Global::convertYhcAddressToIndex(address, "r");
-
-    controller->lockPlcDataDb();
-    Plc_Db db = controller->getPlcDataDb();
-    controller->unlockPlcDataDb();
-
-    db.f_data[index] = db.f_data[index] + 5;
-    controller->setPlcControlDb(db);
-
-    emit requestControl();
+    controller->yhcSpeedUp(deviceIndex, 5);
+    /*emit requestControl();*/
 
     /*plcdata.f_data[0] += 5;
     plcdata.f_data[2] += 0.5;
@@ -301,7 +288,7 @@ void Yhcc::wirteTestData()
 
 void Yhcc::parseYhcData(QMap<float, QString> dataMap)
 {
-    pollPlcDatas();
+    updateUI();
 }
 
 void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
@@ -311,17 +298,6 @@ void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
 
 void Yhcc::on_speedDownButton_clicked()
 {
-    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
-    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
-    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    int index = Global::convertYhcAddressToIndex(address, "r");
-
-    controller->lockPlcDataDb();
-    Plc_Db db = controller->getPlcDataDb();
-    controller->unlockPlcDataDb();
-
-    db.f_data[index] = db.f_data[index] + 1;
-    controller->setPlcControlDb(db);
-
-    emit requestControl();
+    controller->yhcSpeedUp(deviceIndex, 1);
+    //emit requestControl();
 }

@@ -20,8 +20,7 @@ public:
     ControllerInfo getControllerStatus();
     Plc_Db getPlcDataDb();
     void setPlcControlDb(Plc_Db data);
-    void lockPlcDataDb();
-    void unlockPlcDataDb();
+    void yhcSpeedUp(int deviceIndex, float value);
     ~Syscontroller();
 
 signals:

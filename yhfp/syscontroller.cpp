@@ -41,7 +41,7 @@ Syscontroller::Syscontroller(QObject *parent) : QObject(parent)
     msgKey = ShareHelper::GenKey(msgPath.toLatin1(), msgId);
     dbShare = new ShareHelper(shareKey, semKey);
 
-    sharePath = Global::systemConfig.yhcControlShareKey;
+    sharePath = Global::systemConfig.yhcControlSharePath;
     shareId = Global::systemConfig.yhcControlShareKey;
     semPath = Global::systemConfig.yhcControlSemPath;
     semId = Global::systemConfig.yhcControlSemKey;
@@ -65,7 +65,7 @@ Syscontroller::Syscontroller(QObject *parent) : QObject(parent)
 
     updateStatusTimer = new QTimer(this);
     connect( updateStatusTimer, SIGNAL(timeout()), this, SLOT(updateSysStatus()) );
-    updateStatusTimer->start(2000);
+    updateStatusTimer->start(1000);
 }
 
 
@@ -101,14 +101,23 @@ void Syscontroller::setPlcControlDb(Plc_Db data)
     ctrlShare->UnlockShare();
 }
 
-void Syscontroller::lockPlcDataDb()
+void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
 {
-    dbShare->LockShare();
-}
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index = Global::convertYhcAddressToIndex(address, "r");
 
-void Syscontroller::unlockPlcDataDb()
-{
+    Plc_Db db;
+    dbShare->LockShare();
+    yhcCtrlShare->LockShare();
+    dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+    db.f_data[index] = db.f_data[index] + value;
+    yhcCtrlShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+    yhcCtrlShare->UnlockShare();
     dbShare->UnlockShare();
+
+    applyControlRequest();
 }
 
 Syscontroller::~Syscontroller()
@@ -184,12 +193,12 @@ void Syscontroller::handlePlcDbUpdated(QSet<int> changedDeviceSet, QMap<float, Q
 void Syscontroller::applyControlRequest()
 {
     Plc_Db data;
-    ctrlShare->LockShare();
-    ctrlShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
+    yhcCtrlShare->LockShare();
     dbShare->LockShare();
+    yhcCtrlShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
     dbShare->SetSharedMemory((void*)&data, sizeof(Plc_Db));
     dbShare->UnlockShare();
-    ctrlShare->UnlockShare();
+    yhcCtrlShare->UnlockShare();
 }
 
 Syscontroller* Syscontroller::instance = Q_NULLPTR;

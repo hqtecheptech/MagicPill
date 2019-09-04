@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QTimer>
+#include <QTime>
 #include "syscontroller.h"
 
 #include "data.h"
@@ -42,8 +43,6 @@ private slots:
 
     void getNetState();
 
-    void pollPlcDatas();
-
     void on_speedDownButton_clicked();
 
 protected:
@@ -68,6 +67,7 @@ private:
     NetStateManageWorker* nsmWorker;
     QTimer* checkNetStateTimer;
     QTimer* testTimer;
+    QTime st;
     int uca = 0;
     Syscontroller* controller;
     Plc_Db oldPlcDb;
