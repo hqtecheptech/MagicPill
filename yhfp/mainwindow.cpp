@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->exitButton->setStyleSheet(eixtStyleStr);
 
     yhc = new Yhcc(this);
+    fpj = new Fpjc(this);
     //ui->yhccButton->setStyleSheet("QPushButton{background: transparent; background-image: url(:/pic/车1..png);}");
     //ui->fpjcButton->setStyleSheet("QPushButton{background: transparent; background-image: url(:/pic/翻1.png);}");
 
@@ -134,4 +135,9 @@ void MainWindow::checkPruState()
     {
         ui->pru_status_label->setText("Pru has connected!");
     }
+}
+
+void MainWindow::on_fpjcButton_clicked()
+{
+    fpj->show();
 }

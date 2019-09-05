@@ -5,6 +5,7 @@
 #include <QThread>
 #include <QTimer>
 #include "yhcc.h"
+#include "fpjc.h"
 #include "taskmanager.h"
 #include "syscontroller.h"
 
@@ -31,6 +32,8 @@ private slots:
 
     void checkPruState();
 
+    void on_fpjcButton_clicked();
+
 signals:
     void startListenTask();
 
@@ -38,6 +41,7 @@ private:
     Ui::MainWindow *ui;
 
     Yhcc* yhc;
+    Fpjc* fpj;
     QThread taskManageThread;
     TaskManager* taskManager;
     QTimer* pruCheckTimer;

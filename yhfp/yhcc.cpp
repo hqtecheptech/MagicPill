@@ -1,6 +1,5 @@
 #include "yhcc.h"
 #include "ui_yhcc.h"
-#include "syscontroller.h"
 
 #include <QMap>
 #include <QVector>
