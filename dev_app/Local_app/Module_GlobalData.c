@@ -9,6 +9,7 @@
 #include "Module_GlobalData.h"
 #include  "../mhd_lib/inc/mhd_lib.h"
 #include "../HqDeviceDriver/HqDeviceDriver.h"
+#include "../dev_app_conf.h"
 
 //测试模块配配置
 static void m_Module_ConfigData_TestSys(void)
@@ -68,12 +69,18 @@ static void m_Module_ConfigData_TestSys(void)
     for(i=0;i<12;i++) Dev_data.Mconfig[4].AInReg[i] = 0x01;
 }
 
-
+extern void mHD_Dev_Hardware_Config_Init(void);
 //模块设置参数初始化信息
 void mHD_Module_ConfigData_Init(void)
 {
+#ifdef HQ_TEST_SYSTEM
     m_Module_ConfigData_TestSys();  //Test 系统设置参数初始化
+#else
+    mHD_Dev_Hardware_Config_Init();
+#endif
 }
+
+
 
 
 

@@ -1,9 +1,9 @@
-#ifndef __YXC_H
-#define __YXC_H
+#ifndef __HLXT_APP_H
+#define __HLXT_APP_H
 
 #ifdef __cplusplus
  extern "C" {
-#endif /* __cplusplus */	
+#endif /* __cplusplus */
 
 
 

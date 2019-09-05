@@ -688,7 +688,7 @@ int mHD_Module_Init(uint32_t baud)
    mHD_Module_RWData_CreatThread();
 
    if(Dev_data.Pru.MWSetStatus ==1) HqTopLED_Data.fun = mHD_Bit8Set(HqTopLED_Data.fun,4,1);   //f.4  参数配置完成指示
-   if(Dev_data.Pru.MRSetStatus ==1) HqTopLED_Data.fun = mHD_Bit8Set(HqTopLED_Data.fun,5,1);   //f.5  参数读取完成指示
+   if(Dev_data.Pru.MRSetStatus ==1) HqTopLED_Data.fun = mHD_Bit8Set(HqTopLED_Data.fun,5,1);    //f.5  参数读取完成指示
 
 
     return 0;

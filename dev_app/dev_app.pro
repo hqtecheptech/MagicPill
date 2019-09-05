@@ -8,9 +8,6 @@ target.path = /home/hqtech/ctrsoft
 INSTALLS += target
 
 SOURCES += main.c \
-    Dev/FPJ/FPJ.c \
-    Dev/HLJ/HLXT.c \
-    Dev/YXC/YXC.c \
     HqDeviceDriver/keyboard_led_ctr.c \
     HqDeviceDriver/Remote433_ctr.c \
     SysInitRun/Sys_Init.c \
@@ -38,12 +35,17 @@ SOURCES += main.c \
     PRUSoft_Ctl/PRU_Ctl.c \
     PRUSoft_Ctl/PRU_Uart.c \
     Module_ctl/Module_Ctl.c \
-    Module_ctl/Module_Uart.c
+    Module_ctl/Module_Uart.c \
+    Dev/HLXT/HLXT_App.c \
+    Dev/HLXT/HLXT_Fun.c \
+    Dev/HLXT/GXQY1_Project/GSQY1_HLXT_App.c \
+    Dev/HLXT/GXQY1_Project/GSQY1_HLXT_Hardware_Config.c \
+    Dev/FPXT/FPXT_Fun.c \
+    Dev/FPXT/FPXT_App.c \
+    Dev/FPXT/GXQY1_Project/GSQY1_FPXT_App.c \
+    Dev/FPXT/GXQY1_Project/GSQY1_FPXT_Hardware_Config.c
 
 HEADERS += \
-    Dev/FPJ/FPJ.h \
-    Dev/HLJ/HLXT.h \
-    Dev/YXC/YXC.h \
     HqDeviceDriver/keyboard_led_ctr.h \
     HqDeviceDriver/Remote433_ctr.h \
     SysInitRun/Sys_Init.h \
@@ -75,4 +77,12 @@ HEADERS += \
     PRUSoft_Ctl/PRU_Ctl.h \
     PRUSoft_Ctl/PRU_Uart.h \
     Module_ctl/Module_Ctl.h \
-    Module_ctl/Module_Uart.h
+    Module_ctl/Module_Uart.h \
+    Dev/HLXT/HLXT_App.h \
+    Dev/HLXT/HLXT_Fun.h \
+    Dev/HLXT/GXQY1_Project/GSQY1_HLXT_App.h \
+    Dev/HLXT/GXQY1_Project/GSQY1_HLXT_Hardware_Config.h \
+    Dev/FPXT/FPXT_Fun.h \
+    Dev/FPXT/FPXT_App.h \
+    Dev/FPXT/GXQY1_Project/GSQY1_FPXT_App.h \
+    Dev/FPXT/GXQY1_Project/GSQY1_FPXT_Hardware_Config.h
