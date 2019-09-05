@@ -7,4 +7,5 @@ Hq_Run_Data Run_data;                           //本地运行 数据定义
 HqDevRun_Cmd HqDev_CmdSys;           //系统运行参数
 HqTopLED_Cmd  HqTopLED_Data;           //控制器顶部LED指示灯状态输出
 HqRpuRun_Cmd HqRpuRun_data;         //RPU运行配置文件
+uint32_t mHD_System_Clock =0;                //1/10 秒 100ms
 

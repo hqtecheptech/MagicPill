@@ -17,6 +17,13 @@
 #include  "../PRUSoft_Ctl/PRU_Fun.h"
 #include  "../PRUSoft_Ctl/PRU_Protocol.h"
 
+
+/**** Test 声明***********/
+
+extern void mHD_Valve_Test(void);
+
+/**** Test 声明***********/
+
 /************* 系统设备任务轮询 **********************************************
  * 名称：             mHD_Sys_Dev_Run
  * 功能：             系统设备任务轮询
@@ -52,21 +59,27 @@ int  mHD_Sys_Dev_Run(void)
            mHD_Keyboare_WriteData_Poll(); //按键及LED板发送轮询任务
     }
 
+    /*** TEST ********************/
+    mHD_Valve_Test();
+
+
+    /*** TEST ********************/
+
     /*** 流水灯 测试 *****/
-    int i;
-    if(module_cnt_test>1)
-    {
-        module_cnt_test =0;
-        module_data =  0x1<<module_cnt;
-        module_cnt++;
-        if(module_cnt>16) module_cnt =0;
-        for(i=0;i<16;i++)
-        {
-            Dev_data.MData[1].DOutData[i]  = (module_data>>i) & 0x01;
-            Dev_data.MData[2].DOutData[i]  = (module_data>>i) & 0x01;
-            Dev_data.MData[3].DOutData[i]  = (module_data>>i) & 0x01;
-        }
-    }
+//    int i;
+//    if(module_cnt_test>1)
+//    {
+//        module_cnt_test =0;
+//        module_data =  0x1<<module_cnt;
+//        module_cnt++;
+//        if(module_cnt>16) module_cnt =0;
+//        for(i=0;i<16;i++)
+//        {
+//            Dev_data.MData[1].DOutData[i]  = (module_data>>i) & 0x01;
+//            Dev_data.MData[2].DOutData[i]  = (module_data>>i) & 0x01;
+//            Dev_data.MData[3].DOutData[i]  = (module_data>>i) & 0x01;
+//        }
+//    }
      /*** 流水灯 测试 *****/
 
     return 0;
