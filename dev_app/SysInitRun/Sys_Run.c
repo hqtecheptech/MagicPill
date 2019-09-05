@@ -60,7 +60,7 @@ int  mHD_Sys_Dev_Run(void)
     }
 
     /*** TEST ********************/
-    mHD_Valve_Test();
+    //mHD_Valve_Test();
 
 
     /*** TEST ********************/
