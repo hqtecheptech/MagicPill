@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     ../dev_app/mhd_lib/src/Public_DataType.c \
     ../dev_app/mhd_lib/src/Share_Memory.c \
     ../dev_app/mhd_lib/src/Uart_Port.c \
-    fpjc.cpp
+    fpjc.cpp \
+    smallplate.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -73,7 +74,8 @@ HEADERS  += mainwindow.h \
     ../dev_app/mhd_lib/inc/Public_DataType.h \
     ../dev_app/mhd_lib/inc/Share_Memory.h \
     ../dev_app/mhd_lib/inc/Uart_Port.h \
-    fpjc.h
+    fpjc.h \
+    smallplate.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \
@@ -84,7 +86,8 @@ FORMS    += mainwindow.ui \
     dydlplate.ui \
     zsylchart.ui \
     lrzsplate.ui \
-    fpjc.ui
+    fpjc.ui \
+    smallplate.ui
 
 RESOURCES += \
     resource.qrc

@@ -36,6 +36,11 @@ typedef struct {
     int msgStatus;
 } ControllerInfo;
 
+typedef enum {
+    Horizontal,
+    Vertical
+} WatchDirection;
+
 Q_DECLARE_METATYPE(Plc_Db)
 
 #endif // DATA_H

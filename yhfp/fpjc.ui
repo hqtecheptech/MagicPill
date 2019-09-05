@@ -638,6 +638,19 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="SmallPlate" name="widget_4" native="true">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>800</y>
+     <width>200</width>
+     <height>200</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent; </string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>
@@ -656,6 +669,12 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
    <class>ZsylChart</class>
    <extends>QWidget</extends>
    <header>zsylchart.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SmallPlate</class>
+   <extends>QWidget</extends>
+   <header location="global">smallplate.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
