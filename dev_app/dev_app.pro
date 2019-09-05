@@ -43,7 +43,8 @@ SOURCES += main.c \
     Dev/FPXT/FPXT_Fun.c \
     Dev/FPXT/FPXT_App.c \
     Dev/FPXT/GXQY1_Project/GSQY1_FPXT_App.c \
-    Dev/FPXT/GXQY1_Project/GSQY1_FPXT_Hardware_Config.c
+    Dev/FPXT/GXQY1_Project/GSQY1_FPXT_Hardware_Config.c \
+    mhd_lib/src/Dev_Fun.c
 
 HEADERS += \
     HqDeviceDriver/keyboard_led_ctr.h \
@@ -85,4 +86,5 @@ HEADERS += \
     Dev/FPXT/FPXT_Fun.h \
     Dev/FPXT/FPXT_App.h \
     Dev/FPXT/GXQY1_Project/GSQY1_FPXT_App.h \
-    Dev/FPXT/GXQY1_Project/GSQY1_FPXT_Hardware_Config.h
+    Dev/FPXT/GXQY1_Project/GSQY1_FPXT_Hardware_Config.h \
+    mhd_lib/inc/Dev_Fun.h
