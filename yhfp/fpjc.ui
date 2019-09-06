@@ -19,13 +19,13 @@
   <property name="styleSheet">
    <string notr="true">background-image: url(:/pic/翻抛系统背景_3.jpg);</string>
   </property>
-  <widget class="yhcWatchs" name="yhcWatchsWidget" native="true">
+  <widget class="FpjWatchs" name="yhcWatchsWidget" native="true">
    <property name="geometry">
     <rect>
      <x>691</x>
      <y>138</y>
-     <width>702</width>
-     <height>538</height>
+     <width>672</width>
+     <height>660</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -52,29 +52,6 @@
    </property>
    <property name="text">
     <string>电流</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="test_label_3">
-   <property name="geometry">
-    <rect>
-     <x>437</x>
-     <y>28</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>20</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(242, 79, 79);</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
    </property>
   </widget>
   <widget class="yhcDial" name="widget" native="true">
@@ -149,29 +126,6 @@ background-image: url(:/pic/报警信息-拷贝.png);</string>
    </property>
    <property name="text">
     <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="test_label_4">
-   <property name="geometry">
-    <rect>
-     <x>597</x>
-     <y>28</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>20</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(242, 79, 79);</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
    </property>
   </widget>
   <widget class="ZsylChart" name="widget_2" native="true">
@@ -336,7 +290,7 @@ color:rgb(200, 200, 200);</string>
     <enum>QFrame::NoFrame</enum>
    </property>
    <property name="text">
-    <string>移行车控制</string>
+    <string>翻抛机控制</string>
    </property>
    <property name="textFormat">
     <enum>Qt::PlainText</enum>
@@ -399,33 +353,10 @@ color:rgb(200, 200, 200);</string>
 color: rgb(50, 150, 100);</string>
    </property>
    <property name="text">
-    <string>TRANSFER VERHICAL CONTROL</string>
+    <string>FLIP CONTROL</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="test_label">
-   <property name="geometry">
-    <rect>
-     <x>117</x>
-     <y>28</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>20</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(242, 79, 79);</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
    </property>
   </widget>
   <widget class="QPushButton" name="historyButton">
@@ -576,29 +507,6 @@ background-image: url(:/pic/历史记录-拷贝.png);</string>
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="test_label_2">
-   <property name="geometry">
-    <rect>
-     <x>277</x>
-     <y>28</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>20</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(242, 79, 79);</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="wlanLabel">
    <property name="geometry">
     <rect>
@@ -642,7 +550,20 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
    <property name="geometry">
     <rect>
      <x>770</x>
-     <y>800</y>
+     <y>820</y>
+     <width>200</width>
+     <height>200</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent; </string>
+   </property>
+  </widget>
+  <widget class="SmallPlate" name="widget_5" native="true">
+   <property name="geometry">
+    <rect>
+     <x>1090</x>
+     <y>820</y>
      <width>200</width>
      <height>200</height>
     </rect>
@@ -654,15 +575,15 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>yhcDial</class>
+   <class>SmallPlate</class>
    <extends>QWidget</extends>
-   <header>yhcdial.h</header>
+   <header>smallplate.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>yhcWatchs</class>
+   <class>yhcDial</class>
    <extends>QWidget</extends>
-   <header>yhcwatchs.h</header>
+   <header>yhcdial.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -672,9 +593,9 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>SmallPlate</class>
+   <class>FpjWatchs</class>
    <extends>QWidget</extends>
-   <header location="global">smallplate.h</header>
+   <header location="global">fpjwatchs.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

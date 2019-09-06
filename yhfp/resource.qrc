@@ -82,5 +82,6 @@
         <file>config/sysconfig.xml</file>
         <file>config/yhc_devices.xml</file>
         <file>config/yhc_devices_group.xml</file>
+        <file>pic/翻抛机表盘组.png</file>
     </qresource>
 </RCC>

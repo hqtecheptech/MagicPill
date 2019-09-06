@@ -43,7 +43,8 @@ SOURCES += main.cpp\
     ../dev_app/mhd_lib/src/Share_Memory.c \
     ../dev_app/mhd_lib/src/Uart_Port.c \
     fpjc.cpp \
-    smallplate.cpp
+    smallplate.cpp \
+    fpjwatchs.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -75,7 +76,8 @@ HEADERS  += mainwindow.h \
     ../dev_app/mhd_lib/inc/Share_Memory.h \
     ../dev_app/mhd_lib/inc/Uart_Port.h \
     fpjc.h \
-    smallplate.h
+    smallplate.h \
+    fpjwatchs.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \
@@ -87,10 +89,13 @@ FORMS    += mainwindow.ui \
     zsylchart.ui \
     lrzsplate.ui \
     fpjc.ui \
-    smallplate.ui
+    smallplate.ui \
+    fpjwatchs.ui
 
 RESOURCES += \
     resource.qrc
+
+LIBS += -L/work/nfs/forlinx/OK5718-SDK-V1.0/OK57xx-linux-fs/usr/lib -lsqlite3 \
 
 target.path = /home/hqtech/test
 INSTALLS += target
