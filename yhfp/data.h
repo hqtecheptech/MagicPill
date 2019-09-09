@@ -36,11 +36,24 @@ typedef struct {
     int msgStatus;
 } ControllerInfo;
 
+typedef struct {
+    int deviceId;
+    int deviceGroup;
+    int deviceIndex;
+    char name[50];
+    char dataType[5];
+    float address;
+    char value[20];
+    int index;
+    char insertTime[30];
+} HistData;
+
 typedef enum {
     Horizontal,
     Vertical
 } WatchDirection;
 
 Q_DECLARE_METATYPE(Plc_Db)
+Q_DECLARE_METATYPE(HistData)
 
 #endif // DATA_H

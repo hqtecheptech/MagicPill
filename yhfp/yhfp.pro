@@ -44,7 +44,9 @@ SOURCES += main.cpp\
     ../dev_app/mhd_lib/src/Uart_Port.c \
     fpjc.cpp \
     smallplate.cpp \
-    fpjwatchs.cpp
+    fpjwatchs.cpp \
+    sqlitehelper.cpp \
+    databaseworker.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -77,7 +79,9 @@ HEADERS  += mainwindow.h \
     ../dev_app/mhd_lib/inc/Uart_Port.h \
     fpjc.h \
     smallplate.h \
-    fpjwatchs.h
+    fpjwatchs.h \
+    sqlitehelper.h \
+    databaseworker.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \
