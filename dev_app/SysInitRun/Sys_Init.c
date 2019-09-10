@@ -74,7 +74,7 @@ int  mHD_Sys_Dev_Init(void)
    if(REMOTE433_ENABLE ==1)
    {
        mHD_Remote_433_Init(REMOTE433_UART,REMOTE433_BAUD);   //设置接收433MHz遥控器的串口,及通信波特率
-       mHD_Remote_433Dev_Set(REMOTE_SYS_SET );                                           //设置接收遥控器的类型
+       mHD_Remote_433Dev_Set(REMOTE_SYS_SET);                                           //设置接收遥控器的类型
        mHD_Remote_433Recv_CreatThread(); //创建线程接收遥控器数据
    }
        //初始化无线通讯2.4G接口

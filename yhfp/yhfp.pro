@@ -36,7 +36,6 @@ SOURCES += main.cpp\
     syscontroller.cpp \
     ../dev_app/mhd_lib/src/ComFun.c \
     ../dev_app/mhd_lib/src/CRC16.c \
-    ../dev_app/mhd_lib/src/DelayAndTiming.c \
     ../dev_app/mhd_lib/src/File_ReadandWrite.c \
     ../dev_app/mhd_lib/src/Mpu_gpio.c \
     ../dev_app/mhd_lib/src/Public_DataType.c \
@@ -70,7 +69,6 @@ HEADERS  += mainwindow.h \
     syscontroller.h \
     ../dev_app/mhd_lib/inc/ComFun.h \
     ../dev_app/mhd_lib/inc/CRC16.h \
-    ../dev_app/mhd_lib/inc/DelayAndTiming.h \
     ../dev_app/mhd_lib/inc/File_ReadandWrite.h \
     ../dev_app/mhd_lib/inc/mhd_lib.h \
     ../dev_app/mhd_lib/inc/Mpu_gpio.h \

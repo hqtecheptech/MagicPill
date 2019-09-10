@@ -5,6 +5,9 @@
  extern "C" {
 #endif /* __cplusplus */
 
+#include <stdint.h>
+
+
 
 
 

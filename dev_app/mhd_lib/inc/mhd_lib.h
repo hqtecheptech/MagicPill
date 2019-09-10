@@ -18,6 +18,7 @@
 #include "Public_DataType.h"
 #include "Share_Memory.h"
 #include "Uart_Port.h"
+#include "Dev_Fun.h"
 
 
 #ifdef __cplusplus

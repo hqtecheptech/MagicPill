@@ -122,26 +122,26 @@ int mHD_Remote_433Dev_Set(uint8_t dev)
     if(len <1) return FALSE;
 
     /* 打印设置数据*/
-//    int i;
-//    printf("Setting data= ");
-//    for(i=0;i<len;i++) {
-//        if(i !=len-1) printf("%X,",txbuf[i]);
-//        else printf("%X\n",txbuf[i]);
-//    }
+    int i;
+    printf("Setting data= ");
+    for(i=0;i<len;i++) {
+        if(i !=len-1) printf("%X,",txbuf[i]);
+        else printf("%X\n",txbuf[i]);
+    }
    /* 等待设置参数返回数据 */
-//    uint8_t rcv_buf[256];
-//    int rxlen =-1;
-//    while(rxlen<0) {
-//        rxlen = mHD_Uart_Recv(mHD_Rem433Data.fd, (char *)rcv_buf,sizeof(rcv_buf));
-//        if(rxlen>0) {
-//            //打印返回数据
-//            printf("Setting Retrun data= ");
-//            for(i=0;i<rxlen;i++) {
-//                if(i !=rxlen-1) printf("%X,",rcv_buf[i]);
-//                else printf("%X\n",rcv_buf[i]);
-//            }
-//        }
-//    }
+    uint8_t rcv_buf[256];
+    int rxlen =-1;
+    while(rxlen<0) {
+        rxlen = mHD_Uart_Recv(mHD_Rem433Port.fd, (char *)rcv_buf,sizeof(rcv_buf));
+        if(rxlen>0) {
+            //打印返回数据
+            printf("Setting Retrun data= ");
+            for(i=0;i<rxlen;i++) {
+                if(i !=rxlen-1) printf("%X,",rcv_buf[i]);
+                else printf("%X\n",rcv_buf[i]);
+            }
+        }
+    }
     /* 读取设置参赛 */
 //    txbuf[0] = txbuf[1] =txbuf[2] =0xC1;
 //    len = mHD_Uart_Send(mHD_Rem433Data.fd,(char *)txbuf,3);

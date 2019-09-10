@@ -149,6 +149,7 @@ int mHD_Keyboard_LEDRXData_AnalysisPoll(void)
                mHD_KBData.EnPort1Data = mHD_KBPort.Rxbuf[13];
                mHD_KBData.EnPort2Data = mHD_KBPort.Rxbuf[15];
                mHD_KBData.EnPort3Data = mHD_KBPort.Rxbuf[17];
+
                mHD_KBData.EnPort1Dir =  mHD_KBPort.Rxbuf[14];
                mHD_KBData.EnPort2Dir =  mHD_KBPort.Rxbuf[16];
                mHD_KBData.EnPort3Dir =  mHD_KBPort.Rxbuf[18];

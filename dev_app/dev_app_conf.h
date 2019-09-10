@@ -20,6 +20,21 @@
 #include "Local_app/MPU_GlobalData.h"
 #include "Local_app/Module_GlobalData.h"
 
+ /***设备名称定义***/
+//#define HQ_TEST_SYSTEM                  //测试系统
+
+#define HQ_HLXT                                 //混料系统
+//#define HQ_FPXT                                 //翻抛系统
+//#define HQ_CCXT                                 //除臭系统
+//#define HQ_FJXT                                   //发酵系统
+
+
+ /***项目名称定义***/
+ #define GSQY1_PROJECT                           //甘肃庆阳项目
+
+
+
+
 
 #define  REMOTE433_ENABLE      1                              //启用 遥控器功能
 #define  KEYLED_ENABLE              1                              //启用 按键面板功能
@@ -28,24 +43,22 @@
 
 #define KEYLED_BAUD                  115200                    //按键LED板串口2 通信波特率
 #define REMOTE433_BAUD          9600                        //无线遥控器连接的串口 4 通信波特率
+
 #define WIRELESS24_BAUD          115200                     //按键LED板串口2 通信波特率
 #define SYSTEM_MASTIMERM     100000                     //单位微妙
 #define MSG_MOD_TYPE              MSG_CTRSOFT        //设置本机类型
-#define REMOTE_SYS_SET            RATS62_FPXT          //设置遥控器类型
 
- /***设备名称定义***/
-#define HQ_TEST_SYSTEM                  //测试系统
-
-#define HQ_HLXT                                 //混料系统
-//#define HQ_FPXT                                 //翻抛系统
-//#define HQ_CCXT                                 //除臭系统
-//#define HQ_FJXT                                   //发酵系统
+#if defined HQ_FPXT
+#define REMOTE_SYS_SET             RATS62_FPXT          //设置遥控器类型 翻抛机
+#elif defined HQ_HLXT
+#define REMOTE_SYS_SET              RATS62_HLXT         //混料系统
+#endif
 
 
 
 
- /***项目名称定义***/
- #define GSQY1_PROJECT                           //甘肃庆阳项目
+
+
 
 
 
