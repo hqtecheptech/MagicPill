@@ -1,7 +1,9 @@
 #include "datareceiver.h"
 #include "data.h"
 #include "dataformat.h"
+#include "global.h"
 #include <QDataStream>
+#include <QVector>
 
 DataReceiver::DataReceiver(QObject *parent) : QObject(parent)
 {
@@ -58,19 +60,63 @@ void DataReceiver::dataReceive()
     memcpy(&bDevice,sDataWithoutCRC,sizeof(StreamPack));
 
     qDebug() << "Data receive success!";
-
-    QByteArray strArray = sDataWithoutCRC.mid(sizeof(StreamPack), bDevice.bDataLength);
-
     qDebug() << "Data type" << DataType(bDevice.bDataType);
 
-    qDebug() << "Data content" << strArray;
+    if(bDevice.bCommandType == W_Send_Control)
+    {
+        QByteArray byteValues = sDataWithoutCRC.mid(sizeof(bDevice), sDataWithoutCRC.length() - sizeof(bDevice) - 4);
+        bool value = QVariant(byteValues).toBool();
+    }
+
+    /*
+    QByteArray byteValues = sDataWithoutCRC.mid(sizeof(bDevice), sDataWithoutCRC.length() - sizeof(bDevice) - 4 * bDevice.bDataLength);
+    QString strValues(byteValues);
+    QStringList strValueList = strValues.split(",");
+    QVector<QString> strArray = strValueList.toVector();
+
+    byteValues = sDataWithoutCRC.mid(sDataWithoutCRC.length() - 4 * bDevice.bDataLength, 4 * bDevice.bDataLength);
+
+    QMap<float,QString> dataMap;
+    QVector<float> addressArray;
+
+    for(quint16 i=0; i<bDevice.bDataLength; ++i)
+    {
+        QByteArray value = byteValues.mid(i*4,4);
+        float temp = 0;
+        memcpy(&temp,value,4);
+        addressArray.append(temp);
+        dataMap.insert(temp,strArray[i]);
+    }
+
+    int startIndex = Global::getYhcDeviceStartIndex(bDevice.bDeviceId, bDevice.bDeviceGroup);
+
+    if(startIndex >=0)
+    {
+        QSet<int> changedDeviceSet;
+        foreach(float address, addressArray)
+        {
+            if(address < Global::yhcDeviceInfo.Runctr_Address)
+            {
+                changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByAddress(address));
+            }
+            else
+            {
+                changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByRunctrAddress(address));
+            }
+        }
+
+        emit dataChanged(changedDeviceSet, dataMap);
+    }
+    */
+
+    /*qDebug() << "Data content" << strArray;
 
     if(strArray.length() > 0)
     {
         int strleng = strArray.length();
         QString str = strArray.mid(4, strArray.length()-4);
         qDebug() << "login name: " << str;
-    }
+    }*/
 
     clear();
 

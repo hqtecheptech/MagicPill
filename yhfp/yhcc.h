@@ -4,9 +4,10 @@
 #include <QDialog>
 #include <QTimer>
 #include <QTime>
-#include "syscontroller.h"
 
+#include "syscontroller.h"
 #include "data.h"
+#include "databaseworker.h"
 
 namespace Ui {
 class Yhcc;
@@ -45,6 +46,8 @@ private slots:
 
     void on_speedDownButton_clicked();
 
+    void on_speedUpButton_clicked();
+
 protected:
     void showEvent(QShowEvent *);
     void closeEvent(QCloseEvent *);
@@ -53,6 +56,7 @@ signals:
     void checkNetState(QString type);
     void pollingDatas();
     void requestControl();
+    void histDataReady(HistData data);
 
 public slots:
     void updateUI();
@@ -65,6 +69,8 @@ private:
 
     QThread netManageThread;
     NetStateManageWorker* nsmWorker;
+    QThread dbThread;
+    DatabaseWorker* dbWorker;
     QTimer* checkNetStateTimer;
     QTimer* testTimer;
     QTime st;

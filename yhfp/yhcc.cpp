@@ -16,7 +16,8 @@ Yhcc::Yhcc(QWidget *parent) :
 
     st.start();
 
-    qRegisterMetaType<Plc_Db>("Hq_Plc_Db");
+    qRegisterMetaType<Plc_Db>("Plc_Db");
+    qRegisterMetaType<HistData>("HistData");
 
     QString eixtStyleStr="QPushButton#yhcExitButton{background: transparent; background-image: url(:/pic/退出.png);}"
                          "QPushButton#yhcExitButton:hover{background: transparent; background-image: url(:/pic/退出.png);}"
@@ -55,6 +56,12 @@ Yhcc::Yhcc(QWidget *parent) :
         connect(controller, &Syscontroller::plcDbUpdated, this, &Yhcc::handlePlcDataUpdate);
         connect(this, SIGNAL(requestControl()), controller, SLOT(applyControlRequest()));
     }
+
+    dbWorker = new DatabaseWorker;
+    dbWorker->moveToThread(&dbThread);
+    connect(&dbThread, &QThread::finished, dbWorker, &QObject::deleteLater);
+    connect(this, SIGNAL(histDataReady(HistData)), dbWorker, SLOT(saveHistData(HistData)));
+    dbThread.start();
 }
 
 Yhcc::~Yhcc()
@@ -299,4 +306,20 @@ void Yhcc::on_speedDownButton_clicked()
 {
     controller->yhcSpeedUp(deviceIndex, 1);
     //emit requestControl();
+}
+
+void Yhcc::on_speedUpButton_clicked()
+{
+    HistData data;
+    data.address = 20;
+    strcpy(data.dataType, QString("r").toLatin1().data());
+    data.deviceGroup = 0;
+    data.deviceId = 6;
+    data.deviceIndex = 1;
+    data.index = 10;
+    strcpy(data.insertTime, QString("2019:09:10 12:24:36").toLatin1().data());
+    strcpy(data.name, QString("Pressure").toLatin1().data());
+    strcpy(data.value, QString("56.8").toLatin1().data());
+
+    emit histDataReady(data);
 }

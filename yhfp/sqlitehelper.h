@@ -19,6 +19,9 @@ private:
     QString _password;
 
     sqlite3 *db = NULL;
+    static int counts;
+    static int select_all_callback(void * data, int col_count, char ** col_values, char ** col_Name);
+    static int select_counts_callback(void * data, int col_count, char ** col_values, char ** col_Name);
 };
 
 #endif // SQLITEHELPER_H

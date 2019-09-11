@@ -16,7 +16,7 @@ PlcDataManageWorker::PlcDataManageWorker(QObject *parent) : QObject(parent)
     key_t semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
     yhcDbSh = new ShareHelper(shareKey, semKey);
 
-    qRegisterMetaType<Plc_Db>("Hq_Plc_Db");
+    qRegisterMetaType<Plc_Db>("Plc_Db");
 }
 
 PlcDataManageWorker::~PlcDataManageWorker()
@@ -193,7 +193,7 @@ void PlcDataManageWorker::sendPlcdataToServer(const Plc_Db data)
     uint stime =currentdt.toTime_t();
     uint etime =currentdt.toTime_t();
 
-    bpack = {sizeof(StreamPack),6,0,w_Update_Plcdata,yhfpsw,0,0,sizeof(Plc_Db),0,stime,etime};
+    bpack = {sizeof(StreamPack),6,0,W_Update_PlcData,yhfpsw,0,0,sizeof(Plc_Db),0,stime,etime};
     bpack.bStreamLength += sizeof(Plc_Db) + 4;
 
     QByteArray allPackData, SData, crcData;

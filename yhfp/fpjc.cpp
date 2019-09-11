@@ -16,7 +16,7 @@ Fpjc::Fpjc(QWidget *parent) :
 
     st.start();
 
-    qRegisterMetaType<Plc_Db>("Hq_Plc_Db");
+    qRegisterMetaType<Plc_Db>("Plc_Db");
 
     QString eixtStyleStr="QPushButton#yhcExitButton{background: transparent; background-image: url(:/pic/退出.png);}"
                          "QPushButton#yhcExitButton:hover{background: transparent; background-image: url(:/pic/退出.png);}"

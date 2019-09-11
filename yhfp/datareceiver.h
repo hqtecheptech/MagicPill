@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QTcpSocket>
+#include <QSet>
+#include <QMap>
 
 class DataReceiver : public QObject
 {
@@ -17,6 +19,9 @@ signals:
 
 public slots:
     void dataReceive();
+
+signals:
+    void dataChanged(QSet<int>, QMap<float,QString> dataMap);
 
 private:
     QTcpSocket* _tcpSocket;

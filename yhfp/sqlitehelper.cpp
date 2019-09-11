@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <iostream>
 
-static int select_callback(void * data, int col_count, char ** col_values, char ** col_Name)
+int SQLiteHelper::counts;
+
+int SQLiteHelper::select_all_callback(void * data, int col_count, char ** col_values, char ** col_Name)
 {
     // 每条记录回调一次该函数,有多少条就回调多少次
     int i;
@@ -12,6 +14,16 @@ static int select_callback(void * data, int col_count, char ** col_values, char 
         //printf( "%s = %s\n", col_Name[i], col_values[i] == 0 ? "NULL" : col_values[i] );
         sprintf( s, "%s = %s", col_Name[i], col_values[i] == 0 ? "NULL" : col_values[i] );
         qDebug() << s;
+    }
+
+    return 0;
+}
+
+int SQLiteHelper::select_counts_callback(void *data, int col_count, char **col_values, char **col_Name)
+{
+    if(col_count == 1 && QString(col_Name[0]) == "counts")
+    {
+        counts = QString(col_values[0]).toInt();
     }
 
     return 0;
@@ -109,6 +121,14 @@ bool SQLiteHelper::exec(QString dbName, QString tableName, QString strQuery)
         rc = sqlite3_exec(db, sql, 0, 0, &zErrMsg);
         if(rc == SQLITE_OK)
         {
+            sql = "select count(*) counts from " + bb + ";";
+            sqlite3_exec(db, sql, select_counts_callback, 0, &zErrMsg);
+            qDebug() << "Records number : " << counts;
+            if(counts > 1000)
+            {
+
+            }
+
             //sql = "insert into hist1 ([histId],[value]) values (null, 20);";
             sql = bc.data();
             rc = sqlite3_exec(db, sql, 0, 0, &zErrMsg);
@@ -124,8 +144,8 @@ bool SQLiteHelper::exec(QString dbName, QString tableName, QString strQuery)
                 ret = true;
             }
 
-            sql = "select * from " + bb + ";";
-            rc = sqlite3_exec(db, sql, select_callback, 0, &zErrMsg);
+            /*sql = "select * from " + bb + ";";
+            rc = sqlite3_exec(db, sql, select_all_callback, 0, &zErrMsg);
             if(rc != SQLITE_OK)
             {
                 qDebug() << "In select " + bb + " table: " << zErrMsg;
@@ -136,7 +156,7 @@ bool SQLiteHelper::exec(QString dbName, QString tableName, QString strQuery)
             {
                 qDebug() << "select " + bb + " ok";
                 ret = true;
-            }
+            }*/
         }
         else
         {
