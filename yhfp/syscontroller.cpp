@@ -39,7 +39,7 @@ Syscontroller::Syscontroller(QObject *parent) : QObject(parent)
     shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
     semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
     msgKey = ShareHelper::GenKey(msgPath.toLatin1(), msgId);
-    dbShare = new ShareHelper(shareKey, semKey);
+    yhcDbShare = new ShareHelper(shareKey, semKey);
 
     sharePath = Global::systemConfig.yhcControlSharePath;
     shareId = Global::systemConfig.yhcControlShareKey;
@@ -60,14 +60,13 @@ Syscontroller::Syscontroller(QObject *parent) : QObject(parent)
     pdmWorker->moveToThread(&plcdataManageThread);
     connect(&plcdataManageThread, &QThread::finished, pdmWorker, &QObject::deleteLater);
     connect(this, SIGNAL(pollingDatas()), pdmWorker, SLOT(getSharedDatas()));
-    connect(pdmWorker, &PlcDataManageWorker::plcDbUpdated, this, &Syscontroller::handlePlcDbUpdated, Qt::QueuedConnection);
+    connect(pdmWorker, &PlcDataManageWorker::plcDbUpdated, this, &Syscontroller::handleYhcPlcDbUpdated, Qt::QueuedConnection);
     plcdataManageThread.start();
 
     updateStatusTimer = new QTimer(this);
     connect( updateStatusTimer, SIGNAL(timeout()), this, SLOT(updateSysStatus()) );
     updateStatusTimer->start(1000);
 }
-
 
 Syscontroller *Syscontroller::getInstance()
 {
@@ -90,7 +89,7 @@ ControllerInfo Syscontroller::getControllerStatus()
 Plc_Db Syscontroller::getPlcDataDb()
 {
     Plc_Db data;
-    dbShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
+    yhcDbShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
     return data;
 }
 
@@ -109,13 +108,13 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
     int index = Global::convertYhcAddressToIndex(address, "r");
 
     Plc_Db db;
-    dbShare->LockShare();
+    yhcDbShare->LockShare();
     yhcCtrlShare->LockShare();
-    dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+    yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     db.f_data[index] = db.f_data[index] + value;
     yhcCtrlShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     yhcCtrlShare->UnlockShare();
-    dbShare->UnlockShare();
+    yhcDbShare->UnlockShare();
 
     applyControlRequest();
 }
@@ -185,7 +184,7 @@ void Syscontroller::updateSysStatus()
     }
 }
 
-void Syscontroller::handlePlcDbUpdated(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
+void Syscontroller::handleYhcPlcDbUpdated(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
 {
     emit plcDbUpdated(changedDeviceSet, dataMap);
 }
@@ -194,11 +193,62 @@ void Syscontroller::applyControlRequest()
 {
     Plc_Db data;
     yhcCtrlShare->LockShare();
-    dbShare->LockShare();
+    yhcDbShare->LockShare();
     yhcCtrlShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
-    dbShare->SetSharedMemory((void*)&data, sizeof(Plc_Db));
-    dbShare->UnlockShare();
+    yhcDbShare->SetSharedMemory((void*)&data, sizeof(Plc_Db));
+    yhcDbShare->UnlockShare();
     yhcCtrlShare->UnlockShare();
+}
+
+void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
+{
+    Plc_Db db;
+    switch (pack.bDeviceId) {
+    case YHC:
+        yhcDbShare->LockShare();
+        yhcCtrlShare->LockShare();
+        yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+        resetControlShare(pack.bDataType, dataMap, &db);
+        yhcCtrlShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+        yhcCtrlShare->UnlockShare();
+        yhcDbShare->UnlockShare();
+        //Remove after test.
+        applyControlRequest();
+        break;
+    case FER:
+        break;
+    default:
+        break;
+    }
+}
+
+void Syscontroller::resetControlShare(int dataType, QMap<float, QString> controlData, Plc_Db* controlDb)
+{
+    switch (dataType) {
+    case Bool:
+        foreach(float address, controlData.keys())
+        {
+            int index = Global::convertYhcAddressToIndex(address, "x0");
+            if(controlData.value(address) == "1")
+            {
+               controlDb->b_data[index] = true;
+            }
+            else
+            {
+               controlDb->b_data[index] = false;
+            }
+        }
+        break;
+    case Float:
+        foreach(float address, controlData.keys())
+        {
+            int index = Global::convertYhcAddressToIndex(address, "r");
+            controlDb->f_data[index] = controlData.value(address).toFloat();
+        }
+        break;
+    default:
+        break;
+    }
 }
 
 Syscontroller* Syscontroller::instance = Q_NULLPTR;

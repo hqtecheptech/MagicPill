@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <QMutex>
 #include <QThread>
+#include <QSet>
+#include <QMap>
 #include "netstatemanageworker.h"
 #include "plcdatamanageworker.h"
 #include "data.h"
@@ -30,19 +32,22 @@ signals:
 
 public slots:
     void updateSysStatus();
-    void handlePlcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
+    void handleYhcPlcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
     void applyControlRequest();
+    void handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet, QMap<float, QString> dataMap);
 
 private:
     Syscontroller(QObject *parent = 0);
     static Syscontroller* instance;
     static QMutex* mutex;
     QTimer *updateStatusTimer;
-    ShareHelper *ctrlShare, *dbShare, *yhcCtrlShare;
+    ShareHelper *ctrlShare, *yhcDbShare, *yhcCtrlShare;
     ControllerInfo ctrlInfo;
     Plc_Db plcDataDb, plcControlDb;
     QThread plcdataManageThread;
     PlcDataManageWorker* pdmWorker;
+
+    void resetControlShare(int dataType, QMap<float, QString> controlData, Plc_Db* controlDb);
 };
 
 #endif // SYSCONTROLLER_H

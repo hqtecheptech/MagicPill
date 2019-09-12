@@ -28,6 +28,16 @@
 
 #define MODEL_COLUMNS       21    //槽数据列
 
+enum DeviceIdType {
+    FER = 1,
+    DEO,
+    FAN_VALVE,
+    FAN,
+    MIX,
+    YHC,
+    FPJ
+};
+
 enum msgname {
     fjsw  =  7,
     yhfpsw

@@ -1,9 +1,8 @@
 #include "datareceiver.h"
-#include "data.h"
-#include "dataformat.h"
 #include "global.h"
 #include <QDataStream>
 #include <QVector>
+#include <QVariant>
 
 DataReceiver::DataReceiver(QObject *parent) : QObject(parent)
 {
@@ -16,6 +15,10 @@ DataReceiver::DataReceiver(QTcpSocket *tcpSocket, QObject *parent)
     connect(_tcpSocket,SIGNAL(readyRead()),this,SLOT(dataReceive()));
     connect(_tcpSocket, &QAbstractSocket::disconnected, _tcpSocket, &QObject::deleteLater);
     qDebug() << "New tcpsocket: " << tcpSocket->socketDescriptor();
+
+    controller = Syscontroller::getInstance();
+    connect(this, SIGNAL(dataChanged(StreamPack,QSet<int>,QMap<float,QString>)),
+            controller, SLOT(handlePlcControl(StreamPack,QSet<int>,QMap<float,QString>)));
 }
 
 DataReceiver::~DataReceiver()
@@ -64,8 +67,68 @@ void DataReceiver::dataReceive()
 
     if(bDevice.bCommandType == W_Send_Control)
     {
-        QByteArray byteValues = sDataWithoutCRC.mid(sizeof(bDevice), sDataWithoutCRC.length() - sizeof(bDevice) - 4);
-        bool value = QVariant(byteValues).toBool();
+        QByteArray byteAdress, byteValues;
+        QMap<float,QString> dataMap;
+
+        if(bDevice.bDataType == Bool)
+        {
+            byteValues = sDataWithoutCRC.mid(sizeof(bDevice), sDataWithoutCRC.length() - sizeof(bDevice));
+            float address = float(bDevice.bIndex) / 10.0 + (float)bDevice.bAddress ;
+
+            if(byteValues.at(0) == 0x01)
+            {
+                dataMap.insert(address, QString::number(true));
+            }
+            else
+            {
+                dataMap.insert(address, QString::number(false));
+            }
+        }
+        else if(bDevice.bDataType == Float)
+        {
+            byteAdress = sDataWithoutCRC.mid(sizeof(bDevice), sDataWithoutCRC.length() - sizeof(bDevice)
+                                             - bDevice.bDataLength * 4);
+            byteValues = sDataWithoutCRC.mid(sDataWithoutCRC.length() - 4 * bDevice.bDataLength, 4 * bDevice.bDataLength);
+
+            for(quint16 i=0; i<bDevice.bDataLength; ++i)
+            {
+                QByteArray bytes = byteAdress.mid(i*2,2);
+                ushort address = 0;
+                memcpy(&address,bytes,2);
+                bytes = byteValues.mid(i*4,4);
+                float value = 0;
+                memcpy(&value,bytes,4);
+                dataMap.insert((float)address, QString::number(value));
+            }
+        }
+
+        int startIndex = -1;
+
+        switch (bDevice.bDeviceId) {
+        case YHC:
+            startIndex = Global::getYhcDeviceStartIndex(bDevice.bDeviceId, bDevice.bDeviceGroup);
+            break;
+        default:
+            break;
+        }
+
+        if(startIndex >=0)
+        {
+            QSet<int> changedDeviceSet;
+            foreach(float address, dataMap.keys())
+            {
+                if(address < Global::yhcDeviceInfo.Runctr_Address)
+                {
+                    changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByAddress(address));
+                }
+                else
+                {
+                    changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByRunctrAddress(address));
+                }
+            }
+
+            emit dataChanged(bDevice, changedDeviceSet, dataMap);
+        }
     }
 
     /*

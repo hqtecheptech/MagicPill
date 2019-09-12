@@ -1468,7 +1468,7 @@ int Global::convertYhcAddressToIndex(float address, QString type)
     int start = getYhcDataStartByType(type);
     if(type != "x0")
     {
-        return (int)address - start;
+        return ((int)address - start) / (int)getLengthByDataType(type);
     }
     else
     {
