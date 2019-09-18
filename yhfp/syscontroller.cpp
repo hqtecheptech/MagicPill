@@ -65,7 +65,7 @@ Syscontroller::Syscontroller(QObject *parent) : QObject(parent)
 
     updateStatusTimer = new QTimer(this);
     connect( updateStatusTimer, SIGNAL(timeout()), this, SLOT(updateSysStatus()) );
-    updateStatusTimer->start(1000);
+    updateStatusTimer->start(2000);
 }
 
 Syscontroller *Syscontroller::getInstance()
@@ -128,7 +128,42 @@ Syscontroller::~Syscontroller()
 
 void Syscontroller::updateSysStatus()
 {
+    //Start test
+    Plc_Db db;
+    yhcDbShare->LockShare();
+    yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+
+    qsrand(time(NULL));
+    int rs = qrand() % 20 + 5;
+    int prs = qrand() % 20 + 5;
+    //ui->widget_2->updateUI(rs, prs);
+
+    int leftValue = qrand() % 400 + 100;
+    int rightValue = qrand() % 400 + 100;
+    //ui->yhcWatchsWidget->updateDydl(leftValue, rightValue);
+
+    leftValue = qrand() % 120 - 30;
+    rightValue = qrand() % 1000 + 300;
+    //ui->yhcWatchsWidget->updateWdyw(leftValue, rightValue);
+
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(0);
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("RevolvingSpeed");
+    float address = deviceNode.Offset + (info.offset + 0 - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    db.f_data[index] = (float)rs;
+
+    deviceNode = Global::getYhcNodeInfoByName("Ampere1");
+    address = deviceNode.Offset + (info.offset + 0 - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    db.f_data[index] = (float)prs;
+
+    yhcDbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+    yhcDbShare->UnlockShare();
+
     emit pollingDatas();
+
+    //End test
+
 
     int pid;
     int cmd;

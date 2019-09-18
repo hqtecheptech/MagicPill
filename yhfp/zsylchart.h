@@ -38,19 +38,21 @@ private slots:
     void resetChart();
 
 public slots:
-    void updateUI(int newValue);
+    void updateUI(int rsValue, int prsValue);
 
 private:
     Ui::ZsylChart *ui;
 
     QChartView *chartView;
     QChart *chart;
-    QLineSeries *series;
+    QLineSeries *rsSeries;
+    QLineSeries *prsSeries;
     QValueAxis *axisY;
     QValueAxis *axisX;
     bool resetChartSuccess;
     int serieValuesCount = 0;
-    int values[15];
+    int rsValues[15];
+    int prsValues[15];
 };
 
 #endif // ZSYLCHART_H

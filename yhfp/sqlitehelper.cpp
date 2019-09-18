@@ -93,6 +93,9 @@ bool SQLiteHelper::createTable(QString dbName, QString tableName, QString tableS
             ret = true;
         }
     }
+
+    sqlite3_close(db);
+
     return ret;
 }
 
@@ -124,6 +127,8 @@ bool SQLiteHelper::exec(QString dbName, QString tableName, QString strQuery)
             sql = "select count(*) counts from " + bb + ";";
             sqlite3_exec(db, sql, select_counts_callback, 0, &zErrMsg);
             qDebug() << "Records number : " << counts;
+
+            // To do:
             if(counts > 1000)
             {
 
@@ -165,5 +170,8 @@ bool SQLiteHelper::exec(QString dbName, QString tableName, QString strQuery)
             ret = false;
         }
     }
+
+    sqlite3_close(db);
+
     return true;
 }

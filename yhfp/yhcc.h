@@ -8,6 +8,7 @@
 #include "syscontroller.h"
 #include "data.h"
 #include "databaseworker.h"
+#include "dataformat.h"
 
 namespace Ui {
 class Yhcc;
@@ -55,14 +56,13 @@ protected:
 signals:
     void checkNetState(QString type);
     void pollingDatas();
-    void requestControl();
     void histDataReady(HistData data);
 
 public slots:
-    void updateUI();
     void handleControllerResult();
     void handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
     void wirteTestData();
+    void updateWatchs();
 
 private:
     Ui::Yhcc *ui;
@@ -73,6 +73,7 @@ private:
     DatabaseWorker* dbWorker;
     QTimer* checkNetStateTimer;
     QTimer* testTimer;
+    QTimer* updateWatchsTimer;
     QTime st;
     int uca = 0;
     Syscontroller* controller;

@@ -6,6 +6,10 @@
         <node id="6" name="Pressure" cname="油缸压力" length="1" offset="1" diff="0.5"/>
         <node id="6" name="Tempture" cname="油缸温度" length="1" offset="2" diff="0.5"/>
         <node id="6" name="Level" cname="液油高度" length="1" offset="3" diff="0.5"/>
+        <node id="6" name="RevolvingSpeed" cname="转速" length="1" offset="3" diff="0.5"/>
+        <node id="6" name="Ampere1" cname="电流1" length="1" offset="3" diff="0.5"/>
+        <node id="6" name="Voltage" cname="电压" length="1" offset="3" diff="0.5"/>
+        <node id="6" name="Ampere2" cname="电流2" length="1" offset="3" diff="0.5"/>
     </area>
     <area name="YHC_SETTING" datatype="dw" start="1600" diff="0.5">
         <node id="6" name="FER_TIME_1_SET_UDI" cname="第一阶段时间设定" length="1" offset="800" diff="0"/>
