@@ -9,6 +9,7 @@
 #include "data.h"
 #include "databaseworker.h"
 #include "dataformat.h"
+#include "historydlg.h"
 
 namespace Ui {
 class Yhcc;
@@ -49,6 +50,8 @@ private slots:
 
     void on_speedUpButton_clicked();
 
+    void on_historyButton_clicked();
+
 protected:
     void showEvent(QShowEvent *);
     void closeEvent(QCloseEvent *);
@@ -67,6 +70,7 @@ public slots:
 private:
     Ui::Yhcc *ui;
 
+    HistoryDlg hisDlg;
     QThread netManageThread;
     NetStateManageWorker* nsmWorker;
     QThread dbThread;

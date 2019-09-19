@@ -32,9 +32,7 @@ protected:
 
 private slots:
     void showRealTime(QByteArray);
-    //void getRealTimeData();
-    void showAllData(QByteArray);
-    //void getAllData();
+    void showAllData();
     void resetChart();
 
 public slots:

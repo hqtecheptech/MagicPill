@@ -199,7 +199,7 @@ void Yhcc::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> d
 
 void Yhcc::wirteTestData()
 {
-    controller->yhcSpeedUp(deviceIndex, 5);
+    //controller->yhcSpeedUp(deviceIndex, 5);
 }
 
 void Yhcc::updateWatchs()
@@ -217,29 +217,16 @@ void Yhcc::updateWatchs()
     rightValue = qrand() % 1000 + 300;
     ui->yhcWatchsWidget->updateWdyw(leftValue, rightValue);
 
+    QDateTime currentdt = QDateTime::currentDateTime();
+    uint stime =currentdt.toTime_t();
+    HistData data;
+
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
     ui->test_label->setText(Global::currentYhcDataMap[address]);
 
-    deviceNode = Global::getYhcNodeInfoByName("RevolvingSpeed");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
-    int rs = Global::currentYhcDataMap[address].toFloat();
-
-    deviceNode = Global::getYhcNodeInfoByName("Ampere1");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
-    int prs = Global::currentYhcDataMap[address].toFloat();
-
-    ui->widget_2->updateUI(rs, prs);
-
-
-    QDateTime currentdt = QDateTime::currentDateTime();
-    uint stime =currentdt.toTime_t();
-
-    HistData data;
     data.address = address;
     strcpy(data.dataType, deviceNode.Name.toLatin1().data());
     data.deviceGroup = info.groupId;
@@ -249,8 +236,41 @@ void Yhcc::updateWatchs()
     strcpy(data.insertTime, QString::number(stime).toLatin1().data());
     strcpy(data.name, QString("Speed").toLatin1().data());
     strcpy(data.value, Global::currentYhcDataMap[address].toLatin1().data());
-
     emit histDataReady(data);
+
+    deviceNode = Global::getYhcNodeInfoByName("RevolvingSpeed");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    int rs = Global::currentYhcDataMap[address].toFloat();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.Name.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.deviceIndex = index;
+    data.index = 10;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("RevolvingSpeed").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap[address].toLatin1().data());
+    emit histDataReady(data);
+
+    deviceNode = Global::getYhcNodeInfoByName("Ampere1");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    int prs = Global::currentYhcDataMap[address].toFloat();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.Name.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.deviceIndex = index;
+    data.index = 10;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("Ampere1").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap[address].toLatin1().data());
+    emit histDataReady(data);
+
+    ui->widget_2->updateUI(rs, prs);
 }
 
 void Yhcc::parseYhcData(QMap<float, QString> dataMap)
@@ -285,4 +305,9 @@ void Yhcc::on_speedDownButton_clicked()
 void Yhcc::on_speedUpButton_clicked()
 {
     controller->yhcSpeedUp(deviceIndex, 1);
+}
+
+void Yhcc::on_historyButton_clicked()
+{
+    hisDlg.show();
 }

@@ -40,7 +40,7 @@ void DatabaseWorker::saveHistData(HistData hist)
                      ", [dataType], [address], [value], [index], [insertTime]) values "
                      "(null, 6, 0, 1, 'Speed', 'di', 16, '0.6', 20, '1546393448');";*/
 
-    bool result = dbHelper.exec(db, table, strSql);
+    bool result = dbHelper.insert(db, table, strSql);
     if(result)
     {
         qDebug() << "mission completed !";

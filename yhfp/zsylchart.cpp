@@ -18,8 +18,7 @@ ZsylChart::ZsylChart(QWidget *parent) :
     chartView->setChart(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
 
-    QByteArray data;
-    showAllData(data);
+    showAllData();
 
     //ui->horizontalLayout->addWidget(chartView);
     //ui->horizontalLayout->setAlignment(chartView, Qt::AlignCenter);
@@ -45,7 +44,7 @@ void ZsylChart::showRealTime(QByteArray)
 
 }
 
-void ZsylChart::showAllData(QByteArray data)
+void ZsylChart::showAllData()
 {
     rsSeries = new QLineSeries();
     rsSeries->setPen(QPen(Qt::green,2,Qt::SolidLine));
