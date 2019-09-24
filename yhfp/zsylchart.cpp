@@ -113,7 +113,7 @@ void ZsylChart::updateUI(int rsValue, int prsValue)
 {
     serieValuesCount++;
 
-    if(serieValuesCount < 15)
+    if(serieValuesCount < CP)
     {
         rsValues[serieValuesCount] = rsValue;
         *rsSeries << QPoint(serieValuesCount, rsValue);
@@ -123,13 +123,13 @@ void ZsylChart::updateUI(int rsValue, int prsValue)
     }
     else
     {
-        for(int i=0; i < 14; i++)
+        for(int i=0; i < CP-1; i++)
         {
             rsValues[i] = rsValues[i+1];
             prsValues[i] = prsValues[i+1];
         }
-        rsValues[14] = rsValue;
-        prsValues[14] = prsValue;
+        rsValues[CP-1] = rsValue;
+        prsValues[CP-1] = prsValue;
 
         rsSeries->clear();
         chart->removeSeries(rsSeries);
@@ -137,12 +137,24 @@ void ZsylChart::updateUI(int rsValue, int prsValue)
         prsSeries->clear();
         chart->removeSeries(prsSeries);
 
-        for(int j=0; j < 15; j++)
+        for(int j=0; j < CP; j++)
         {
             *rsSeries << QPoint(j, rsValues[j]);
             *prsSeries << QPoint(j, prsValues[j]);
         }
         chart->addSeries(rsSeries);
         chart->addSeries(prsSeries);
+
+        // Keep chart style.
+        chart->setAxisX(axisX, rsSeries);
+        chart->setAxisY(axisY, rsSeries);
+
+        chart->setAxisX(axisX, prsSeries);
+        chart->setAxisY(axisY, prsSeries);
+
+        chart->axisX()->hide();
+        chart->axisY()->hide();
+
+        chart->setBackgroundVisible(false);
     }
 }

@@ -11,6 +11,11 @@
 //SIGRTMIN = 34
 //SIGRTMAX = 64
  //SIGINT
+
+// History chart figure
+#define CP 30
+#define CV 15
+
 #define SIGFRPU     SIGRTMIN+1   //来自PRU的数据更新信号
 #define SIGTRPU     SIGRTMIN+2   //发送给PRU的数据更新信号
 

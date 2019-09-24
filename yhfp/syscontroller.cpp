@@ -102,11 +102,14 @@ void Syscontroller::setPlcControlDb(Plc_Db data)
 
 void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
 {
+    qDebug() << "Start Press Speed Up!";
+
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertYhcAddressToIndex(address, "r");
 
+    qDebug() << "handle Press Speed Up!";
     Plc_Db db;
     yhcDbShare->LockShare();
     yhcCtrlShare->LockShare();
@@ -117,6 +120,8 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
     yhcDbShare->UnlockShare();
 
     applyControlRequest();
+
+    qDebug() << "Press Speed Up!";
 }
 
 Syscontroller::~Syscontroller()

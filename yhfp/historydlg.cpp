@@ -9,9 +9,14 @@ HistoryDlg::HistoryDlg(QWidget *parent) :
     ui(new Ui::HistoryDlg)
 {
     ui->setupUi(this);
+    setWindowTitle("历史记录");
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
 
     ui->preButton->setEnabled(false);
     ui->nextButton->setEnabled(false);
+
+    //Set dialog style.
+    ui->bg_frame->setStyleSheet("QFrame#bg_frame{ border-image: url(:/pic/comm_bg.png); border:none; border-radius:5px; }");
 }
 
 HistoryDlg::~HistoryDlg()
@@ -30,10 +35,13 @@ void HistoryDlg::on_oneButton_clicked()
     ampere1Values = SQLiteHelper::Results;
     qDebug() << "Ampere1 values counts: " << ampere1Values.length();
 
-    if(ampere1Values.length() > 0)
+    ui->preButton->setEnabled(false);
+    ui->nextButton->setEnabled(false);
+
+    if(ampere1Values.length() > CP)
     {
-        pages = (int)ceil((float)ampere1Values.length() / 15.0);
-        currentPage = 1;
+        pages = (int)floor((float)ampere1Values.length() / (float)CP);
+        currentPage = 0;
 
         if(currentPage < pages)
         {
@@ -45,12 +53,9 @@ void HistoryDlg::on_oneButton_clicked()
             ui->nextButton->setEnabled(false);
         }
 
-        if(ampere1Values.length() > 15)
+        for(int i=CP-1; i >= 0; i--)
         {
-            for(int i=14; i >= 0; i--)
-            {
-                ui->widget->updateUI(ampere1Values.at(i).toInt(), 0);
-            }
+            ui->widget->updateUI(0, ampere1Values.at(i).toInt());
         }
     }
 }
@@ -58,13 +63,14 @@ void HistoryDlg::on_oneButton_clicked()
 void HistoryDlg::on_preButton_clicked()
 {
     currentPage -= 1;
+    qDebug() << "current page:" << currentPage;
 
-    for(int i=14; i >= 0; i--)
+    for(int i=CP-1; i >= 0; i--)
     {
-        ui->widget->updateUI(ampere1Values.at(currentPage*15 + i).toInt(), 0);
+        ui->widget->updateUI(0, ampere1Values.at(currentPage*CP + i).toInt());
     }
 
-    if(currentPage == 1)
+    if(currentPage == 0)
     {
         ui->preButton->setEnabled(false);
     }
@@ -78,10 +84,18 @@ void HistoryDlg::on_preButton_clicked()
 void HistoryDlg::on_nextButton_clicked()
 {
     currentPage += 1;
+    qDebug() << "current page:" << currentPage;
 
-    for(int i=14; i >= 0; i--)
+    for(int i=CP-1; i >= 0; i--)
     {
-        ui->widget->updateUI(ampere1Values.at(currentPage*15 + i).toInt(), 0);
+        if((currentPage*CP + i) < ampere1Values.length())
+        {
+            ui->widget->updateUI(0, ampere1Values.at(currentPage*CP + i).toInt());
+        }
+        else
+        {
+            ui->widget->updateUI(0, CV);
+        }
     }
 
     if(currentPage == pages)
@@ -93,4 +107,9 @@ void HistoryDlg::on_nextButton_clicked()
     {
         ui->preButton->setEnabled(true);
     }
+}
+
+void HistoryDlg::on_closeButton_clicked()
+{
+    close();
 }

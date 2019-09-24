@@ -3,8 +3,8 @@
 
 #include <QDialog>
 #include <QVector>
-
 #include "sqlitehelper.h"
+#include "data.h"
 
 namespace Ui {
 class HistoryDlg;
@@ -25,12 +25,15 @@ private slots:
 
     void on_nextButton_clicked();
 
+    void on_closeButton_clicked();
+
 private:
     Ui::HistoryDlg *ui;
 
     SQLiteHelper dbHelper;
     QVector<QString> ampere1Values;
-    int ampere1ChartValues[15];
+    // History page values
+    int ampere1ChartValues[CP];
     int pages, currentPage;
 };
 

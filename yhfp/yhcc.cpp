@@ -66,6 +66,8 @@ Yhcc::Yhcc(QWidget *parent) :
     updateWatchsTimer = new QTimer(this);
     connect(updateWatchsTimer, SIGNAL(timeout()), this, SLOT(updateWatchs()));
     updateWatchsTimer->start(5000);
+
+    hisDlg = new HistoryDlg(this);
 }
 
 Yhcc::~Yhcc()
@@ -284,6 +286,7 @@ void Yhcc::parseYhcData(QMap<float, QString> dataMap)
     deviceNode = Global::getYhcNodeInfoByName("Speed");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    qDebug() << "Speed value: " << Global::currentYhcDataMap[address];
     ui->speedLabel->setText(Global::currentYhcDataMap[address]);
 }
 
@@ -299,7 +302,7 @@ void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
 
 void Yhcc::on_speedDownButton_clicked()
 {
-
+    controller->yhcSpeedUp(deviceIndex, -1);
 }
 
 void Yhcc::on_speedUpButton_clicked()
@@ -309,5 +312,5 @@ void Yhcc::on_speedUpButton_clicked()
 
 void Yhcc::on_historyButton_clicked()
 {
-    hisDlg.show();
+    hisDlg->show();
 }

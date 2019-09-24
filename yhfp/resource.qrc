@@ -83,5 +83,7 @@
         <file>config/yhc_devices.xml</file>
         <file>config/yhc_devices_group.xml</file>
         <file>pic/翻抛机表盘组.png</file>
+        <file>pic/button_bg.png</file>
+        <file>pic/comm_bg.png</file>
     </qresource>
 </RCC>

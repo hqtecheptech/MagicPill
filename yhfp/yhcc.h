@@ -70,7 +70,7 @@ public slots:
 private:
     Ui::Yhcc *ui;
 
-    HistoryDlg hisDlg;
+    HistoryDlg *hisDlg;
     QThread netManageThread;
     NetStateManageWorker* nsmWorker;
     QThread dbThread;

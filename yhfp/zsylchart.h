@@ -12,6 +12,8 @@
 #include <QtCharts/QValueAxis>
 #include <QDateTimeAxis>
 
+#include "data.h"
+
 QT_CHARTS_USE_NAMESPACE
 
 namespace Ui {
@@ -49,8 +51,9 @@ private:
     QValueAxis *axisX;
     bool resetChartSuccess;
     int serieValuesCount = 0;
-    int rsValues[15];
-    int prsValues[15];
+    // History one page values
+    int rsValues[CP];
+    int prsValues[CP];
 };
 
 #endif // ZSYLCHART_H
