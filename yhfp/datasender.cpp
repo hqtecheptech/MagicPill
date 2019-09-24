@@ -3,13 +3,14 @@
 #include "iostream"
 
 #include "data.h"
+#include "dataformat.h"
 #include "datasender.h"
 
 using namespace std;
 
 DataSender::DataSender()
 {
-    port = 8000;
+    port = 8500;
     serverIP = new QHostAddress("192.168.0.106");
     _tcpSocket = new QTcpSocket();
     connect(_tcpSocket,SIGNAL(readyRead()),this,SLOT(dataReceive()));
@@ -34,6 +35,7 @@ int DataSender::sendRequestWithResults(const QString strData)
     const int timeout=500;
     if(!_tcpSocket->waitForConnected(timeout))
     {
+        _tcpSocket->deleteLater();
         cout << "server is unavailable" << endl;
         return 0;
     }
@@ -52,12 +54,16 @@ int DataSender::sendRequestWithResults(const QString strData)
 
 int DataSender::sendRequestWithResults(QByteArray data)
 {
-    _tcpSocket->abort(); //取消已有的连接
-    _tcpSocket->connectToHost(*serverIP,port);
-    const int timeout=5000;
-    if(!_tcpSocket->waitForConnected(timeout))
+    if(_tcpSocket->state() != QAbstractSocket::ConnectedState)
     {
-        return 0;
+        _tcpSocket->abort(); //取消已有的连接
+        _tcpSocket->connectToHost(*serverIP,port);
+        const int timeout=5000;
+        if(!_tcpSocket->waitForConnected(timeout))
+        {
+            _tcpSocket->deleteLater();
+            return 0;
+        }
     }
 
     _tcpSocket->write(data);

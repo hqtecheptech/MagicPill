@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 #include "datasender.h"
 #include "data.h"
+#include "sharehelper.h"
+#include "global.h"
+
 #include <QVariant>
 #include <QTextDecoder>
 #include <QByteArray>
@@ -13,7 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     setWindowFlags(Qt::FramelessWindowHint|Qt::Tool);
-
 
     QString yhccStyleStr="QPushButton#yhccButton{background: transparent; background-image: url(:/pic/车1..png);}"
                          "QPushButton#yhccButton:hover{background: transparent; background-image: url(:/pic/车2.png);}"
@@ -38,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->exitButton->setStyleSheet(eixtStyleStr);
 
     yhc = new Yhcc(this);
+    fpj = new Fpjc(this);
     //ui->yhccButton->setStyleSheet("QPushButton{background: transparent; background-image: url(:/pic/车1..png);}");
     //ui->fpjcButton->setStyleSheet("QPushButton{background: transparent; background-image: url(:/pic/翻1.png);}");
 
@@ -47,6 +50,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(startListenTask()), taskManager, SLOT(listeningTask()));
 
     emit(startListenTask());
+
+    pruCheckTimer = new QTimer();
+    connect(pruCheckTimer, SIGNAL(timeout()), this, SLOT(checkPruState()));
+    pruCheckTimer->start(10000);
+
+    controller = Syscontroller::getInstance();
 }
 
 MainWindow::~MainWindow()
@@ -55,7 +64,22 @@ MainWindow::~MainWindow()
     taskManageThread.quit();
     taskManageThread.wait();
 
+    delete taskManager;
+    delete pruCheckTimer;
     delete ui;
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
+    if(controller == Q_NULLPTR)
+    {
+        controller = Syscontroller::getInstance();
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+
 }
 
 void MainWindow::on_yhccButton_clicked()
@@ -98,4 +122,22 @@ void MainWindow::on_syssButton_clicked()
     out << scrc;
 
     ds.sendRequestWithResults(SData);
+}
+
+void MainWindow::checkPruState()
+{
+    ControllerInfo info = Syscontroller::getInstance()->getControllerStatus();
+    if(!info.isPruConnected)
+    {
+        ui->pru_status_label->setText("Pru has not connected. Please wait ...");
+    }
+    else
+    {
+        ui->pru_status_label->setText("Pru has connected!");
+    }
+}
+
+void MainWindow::on_fpjcButton_clicked()
+{
+    fpj->show();
 }

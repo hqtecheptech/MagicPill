@@ -1,4 +1,5 @@
 #include "sharehelper.h"
+#include <QDebug>
 
 //key_t sharedKey = 99;
 size_t maxSize = 200;
@@ -35,9 +36,39 @@ ShareHelper::ShareHelper(key_t shared_key)
     semctl(semid, 0, SETVAL, sem);
 }
 
+ShareHelper::ShareHelper(key_t shared_key, key_t sem_key)
+{
+    sharedKey = shared_key;
+
+    shmid = shmget(sharedKey, maxSize, IPC_CREAT | 0777);
+    if (shmid == -1)
+    {
+        std::cout << "Shared memory created error";
+    }
+    shmptr = shmat(shmid, NULL, 0);
+    if (shmptr == (void*)-1)
+    {
+        std::cout << "shmat error";
+    }
+
+    union semum sem;
+    sem.val = 1;
+    semid = semget(sem_key, 1, IPC_CREAT | 0777);
+    if (semid == -1)
+    {
+        std::cout << "Create semaphore error";
+    }
+    semctl(semid, 0, SETVAL, sem);
+}
+
 ShareHelper::~ShareHelper()
 {
 
+}
+
+key_t ShareHelper::GenKey(const char *pathname, int proj_id)
+{
+    return ftok(pathname, proj_id);
 }
 
 bool ShareHelper::SetSharedStr(string str)
@@ -73,17 +104,34 @@ void ShareHelper::UnlockShare()
     VSem();
 }
 
-bool ShareHelper::SetSharedMemory(PlcData *data)
+bool ShareHelper::SetSharedMemory(void *data, int length)
 {
-    memcpy(shmptr, (void*)data, 80);
+    try
+    {
+        //qDebug() << "Setting shared memory";
+        memcpy(shmptr, data, length);
+        //qDebug() << "Set shared memory succesefully!";
+    }
+    catch(exception ex)
+    {
+        return false;
+    }
+
     return true;
 }
 
-PlcData ShareHelper::GetShardMemory()
+bool ShareHelper::GetShardMemory(void *data, int length)
 {
-    PlcData allData;
-    memcpy((void*)allData.values, shmptr, 80);
-    return allData;
+    try
+    {
+        memcpy(data, shmptr, length);
+    }
+    catch(exception ex)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 int ShareHelper::DelSem()

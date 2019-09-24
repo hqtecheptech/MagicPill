@@ -8,28 +8,31 @@
 #include <unistd.h>//write function
 #include <sys/types.h>
 
-#include <data.h>
-#include <sharehelper.h>
-#include <datasender.h>
+#include "data.h"
+#include "dataformat.h"
+#include "sharehelper.h"
+#include "datasender.h"
 
 class PlcDataManageWorker : public QObject
 {
     Q_OBJECT
 public:
     explicit PlcDataManageWorker(QObject *parent = 0);
+    ~PlcDataManageWorker();
 
 signals:
-    void sharedDatasReady(const PlcData datas);
+    void sharedDatasReady(const Plc_Db datas);
+    void plcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
 
 public slots:
     void getSharedDatas();
 
 private:
-    key_t serverDataSharedKey = 97;
-    ShareHelper* serverDataSh;
+    ShareHelper* yhcDbSh;
     DataSender ds;
 
-    void sendPlcdataToServer(const PlcData data);
+    void sendPlcdataToServer(const Plc_Db data);
+    void parseYhcServerData(Plc_Db dbData);
 };
 
 #endif // PLCDATAMANAGEWORKER_H

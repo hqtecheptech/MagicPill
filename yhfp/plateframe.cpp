@@ -63,6 +63,16 @@ void PlateFrame::setRightRange(int min, int max)
     }
 }
 
+void PlateFrame::setPlateStyle(QSizeF size, int startAngel, int radius, int arcInnerHeight, int arcOuterHeight, WatchDirection direction)
+{
+    _size = size;
+    _startAngel = startAngel;
+    _radius = radius;
+    _arcInnerHeight = arcInnerHeight;
+    _arcOuterHeight = arcOuterHeight;
+    _direction = direction;
+}
+
 void PlateFrame::paintEvent(QPaintEvent *event)
 {
     int side = qMin(width(), height());
@@ -70,7 +80,16 @@ void PlateFrame::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
     painter.translate(width() / 2, height() / 2);
-    painter.scale(side / 260.0, side / 260.0);
+    painter.scale(side / _size.width(), side / _size.height());
+    if(_direction == Vertical)
+    {
+        painter.rotate(90.0);
+    }
+    else
+    {
+        painter.rotate(-180.0);
+    }
+
 
     QColor outCircleColor(70, 190, 255, 200);
 
@@ -80,29 +99,23 @@ void PlateFrame::paintEvent(QPaintEvent *event)
     //painter.rotate(-90.0);
     //painter.drawText(QRectF(-15, 30, 30, 10), Qt::AlignHCenter,QString("r-90"));
 
-    // adjusted case by case
-    int radius = 109;
-    int arcOuterHeight = 12;
-    int arcInnerHeight = 10;
-    int startAngel = 40;
-
     int rightAngelLength = calcRightAngelLength();
-    qDebug() << "_rightStartAngel: " << _rightStartAngel;
+    /*qDebug() << "_rightStartAngel: " << _rightStartAngel;
     qDebug() << "_rightRangePosAngel: " << _rightRangePosAngel;
     qDebug() << "_rightRangeNegAngel: " << _rightRangeNegAngel;
-    qDebug() << "rightAngelLength: " << rightAngelLength;
+    qDebug() << "rightAngelLength: " << rightAngelLength;*/
     //gradientArc(&painter, radius, startAngel - 90,  150, arcOuterHeight, QColor(255, 255, 255, 0), QColor(255, 255, 255, 0));
     //gradientArc(&painter, radius-1, startAngel - 90,  100, arcInnerHeight, QColor(200, 100, 0, 150), QColor(255, 128, 0, 150), false);
-    gradientArc(&painter, radius-1, startAngel + _rightStartAngel - 90,  rightAngelLength, arcInnerHeight, QColor(200, 100, 0, 150), QColor(255, 128, 0, 150), false);
+    gradientArc(&painter, _radius-1, _startAngel + _rightStartAngel,  rightAngelLength, _arcInnerHeight, QColor(200, 100, 0, 150), QColor(255, 128, 0, 150), false);
 
     int leftAngelLength = calcLeftAngelLength();
-    qDebug() << "_leftStartAngel: " << _leftStartAngel;
+    /*qDebug() << "_leftStartAngel: " << _leftStartAngel;
     qDebug() << "_leftRangePosAngel: " << _leftRangePosAngel;
     qDebug() << "_leftRangeNegAngel: " << _leftRangeNegAngel;
-    qDebug() << "leftAngelLength: " << leftAngelLength;
+    qDebug() << "leftAngelLength: " << leftAngelLength;*/
     //gradientArc(&painter, radius, -startAngel - 90, -150, arcOuterHeight, QColor(255, 255, 255, 0), QColor(255, 255, 255, 0));
     //gradientArc(&painter, radius-1, -startAngel - 90, -100, arcInnerHeight, QColor(0, 200, 20, 150), QColor(0, 255, 64, 150), false);
-    gradientArc(&painter, radius-1, -startAngel - _leftStartAngel - 90, -leftAngelLength, arcInnerHeight, QColor(0, 200, 20, 150), QColor(0, 255, 64, 150), false);
+    gradientArc(&painter, _radius-1, -_startAngel - _leftStartAngel, -leftAngelLength, _arcInnerHeight, QColor(0, 200, 20, 150), QColor(0, 255, 64, 150), false);
 }
 
 void PlateFrame::gradientArc(QPainter *painter, int radius, int startAngle, int angleLength, int arcHeight, QColor startColor, QColor endColor, bool hasPen)

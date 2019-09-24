@@ -18,8 +18,7 @@ ZsylChart::ZsylChart(QWidget *parent) :
     chartView->setChart(chart);
     chartView->setRenderHint(QPainter::Antialiasing);
 
-    QByteArray data;
-    showAllData(data);
+    showAllData();
 
     //ui->horizontalLayout->addWidget(chartView);
     //ui->horizontalLayout->setAlignment(chartView, Qt::AlignCenter);
@@ -45,13 +44,20 @@ void ZsylChart::showRealTime(QByteArray)
 
 }
 
-void ZsylChart::showAllData(QByteArray data)
+void ZsylChart::showAllData()
 {
-    series = new QLineSeries();
-    series->setPen(QPen(Qt::red,1,Qt::SolidLine));
+    rsSeries = new QLineSeries();
+    rsSeries->setPen(QPen(Qt::green,2,Qt::SolidLine));
 
-    *series << QPoint(0, 5);
-    values[0] = 5;
+    *rsSeries << QPoint(0, 5);
+    rsValues[0] = 5;
+
+    prsSeries = new QLineSeries();
+    prsSeries->setPen(QPen(Qt::red,2,Qt::SolidLine));
+
+    *prsSeries << QPoint(0, 5);
+    prsValues[0] = 5;
+
     /*for(int i=0; i<5; ++i)
     {
         int x = 2*i;
@@ -59,7 +65,8 @@ void ZsylChart::showAllData(QByteArray data)
         *series << QPoint(x, y);
     }*/
 
-    chart->addSeries(series);
+    chart->addSeries(rsSeries);
+    chart->addSeries(prsSeries);
     //chart->setTitle(ui->comboBox->currentText());
     //chart->setAnimationOptions(QChart::SeriesAnimations);//设置曲线呈动画显示
 
@@ -79,8 +86,12 @@ void ZsylChart::showAllData(QByteArray data)
     axisX->setLabelsBrush(QBrush(QColor(255, 255, 255)));
     //axisX->setLabelsFont(QFont("Microsoft YaHei", 50, QFont::Bold));
 
-    chart->setAxisX(axisX, series);
-    chart->setAxisY(axisY, series);
+    chart->setAxisX(axisX, rsSeries);
+    chart->setAxisY(axisY, rsSeries);
+
+    chart->setAxisX(axisX, prsSeries);
+    chart->setAxisY(axisY, prsSeries);
+
     chart->axisX()->hide();
     chart->axisY()->hide();
 
@@ -98,29 +109,52 @@ void ZsylChart::resetChart()
     resetChartSuccess = false;
 }
 
-void ZsylChart::updateUI(int newValue)
+void ZsylChart::updateUI(int rsValue, int prsValue)
 {
     serieValuesCount++;
 
-    if(serieValuesCount < 15)
+    if(serieValuesCount < CP)
     {
-        values[serieValuesCount] = newValue;
-        *series << QPoint(serieValuesCount, newValue);
+        rsValues[serieValuesCount] = rsValue;
+        *rsSeries << QPoint(serieValuesCount, rsValue);
+
+        prsValues[serieValuesCount] = prsValue;
+        *prsSeries << QPoint(serieValuesCount, prsValue);
     }
     else
     {
-        for(int i=0; i < 14; i++)
+        for(int i=0; i < CP-1; i++)
         {
-            values[i] = values[i+1];
+            rsValues[i] = rsValues[i+1];
+            prsValues[i] = prsValues[i+1];
         }
-        values[14] = newValue;
+        rsValues[CP-1] = rsValue;
+        prsValues[CP-1] = prsValue;
 
-        series->clear();
-        chart->removeSeries(series);
-        for(int j=0; j < 15; j++)
+        rsSeries->clear();
+        chart->removeSeries(rsSeries);
+
+        prsSeries->clear();
+        chart->removeSeries(prsSeries);
+
+        for(int j=0; j < CP; j++)
         {
-            *series << QPoint(j, values[j]);
+            *rsSeries << QPoint(j, rsValues[j]);
+            *prsSeries << QPoint(j, prsValues[j]);
         }
-        chart->addSeries(series);
+        chart->addSeries(rsSeries);
+        chart->addSeries(prsSeries);
+
+        // Keep chart style.
+        chart->setAxisX(axisX, rsSeries);
+        chart->setAxisY(axisY, rsSeries);
+
+        chart->setAxisX(axisX, prsSeries);
+        chart->setAxisY(axisY, prsSeries);
+
+        chart->axisX()->hide();
+        chart->axisY()->hide();
+
+        chart->setBackgroundVisible(false);
     }
 }

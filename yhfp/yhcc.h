@@ -2,12 +2,14 @@
 #define YHCC_H
 
 #include <QDialog>
-#include <QThread>
 #include <QTimer>
-#include "netstatemanageworker.h"
-#include "plcdatamanageworker.h"
+#include <QTime>
 
+#include "syscontroller.h"
 #include "data.h"
+#include "databaseworker.h"
+#include "dataformat.h"
+#include "historydlg.h"
 
 namespace Ui {
 class Yhcc;
@@ -44,7 +46,11 @@ private slots:
 
     void getNetState();
 
-    void pollPlcDatas();
+    void on_speedDownButton_clicked();
+
+    void on_speedUpButton_clicked();
+
+    void on_historyButton_clicked();
 
 protected:
     void showEvent(QShowEvent *);
@@ -53,20 +59,33 @@ protected:
 signals:
     void checkNetState(QString type);
     void pollingDatas();
+    void histDataReady(HistData data);
 
 public slots:
-    void updateUI(const PlcData newDatas);
+    void handleControllerResult();
+    void handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
+    void wirteTestData();
+    void updateWatchs();
 
 private:
     Ui::Yhcc *ui;
 
+    HistoryDlg *hisDlg;
     QThread netManageThread;
     NetStateManageWorker* nsmWorker;
-    QThread plcdataManageThread;
-    PlcDataManageWorker* pdmWorker;
-    QTimer *checkNetStateTimer;
-    QTimer *pollDatasTimer;
+    QThread dbThread;
+    DatabaseWorker* dbWorker;
+    QTimer* checkNetStateTimer;
+    QTimer* testTimer;
+    QTimer* updateWatchsTimer;
+    QTime st;
     int uca = 0;
+    Syscontroller* controller;
+    Plc_Db oldPlcDb;
+    int deviceIndex = 0;
+
+    void parseYhcData(QMap<float,QString> dataMap);
+    void parseYhcRunCtrData(QMap<float,QString> dataMap);
 };
 
 #endif // YHCC_H

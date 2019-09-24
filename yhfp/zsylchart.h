@@ -12,6 +12,8 @@
 #include <QtCharts/QValueAxis>
 #include <QDateTimeAxis>
 
+#include "data.h"
+
 QT_CHARTS_USE_NAMESPACE
 
 namespace Ui {
@@ -32,25 +34,26 @@ protected:
 
 private slots:
     void showRealTime(QByteArray);
-    //void getRealTimeData();
-    void showAllData(QByteArray);
-    //void getAllData();
+    void showAllData();
     void resetChart();
 
 public slots:
-    void updateUI(int newValue);
+    void updateUI(int rsValue, int prsValue);
 
 private:
     Ui::ZsylChart *ui;
 
     QChartView *chartView;
     QChart *chart;
-    QLineSeries *series;
+    QLineSeries *rsSeries;
+    QLineSeries *prsSeries;
     QValueAxis *axisY;
     QValueAxis *axisX;
     bool resetChartSuccess;
     int serieValuesCount = 0;
-    int values[15];
+    // History one page values
+    int rsValues[CP];
+    int prsValues[CP];
 };
 
 #endif // ZSYLCHART_H

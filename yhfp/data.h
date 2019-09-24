@@ -3,56 +3,62 @@
 
 #include <QMetaType>
 
-enum CommandType
-{
-    r_RealData= 1,  //读实时数据
-    r_HisData,      //读历史数据
-    r_Report,       //读报告信息
-    r_SignIn,       //读登录信息
-    r_SetData,      //读设置参数
-    r_UserEvent,    //读用户事件
-    r_AllCacheData, //读所有当前数据
+//char *m_shmkey ="/home/hqtech/test/shmkey";   //共享内存目录
+//char *m_semkey ="/home/hqtech/test/semkey";   //消息队列目录
+//char *m_msgkey ="/home/hqtech/test/msgkey";   //消息队列目录
 
-    w_RealData= 20, //写实时数据
-    w_SetData,      //写设置参数
-    w_UserEvent,    //写用户事件
-    w_AddUser,    //写登录信息
-    w_Update_Plcdata //update plc data
-};
+/* Signals.  */
+//SIGRTMIN = 34
+//SIGRTMAX = 64
+ //SIGINT
 
-enum DataType
-{
-    Bool = 1,
-    Int,
-    UInt,
-    UShort,
-    Double,
-    Float,
-    Char,
-    UChar,
-    String
-};
+// History chart figure
+#define CP 30
+#define CV 15
 
-struct StreamPack
-{
-    quint32 bStreamLength;  //Pack_0
-    quint16 bDeviceId;      //Pack_1
-    quint16 bDeviceGroup;   //Pack_2
-    quint16 bCommandType;   //Pack_3
-    quint16 bDataType;      //Pack_4
-    quint16 bAddress;       //Pack_5
-    quint16 bIndex;         //Pack_6
-    quint32 bDataLength;    //Pack_7
-    quint16 bErrorCode;     //Pack_8
-    quint32 bStartTime;     //Pack_9
-    quint32 bEndTime;       //Pack_10
-};
+#define SIGFRPU     SIGRTMIN+1   //来自PRU的数据更新信号
+#define SIGTRPU     SIGRTMIN+2   //发送给PRU的数据更新信号
 
-struct PlcData
-{
-    int values[20];
-};
+/* DB datas length */
+#define DB_FLOAT_LEN 200
+#define DB_INT_LEN 200
+#define DB_UINT32_LEN 200
+#define DB_UINT16_LEN 200
+#define DB_BOOL_LEN 200
 
-Q_DECLARE_METATYPE(PlcData)
+typedef struct {
+    float f_data[DB_FLOAT_LEN];
+    int i_data[DB_INT_LEN];
+    uint32_t dw_data[DB_UINT32_LEN];
+    uint16_t w_data[DB_UINT16_LEN];
+    uint8_t b_data[DB_BOOL_LEN];
+ } Plc_Db;
+
+typedef struct {
+    bool isPruConnected;
+    int pid;
+    int cmd;
+    int msgStatus;
+} ControllerInfo;
+
+typedef struct {
+    int deviceId;
+    int deviceGroup;
+    int deviceIndex;
+    char name[50];
+    char dataType[5];
+    float address;
+    char value[20];
+    int index;
+    char insertTime[30];
+} HistData;
+
+typedef enum {
+    Horizontal,
+    Vertical
+} WatchDirection;
+
+Q_DECLARE_METATYPE(Plc_Db)
+Q_DECLARE_METATYPE(HistData)
 
 #endif // DATA_H
