@@ -638,8 +638,27 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
     <string>TextLabel</string>
    </property>
   </widget>
+  <widget class="ControlHistory" name="hisWidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>720</y>
+     <width>690</width>
+     <height>320</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent;</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>ZsylChart</class>
+   <extends>QWidget</extends>
+   <header>zsylchart.h</header>
+   <container>1</container>
+  </customwidget>
   <customwidget>
    <class>yhcDial</class>
    <extends>QWidget</extends>
@@ -653,9 +672,9 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ZsylChart</class>
+   <class>ControlHistory</class>
    <extends>QWidget</extends>
-   <header>zsylchart.h</header>
+   <header location="global">controlhistory.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

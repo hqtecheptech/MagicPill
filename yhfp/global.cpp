@@ -1371,7 +1371,7 @@ bool Global::getYhcRunctrValueByName(int deviceIndex, QString name, QMap<float, 
     uint temp = offset % 8;
     float index = float(temp) / 10;
     float dictAddress = index + startAddrss + step;
-    QVariant tempValue = dataMap[dictAddress];
+    QVariant tempValue = dataMap.value(dictAddress);
     return tempValue.toBool();
 }
 
@@ -1507,7 +1507,16 @@ float Global::getYhcRunctrAddressByIndex(int index)
     address = startAddress + step;
     int offset = index % 8;
 
-    return (float)offset / 10 + address;
+    return (float)offset / 10 + (float)address;
+}
+
+int Global::getYhcDataIndexByName(QString name, int deviceIndex)
+{
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    // To do: using a test name temporary.
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName(name);
+    int offset = (info.offset + deviceIndex - info.startIndex) * Global::yhcDeviceInfo.Runctr_Num;
+    return deviceNode.Offset + offset;
 }
 
 uint Global::getLengthByDataType(QString dataType)

@@ -83,6 +83,7 @@ private:
     Syscontroller* controller;
     Plc_Db oldPlcDb;
     int deviceIndex = 0;
+    bool started = false;
 
     void parseYhcData(QMap<float,QString> dataMap);
     void parseYhcRunCtrData(QMap<float,QString> dataMap);

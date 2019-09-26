@@ -23,6 +23,7 @@ public:
     Plc_Db getPlcDataDb();
     void setPlcControlDb(Plc_Db data);
     void yhcSpeedUp(int deviceIndex, float value);
+    void yhcStart(int deviceIndex, bool value);
     ~Syscontroller();
 
 signals:

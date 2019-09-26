@@ -139,9 +139,6 @@ void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
 
         address = Global::getYhcRunctrAddressByIndex(i);
 
-        //qDebug() << "i=" << i << "; address = " << address
-                 //<< "; index = " << Global::convertYhcAddressToIndex(address, "x0");
-
         dataMap.insert(address,strValue);
         if(!Global::currentYhcDataMap.contains(address))
         {
@@ -151,11 +148,53 @@ void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
         }
         else
         {
-            if(Global::currentYhcDataMap[address] != strValue)
+            if(Global::currentYhcDataMap.value(address) != strValue)
             {
                 diff = true;
                 changedAddressArray.append(address);
                 Global::currentYhcDataMap[address] = strValue;
+
+                uint tankIndex = i / Global::yhcDeviceInfo.RunCtr_Block_Size;
+                DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(tankIndex);
+
+                QList<QStandardItem *> newItemList;
+                QList<QStandardItem *> newSimpleItemList;
+                Global::alertIndex += 1;
+                QString simpleAlert;
+
+                newItemList.append(new QStandardItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")));
+                newItemList.append(new QStandardItem(QString::number((tankIndex + info.startIndex)+1)));
+                if(QVariant(strValue).toBool())
+                {
+                    newItemList.append(new QStandardItem(Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert1));
+                    simpleAlert = QString::number(Global::alertIndex) + ": " +
+                            QString::number(tankIndex+1) + "#" +
+                            Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert1 + " " +
+                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+                }
+                else
+                {
+                    newItemList.append(new QStandardItem(Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert0));
+                    simpleAlert = QString::number(Global::alertIndex) + ": " +
+                            QString::number(tankIndex+1) + "#" +
+                            Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert0 + " " +
+                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+
+                }
+                QStandardItem *simpleAlertItem = new QStandardItem(simpleAlert);
+                newSimpleItemList.append(simpleAlertItem);
+
+                /*if(Identity::getInstance()->getUser() != Q_NULLPTR)
+                {
+                    newItemList.append(new QStandardItem(Identity::getInstance()->getUser()->getUsername()));
+                }
+                else
+                {
+                    newItemList.append(new QStandardItem(""));
+                }*/
+
+                Global::simpleAlertsModel->insertRow(0, newSimpleItemList);
+                Global::alertsModel->insertRow(0, newItemList);
             }
         }
     }

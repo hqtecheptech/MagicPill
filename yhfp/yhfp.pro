@@ -46,7 +46,8 @@ SOURCES += main.cpp\
     fpjwatchs.cpp \
     sqlitehelper.cpp \
     databaseworker.cpp \
-    historydlg.cpp
+    historydlg.cpp \
+    controlhistory.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -81,7 +82,8 @@ HEADERS  += mainwindow.h \
     fpjwatchs.h \
     sqlitehelper.h \
     databaseworker.h \
-    historydlg.h
+    historydlg.h \
+    controlhistory.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \
@@ -95,7 +97,8 @@ FORMS    += mainwindow.ui \
     fpjc.ui \
     smallplate.ui \
     fpjwatchs.ui \
-    historydlg.ui
+    historydlg.ui \
+    controlhistory.ui
 
 RESOURCES += \
     resource.qrc

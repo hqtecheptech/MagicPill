@@ -91,6 +91,7 @@ public:
     static float convertYhcIndexToAddress(int index, QString type);
 
     static float getYhcRunctrAddressByIndex(int index);
+    static int getYhcDataIndexByName(QString name, int deviceIndex);
 
     static uint getLengthByDataType(QString dataType);
 

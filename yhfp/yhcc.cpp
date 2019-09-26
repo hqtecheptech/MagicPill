@@ -202,6 +202,7 @@ void Yhcc::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> d
 void Yhcc::wirteTestData()
 {
     //controller->yhcSpeedUp(deviceIndex, 5);
+    controller->yhcStart(0, !started);
 }
 
 void Yhcc::updateWatchs()
@@ -227,7 +228,7 @@ void Yhcc::updateWatchs()
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
-    ui->test_label->setText(Global::currentYhcDataMap[address]);
+    ui->test_label->setText(Global::currentYhcDataMap.value(address, "false"));
 
     data.address = address;
     strcpy(data.dataType, deviceNode.Name.toLatin1().data());
@@ -237,13 +238,13 @@ void Yhcc::updateWatchs()
     data.index = 10;
     strcpy(data.insertTime, QString::number(stime).toLatin1().data());
     strcpy(data.name, QString("Speed").toLatin1().data());
-    strcpy(data.value, Global::currentYhcDataMap[address].toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
     emit histDataReady(data);
 
     deviceNode = Global::getYhcNodeInfoByName("RevolvingSpeed");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
-    int rs = Global::currentYhcDataMap[address].toFloat();
+    int rs = Global::currentYhcDataMap.value(address).toFloat();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.Name.toLatin1().data());
@@ -253,13 +254,13 @@ void Yhcc::updateWatchs()
     data.index = 10;
     strcpy(data.insertTime, QString::number(stime).toLatin1().data());
     strcpy(data.name, QString("RevolvingSpeed").toLatin1().data());
-    strcpy(data.value, Global::currentYhcDataMap[address].toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
     emit histDataReady(data);
 
     deviceNode = Global::getYhcNodeInfoByName("Ampere1");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
-    int prs = Global::currentYhcDataMap[address].toFloat();
+    int prs = Global::currentYhcDataMap.value(address).toFloat();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.Name.toLatin1().data());
@@ -269,7 +270,7 @@ void Yhcc::updateWatchs()
     data.index = 10;
     strcpy(data.insertTime, QString::number(stime).toLatin1().data());
     strcpy(data.name, QString("Ampere1").toLatin1().data());
-    strcpy(data.value, Global::currentYhcDataMap[address].toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
     emit histDataReady(data);
 
     ui->widget_2->updateUI(rs, prs);
@@ -298,6 +299,16 @@ void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
     ui->test_label_3->setText(QString::number(value));
     value = Global::getYhcRunctrValueByName(deviceIndex, "FAN_SPAREVALVE_Opened", Global::currentYhcDataMap);
     ui->test_label_4->setText(QString::number(value));
+    value = Global::getYhcRunctrValueByName(deviceIndex, "FAN_VALVE_HAND_OPEN", Global::currentYhcDataMap);
+    // to do: just for test temporay.
+    if(value == 0)
+    {
+        started = true;
+    }
+    else
+    {
+        started = false;
+    }
 }
 
 void Yhcc::on_speedDownButton_clicked()

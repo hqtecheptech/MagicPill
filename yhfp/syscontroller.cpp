@@ -124,6 +124,33 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
     qDebug() << "Press Speed Up!";
 }
 
+void Syscontroller::yhcStart(int deviceIndex, bool value)
+{
+    // To do: using a test name temporary.
+    int index = Global::getYhcDataIndexByName("FAN_VALVE_HAND_OPEN", deviceIndex);
+
+    qDebug() << "Begin yhc start or stop!";
+    Plc_Db db;
+    yhcDbShare->LockShare();
+    yhcCtrlShare->LockShare();
+    yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+    if(value)
+    {
+        db.b_data[index] = 0;
+    }
+    else
+    {
+        db.b_data[index] = 1;
+    }
+    yhcCtrlShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+    yhcCtrlShare->UnlockShare();
+    yhcDbShare->UnlockShare();
+
+    applyControlRequest();
+
+    qDebug() << "End yhc start or stop!";
+}
+
 Syscontroller::~Syscontroller()
 {
     plcdataManageThread.requestInterruption();
