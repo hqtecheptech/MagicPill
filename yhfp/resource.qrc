@@ -85,5 +85,9 @@
         <file>pic/翻抛机表盘组.png</file>
         <file>pic/button_bg.png</file>
         <file>pic/comm_bg.png</file>
+        <file>pic/no_cellphone_signal.png</file>
+        <file>pic/no_mobile_signal.png</file>
+        <file>pic/no_signal.png</file>
+        <file>pic/no_wifi.png</file>
     </qresource>
 </RCC>

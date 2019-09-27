@@ -49,7 +49,7 @@ Yhcc::Yhcc(QWidget *parent) :
     testTimer = new QTimer(this);
     connect(testTimer, SIGNAL(timeout()), this, SLOT(wirteTestData()));
 
-    controller = Syscontroller::getInstance();
+    controller = Syscontroller::getInstance(yhfpsw, 0);
     if(controller != Q_NULLPTR)
     {
         connect(controller, SIGNAL(resultReady()), this, SLOT(handleControllerResult()));
@@ -120,27 +120,48 @@ void Yhcc::on_yhUpButton_released()
     ui->yhUpButton->setStyleSheet("QPushButton#yhUpButton{background: transparent; background-image: url(:/pic/+02.png);}");
 }
 
-void Yhcc::netStatChecked(bool state)
+void Yhcc::netStatChecked(QString type, bool state)
 {
-    if(!state)
+    if(type == "wlan")
     {
-        ui->wlanLabel->setStyleSheet("QLabel#wlanLabel{background: transparent;"
-                                     "background-position:center;"
-                                     "background-repeat:no-repeat;"
-                                     "background-image: url(:/pic/警告.png);}");
+        if(!state)
+        {
+            ui->wlanLabel->setStyleSheet("QLabel#wlanLabel{background: transparent;"
+                                         "background-position:center;"
+                                         "background-repeat:no-repeat;"
+                                         "background-image: url(:/pic/no_wifi.png);}");
+        }
+        else
+        {
+            ui->wlanLabel->setStyleSheet("QLabel#wlanLabel{background: transparent;"
+                                         "background-position:center;"
+                                         "background-repeat:no-repeat;"
+                                         "background-image: url(:/pic/信号4.png);}");
+        }
     }
-    else
+    else if(type == "eth")
     {
-        ui->wlanLabel->setStyleSheet("QLabel#wlanLabel{background: transparent;"
-                                     "background-position:center;"
-                                     "background-repeat:no-repeat;"
-                                     "background-image: url(:/pic/信号4.png);}");
+        if(!state)
+        {
+            ui->ethLabel->setStyleSheet("QLabel#ethLabel{background: transparent;"
+                                         "background-position:center;"
+                                         "background-repeat:no-repeat;"
+                                         "background-image: url(:/pic/no_signal.png);}");
+        }
+        else
+        {
+            ui->ethLabel->setStyleSheet("QLabel#ethLabel{background: transparent;"
+                                         "background-position:center;"
+                                         "background-repeat:no-repeat;"
+                                         "background-image: url(:/pic/信号2.png);}");
+        }
     }
 }
 
 void Yhcc::getNetState()
 {
     emit checkNetState("wlan");
+    emit checkNetState("eth");
 }
 
 void Yhcc::showEvent(QShowEvent *)
@@ -151,14 +172,14 @@ void Yhcc::showEvent(QShowEvent *)
         nsmWorker->moveToThread(&netManageThread);
         connect(&netManageThread, &QThread::finished, nsmWorker, &QObject::deleteLater);
         connect(this, SIGNAL(checkNetState(QString)), nsmWorker, SLOT(checkNetState(QString)));
-        connect(nsmWorker, SIGNAL(checkNetFinished(bool)), this, SLOT(netStatChecked(bool)));
+        connect(nsmWorker, SIGNAL(checkNetFinished(QString,bool)), this, SLOT(netStatChecked(QString,bool)));
         netManageThread.start();
     }
 
     QTimer::singleShot(5000, this, SLOT(getNetState()));
     if(!checkNetStateTimer->isActive())
     {
-        checkNetStateTimer->start(60000);
+        checkNetStateTimer->start(10000);
     }
 
     if(!testTimer->isActive())

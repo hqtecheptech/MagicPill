@@ -10,7 +10,7 @@ public:
     explicit NetStateManageWorker(QObject *parent = 0);
 
 signals:
-    void checkNetFinished(bool state);
+    void checkNetFinished(QString type, bool state);
 
 public slots:
     void checkNetState(QString type);

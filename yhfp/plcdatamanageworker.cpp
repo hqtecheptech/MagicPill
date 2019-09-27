@@ -24,7 +24,7 @@ PlcDataManageWorker::~PlcDataManageWorker()
     delete yhcDbSh;
 }
 
-void PlcDataManageWorker::getSharedDatas()
+void PlcDataManageWorker::getSharedDatas(msgname dataName, int groupId)
 {
     Plc_Db plcdata;
 
@@ -32,11 +32,21 @@ void PlcDataManageWorker::getSharedDatas()
     yhcDbSh->GetShardMemory((void *)&plcdata, sizeof(Plc_Db));
     yhcDbSh->UnlockShare();
 
-    parseYhcServerData(plcdata);
-    sendPlcdataToServer(plcdata);
+    DeviceGroupInfo groupInfo;
+    switch(dataName)
+    {
+        case yhfpsw:
+            groupInfo = Global::getYhcDeviceGroupInfoByGroupId(groupId);
+            parseYhcServerData(groupInfo, plcdata);
+            break;
+        default:
+            break;
+    }
+
+    sendPlcdataToServer(yhfpsw, groupInfo, plcdata);
 }
 
-void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
+void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Plc_Db dbData)
 {
     Plc_Db newPlcDb = dbData;
 
@@ -199,8 +209,7 @@ void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
         }
     }
 
-    int startIndex = Global::getYhcDeviceStartIndex(
-                Global::getYhcDeviceGroupInfo(0).deviceId, Global::getYhcDeviceGroupInfo(0).groupId);
+    int startIndex = groupInfo.startIndex;
 
     //qDebug() << "startIndex = " << startIndex;
     //qDebug() << "diff = " << diff;
@@ -224,7 +233,7 @@ void PlcDataManageWorker::parseYhcServerData(Plc_Db dbData)
     }
 }
 
-void PlcDataManageWorker::sendPlcdataToServer(const Plc_Db data)
+void PlcDataManageWorker::sendPlcdataToServer(msgname dataName, DeviceGroupInfo groupInfo, const Plc_Db data)
 {
     DataSender ds;
     StreamPack bpack;
@@ -232,7 +241,9 @@ void PlcDataManageWorker::sendPlcdataToServer(const Plc_Db data)
     uint stime =currentdt.toTime_t();
     uint etime =currentdt.toTime_t();
 
-    bpack = {sizeof(StreamPack),6,0,W_Update_PlcData,yhfpsw,0,0,sizeof(Plc_Db),0,stime,etime};
+    // groupInfo.deviceId, can be ignore. Because there may be more than one deviceId in a single device config db.
+    // but there must be groupInfo.groupId for distinguishing same type container devices.
+    bpack = {sizeof(StreamPack),(quint16)groupInfo.deviceId,(quint16)groupInfo.groupId,W_Update_PlcData,dataName,0,0,sizeof(Plc_Db),0,stime,etime};
     bpack.bStreamLength += sizeof(Plc_Db) + 4;
 
     QByteArray allPackData, SData, crcData;

@@ -10,8 +10,13 @@ static void sig_handler_rpuData(int sig)
     }
 }
 
-Syscontroller::Syscontroller(QObject *parent) : QObject(parent)
+Syscontroller::Syscontroller(msgname dataType, int groupId, QObject *parent) : QObject(parent)
 {
+    _dataType = dataType;
+    _groupId = groupId;
+
+    qRegisterMetaType<msgname>("msgname");
+
     QString sharePath = Global::systemConfig.controlSharePath;
     int shareId = Global::systemConfig.controlShareKey;
     QString semPath = Global::systemConfig.controlSemPath;
@@ -59,7 +64,7 @@ Syscontroller::Syscontroller(QObject *parent) : QObject(parent)
     pdmWorker = new PlcDataManageWorker;
     pdmWorker->moveToThread(&plcdataManageThread);
     connect(&plcdataManageThread, &QThread::finished, pdmWorker, &QObject::deleteLater);
-    connect(this, SIGNAL(pollingDatas()), pdmWorker, SLOT(getSharedDatas()));
+    connect(this, SIGNAL(pollingDatas(msgname,int)), pdmWorker, SLOT(getSharedDatas(msgname,int)));
     connect(pdmWorker, &PlcDataManageWorker::plcDbUpdated, this, &Syscontroller::handleYhcPlcDbUpdated, Qt::QueuedConnection);
     plcdataManageThread.start();
 
@@ -68,16 +73,17 @@ Syscontroller::Syscontroller(QObject *parent) : QObject(parent)
     updateStatusTimer->start(2000);
 }
 
-Syscontroller *Syscontroller::getInstance()
+Syscontroller *Syscontroller::getInstance(msgname dataType, int groupId)
 {
     if (instance == Q_NULLPTR)
     {
         QMutexLocker locker(mutex);
         if (instance == Q_NULLPTR)
         {
-            instance = new Syscontroller();
+            instance = new Syscontroller(dataType, groupId);
         }
     }
+
     return instance;
 }
 
@@ -151,6 +157,16 @@ void Syscontroller::yhcStart(int deviceIndex, bool value)
     qDebug() << "End yhc start or stop!";
 }
 
+msgname Syscontroller::getDataType()
+{
+    return _dataType;
+}
+
+int Syscontroller::getGroupId()
+{
+    return _groupId;
+}
+
 Syscontroller::~Syscontroller()
 {
     plcdataManageThread.requestInterruption();
@@ -192,7 +208,7 @@ void Syscontroller::updateSysStatus()
     yhcDbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     yhcDbShare->UnlockShare();
 
-    emit pollingDatas();
+    emit pollingDatas(_dataType, _groupId);
 
     //End test
 

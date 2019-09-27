@@ -67,6 +67,8 @@ public:
     static DeviceGroupInfo getFerDeviceGroupInfo(int index);
     static DeviceGroupInfo getYhcDeviceGroupInfo(int index);
 
+    static DeviceGroupInfo getYhcDeviceGroupInfoByGroupId(int groupId);
+
     static QStandardItemModel *alertsModel;
     static QStandardItemModel *simpleAlertsModel;
     static QStandardItemModel *loginHistoryModel;

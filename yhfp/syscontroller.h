@@ -18,17 +18,20 @@ class Syscontroller : public QObject
 {
     Q_OBJECT
 public:
-    static Syscontroller* getInstance();
+    static Syscontroller* getInstance(msgname dataType, int groupId);
     ControllerInfo getControllerStatus();
     Plc_Db getPlcDataDb();
     void setPlcControlDb(Plc_Db data);
     void yhcSpeedUp(int deviceIndex, float value);
     void yhcStart(int deviceIndex, bool value);
+    msgname getDataType();
+    int getGroupId();
+
     ~Syscontroller();
 
 signals:
     void resultReady();
-    void pollingDatas();
+    void pollingDatas(msgname dataName, int groupId);
     void plcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
 
 public slots:
@@ -38,7 +41,7 @@ public slots:
     void handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet, QMap<float, QString> dataMap);
 
 private:
-    Syscontroller(QObject *parent = 0);
+    Syscontroller(msgname dataType, int groupId, QObject *parent = 0);
     static Syscontroller* instance;
     static QMutex* mutex;
     QTimer *updateStatusTimer;
@@ -47,6 +50,8 @@ private:
     Plc_Db plcDataDb, plcControlDb;
     QThread plcdataManageThread;
     PlcDataManageWorker* pdmWorker;
+    msgname _dataType;
+    int _groupId;
 
     void resetControlShare(int dataType, QMap<float, QString> controlData, Plc_Db* controlDb);
 };

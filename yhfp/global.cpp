@@ -1327,6 +1327,17 @@ DeviceGroupInfo Global::getYhcDeviceGroupInfo(int index)
     }
 }
 
+DeviceGroupInfo Global::getYhcDeviceGroupInfoByGroupId(int groupId)
+{
+    foreach(DeviceGroupInfo info, yhcDeviceGroupInfos)
+    {
+        if(groupId == info.groupId)
+        {
+            return info;
+        }
+    }
+}
+
 bool Global::getFerRunctrValueByName(int deviceIndex, QString name, QMap<float, QString> dataMap)
 {
     DeviceGroupInfo groupInfo = getFerDeviceGroupInfo(deviceIndex);
@@ -1480,9 +1491,9 @@ int Global::convertYhcAddressToIndex(float address, QString type)
 
 float Global::convertYhcIndexToAddress(int index, QString type)
 {
-    int start = getYhcDataStartByType(type);
     if(type != "x0")
     {
+        int start = getYhcDataStartByType(type);
         return start + index * getLengthByDataType(type);
     }
     else
@@ -1507,7 +1518,7 @@ float Global::getYhcRunctrAddressByIndex(int index)
     address = startAddress + step;
     int offset = index % 8;
 
-    return (float)offset / 10 + (float)address;
+    return (float)offset / 10 + address;
 }
 
 int Global::getYhcDataIndexByName(QString name, int deviceIndex)

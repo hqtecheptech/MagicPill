@@ -1,6 +1,6 @@
 #include "netstatemanageworker.h"
 #include <QProcess>
-
+#include <QDebug>
 
 NetStateManageWorker::NetStateManageWorker(QObject *parent) : QObject(parent)
 {
@@ -15,6 +15,10 @@ void NetStateManageWorker::checkNetState(QString type)
     {
         strArg = "ping -s 1 -c 1 192.168.0.200";
     }
+    else if(type == "eth")
+    {
+        strArg = "ping -s 1 -c 1 192.168.0.90";
+    }
     /*#ifdef _TTY_ARMV4_
     QString strArg = "ping -s 1 -c 1 " + "192.168.0.200";        //linux平台下的格式
     #else
@@ -26,11 +30,11 @@ void NetStateManageWorker::checkNetState(QString type)
     QString retStr = cmd->readAll();
     if (retStr.toUpper().indexOf("TTL") != -1)
     {
-        //qDebug() << m_curIpStr <<"is online!\n";
-        emit checkNetFinished(true);
+        qDebug() << type <<"is online!\n";
+        emit checkNetFinished(type, true);
     }
     else
     {
-        emit checkNetFinished(false);
+        emit checkNetFinished(type,false);
     }
 }

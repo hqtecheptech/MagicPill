@@ -25,14 +25,14 @@ signals:
     void plcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
 
 public slots:
-    void getSharedDatas();
+    void getSharedDatas(msgname dataName, int groupId);
 
 private:
     ShareHelper* yhcDbSh;
     DataSender ds;
 
-    void sendPlcdataToServer(const Plc_Db data);
-    void parseYhcServerData(Plc_Db dbData);
+    void sendPlcdataToServer(msgname dataName, DeviceGroupInfo groupInfo, const Plc_Db data);
+    void parseYhcServerData(DeviceGroupInfo groupInfo, const Plc_Db dbData);
 };
 
 #endif // PLCDATAMANAGEWORKER_H

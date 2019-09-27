@@ -42,7 +42,7 @@ private slots:
 
     void on_yhUpButton_released();
 
-    void netStatChecked(bool state);
+    void netStatChecked(QString type, bool state);
 
     void getNetState();
 

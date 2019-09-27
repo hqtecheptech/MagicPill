@@ -409,7 +409,7 @@
     <string notr="true">background: transparent;
 background-position:center;
 background-repeat:no-repeat;
-background-image: url(:/pic/信号4.png);</string>
+background-image: url(:/pic/no_wifi.png);</string>
    </property>
    <property name="text">
     <string/>
@@ -649,6 +649,44 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background: transparent;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ethLabel">
+   <property name="geometry">
+    <rect>
+     <x>1520</x>
+     <y>40</y>
+     <width>32</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent;
+background-position:center;
+background-repeat:no-repeat;
+background-image: url(:/pic/no_signal.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="fgLabel">
+   <property name="geometry">
+    <rect>
+     <x>1619</x>
+     <y>38</y>
+     <width>32</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent;
+background-position:center;
+background-repeat:no-repeat;
+background-image: url(:/pic/no_cellphone_signal.png);</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

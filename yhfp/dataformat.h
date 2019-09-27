@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QtNetwork>
+#include <QMetaType>
 
 #define BCT_R_REALDATA      0x01    //读实时数据
 #define BCT_R_HISDATA       0x02    //读历史数据
@@ -42,6 +43,8 @@ enum msgname {
     fjsw  =  7,
     yhfpsw
 };
+
+Q_DECLARE_METATYPE(msgname)
 
 enum CommandType
 {
