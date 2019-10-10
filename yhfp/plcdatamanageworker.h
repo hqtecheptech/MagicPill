@@ -33,6 +33,7 @@ private:
 
     void sendPlcdataToServer(msgname dataName, DeviceGroupInfo groupInfo, const Plc_Db data);
     void parseYhcServerData(DeviceGroupInfo groupInfo, const Plc_Db dbData);
+    void parseFerServerData(DeviceGroupInfo groupInfo, const Plc_Db dbData);
 };
 
 #endif // PLCDATAMANAGEWORKER_H

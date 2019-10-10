@@ -10,6 +10,7 @@
 #include "databaseworker.h"
 #include "dataformat.h"
 #include "historydlg.h"
+#include "netstatemanageworker.h"
 
 namespace Ui {
 class Yhcc;

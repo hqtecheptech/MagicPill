@@ -67,6 +67,7 @@ public:
     static DeviceGroupInfo getFerDeviceGroupInfo(int index);
     static DeviceGroupInfo getYhcDeviceGroupInfo(int index);
 
+    static DeviceGroupInfo getFerDeviceGroupInfoByGroupId(int groupId);
     static DeviceGroupInfo getYhcDeviceGroupInfoByGroupId(int groupId);
 
     static QStandardItemModel *alertsModel;
@@ -88,11 +89,11 @@ public:
     static int getDeoDeviceStartIndex(int deviceId, int deviceGroup);
     static int getYhcDeviceStartIndex(int deviceId, int deviceGroup);
 
-    static int getYhcDataStartByType(QString type);
-    static int convertYhcAddressToIndex(float address, QString type);
-    static float convertYhcIndexToAddress(int index, QString type);
+    static int getDataStartByType(QString type);
+    static int convertAddressToIndex(float address, QString type);
+    static float convertIndexToAddress(int index, QString type);
 
-    static float getYhcRunctrAddressByIndex(int index);
+    static float getRunctrAddressByIndex(int index);
     static int getYhcDataIndexByName(QString name, int deviceIndex);
 
     static uint getLengthByDataType(QString dataType);

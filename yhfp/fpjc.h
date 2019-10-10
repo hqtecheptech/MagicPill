@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QTime>
 #include "syscontroller.h"
+#include "netstatemanageworker.h"
 
 #include "data.h"
 

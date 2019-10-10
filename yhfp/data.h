@@ -15,6 +15,7 @@
 // History chart figure
 #define CP 30
 #define CV 15
+#define ALERT_COUNT 100
 
 #define SIGFRPU     SIGRTMIN+1   //来自PRU的数据更新信号
 #define SIGTRPU     SIGRTMIN+2   //发送给PRU的数据更新信号

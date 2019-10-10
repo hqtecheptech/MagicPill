@@ -7,7 +7,6 @@
 #include <QThread>
 #include <QSet>
 #include <QMap>
-#include "netstatemanageworker.h"
 #include "plcdatamanageworker.h"
 #include "data.h"
 #include "global.h"
@@ -36,7 +35,7 @@ signals:
 
 public slots:
     void updateSysStatus();
-    void handleYhcPlcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
+    void handlePlcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
     void applyControlRequest();
     void handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet, QMap<float, QString> dataMap);
 

@@ -1327,6 +1327,17 @@ DeviceGroupInfo Global::getYhcDeviceGroupInfo(int index)
     }
 }
 
+DeviceGroupInfo Global::getFerDeviceGroupInfoByGroupId(int groupId)
+{
+    foreach(DeviceGroupInfo info, ferDeviceGroupInfos)
+    {
+        if(groupId == info.groupId)
+        {
+            return info;
+        }
+    }
+}
+
 DeviceGroupInfo Global::getYhcDeviceGroupInfoByGroupId(int groupId)
 {
     foreach(DeviceGroupInfo info, yhcDeviceGroupInfos)
@@ -1446,7 +1457,7 @@ int Global::getYhcDeviceStartIndex(int deviceId, int deviceGroup)
     return -1;
 }
 
-int Global::getYhcDataStartByType(QString type)
+int Global::getDataStartByType(QString type)
 {
     if(type == "r")
     {
@@ -1454,19 +1465,19 @@ int Global::getYhcDataStartByType(QString type)
     }
     else if(type == "di")
     {
-        return getYhcDataStartByType("r") + DB_FLOAT_LEN * getLengthByDataType("r");
+        return getDataStartByType("r") + DB_FLOAT_LEN * getLengthByDataType("r");
     }
     else if(type == "dw")
     {
-        return getYhcDataStartByType("di") + DB_INT_LEN * getLengthByDataType("di");
+        return getDataStartByType("di") + DB_INT_LEN * getLengthByDataType("di");
     }
     else if(type == "w")
     {
-        return getYhcDataStartByType("dw") + DB_UINT32_LEN * getLengthByDataType("dw");
+        return getDataStartByType("dw") + DB_UINT32_LEN * getLengthByDataType("dw");
     }
     else if(type == "x0")
     {
-        return getYhcDataStartByType("w") + DB_UINT16_LEN * getLengthByDataType("w");
+        return getDataStartByType("w") + DB_UINT16_LEN * getLengthByDataType("w");
     }
     else
     {
@@ -1474,9 +1485,9 @@ int Global::getYhcDataStartByType(QString type)
     }
 }
 
-int Global::convertYhcAddressToIndex(float address, QString type)
+int Global::convertAddressToIndex(float address, QString type)
 {
-    int start = getYhcDataStartByType(type);
+    int start = getDataStartByType(type);
     if(type != "x0")
     {
         return ((int)address - start) / (int)getLengthByDataType(type);
@@ -1489,17 +1500,17 @@ int Global::convertYhcAddressToIndex(float address, QString type)
     }
 }
 
-float Global::convertYhcIndexToAddress(int index, QString type)
+float Global::convertIndexToAddress(int index, QString type)
 {
     if(type != "x0")
     {
-        int start = getYhcDataStartByType(type);
+        int start = getDataStartByType(type);
         return start + index * getLengthByDataType(type);
     }
     else
     {
         int address;
-        int startAddress = yhcDeviceInfo.Runctr_Address;
+        int startAddress = getDataStartByType("x0");
 
         int step = index / 8;
         address = startAddress + step;
@@ -1509,10 +1520,10 @@ float Global::convertYhcIndexToAddress(int index, QString type)
     }
 }
 
-float Global::getYhcRunctrAddressByIndex(int index)
+float Global::getRunctrAddressByIndex(int index)
 {
     int address;
-    int startAddress = yhcDeviceInfo.Runctr_Address;
+    int startAddress = getDataStartByType("x0");;
 
     int step = index / 8;
     address = startAddress + step;
@@ -1596,7 +1607,7 @@ QVector<DeviceGroupInfo> Global::fanDeviceGroupInfos = readDeviceGroupInfo("fan_
 
 QVector<DeviceGroupInfo> Global::ferDeviceGroupInfos = readDeviceGroupInfo("fer_device_group.xml");
 
-QVector<DeviceGroupInfo> Global::yhcDeviceGroupInfos = readDeviceGroupInfo("./yhc_devices_group.xml");
+QVector<DeviceGroupInfo> Global::yhcDeviceGroupInfos = readDeviceGroupInfo("yhc_devices_group.xml");
 
 QStandardItemModel* Global::alertsModel = new QStandardItemModel(0,4);
 

@@ -40,7 +40,7 @@ enum DeviceIdType {
 };
 
 enum msgname {
-    fjsw  =  7,
+    fjsw  =  1,
     yhfpsw
 };
 

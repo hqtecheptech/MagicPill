@@ -1,52 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <device>
-  <areas devicenumber="18" runctrnumber="32">
+  <areas devicenumber="12" runctrnumber="32">
     <area name="FERMENTATION" datatype="r" start="0" diff="0.5">
-        <node id="1" name="FER_WT_R" cname="发酵池权重温度" length="18" offset="0" diff="0.5"/>
-        <node id="1" name="Fer_Stuff_Height" cname="发酵池环境温度" length="90" offset="72" diff="0.5"/>
+        <node id="1" name="FER_HT_R" cname="发酵池高点温度" length="12" offset="0" diff="0.5"/>
+        <node id="1" name="FER_MT_R" cname="发酵池中点温度" length="12" offset="72" diff="0.5"/>
+        <node id="1" name="FER_LT_R" cname="发酵池低点温度" length="12" offset="144" diff="0.5"/>
+        <node id="1" name="FER_WT_R" cname="发酵池权重温度" length="12" offset="216" diff="0.5"/>
+        <node id="1" name="FER_ET_R" cname="发酵池环境温度" length="12" offset="288" diff="0.5"/>
     </area>
-    <area name="FER_TIME_SETTING" datatype="dw" start="2000" diff="300">
-        <node id="1" name="FER_TIME_1_SET_UDI" cname="第一阶段时间设定" length="1" offset="2000" diff="0"/>
-        <node id="1" name="FER_TIME_2_SET_UDI" cname="第二阶段时间设定" length="1" offset="2004" diff="0"/>
-        <node id="1" name="FER_TIME_3_SET_UDI" cname="第三阶段时间设定" length="1" offset="2008" diff="0"/>
-        <node id="1" name="FER_TIME_4_SET_UDI" cname="第四阶段时间设定" length="1" offset="2012" diff="0"/>
-        <node id="1" name="FER_TIME_5_SET_UDI" cname="第五阶段时间设定" length="1" offset="2016" diff="0"/>
+    <area name="CUSTOM_FER_SETTING" datatype="dw" start="1600" diff="0">
+        <node id="1" name="FER_Hand_RunTime" cname="手动发酵曝气时长" length="12" offset="0" diff="0"/>
+        <node id="1" name="FER_Hand_SpaceTime" cname="手动发酵曝气间隔" length="12" offset="1" diff="0"/>
     </area>
-    <area name="AERATION_RUNTIME_SETTING" datatype="dw" start="2020" diff="300">
-        <node id="1" name="AerationRunTime1_High_Set" cname="第一阶段髙值运行时长设定" length="1" offset="2020" diff="0"/>
-        <node id="1" name="AerationRunTime2_High_Set" cname="第二阶段髙值运行时长设定" length="1" offset="2024" diff="0"/>
-        <node id="1" name="AerationRunTime3_High_Set" cname="第三阶段髙值运行时长设定" length="1" offset="2028" diff="0"/>
-        <node id="1" name="AerationRunTime4_High_Set" cname="第四阶段髙值运行时长设定" length="1" offset="2032" diff="0"/>
-        <node id="1" name="AerationRunTime5_High_Set" cname="第四阶段髙值运行时长设定" length="1" offset="2036" diff="0"/>
-        <node id="1" name="AerationSpaceTime1_High_Set" cname="第一阶段髙值运行间隔设定" length="1" offset="2040" diff="0"/>
-        <node id="1" name="AerationSpaceTime2_High_Set" cname="第二阶段髙值运行间隔设定" length="1" offset="2044" diff="0"/>
-        <node id="1" name="AerationSpaceTime3_High_Set" cname="第三阶段髙值运行间隔设定" length="1" offset="2048" diff="0"/>
-        <node id="1" name="AerationSpaceTime4_High_Set" cname="第四阶段髙值运行间隔设定" length="1" offset="2052" diff="0"/>
-        <node id="1" name="AerationSpaceTime5_High_Set" cname="第五阶段髙值运行间隔设定" length="1" offset="2056" diff="0"/>
+    <area name="FER_START_END_TIME" datatype="di" start="800" diff="0">
+      <node id="1" name="FER_Start_Time" length="12" offset="3000" diff="0"/>
+      <node id="1" name="FER_End_Time" length="12" offset="3216" diff="0"/>
     </area>
-    <area name="CUSTOM_FER_SETTING" datatype="dw" start="2060" diff="0">
-        <node id="1" name="FER_Hand_RunTime" cname="手动发酵曝气时长" length="18" offset="2060" diff="0"/>
-        <node id="1" name="FER_Hand_SpaceTime" cname="手动发酵曝气间隔" length="18" offset="2132" diff="0"/>
+    <area name="TANK_STATE" datatype="w" start="2600" diff="0">
+        <node id="1" name="FER_STEPCTR_UI" cname="发酵池阶段" length="12" offset="3000" diff="0"/>
+        <node id="1" name="FER_Stuff_ID" cname="发酵堆序号" length="12" offset="3216" diff="0"/>
     </area>
-    <area name="RUNNING_TIME" datatype="dw" start="2204" diff="300">
-        <node id="1" name="FER_TOT_UDI" cname="发酵池累计运行时间" length="18" offset="2204" diff="0"/>
-        <node id="1" name="FER_STEP1_UDI" cname="发酵池第一步耗时" length="18" offset="2276" diff="0"/>
-        <node id="1" name="FER_STEP2_UDI" cname="发酵池第二步耗时" length="18" offset="2348" diff="0"/>
-        <node id="1" name="FER_STEP3_UDI" cname="发酵池第三步耗时" length="18" offset="2420" diff="0"/>
-        <node id="1" name="FER_STEP4_UDI" cname="发酵池第四步耗时" length="18" offset="2492" diff="0"/>
-        <node id="1" name="FER_STEP5_UDI" cname="发酵池第五步耗时" length="18" offset="2564" diff="0"/>
-        <node id="1" name="FER_AE_UDI" cname="曝气耗时" length="18" offset="2636" diff="0"/>
-        <node id="1" name="FER_STA_UDI" cname="静止耗时" length="18" offset="2708" diff="0"/>
-    </area>
-    <area name="FER_START_END_TIME" datatype="dt" start="3000" diff="0">
-      <node id="1" name="FER_Start_Time" length="18" offset="3000" diff="0"/>
-      <node id="1" name="FER_End_Time" length="18" offset="3216" diff="0"/>
-    </area>
-    <area name="TANK_STATE" datatype="w" start="4000" diff="0">
-        <node id="1" name="FER_STEPCTR_UI" cname="发酵池阶段" length="18" offset="3000" diff="0"/>
-        <node id="1" name="FER_Stuff_ID" cname="发酵堆序号" length="18" offset="3216" diff="0"/>
-    </area>
-    <area name="RUNCTR" datatype="x0" start="5000" diff="0">
+    <area name="RUNCTR" datatype="x0" start="2800" diff="0">
         <node id="1" name="FAN_Remote_BOOL" cname="风机远程信号" length="32" offset="0" diff="0" alert0="风机就地控制启动" alert1="风机远程控制启动"  priority="1"/>
         <node id="1" name="FAN_Run_BOOL" cname="风机运行停止状态" length="32" offset="1" diff="0" alert0="风机已停止运行" alert1="风机开始运行" priority="0"/>
         <node id="1" name="FAN_Fault_BOOL" cname="风机故障状态" length="32" offset="2" diff="0" alert0="风机故障解除" alert1="风机故障" priority="0"/>

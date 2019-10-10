@@ -16,7 +16,7 @@ DataReceiver::DataReceiver(QTcpSocket *tcpSocket, QObject *parent)
     connect(_tcpSocket, &QAbstractSocket::disconnected, _tcpSocket, &QObject::deleteLater);
     qDebug() << "New tcpsocket: " << tcpSocket->socketDescriptor();
 
-    controller = Syscontroller::getInstance(yhfpsw, 0);
+    controller = Syscontroller::getInstance(fjsw, 0);
     connect(this, SIGNAL(dataChanged(StreamPack,QSet<int>,QMap<float,QString>)),
             controller, SLOT(handlePlcControl(StreamPack,QSet<int>,QMap<float,QString>)));
 }
@@ -107,79 +107,48 @@ void DataReceiver::dataReceive()
         switch (bDevice.bDeviceId) {
         case YHC:
             startIndex = Global::getYhcDeviceStartIndex(bDevice.bDeviceId, bDevice.bDeviceGroup);
+            if(startIndex >=0)
+            {
+                QSet<int> changedDeviceSet;
+                foreach(float address, dataMap.keys())
+                {
+                    if(address < DB_BOOL_LEN)
+                    {
+                        changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByAddress(address));
+                    }
+                    else
+                    {
+                        changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByRunctrAddress(address));
+                    }
+                }
+
+                emit dataChanged(bDevice, changedDeviceSet, dataMap);
+            }
+            break;
+        case FER:
+            startIndex = Global::getFerDeviceStartIndex(bDevice.bDeviceId, bDevice.bDeviceGroup);
+            if(startIndex >=0)
+            {
+                QSet<int> changedDeviceSet;
+                foreach(float address, dataMap.keys())
+                {
+                    if(address < DB_BOOL_LEN)
+                    {
+                        changedDeviceSet.insert(startIndex + Global::getFerDeviceIndexByAddress(address));
+                    }
+                    else
+                    {
+                        changedDeviceSet.insert(startIndex + Global::getFerDeviceIndexByRunctrAddress(address));
+                    }
+                }
+
+                emit dataChanged(bDevice, changedDeviceSet, dataMap);
+            }
             break;
         default:
             break;
         }
-
-        if(startIndex >=0)
-        {
-            QSet<int> changedDeviceSet;
-            foreach(float address, dataMap.keys())
-            {
-                if(address < Global::yhcDeviceInfo.Runctr_Address)
-                {
-                    changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByAddress(address));
-                }
-                else
-                {
-                    changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByRunctrAddress(address));
-                }
-            }
-
-            emit dataChanged(bDevice, changedDeviceSet, dataMap);
-        }
     }
-
-    /*
-    QByteArray byteValues = sDataWithoutCRC.mid(sizeof(bDevice), sDataWithoutCRC.length() - sizeof(bDevice) - 4 * bDevice.bDataLength);
-    QString strValues(byteValues);
-    QStringList strValueList = strValues.split(",");
-    QVector<QString> strArray = strValueList.toVector();
-
-    byteValues = sDataWithoutCRC.mid(sDataWithoutCRC.length() - 4 * bDevice.bDataLength, 4 * bDevice.bDataLength);
-
-    QMap<float,QString> dataMap;
-    QVector<float> addressArray;
-
-    for(quint16 i=0; i<bDevice.bDataLength; ++i)
-    {
-        QByteArray value = byteValues.mid(i*4,4);
-        float temp = 0;
-        memcpy(&temp,value,4);
-        addressArray.append(temp);
-        dataMap.insert(temp,strArray[i]);
-    }
-
-    int startIndex = Global::getYhcDeviceStartIndex(bDevice.bDeviceId, bDevice.bDeviceGroup);
-
-    if(startIndex >=0)
-    {
-        QSet<int> changedDeviceSet;
-        foreach(float address, addressArray)
-        {
-            if(address < Global::yhcDeviceInfo.Runctr_Address)
-            {
-                changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByAddress(address));
-            }
-            else
-            {
-                changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByRunctrAddress(address));
-            }
-        }
-
-        emit dataChanged(changedDeviceSet, dataMap);
-    }
-    */
-
-    /*qDebug() << "Data content" << strArray;
-
-    if(strArray.length() > 0)
-    {
-        int strleng = strArray.length();
-        QString str = strArray.mid(4, strArray.length()-4);
-        qDebug() << "login name: " << str;
-    }*/
 
     clear();
 

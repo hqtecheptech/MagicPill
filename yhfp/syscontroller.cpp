@@ -65,12 +65,12 @@ Syscontroller::Syscontroller(msgname dataType, int groupId, QObject *parent) : Q
     pdmWorker->moveToThread(&plcdataManageThread);
     connect(&plcdataManageThread, &QThread::finished, pdmWorker, &QObject::deleteLater);
     connect(this, SIGNAL(pollingDatas(msgname,int)), pdmWorker, SLOT(getSharedDatas(msgname,int)));
-    connect(pdmWorker, &PlcDataManageWorker::plcDbUpdated, this, &Syscontroller::handleYhcPlcDbUpdated, Qt::QueuedConnection);
+    connect(pdmWorker, &PlcDataManageWorker::plcDbUpdated, this, &Syscontroller::handlePlcDbUpdated, Qt::QueuedConnection);
     plcdataManageThread.start();
 
     updateStatusTimer = new QTimer(this);
     connect( updateStatusTimer, SIGNAL(timeout()), this, SLOT(updateSysStatus()) );
-    updateStatusTimer->start(2000);
+    updateStatusTimer->start(1000);
 }
 
 Syscontroller *Syscontroller::getInstance(msgname dataType, int groupId)
@@ -113,7 +113,7 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    int index = Global::convertYhcAddressToIndex(address, "r");
+    int index = Global::convertAddressToIndex(address, "r");
 
     qDebug() << "handle Press Speed Up!";
     Plc_Db db;
@@ -197,12 +197,12 @@ void Syscontroller::updateSysStatus()
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(0);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("RevolvingSpeed");
     float address = deviceNode.Offset + (info.offset + 0 - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    int index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    int index = Global::convertAddressToIndex(address, deviceNode.DataType);
     db.f_data[index] = (float)rs;
 
     deviceNode = Global::getYhcNodeInfoByName("Ampere1");
     address = deviceNode.Offset + (info.offset + 0 - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
     db.f_data[index] = (float)prs;
 
     yhcDbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
@@ -213,7 +213,7 @@ void Syscontroller::updateSysStatus()
     //End test
 
 
-    int pid;
+/*    int pid;
     int cmd;
     int msgStatus;
 
@@ -251,23 +251,23 @@ void Syscontroller::updateSysStatus()
             emit resultReady();
         }
 
-        /*msgStatus = mHD_Read_Msg_Cmd(yhfpsw, &pid, &cmd);
-        if(msgStatus == -1)
-        {
-            return;
-        }
+        //msgStatus = mHD_Read_Msg_Cmd(yhfpsw, &pid, &cmd);
+        //if(msgStatus == -1)
+        //{
+        //    return;
+        //}
 
-        if(cmd == Msg_Updata_Data)
-        {
-            if(dbShare->GetShardMemory((void*)&plcDataDb, sizeof(Plc_Db)))
-            {
-                emit pollingDatas();
-            }
-        }*/
-    }
+//        if(cmd == Msg_Updata_Data)
+//        {
+//            if(dbShare->GetShardMemory((void*)&plcDataDb, sizeof(Plc_Db)))
+//            {
+//                emit pollingDatas();
+//            }
+//        }
+    }*/
 }
 
-void Syscontroller::handleYhcPlcDbUpdated(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
+void Syscontroller::handlePlcDbUpdated(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
 {
     emit plcDbUpdated(changedDeviceSet, dataMap);
 }
@@ -281,6 +281,11 @@ void Syscontroller::applyControlRequest()
     yhcDbShare->SetSharedMemory((void*)&data, sizeof(Plc_Db));
     yhcDbShare->UnlockShare();
     yhcCtrlShare->UnlockShare();
+
+    Plc_Db data1;
+    yhcDbShare->LockShare();
+    yhcDbShare->GetShardMemory((void*)&data1, sizeof(Plc_Db));
+    yhcDbShare->UnlockShare();
 }
 
 void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
@@ -299,6 +304,15 @@ void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet
         applyControlRequest();
         break;
     case FER:
+        yhcDbShare->LockShare();
+        yhcCtrlShare->LockShare();
+        yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+        resetControlShare(pack.bDataType, dataMap, &db);
+        yhcCtrlShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+        yhcCtrlShare->UnlockShare();
+        yhcDbShare->UnlockShare();
+        //Remove after test.
+        applyControlRequest();
         break;
     default:
         break;
@@ -311,7 +325,7 @@ void Syscontroller::resetControlShare(int dataType, QMap<float, QString> control
     case Bool:
         foreach(float address, controlData.keys())
         {
-            int index = Global::convertYhcAddressToIndex(address, "x0");
+            int index = Global::convertAddressToIndex(address, "x0");
             if(controlData.value(address) == "1")
             {
                controlDb->b_data[index] = true;
@@ -325,7 +339,7 @@ void Syscontroller::resetControlShare(int dataType, QMap<float, QString> control
     case Float:
         foreach(float address, controlData.keys())
         {
-            int index = Global::convertYhcAddressToIndex(address, "r");
+            int index = Global::convertAddressToIndex(address, "r");
             controlDb->f_data[index] = controlData.value(address).toFloat();
         }
         break;

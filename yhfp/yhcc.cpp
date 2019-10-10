@@ -49,7 +49,7 @@ Yhcc::Yhcc(QWidget *parent) :
     testTimer = new QTimer(this);
     connect(testTimer, SIGNAL(timeout()), this, SLOT(wirteTestData()));
 
-    controller = Syscontroller::getInstance(yhfpsw, 0);
+    controller = Syscontroller::getInstance(fjsw, 0);
     if(controller != Q_NULLPTR)
     {
         connect(controller, SIGNAL(resultReady()), this, SLOT(handleControllerResult()));
@@ -213,11 +213,11 @@ void Yhcc::handleControllerResult()
 
 void Yhcc::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap)
 {
-    if(changedDeviceSet.contains(deviceIndex))
-    {
+    //if(changedDeviceSet.contains(deviceIndex))
+    //{
         parseYhcData(dataMap);
         parseYhcRunCtrData(dataMap);
-    }
+    //}
 }
 
 void Yhcc::wirteTestData()
@@ -248,7 +248,7 @@ void Yhcc::updateWatchs()
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    int index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    int index = Global::convertAddressToIndex(address, deviceNode.DataType);
     ui->test_label->setText(Global::currentYhcDataMap.value(address, "false"));
 
     data.address = address;
@@ -264,7 +264,7 @@ void Yhcc::updateWatchs()
 
     deviceNode = Global::getYhcNodeInfoByName("RevolvingSpeed");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
     int rs = Global::currentYhcDataMap.value(address).toFloat();
 
     data.address = address;
@@ -280,7 +280,7 @@ void Yhcc::updateWatchs()
 
     deviceNode = Global::getYhcNodeInfoByName("Ampere1");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
     int prs = Global::currentYhcDataMap.value(address).toFloat();
 
     data.address = address;
@@ -302,23 +302,23 @@ void Yhcc::parseYhcData(QMap<float, QString> dataMap)
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Tempture");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    int index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    int index = Global::convertAddressToIndex(address, deviceNode.DataType);
     //ui->test_label->setText(Global::currentYhcDataMap[address]);
 
     deviceNode = Global::getYhcNodeInfoByName("Speed");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertYhcAddressToIndex(address, deviceNode.DataType);
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
     qDebug() << "Speed value: " << Global::currentYhcDataMap[address];
     ui->speedLabel->setText(Global::currentYhcDataMap[address]);
 }
 
 void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
 {
-    bool value = Global::getYhcRunctrValueByName(deviceIndex, "Run_Signal", Global::currentYhcDataMap);
+    bool value = Global::getFerRunctrValueByName(deviceIndex, "FAN_Auto_BOOL", dataMap);
     ui->test_label_2->setText(QString::number(value));
-    value = Global::getYhcRunctrValueByName(deviceIndex, "False_Signal", Global::currentYhcDataMap);
+    value = Global::getFerRunctrValueByName(deviceIndex + 1, "FAN_Auto_BOOL", dataMap);
     ui->test_label_3->setText(QString::number(value));
-    value = Global::getYhcRunctrValueByName(deviceIndex, "FAN_SPAREVALVE_Opened", Global::currentYhcDataMap);
+    value = Global::getFerRunctrValueByName(deviceIndex + 5, "FAN_Auto_BOOL", dataMap);
     ui->test_label_4->setText(QString::number(value));
     value = Global::getYhcRunctrValueByName(deviceIndex, "FAN_VALVE_HAND_OPEN", Global::currentYhcDataMap);
     // to do: just for test temporay.
