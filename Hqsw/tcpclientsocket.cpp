@@ -152,6 +152,15 @@ int TcpClientSocket::sendRequestWithResults(QByteArray data)
     return 1;
 }
 
+/*QDataStream &operator<<(QDataStream &output, const StreamPack sp )
+{
+    output << sp.bStreamLength << sp.bDeviceId << sp.bDeviceGroup
+           << sp.bCommandType << sp.bDataType << sp.bAddress
+           << sp.bIndex << sp.bDataLength << sp.bErrorCode
+           << sp.bStartTime << sp.bEndTime;
+    return output;
+}*/
+
 int TcpClientSocket::sendRequestWithResult(StreamPack requestPack, QVariant dataToSend, int dataLength)
 {
     requestPack.bStreamLength += 4 + dataLength;

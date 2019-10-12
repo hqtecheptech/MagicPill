@@ -50,7 +50,8 @@ RenhuaiNew::RenhuaiNew(QWidget *parent) :
 
     historyDialog = new HistoryDialog(this);
     reportDialog = new ReportDialog(this);
-    settingDialog = new SettingDialog(this);
+    //settingDialog = new SettingDialog(this);
+    ferconfigDialog = new FerConfigDialog(this);
     alertQueryDialog = new AlertQueryDialog(this);
     fercontrolDialog = new FerControlDialog(this);
     connect(this,SIGNAL(ferDataChanged(QSet<int>, QMap<float,QString>)),fercontrolDialog,SLOT(updateFermentationData(QSet<int>, QMap<float,QString>)));
@@ -178,7 +179,8 @@ void RenhuaiNew::on_ferControlButton_clicked()
 
 void RenhuaiNew::on_SettingButton_clicked()
 {
-    settingDialog->show();
+    //settingDialog->show();
+    ferconfigDialog->show();
 }
 
 void RenhuaiNew::on_logoutPushButton_clicked()
@@ -244,7 +246,8 @@ void RenhuaiNew::on_exitButton_clicked()
     alertQueryDialog->close();
     sfcontrolDialog->close();
     fanControlDialog->close();
-    settingDialog->close();
+    //settingDialog->close();
+    ferconfigDialog->close();
     fercontrolDialog->close();
 
     QApplication::quit();

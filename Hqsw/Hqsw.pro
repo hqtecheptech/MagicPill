@@ -81,7 +81,13 @@ SOURCES += main.cpp\
     singledeodorationfan.cpp \
     basepartwidget.cpp \
     testpart.cpp \
-    basetankwidget.cpp
+    basetankwidget.cpp \
+    fercaseform.cpp \
+    fercase.cpp \
+    ferstep.cpp \
+    ferstepform.cpp \
+    ferconfigdialog.cpp \
+    ferconfig.cpp
 
 HEADERS  += mainwindow.h \
     ufftank.h \
@@ -138,7 +144,13 @@ HEADERS  += mainwindow.h \
     singledeodorationfan.h \
     basepartwidget.h \
     testpart.h \
-    basetankwidget.h
+    basetankwidget.h \
+    fercaseform.h \
+    fercase.h \
+    ferstep.h \
+    ferstepform.h \
+    ferconfigdialog.h \
+    ferconfig.h
 
 FORMS    += mainwindow.ui \
     fftank.ui \
@@ -180,7 +192,10 @@ FORMS    += mainwindow.ui \
     xinyifercontroltabwidget.ui \
     sensorcontroldialog.ui \
     singledeodorationfan.ui \
-    testpart.ui
+    testpart.ui \
+    fercaseform.ui \
+    ferstepform.ui \
+    ferconfigdialog.ui
 
 RESOURCES += \
     src.qrc

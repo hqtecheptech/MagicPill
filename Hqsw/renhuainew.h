@@ -13,6 +13,7 @@
 #include "environmentparams.h"
 #include "fancontroldialog.h"
 #include "sensorcontroldialog.h"
+#include "ferconfigdialog.h"
 
 #include <QWidget>
 
@@ -76,7 +77,8 @@ private:
     FanValveControlDialog *fanValveControlDialog;
     HistoryDialog *historyDialog;
     ReportDialog *reportDialog;
-    SettingDialog *settingDialog;
+    //SettingDialog *settingDialog;
+    FerConfigDialog *ferconfigDialog;
     AlertQueryDialog *alertQueryDialog;
     FanControlDialog *fanControlDialog;
     SensorControlDialog *sensorControlDialog;
