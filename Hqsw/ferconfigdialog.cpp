@@ -27,7 +27,12 @@ FerConfigDialog::FerConfigDialog(QWidget *parent) :
         fsf->initCases(3);
         centerLayout->addWidget(fsf);
         centerLayoutWidgets.append(fsf);
+        connect(fsf, SIGNAL(sizeChanged(int,int)),this,SLOT(updateSize(int,int)));
     }
+
+    w = ui->step_config_frame->width();
+    h = 5 * 705;
+    ui->step_config_frame->resize(w, h);
 }
 
 FerConfigDialog::~FerConfigDialog()
@@ -42,7 +47,15 @@ void FerConfigDialog::on_remove_step_push_button_clicked()
         QWidget *rw = centerLayoutWidgets.last();
         centerLayout->removeWidget(rw);
         centerLayoutWidgets.removeLast();
+        int rh = rw->height() + 5;
         rw->deleteLater();
+
+        h -= rh;
+        ui->step_config_frame->setMinimumSize(w, h);
+        ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+        ui->step_config_frame->resize(w, h);
+        qDebug() << h;
     }
 }
 
@@ -54,4 +67,22 @@ void FerConfigDialog::on_append_step_push_button_clicked()
     fsf->initCases(0);
     centerLayout->addWidget(fsf);
     centerLayoutWidgets.append(fsf);
+    connect(fsf, SIGNAL(sizeChanged(int,int)),this,SLOT(updateSize(int,int)));
+
+    h += 405;
+    ui->step_config_frame->setMinimumSize(w, h);
+    ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    ui->step_config_frame->resize(w, h);
+    qDebug() << h;
+}
+
+void FerConfigDialog::updateSize(int aw, int ah)
+{
+    h += ah;
+    ui->step_config_frame->setMinimumSize(w, h);
+    ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+    ui->step_config_frame->resize(w, h);
+    qDebug() << h;
 }

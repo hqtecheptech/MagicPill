@@ -8,6 +8,7 @@ FerStepForm::FerStepForm(QWidget *parent) :
     ui->setupUi(this);
 
     casesLayout = new QVBoxLayout(this);
+    casesLayout->setSpacing(0);
     ui->cases_frame->setLayout(casesLayout);
 }
 
@@ -18,7 +19,7 @@ FerStepForm::~FerStepForm()
 
 void FerStepForm::initCases(int num)
 {
-    ui->cases_frame->resize(1200, (num+1)*100);
+    ui->cases_frame->resize(1200, num*100);
     for(int i=0; i<num; i++)
     {
         FerCaseForm *fcf = new FerCaseForm(this);
@@ -40,15 +41,20 @@ void FerStepForm::on_reduce_case_push_button_clicked()
         caseLayoutWidgets.removeLast();
         lastWidget->deleteLater();
 
-        int height = ui->cases_frame->height();
-        int width = ui->cases_frame->width();
-        ui->cases_frame->resize(width, height - 100);
+        int cw = ui->cases_frame->width();
+        int ch = ui->cases_frame->height() - 100;
+        ui->cases_frame->resize(cw, ch);
+        ui->cases_frame->setMinimumSize(cw, ch);
+        ui->cases_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
+        w = width();
+        h = height();
         h -= 100;
+        resize(w, h);
         setMinimumSize(w, h);
         setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-        resize(w, h);
+        emit sizeChanged(0, -100);
     }
 }
 
@@ -60,13 +66,18 @@ void FerStepForm::on_add_case_push_button_clicked()
     casesLayout->addWidget(fcf);
     caseLayoutWidgets.append(fcf);
 
-    int height = ui->cases_frame->height();
-    int width = ui->cases_frame->width();
-    ui->cases_frame->resize(width, height + 100);
+    int cw = ui->cases_frame->width();
+    int ch = ui->cases_frame->height() + 100;
+    ui->cases_frame->resize(cw, ch);
+    ui->cases_frame->setMinimumSize(cw, ch);
+    ui->cases_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
+    w = width();
+    h = height();
     h += 100;
+    resize(w, h);
     setMinimumSize(w, h);
     setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    resize(w, h);
+    emit sizeChanged(0, 100);
 }

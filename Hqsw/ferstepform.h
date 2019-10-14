@@ -19,9 +19,11 @@ public:
     ~FerStepForm();
     void initCases(int num);
 
+signals:
+    void sizeChanged(int w, int h);
+
 private slots:
     void on_reduce_case_push_button_clicked();
-
     void on_add_case_push_button_clicked();
 
 private:

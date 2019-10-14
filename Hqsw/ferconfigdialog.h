@@ -23,6 +23,9 @@ private slots:
 
     void on_append_step_push_button_clicked();
 
+public slots:
+    void updateSize(int aw, int ah);
+
 private:
     Ui::FerConfigDialog *ui;
     QVBoxLayout *centerLayout;
