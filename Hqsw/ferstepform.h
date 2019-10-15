@@ -5,6 +5,7 @@
 #include <QVBoxLayout>
 #include <QVector>
 #include "fercaseform.h"
+#include "ferstep.h"
 
 namespace Ui {
 class FerStepForm;
@@ -17,7 +18,8 @@ class FerStepForm : public QWidget
 public:
     explicit FerStepForm(QWidget *parent = 0);
     ~FerStepForm();
-    void initCases(int num);
+    void initStep(FerStep *step);
+    void addNewCase();
 
 signals:
     void sizeChanged(int w, int h);
@@ -32,6 +34,7 @@ private:
     QVector<QWidget *> caseLayoutWidgets;
     int w = 0;
     int h = 0;
+    FerStep _ferStep;
 };
 
 #endif // FERSTEPFORM_H

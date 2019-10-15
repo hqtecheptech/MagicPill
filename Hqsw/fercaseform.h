@@ -16,9 +16,12 @@ public:
     explicit FerCaseForm(QWidget *parent = 0);
     ~FerCaseForm();
 
+    FerCase fercase() const;
+    void setFercase(const FerCase &fercase);
+
 private:
     Ui::FerCaseForm *ui;
-    FerCase fercase;
+    FerCase _fercase;
 };
 
 #endif // FERCASEFORM_H

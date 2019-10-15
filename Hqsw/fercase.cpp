@@ -1,6 +1,6 @@
 #include "fercase.h"
 
-FerCase::FerCase(QObject *parent) : QObject(parent)
+FerCase::FerCase()
 {
 
 }

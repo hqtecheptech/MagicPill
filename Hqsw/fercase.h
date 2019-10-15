@@ -1,13 +1,10 @@
 #ifndef FERCASE_H
 #define FERCASE_H
 
-#include <QObject>
-
-class FerCase : public QObject
+class FerCase
 {
-    Q_OBJECT
 public:
-    explicit FerCase(QObject *parent = 0);
+    explicit FerCase();
 
     float highTempture() const;
     void setHighTempture(float highTempture);
@@ -21,15 +18,11 @@ public:
     int sta() const;
     void setSta(int sta);
 
-signals:
-
-public slots:
-
 private:
-    float _lowTempture;
-    float _highTempture;
-    int _ae;
-    int _sta;
+    float _lowTempture = -20.6;
+    float _highTempture = 36.6;
+    int _ae = 180;
+    int _sta = 1200;
 };
 
 #endif // FERCASE_H

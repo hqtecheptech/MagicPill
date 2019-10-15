@@ -94,3 +94,13 @@ void FerStep::setFerCases(const QList<FerCase *> &ferCases)
 {
     _ferCases = ferCases;
 }
+
+void FerStep::removeLastCase()
+{
+    _ferCases.removeLast();
+}
+
+void FerStep::appendCase(FerCase *ferCase)
+{
+    _ferCases.append(ferCase);
+}

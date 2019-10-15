@@ -38,6 +38,9 @@ public:
     QList<FerCase *> ferCases() const;
     void setFerCases(const QList<FerCase *> &ferCases);
 
+    void removeLastCase();
+    void appendCase(FerCase *ferCase);
+
 signals:
 
 public slots:

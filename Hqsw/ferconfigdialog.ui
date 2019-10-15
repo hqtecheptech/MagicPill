@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1500</width>
-    <height>1050</height>
+    <height>900</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,26 +17,29 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>5</y>
-     <width>171</width>
-     <height>50</height>
+     <y>20</y>
+     <width>200</width>
+     <height>60</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>25</pointsize>
+     <pointsize>30</pointsize>
      <weight>50</weight>
      <bold>false</bold>
     </font>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
    </property>
   </widget>
   <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
     <rect>
      <x>28</x>
-     <y>58</y>
+     <y>100</y>
      <width>1420</width>
-     <height>980</height>
+     <height>780</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -57,7 +60,7 @@
       <x>0</x>
       <y>0</y>
       <width>1418</width>
-      <height>978</height>
+      <height>778</height>
      </rect>
     </property>
    </widget>
@@ -81,15 +84,15 @@
   <widget class="QPushButton" name="remove_step_push_button">
    <property name="geometry">
     <rect>
-     <x>1160</x>
-     <y>4</y>
-     <width>50</width>
-     <height>50</height>
+     <x>1120</x>
+     <y>10</y>
+     <width>80</width>
+     <height>80</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>30</pointsize>
+     <pointsize>50</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -101,15 +104,15 @@
   <widget class="QPushButton" name="append_step_push_button">
    <property name="geometry">
     <rect>
-     <x>1040</x>
-     <y>4</y>
-     <width>50</width>
-     <height>50</height>
+     <x>920</x>
+     <y>10</y>
+     <width>80</width>
+     <height>80</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>30</pointsize>
+     <pointsize>50</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -121,8 +124,8 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>1100</x>
-     <y>16</y>
+     <x>1040</x>
+     <y>30</y>
      <width>51</width>
      <height>31</height>
     </rect>
@@ -137,6 +140,26 @@
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="reload_push_button">
+   <property name="geometry">
+    <rect>
+     <x>1310</x>
+     <y>10</y>
+     <width>80</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>50</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>R</string>
    </property>
   </widget>
  </widget>
