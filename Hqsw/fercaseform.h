@@ -19,6 +19,8 @@ public:
     FerCase fercase() const;
     void setFercase(const FerCase &fercase);
 
+    QString checkCaseValidation();
+
 private:
     Ui::FerCaseForm *ui;
     FerCase _fercase;

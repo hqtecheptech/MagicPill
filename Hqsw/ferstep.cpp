@@ -104,3 +104,13 @@ void FerStep::appendCase(FerCase *ferCase)
 {
     _ferCases.append(ferCase);
 }
+
+QString FerStep::checkStepValidation()
+{
+    if(_nextStepTimeMin >= _nextStepTimeMax)
+    {
+        return "最长跳步时间必须大于最短跳步时间";
+    }
+
+    return "OK";
+}

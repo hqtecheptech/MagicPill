@@ -44,3 +44,13 @@ void FerCase::setSta(int sta)
 {
     _sta = sta;
 }
+
+QString FerCase::checkCaseValidation()
+{
+    if(_lowTempture >= _highTempture)
+    {
+        return "高温必须大于低温";
+    }
+
+    return "OK";
+}

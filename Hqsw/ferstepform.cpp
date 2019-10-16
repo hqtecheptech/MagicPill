@@ -37,6 +37,7 @@ void FerStepForm::initStep(FerStep *step)
         casesLayout->addWidget(fcf);
         caseLayoutWidgets.append(fcf);
         FerCase *ferCase = new FerCase;
+        //ferCase->setCaseIndex(i);
         ferCase->setAe(step->ferCases().at(i)->ae());
         ferCase->setSta(step->ferCases().at(i)->sta());
         ferCase->setLowTempture(step->ferCases().at(i)->lowTempture());
@@ -76,6 +77,27 @@ void FerStepForm::addNewCase()
     ch = ui->cases_frame->height();
 
     emit sizeChanged(0, 100);
+}
+
+QString FerStepForm::checkStepValidation()
+{
+    QString result = "";
+
+    if(caseLayoutWidgets.length() == 0)
+    {
+        return "必须至少有一个CASE";
+    }
+
+    for(int i=0; i<caseLayoutWidgets.length();i++)
+    {
+        result = ((FerCaseForm)caseLayoutWidgets.at(i)).checkCaseValidation();
+        if(result != "OK")
+        {
+            return "Case " + QString::number(i+1) + ": " + result;
+        }
+    }
+
+    return _ferStep.checkStepValidation();
 }
 
 void FerStepForm::on_reduce_case_push_button_clicked()

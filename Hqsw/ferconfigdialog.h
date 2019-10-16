@@ -5,6 +5,8 @@
 #include <QVBoxLayout>
 #include <QList>
 #include <QFile>
+#include <QMessageBox>
+#include <QScrollBar>
 #include "ferstepform.h"
 #include "ferstep.h"
 #include "fercase.h"
@@ -29,6 +31,8 @@ private slots:
 
     void on_reload_push_button_clicked();
 
+    void on_save_push_button_clicked();
+
 public slots:
     void updateSize(int aw, int ah);
 
@@ -36,12 +40,15 @@ private:
     Ui::FerConfigDialog *ui;
     QVBoxLayout *centerLayout;
     QVector<QWidget *> centerLayoutWidgets;
+    QMessageBox msgBox;
     int w = 0;
     int h = 0;
 
     FerConfig _ferConfig;
-    QList<FerStep *> fersteps;
+    QList<FerStep *> _ferSteps;
     bool loadConfig(QList<FerStep *> *steps);
+    void initUI();
+    void clearUI();
 };
 
 #endif // FERCONFIGDIALOG_H

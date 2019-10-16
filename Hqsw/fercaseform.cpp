@@ -22,3 +22,8 @@ void FerCaseForm::setFercase(const FerCase &fercase)
 {
     _fercase = fercase;
 }
+
+QString FerCaseForm::checkCaseValidation()
+{
+    return _fercase.checkCaseValidation();
+}

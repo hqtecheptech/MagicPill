@@ -8,12 +8,12 @@ FerConfigDialog::FerConfigDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    _ferConfig.loadConfig(&fersteps);
-
     for(int i=0; i < Global::ferDeviceInfo.Device_Number;i++)
     {
         ui->step_seq_comboBox->addItem(QString::number(i + 1) + QStringLiteral("号发酵池"));
     }
+
+    _ferConfig.loadConfig(&_ferSteps);
 
     centerLayout = new QVBoxLayout;
     centerLayout->setSpacing(5);
@@ -21,21 +21,7 @@ FerConfigDialog::FerConfigDialog(QWidget *parent) :
     ui->step_config_frame->setLayout(centerLayout);
     ui->scrollArea->setWidget(ui->step_config_frame);
 
-    for(int i=0; i < fersteps.length(); i++)
-    {
-        FerStepForm *fsf = new FerStepForm(this);
-        int caseNum = fersteps.at(i)->ferCases().length();
-        fsf->setMinimumSize(1300, 300 + caseNum*100);
-        fsf->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-        fsf->initStep(fersteps.at(i));
-        centerLayout->addWidget(fsf);
-        centerLayoutWidgets.append(fsf);
-        connect(fsf, SIGNAL(sizeChanged(int,int)),this,SLOT(updateSize(int,int)));
-        h += 300 + caseNum*100 + 5;
-    }
-
-    w = ui->step_config_frame->width();
-    ui->step_config_frame->resize(w, h);
+    initUI();
 }
 
 FerConfigDialog::~FerConfigDialog()
@@ -52,6 +38,7 @@ void FerConfigDialog::on_remove_step_push_button_clicked()
         centerLayoutWidgets.removeLast();
         int rh = rw->height() + 5;
         rw->deleteLater();
+        _ferSteps.removeLast();
 
         h -= rh;
         //ui->step_config_frame->setMinimumSize(w, h);
@@ -70,12 +57,23 @@ void FerConfigDialog::on_append_step_push_button_clicked()
     centerLayout->addWidget(fsf);
     centerLayoutWidgets.append(fsf);
     connect(fsf, SIGNAL(sizeChanged(int,int)),this,SLOT(updateSize(int,int)));
+    FerStep *newStep = new FerStep;
+    //newStep->setStepIndex(_ferSteps.length() + 1);
+    _ferSteps.append(newStep);
 
     h += 305;
+
+    ui->step_config_frame->resize(w, h);
+
+    QScrollBar *pScrollBar = ui->scrollArea->verticalScrollBar();
+    if (pScrollBar != NULL)
+    {
+        int nMax = pScrollBar->maximum();
+        pScrollBar->setValue(nMax);
+    }
     //ui->step_config_frame->setMinimumSize(w, h);
     //ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    ui->step_config_frame->resize(w, h);
     qDebug() << h;
 }
 
@@ -86,6 +84,14 @@ void FerConfigDialog::updateSize(int aw, int ah)
     //ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     ui->step_config_frame->resize(w, h);
+
+    QScrollBar *pScrollBar = ui->scrollArea->verticalScrollBar();
+    if (pScrollBar != NULL)
+    {
+        int nPos = pScrollBar->value();
+        pScrollBar->setValue(nPos + ah);
+    }
+
     qDebug() << h;
 }
 
@@ -188,7 +194,74 @@ bool FerConfigDialog::loadConfig(QList<FerStep *> *steps)
     return true;
 }
 
+void FerConfigDialog::initUI()
+{
+    for(int i=0; i < _ferSteps.length(); i++)
+    {
+        FerStepForm *fsf = new FerStepForm(this);
+        int caseNum = _ferSteps.at(i)->ferCases().length();
+        fsf->setMinimumSize(1300, 300 + caseNum*100);
+        fsf->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        fsf->initStep(_ferSteps.at(i));
+        centerLayout->addWidget(fsf);
+        centerLayoutWidgets.append(fsf);
+        connect(fsf, SIGNAL(sizeChanged(int,int)),this,SLOT(updateSize(int,int)));
+        h += 300 + caseNum*100 + 5;
+    }
+
+    w = ui->step_config_frame->width();
+    ui->step_config_frame->resize(w, h);
+}
+
+void FerConfigDialog::clearUI()
+{
+    while(!centerLayoutWidgets.isEmpty())
+    {
+        QWidget *rw = centerLayoutWidgets.last();
+        centerLayout->removeWidget(rw);
+        centerLayoutWidgets.removeLast();
+        int rh = rw->height() + 5;
+        rw->deleteLater();
+
+        h -= rh;
+        //ui->step_config_frame->setMinimumSize(w, h);
+        //ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+        ui->step_config_frame->resize(w, h);
+        qDebug() << h;
+    }
+    _ferSteps.clear();
+}
+
 void FerConfigDialog::on_reload_push_button_clicked()
 {
-    _ferConfig.loadConfig(&fersteps);
+    clearUI();
+    _ferConfig.loadConfig(&_ferSteps);
+    initUI();
+}
+
+void FerConfigDialog::on_save_push_button_clicked()
+{
+    if(centerLayoutWidgets.length() == 0)
+    {
+        msgBox.setText("当前方案还没有添加发酵步骤");
+        msgBox.show();
+        return;
+    }
+    else
+    {
+        for(int i=0; i<centerLayoutWidgets.length();i++)
+        {
+            QString result = ((FerStepForm *)centerLayoutWidgets.at(i))->checkStepValidation();
+            if(result != "OK")
+            {
+                msgBox.setText("Step " + QString::number(i+1) + ": " + result);
+                msgBox.show();
+                return;
+            }
+        }
+    }
+
+    msgBox.setText("保存成功");
+    msgBox.show();
 }

@@ -1,6 +1,8 @@
 #ifndef FERCASE_H
 #define FERCASE_H
 
+#include <QString>
+
 class FerCase
 {
 public:
@@ -18,11 +20,13 @@ public:
     int sta() const;
     void setSta(int sta);
 
+    QString checkCaseValidation();
+
 private:
-    float _lowTempture = -20.6;
-    float _highTempture = 36.6;
-    int _ae = 180;
-    int _sta = 1200;
+    float _lowTempture = 0.0;
+    float _highTempture = 0.0;
+    int _ae = 0;
+    int _sta = 0;
 };
 
 #endif // FERCASE_H

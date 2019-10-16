@@ -41,19 +41,21 @@ public:
     void removeLastCase();
     void appendCase(FerCase *ferCase);
 
+    QString checkStepValidation();
+
 signals:
 
 public slots:
 
 private:
-    int _planNum = 3;
+    int _planNum = 0;
     int _airMode = 0;
-    int _nextStepTimeMax = 24;
-    int _nextStepTimeMin = 2;
-    int _defaultParaAE = 300;
-    int _defaultParaSTA = 1800;
-    float _nextStepTemp = 32.6;
-    float _hopeTemp = 32.6;
+    int _nextStepTimeMax = 0;
+    int _nextStepTimeMin = 0;
+    int _defaultParaAE = 0;
+    int _defaultParaSTA = 0;
+    float _nextStepTemp = 0.0;
+    float _hopeTemp = 0.0;
     QList<FerCase*> _ferCases;
 };
 

@@ -20,6 +20,7 @@ public:
     ~FerStepForm();
     void initStep(FerStep *step);
     void addNewCase();
+    QString checkStepValidation();
 
 signals:
     void sizeChanged(int w, int h);
