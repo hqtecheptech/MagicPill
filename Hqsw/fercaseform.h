@@ -2,6 +2,7 @@
 #define FERCASEFORM_H
 
 #include <QWidget>
+#include <QMessageBox>
 #include "fercase.h"
 
 namespace Ui {
@@ -20,10 +21,15 @@ public:
     void setFercase(const FerCase &fercase);
 
     QString checkCaseValidation();
+    void setCaseSequence(int seq);
+
+public slots:
+    bool eventFilter(QObject *watched, QEvent *event);
 
 private:
     Ui::FerCaseForm *ui;
     FerCase _fercase;
+    QMessageBox msgBox;
 };
 
 #endif // FERCASEFORM_H

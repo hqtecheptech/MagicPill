@@ -84,7 +84,7 @@ bool FerConfig::loadConfig(QList<FerStep *> *steps)
                         {
                             ferStep->setNextStepTimeMax(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toInt());
                         }
-                        else if(value == "next_step_time_mix")
+                        else if(value == "next_step_time_min")
                         {
                             ferStep->setNextStepTimeMin(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toInt());
                         }
@@ -95,6 +95,11 @@ bool FerConfig::loadConfig(QList<FerStep *> *steps)
                         else if(value == "hope_temp")
                         {
                             ferStep->setHopeTemp(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toFloat());
+                        }
+                        else if(value == "default_para")
+                        {
+                            ferStep->setDefaultParaAE(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toInt());
+                            ferStep->setDefaultParaSTA(QByteArray(fieldsStrList.at(2).toLocal8Bit().constData()).toInt());
                         }
                         else if(value == "case_" + QString::number(caseNum+1))
                         {

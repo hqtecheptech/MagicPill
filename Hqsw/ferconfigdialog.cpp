@@ -41,10 +41,9 @@ void FerConfigDialog::on_remove_step_push_button_clicked()
         _ferSteps.removeLast();
 
         h -= rh;
-        //ui->step_config_frame->setMinimumSize(w, h);
-        //ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
         ui->step_config_frame->resize(w, h);
+        ui->step_config_frame->setMinimumSize(w, h);
+        ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         qDebug() << h;
     }
 }
@@ -58,21 +57,19 @@ void FerConfigDialog::on_append_step_push_button_clicked()
     centerLayoutWidgets.append(fsf);
     connect(fsf, SIGNAL(sizeChanged(int,int)),this,SLOT(updateSize(int,int)));
     FerStep *newStep = new FerStep;
-    //newStep->setStepIndex(_ferSteps.length() + 1);
     _ferSteps.append(newStep);
 
     h += 305;
 
     ui->step_config_frame->resize(w, h);
+    ui->step_config_frame->setMinimumSize(w, h);
+    ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     QScrollBar *pScrollBar = ui->scrollArea->verticalScrollBar();
     if (pScrollBar != NULL)
     {
-        int nMax = pScrollBar->maximum();
-        pScrollBar->setValue(nMax);
+        pScrollBar->setValue(h);
     }
-    //ui->step_config_frame->setMinimumSize(w, h);
-    //ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     qDebug() << h;
 }
@@ -80,16 +77,15 @@ void FerConfigDialog::on_append_step_push_button_clicked()
 void FerConfigDialog::updateSize(int aw, int ah)
 {
     h += ah;
-    //ui->step_config_frame->setMinimumSize(w, h);
-    //ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     ui->step_config_frame->resize(w, h);
+    ui->step_config_frame->setMinimumSize(w, h);
+    ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     QScrollBar *pScrollBar = ui->scrollArea->verticalScrollBar();
     if (pScrollBar != NULL)
     {
-        int nPos = pScrollBar->value();
-        pScrollBar->setValue(nPos + ah);
+        pScrollBar->setValue(pScrollBar->value() + ah);
     }
 
     qDebug() << h;
@@ -153,7 +149,7 @@ bool FerConfigDialog::loadConfig(QList<FerStep *> *steps)
                                 {
                                     ferStep->setNextStepTimeMax(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toInt());
                                 }
-                                else if(value == "next_step_time_mix")
+                                else if(value == "next_step_time_min")
                                 {
                                     ferStep->setNextStepTimeMin(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toInt());
                                 }
@@ -202,6 +198,7 @@ void FerConfigDialog::initUI()
         int caseNum = _ferSteps.at(i)->ferCases().length();
         fsf->setMinimumSize(1300, 300 + caseNum*100);
         fsf->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        fsf->setStepSequence(i);
         fsf->initStep(_ferSteps.at(i));
         centerLayout->addWidget(fsf);
         centerLayoutWidgets.append(fsf);

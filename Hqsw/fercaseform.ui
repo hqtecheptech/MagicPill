@@ -64,6 +64,14 @@
      <height>61</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>30</pointsize>
+    </font>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDigitsOnly</set>
+   </property>
   </widget>
   <widget class="QTextEdit" name="ae_text_edit">
    <property name="geometry">
@@ -74,6 +82,14 @@
      <height>61</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>30</pointsize>
+    </font>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDigitsOnly</set>
+   </property>
   </widget>
   <widget class="QTextEdit" name="high_tmp_text_edit">
    <property name="geometry">
@@ -83,6 +99,14 @@
      <width>104</width>
      <height>61</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>30</pointsize>
+    </font>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDigitsOnly</set>
    </property>
   </widget>
   <widget class="QLabel" name="sta_label">
@@ -114,6 +138,14 @@
      <width>104</width>
      <height>61</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>30</pointsize>
+    </font>
+   </property>
+   <property name="inputMethodHints">
+    <set>Qt::ImhDigitsOnly</set>
    </property>
   </widget>
   <widget class="QLabel" name="tem_range_label">

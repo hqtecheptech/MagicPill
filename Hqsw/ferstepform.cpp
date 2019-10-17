@@ -10,6 +10,13 @@ FerStepForm::FerStepForm(QWidget *parent) :
     casesLayout = new QVBoxLayout(this);
     casesLayout->setSpacing(0);
     ui->cases_frame->setLayout(casesLayout);
+
+    ui->def_ae_text_edit->installEventFilter(this);
+    ui->def_sta_text_edit->installEventFilter(this);
+    ui->max_time_text_edit->installEventFilter(this);
+    ui->min_time_text_edit->installEventFilter(this);
+    ui->step_tmp_text_edit->installEventFilter(this);
+    ui->expect_tmp_text_edit->installEventFilter(this);
 }
 
 FerStepForm::~FerStepForm()
@@ -20,13 +27,21 @@ FerStepForm::~FerStepForm()
 void FerStepForm::initStep(FerStep *step)
 {
     ui->cases_frame->resize(1200, step->ferCases().length()*100);
+    ui->plan_num_label->setText(QString::number(step->ferCases().length()));
     _ferStep.setPlanNum(step->planNum());
+    ui->air_mode_comboBox->setCurrentIndex(step->airMode());
     _ferStep.setAirMode(step->airMode());
+    ui->max_time_text_edit->setText(QString::number(step->nextStepTimeMax()));
     _ferStep.setNextStepTimeMax(step->nextStepTimeMax());
+    ui->min_time_text_edit->setText(QString::number(step->nextStepTimeMin()));
     _ferStep.setNextStepTimeMin(step->nextStepTimeMin());
+    ui->step_tmp_text_edit->setText(QString::number(step->nextStepTemp()));
     _ferStep.setNextStepTemp(step->nextStepTemp());
+    ui->def_ae_text_edit->setText(QString::number(step->defaultParaAE()));
     _ferStep.setDefaultParaAE(step->defaultParaAE());
+    ui->def_sta_text_edit->setText(QString::number(step->defaultParaSTA()));
     _ferStep.setDefaultParaSTA(step->defaultParaSTA());
+    ui->expect_tmp_text_edit->setText(QString::number(step->hopeTemp()));
     _ferStep.setHopeTemp(step->hopeTemp());
     QList<FerCase*> ferCases;
     for(int i=0; i<step->ferCases().length(); i++)
@@ -34,10 +49,10 @@ void FerStepForm::initStep(FerStep *step)
         FerCaseForm *fcf = new FerCaseForm(this);
         fcf->setMinimumSize(1100, 100);
         fcf->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        fcf->setCaseSequence(i);
         casesLayout->addWidget(fcf);
         caseLayoutWidgets.append(fcf);
         FerCase *ferCase = new FerCase;
-        //ferCase->setCaseIndex(i);
         ferCase->setAe(step->ferCases().at(i)->ae());
         ferCase->setSta(step->ferCases().at(i)->sta());
         ferCase->setLowTempture(step->ferCases().at(i)->lowTempture());
@@ -90,7 +105,7 @@ QString FerStepForm::checkStepValidation()
 
     for(int i=0; i<caseLayoutWidgets.length();i++)
     {
-        result = ((FerCaseForm)caseLayoutWidgets.at(i)).checkCaseValidation();
+        result = ((FerCaseForm *)caseLayoutWidgets.at(i))->checkCaseValidation();
         if(result != "OK")
         {
             return "Case " + QString::number(i+1) + ": " + result;
@@ -98,6 +113,170 @@ QString FerStepForm::checkStepValidation()
     }
 
     return _ferStep.checkStepValidation();
+}
+
+void FerStepForm::setStepSequence(int seq)
+{
+    ui->step_seq_label->setText(QString::number(seq+1));
+}
+
+bool FerStepForm::eventFilter(QObject *watched, QEvent *event)
+{
+    if(event->type()==QEvent::FocusIn)
+    {
+        if (event->type()==QEvent::FocusIn)     //然后再判断控件的具体事件 (这里指获得焦点事件)
+        {
+            QPalette p=QPalette();
+            p.setColor(QPalette::Base,Qt::green);
+            ((QWidget *)watched)->setPalette(p);
+        }
+    }
+    else if(event->type()==QEvent::FocusOut)
+    {
+        QPalette p=QPalette();
+        p.setColor(QPalette::Base,Qt::white);
+        ((QWidget *)watched)->setPalette(p);
+
+        bool isValid = false;
+        QString textValue = "";
+
+        if(watched == ui->step_tmp_text_edit)
+        {
+            textValue = ui->step_tmp_text_edit->toPlainText();
+            if(textValue != "")
+            {
+                float value = textValue.toFloat(&isValid);
+                if(isValid)
+                {
+                    _ferStep.setNextStepTemp(value);
+                }
+                else
+                {
+                    msgBox.setText("格式错误，请输入数值类型!");
+                    msgBox.show();
+                }
+            }
+        }
+        else if(watched == ui->expect_tmp_text_edit)
+        {
+            textValue = ui->expect_tmp_text_edit->toPlainText();
+            if(textValue != "")
+            {
+                float value = textValue.toFloat(&isValid);
+                if(isValid)
+                {
+                    _ferStep.setHopeTemp(value);
+                }
+                else
+                {
+                    msgBox.setText("格式错误，请输入数值类型!");
+                    msgBox.show();
+                }
+            }
+        }
+        else if(watched == ui->max_time_text_edit)
+        {
+            textValue = ui->max_time_text_edit->toPlainText();
+            if(textValue != "")
+            {
+                int value = textValue.toInt(&isValid);
+                if(isValid)
+                {
+                    if(value <= 0)
+                    {
+                        msgBox.setText("最长跳步时间必须大于0!");
+                        msgBox.show();
+                    }
+                    else
+                    {
+                        _ferStep.setNextStepTimeMax(value);
+                    }
+                }
+                else
+                {
+                    msgBox.setText("输入格式错误，请输入大于0的整数!");
+                    msgBox.show();
+                }
+            }
+        }
+        else if(watched == ui->min_time_text_edit)
+        {
+            textValue = ui->min_time_text_edit->toPlainText();
+            if(textValue != "")
+            {
+                int value = textValue.toInt(&isValid);
+                if(isValid)
+                {
+                    if(value <= 0)
+                    {
+                        msgBox.setText("最短跳步时间必须大于0!");
+                        msgBox.show();
+                    }
+                    else
+                    {
+                        _ferStep.setNextStepTimeMin(value);
+                    }
+                }
+                else
+                {
+                    msgBox.setText("输入格式错误，请输入大于0的整数!");
+                    msgBox.show();
+                }
+            }
+        }
+        else if(watched == ui->def_ae_text_edit)
+        {
+            textValue = ui->def_ae_text_edit->toPlainText();
+            if(textValue != "")
+            {
+                int value = textValue.toInt(&isValid);
+                if(isValid)
+                {
+                    if(value <= 0)
+                    {
+                        msgBox.setText("曝气时长必须大于0!");
+                        msgBox.show();
+                    }
+                    else
+                    {
+                        _ferStep.setDefaultParaAE(value);
+                    }
+                }
+                else
+                {
+                    msgBox.setText("输入格式错误，请输入大于0的整数!");
+                    msgBox.show();
+                }
+            }
+        }
+        else if(watched == ui->def_sta_text_edit)
+        {
+            textValue = ui->def_sta_text_edit->toPlainText();
+            if(textValue != "")
+            {
+                int value = textValue.toInt(&isValid);
+                if(isValid)
+                {
+                    if(value <= 0)
+                    {
+                        msgBox.setText("曝气时长必须大于0!");
+                        msgBox.show();
+                    }
+                    else
+                    {
+                        _ferStep.setDefaultParaSTA(value);
+                    }
+                }
+                else
+                {
+                    msgBox.setText("输入格式错误，请输入大于0的整数!");
+                    msgBox.show();
+                }
+            }
+        }
+    }
+
+    return QWidget::eventFilter(watched,event);
 }
 
 void FerStepForm::on_reduce_case_push_button_clicked()
@@ -133,4 +312,9 @@ void FerStepForm::on_reduce_case_push_button_clicked()
 void FerStepForm::on_add_case_push_button_clicked()
 {
     addNewCase();
+}
+
+void FerStepForm::on_air_mode_comboBox_currentIndexChanged(int index)
+{
+    _ferStep.setAirMode(index);
 }
