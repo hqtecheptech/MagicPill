@@ -88,6 +88,7 @@ public:
     static uint getLengthByDataType(QString dataType);
 
     static int alertIndex;
+    static QStringList ferConfigStrContent;
 
 private:
     static FermenationDeviceInfo readFermenationDeviceInfo();

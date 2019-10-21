@@ -33,6 +33,8 @@ private slots:
 
     void on_save_push_button_clicked();
 
+    void on_step_seq_comboBox_currentIndexChanged(int index);
+
 public slots:
     void updateSize(int aw, int ah);
 

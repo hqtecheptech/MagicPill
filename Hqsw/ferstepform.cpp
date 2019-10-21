@@ -70,6 +70,7 @@ void FerStepForm::addNewCase()
     FerCaseForm *fcf = new FerCaseForm(this);
     fcf->setMinimumSize(1100, 100);
     fcf->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    fcf->setCaseSequence(caseLayoutWidgets.length());
     casesLayout->addWidget(fcf);
     caseLayoutWidgets.append(fcf);
     FerCase *ferCase = new FerCase;
@@ -102,6 +103,14 @@ QString FerStepForm::checkStepValidation()
     {
         return "必须至少有一个CASE";
     }
+
+    Global::ferConfigStrContent.append("plan_numb " + QString::number(caseLayoutWidgets.length()));
+    Global::ferConfigStrContent.append("next_step_time_max " + QString::number(_ferStep.nextStepTimeMax()));
+    Global::ferConfigStrContent.append("next_step_time_min " + QString::number(_ferStep.nextStepTimeMin()));
+    Global::ferConfigStrContent.append("next_step_temp " + QString::number(_ferStep.nextStepTemp()));
+    Global::ferConfigStrContent.append("hope_temp " + QString::number(_ferStep.hopeTemp()));
+    Global::ferConfigStrContent.append("default_para " + QString::number(_ferStep.defaultParaAE())
+                                       + " " + QString::number(_ferStep.defaultParaSTA()));
 
     for(int i=0; i<caseLayoutWidgets.length();i++)
     {

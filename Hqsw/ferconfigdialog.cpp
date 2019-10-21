@@ -13,13 +13,80 @@ FerConfigDialog::FerConfigDialog(QWidget *parent) :
         ui->step_seq_comboBox->addItem(QString::number(i + 1) + QStringLiteral("号发酵池"));
     }
 
-    _ferConfig.loadConfig(&_ferSteps);
+    _ferConfig.loadConfig(&_ferSteps, 0);
 
     centerLayout = new QVBoxLayout;
     centerLayout->setSpacing(5);
 
     ui->step_config_frame->setLayout(centerLayout);
     ui->scrollArea->setWidget(ui->step_config_frame);
+
+    ui->scrollArea->verticalScrollBar()
+            ->setStyleSheet("QScrollBar:vertical"
+                                "{"
+                                "width:50px;"
+                                "background:rgba(0,0,0,0%);"
+                                "margin:0px,0px,0px,0px;"
+                                "padding-top:9px;"
+                                "padding-bottom:9px;"
+                                "}"
+                                "QScrollBar::handle:vertical"
+                                "{"
+                                "width:50px;"
+                                "background:rgba(0,0,0,25%);"
+                                " border-radius:4px;"
+                                "min-height:20;"
+                                "}"
+                                "QScrollBar::handle:vertical:hover"
+                                "{"
+                                "width:50px;"
+                                "background:rgba(0,0,0,50%);"
+                                " border-radius:4px;"
+                                "min-height:20;"
+                                "}"
+                                "QScrollBar::add-line:vertical"
+                                "{"
+                                "height:9px;width:8px;"
+                                "border-image:url(:/images/a/3.png);"
+                                "subcontrol-position:bottom;"
+                                "}"
+                                "QScrollBar::sub-line:vertical"
+                                "{"
+                                "height:9px;width:8px;"
+                                "border-image:url(:/images/a/1.png);"
+                                "subcontrol-position:top;"
+                                "}"
+                                "QScrollBar::add-line:vertical:hover"
+                                "{"
+                                "height:9px;width:8px;"
+                                "border-image:url(:/images/a/4.png);"
+                                "subcontrol-position:bottom;"
+                                "}"
+                                "QScrollBar::sub-line:vertical:hover"
+                                "{"
+                                "height:9px;width:8px;"
+                                "border-image:url(:/images/a/2.png);"
+                                "subcontrol-position:top;"
+                                "}"
+                                "QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical"
+                                "{"
+                                "background:rgba(0,0,0,10%);"
+                                "border-radius:4px;"
+                                "}");
+
+    msgBox.setStyleSheet(
+            "QPushButton {"
+                " background-color:#89AFDE;"
+                " border-style: outset;"
+                " border-width: 2px;"
+                " border-radius: 10px;"
+                " border-color: beige;"
+                " font: bold 24px;"
+                " min-width: 3em;"
+                " min-height: 3em;"
+            "}"
+            "QLabel { min-width: 20em;min-height:10em;font:24px;background-color:#f0f0f0;}"
+                );
 
     initUI();
 }
@@ -208,6 +275,8 @@ void FerConfigDialog::initUI()
 
     w = ui->step_config_frame->width();
     ui->step_config_frame->resize(w, h);
+    ui->step_config_frame->setMinimumSize(w, h);
+    ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
 void FerConfigDialog::clearUI()
@@ -221,19 +290,19 @@ void FerConfigDialog::clearUI()
         rw->deleteLater();
 
         h -= rh;
-        //ui->step_config_frame->setMinimumSize(w, h);
-        //ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-        ui->step_config_frame->resize(w, h);
         qDebug() << h;
     }
+
+    ui->step_config_frame->resize(w, h);
+    ui->step_config_frame->setMinimumSize(w, h);
+    ui->step_config_frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     _ferSteps.clear();
 }
 
 void FerConfigDialog::on_reload_push_button_clicked()
 {
     clearUI();
-    _ferConfig.loadConfig(&_ferSteps);
+    _ferConfig.loadConfig(&_ferSteps, ui->step_seq_comboBox->currentIndex());
     initUI();
 }
 
@@ -247,18 +316,54 @@ void FerConfigDialog::on_save_push_button_clicked()
     }
     else
     {
+        QFile file("fer_para_conf_5");
+        if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            qDebug() << "Open configuration file failed!";
+            msgBox.setText("无法打开配置文件");
+            msgBox.show();
+            return;
+        }
+
+        Global::ferConfigStrContent.clear();
+        Global::ferConfigStrContent.append("<start>");
+        Global::ferConfigStrContent.append("total_step " + QString::number(centerLayoutWidgets.length()));
+        Global::ferConfigStrContent.append("");
+
         for(int i=0; i<centerLayoutWidgets.length();i++)
         {
-            QString result = ((FerStepForm *)centerLayoutWidgets.at(i))->checkStepValidation();
+            Global::ferConfigStrContent.append("<step_" + QString::number(i+1) + ">");
+            FerStepForm *ferStepForm = (FerStepForm *)centerLayoutWidgets.at(i);
+            QString result = ferStepForm->checkStepValidation();
             if(result != "OK")
             {
                 msgBox.setText("Step " + QString::number(i+1) + ": " + result);
                 msgBox.show();
                 return;
             }
+            Global::ferConfigStrContent.append("");
         }
+        Global::ferConfigStrContent.removeLast();
+        Global::ferConfigStrContent.append("<end>");
+
+        for(int i=0; i<Global::ferConfigStrContent.length(); i++)
+        {
+            file.write(QByteArray(Global::ferConfigStrContent.at(i).toLocal8Bit().constData()));
+            file.write("\n");
+        }
+        file.close();
     }
 
     msgBox.setText("保存成功");
     msgBox.show();
+}
+
+void FerConfigDialog::on_step_seq_comboBox_currentIndexChanged(int index)
+{
+    if(isVisible())
+    {
+        clearUI();
+        _ferConfig.loadConfig(&_ferSteps, index);
+        initUI();
+    }
 }

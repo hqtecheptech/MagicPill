@@ -36,11 +36,12 @@ void FerCaseForm::setFercase(const FerCase &fercase)
 
 QString FerCaseForm::checkCaseValidation()
 {
-    return _fercase.checkCaseValidation();
+    return _fercase.checkCaseValidation(_seq);
 }
 
 void FerCaseForm::setCaseSequence(int seq)
 {
+    _seq = seq;
     ui->seq_label->setText(QString::number(seq+1));
 }
 

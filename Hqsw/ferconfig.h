@@ -13,7 +13,7 @@ class FerConfig : public QObject
     Q_OBJECT
 public:
     explicit FerConfig(QObject *parent = 0);
-    bool loadConfig(QList<FerStep *> *steps);
+    bool loadConfig(QList<FerStep *> *steps, int deviceIndex);
 
     QList<FerStep *> getFerSteps() const;
     void setFerSteps(const QList<FerStep *> &value);

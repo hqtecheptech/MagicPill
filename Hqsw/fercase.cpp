@@ -45,7 +45,7 @@ void FerCase::setSta(int sta)
     _sta = sta;
 }
 
-QString FerCase::checkCaseValidation()
+QString FerCase::checkCaseValidation(int caseSeq)
 {
     if(_lowTempture >= _highTempture)
     {
@@ -61,6 +61,10 @@ QString FerCase::checkCaseValidation()
     {
        return "间隔时长必须大于0";
     }
+
+    Global::ferConfigStrContent.append("case_" + QString::number(caseSeq+1) + " "
+            + QString::number(_lowTempture) + " < x < " + QString::number(_highTempture) + " "
+            + QString::number(_ae) + " " + QString::number(_sta));
 
     return "OK";
 }

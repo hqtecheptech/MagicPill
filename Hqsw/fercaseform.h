@@ -30,6 +30,7 @@ private:
     Ui::FerCaseForm *ui;
     FerCase _fercase;
     QMessageBox msgBox;
+    int _seq = 0;
 };
 
 #endif // FERCASEFORM_H

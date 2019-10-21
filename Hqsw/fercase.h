@@ -2,6 +2,7 @@
 #define FERCASE_H
 
 #include <QString>
+#include <global.h>
 
 class FerCase
 {
@@ -20,7 +21,7 @@ public:
     int sta() const;
     void setSta(int sta);
 
-    QString checkCaseValidation();
+    QString checkCaseValidation(int caseSeq);
 
 private:
     float _lowTempture = 0.0;

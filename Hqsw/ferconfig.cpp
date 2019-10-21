@@ -5,9 +5,14 @@ FerConfig::FerConfig(QObject *parent) : QObject(parent)
 
 }
 
-bool FerConfig::loadConfig(QList<FerStep *> *steps)
+bool FerConfig::loadConfig(QList<FerStep *> *steps, int deviceIndex)
 {
-    QFile file("fer_para_conf_1");
+    if(deviceIndex < 0)
+    {
+        return false;
+    }
+
+    QFile file("fer_para_conf_" + QString::number(deviceIndex+1));
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug() << "Read configuration file failed!";

@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include "fercaseform.h"
 #include "ferstep.h"
+#include "global.h"
 
 namespace Ui {
 class FerStepForm;

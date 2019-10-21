@@ -1252,3 +1252,5 @@ QMap<float,QString> Global::currentFanValveGroupDataMap;
 QMap<float,QString> Global::currentYhcDataMap;
 
 int Global::alertIndex = 0;
+
+QStringList Global::ferConfigStrContent;
