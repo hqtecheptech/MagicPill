@@ -37,6 +37,7 @@ private:
     void clear();
     quint32 StreamLen_CRC32(QByteArray &data);
     void write(QString replyMsg);
+    void sendReply(StreamPack pack, QString result);
 };
 
 #endif // DATARECEIVER_H

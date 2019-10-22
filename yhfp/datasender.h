@@ -11,6 +11,7 @@ class DataSender : QObject
     Q_OBJECT
 public:
     DataSender();
+    DataSender(QTcpSocket *sock);
     ~DataSender();
 
     int sendRequestWithResults(const QString strData);

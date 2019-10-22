@@ -75,6 +75,7 @@ void FerStepForm::addNewCase()
     caseLayoutWidgets.append(fcf);
     FerCase *ferCase = new FerCase;
     _ferStep.appendCase(ferCase);
+    ui->plan_num_label->setText(QString::number(_ferStep.ferCases().length()));
 
     int cw = ui->cases_frame->width();
     int ch = ui->cases_frame->height() + 100;
@@ -297,6 +298,7 @@ void FerStepForm::on_reduce_case_push_button_clicked()
         caseLayoutWidgets.removeLast();
         lastWidget->deleteLater();
         _ferStep.removeLastCase();
+        ui->plan_num_label->setText(QString::number(_ferStep.ferCases().length()));
 
         int cw = ui->cases_frame->width();
         int ch = ui->cases_frame->height() - 100;

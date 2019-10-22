@@ -48,13 +48,15 @@ enum CommandType
     r_UserEvent,    //读用户事件
     r_AllCacheData, //读所有当前数据
     r_DailyReport,  //读取日报
+    r_LoadConfig,   //读取配置信息
 
     w_RealData= 20, //写实时数据
     w_SetData,      //写设置参数
     w_UserEvent,    //写用户事件
     w_AddUser,    //写登录信息
     W_Update_PlcData, //更新PLC数据
-    W_Send_Control  //发送控制命令
+    W_Send_Control,  //发送控制命令
+    W_Updata_Config  //更新配置
 };
 
 enum DataType

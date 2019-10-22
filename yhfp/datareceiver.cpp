@@ -3,6 +3,9 @@
 #include <QDataStream>
 #include <QVector>
 #include <QVariant>
+#include <QFile>
+#include <QIODevice>
+#include "datasender.h"
 
 DataReceiver::DataReceiver(QObject *parent) : QObject(parent)
 {
@@ -149,6 +152,77 @@ void DataReceiver::dataReceive()
             break;
         }
     }
+    else if(bDevice.bCommandType == W_Updata_Config)
+    {
+        if(bDevice.bDeviceId == 1)
+        {
+            StreamPack pack;
+            QDateTime currentdt = QDateTime::currentDateTime();
+            uint stime =currentdt.toTime_t();
+            uint etime =currentdt.toTime_t();
+            pack = {sizeof(StreamPack),1,0,W_Updata_Config,String,0,bDevice.bIndex,0,0,stime,etime};
+            pack.bStartTime =stime;
+            pack.bEndTime =etime;
+
+            QString result = "";
+
+            QByteArray byteValues = sDataWithoutCRC.mid(sizeof(bDevice), sDataWithoutCRC.length() - sizeof(bDevice));
+            QString strConfig = byteValues;
+            qDebug() << strConfig;
+            QFile file("fer_para_conf_" + QString::number(bDevice.bIndex+1));
+            if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
+            {
+                pack.bErrorCode = 0;
+                qDebug() << "Open configuration file fer_para_conf failed!";
+                result = "Open configuration file fer_para_conf failed!";
+                pack.bErrorCode = 0;
+            }
+            else
+            {
+                file.write(byteValues);
+                file.close();
+                pack.bErrorCode = 1;
+                result = "OK";
+            }
+
+            sendReply(pack, result);
+        }
+    }
+    else if(bDevice.bCommandType == r_LoadConfig)
+    {
+        if(bDevice.bDeviceId == 1)
+        {
+            StreamPack pack;
+            QDateTime currentdt = QDateTime::currentDateTime();
+            uint stime =currentdt.toTime_t();
+            uint etime =currentdt.toTime_t();
+            pack = {sizeof(StreamPack),1,0,r_LoadConfig,String,0,bDevice.bIndex,0,0,stime,etime};
+            pack.bStartTime =stime;
+            pack.bEndTime =etime;
+
+            QString result = "";
+            QFile file("fer_para_conf_" + QString::number(bDevice.bIndex+1));
+            if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+            {
+                qDebug() << "Read configuration file failed!";
+                result = "Read configuration file failed!";
+                pack.bErrorCode = 0;
+            }
+            else
+            {
+                while(!file.atEnd())
+                {
+                    result += QString(file.readLine());
+                }
+
+                qDebug() << "Read configuration file success!";
+                pack.bErrorCode = 1;
+            }
+            file.close();
+
+            sendReply(pack, result);
+        }
+    }
 
     clear();
 
@@ -160,6 +234,41 @@ void DataReceiver::write(QString replyMsg)
     _tcpSocket->open(QTcpSocket::ReadWrite);
     _tcpSocket->write(replyMsg.toLatin1());
     _tcpSocket->flush();
+}
+
+void DataReceiver::sendReply(StreamPack pack, QString result)
+{
+    DataSender ds(_tcpSocket);
+    QByteArray allPackData, SData, crcData;
+    QDataStream out(&SData,QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+    out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    //QDataStream::BigEndian或QDataStream::LittleEndian
+    out.setByteOrder(QDataStream::LittleEndian);
+
+    QTextCodec *codec = QTextCodec::codecForLocale();
+    QByteArray data = codec->fromUnicode(result);
+    pack.bStreamLength += data.length() + 4;
+
+    SData.append(result);
+
+    allPackData.append((char*)&pack, sizeof(pack));
+    SData.insert(0, allPackData);
+    int len = SData.length();
+
+    uint scrc = ds.StreamLen_CRC32(SData);
+
+    QDataStream out1(&crcData,QIODevice::WriteOnly);
+    out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+    out1.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    //QDataStream::BigEndian或QDataStream::LittleEndian
+    out1.setByteOrder(QDataStream::LittleEndian);
+    out1 << scrc;
+
+    SData.append(crcData);
+    len = SData.length();
+
+    ds.sendRequestWithResults(SData);
 }
 
 void DataReceiver::clear()
