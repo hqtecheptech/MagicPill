@@ -43,11 +43,11 @@
 #define SIGTRPU     SIGRTMIN+2   //发送给PRU的数据更新信号
 
  /* DB datas length */
- #define DB_FLOAT_LEN 200
- #define DB_INT_LEN 200
- #define DB_UINT32_LEN 200
- #define DB_UINT16_LEN 200
- #define DB_BOOL_LEN 200
+ #define DB_FLOAT_LEN 96
+ #define DB_INT_LEN 32
+ #define DB_UINT32_LEN 128
+ #define DB_UINT16_LEN 128
+ #define DB_BOOL_LEN 320
 
 //struct Data8_sBit{
 //     uint8_t B0:1; uint8_t B1:1; uint8_t B2:1; uint8_t B3:1;

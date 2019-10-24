@@ -104,6 +104,57 @@ void DataReceiver::dataReceive()
                 dataMap.insert((float)address, QString::number(value));
             }
         }
+        else if(bDevice.bDataType == UInt)
+        {
+            byteAdress = sDataWithoutCRC.mid(sizeof(bDevice), sDataWithoutCRC.length() - sizeof(bDevice)
+                                             - bDevice.bDataLength * 4);
+            byteValues = sDataWithoutCRC.mid(sDataWithoutCRC.length() - 4 * bDevice.bDataLength, 4 * bDevice.bDataLength);
+
+            for(quint16 i=0; i<bDevice.bDataLength; ++i)
+            {
+                QByteArray bytes = byteAdress.mid(i*2,2);
+                ushort address = 0;
+                memcpy(&address,bytes,2);
+                bytes = byteValues.mid(i*4,4);
+                uint value = 0;
+                memcpy(&value,bytes,4);
+                dataMap.insert((float)address, QString::number(value));
+            }
+        }
+        else if(bDevice.bDataType == Int)
+        {
+            byteAdress = sDataWithoutCRC.mid(sizeof(bDevice), sDataWithoutCRC.length() - sizeof(bDevice)
+                                             - bDevice.bDataLength * 4);
+            byteValues = sDataWithoutCRC.mid(sDataWithoutCRC.length() - 4 * bDevice.bDataLength, 4 * bDevice.bDataLength);
+
+            for(quint16 i=0; i<bDevice.bDataLength; ++i)
+            {
+                QByteArray bytes = byteAdress.mid(i*2,2);
+                ushort address = 0;
+                memcpy(&address,bytes,2);
+                bytes = byteValues.mid(i*4,4);
+                int value = 0;
+                memcpy(&value,bytes,4);
+                dataMap.insert((float)address, QString::number(value));
+            }
+        }
+        else if(bDevice.bDataType == UShort)
+        {
+            byteAdress = sDataWithoutCRC.mid(sizeof(bDevice), sDataWithoutCRC.length() - sizeof(bDevice)
+                                             - bDevice.bDataLength * 2);
+            byteValues = sDataWithoutCRC.mid(sDataWithoutCRC.length() - 2 * bDevice.bDataLength, 2 * bDevice.bDataLength);
+
+            for(quint16 i=0; i<bDevice.bDataLength; ++i)
+            {
+                QByteArray bytes = byteAdress.mid(i*2,2);
+                ushort address = 0;
+                memcpy(&address,bytes,2);
+                bytes = byteValues.mid(i*2,2);
+                ushort value = 0;
+                memcpy(&value,bytes,2);
+                dataMap.insert((float)address, QString::number(value));
+            }
+        }
 
         int startIndex = -1;
 

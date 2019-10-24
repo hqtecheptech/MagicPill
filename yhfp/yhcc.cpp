@@ -310,17 +310,22 @@ void Yhcc::parseYhcData(QMap<float, QString> dataMap)
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
     qDebug() << "Speed value: " << Global::currentYhcDataMap[address];
     ui->speedLabel->setText(Global::currentYhcDataMap[address]);
+
+    deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_RunTime");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    qDebug() << "FER_Hand_RunTime: " << Global::currentFermenationDataMap[address];
+    ui->test_label->setText(Global::currentFermenationDataMap[address]);
 }
 
 void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
 {
-    bool value = Global::getFerRunctrValueByName(deviceIndex, "FAN_Auto_BOOL", dataMap);
+    bool value = Global::getFerRunctrValueByName(deviceIndex, "FER_Auto_BOOL", dataMap);
     ui->test_label_2->setText(QString::number(value));
-    value = Global::getFerRunctrValueByName(deviceIndex + 1, "FAN_Auto_BOOL", dataMap);
+    value = Global::getFerRunctrValueByName(deviceIndex + 1, "FER_Auto_BOOL", dataMap);
     ui->test_label_3->setText(QString::number(value));
-    value = Global::getFerRunctrValueByName(deviceIndex + 5, "FAN_Auto_BOOL", dataMap);
+    value = Global::getFerRunctrValueByName(deviceIndex + 5, "FER_Auto_BOOL", dataMap);
     ui->test_label_4->setText(QString::number(value));
-    value = Global::getYhcRunctrValueByName(deviceIndex, "FAN_VALVE_HAND_OPEN", Global::currentYhcDataMap);
     // to do: just for test temporay.
     if(value == 0)
     {
