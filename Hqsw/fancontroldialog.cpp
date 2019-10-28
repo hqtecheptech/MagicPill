@@ -88,10 +88,10 @@ void FanControlDialog::on_fanOpenPushButton_clicked()
 
         DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
         ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
-        ushort address = Global::ferDeviceInfo.Runctr_Address + (tankIndex - info.startIndex) * runctrlByteSize + offset;
+        ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,0,w_RealData,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = true;
@@ -128,18 +128,18 @@ void FanControlDialog::on_fanStopPushButton_clicked()
         uint stime =currentdt.toTime_t();
         uint etime =currentdt.toTime_t();
 
-        ushort offset = Global::getFermenationNodeInfoByName("FAN_HandStop_BOOL").Offset / 8;
-        ushort index = Global::getFermenationNodeInfoByName("FAN_HandStop_BOOL").Offset % 8;
+        ushort offset = Global::getFermenationNodeInfoByName("FAN_HandStart_BOOL").Offset / 8;
+        ushort index = Global::getFermenationNodeInfoByName("FAN_HandStart_BOOL").Offset % 8;
 
         DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
         ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
-        ushort address = Global::ferDeviceInfo.Runctr_Address + (tankIndex - info.startIndex) * runctrlByteSize + offset;
+        ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,0,w_RealData,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
-        bool data = true;
+        bool data = false;
         QVariant var_data = QVariant(data);
 
         tcpClient->abort();
@@ -162,12 +162,12 @@ void FanControlDialog::on_switchFanModePushButton_clicked()
         uint stime =currentdt.toTime_t();
         uint etime =currentdt.toTime_t();
 
-        ushort offset = Global::getFermenationNodeInfoByName("FAN_Auto_BOOL").Offset / 8;
-        ushort index = Global::getFermenationNodeInfoByName("FAN_Auto_BOOL").Offset % 8;
+        ushort offset = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset / 8;
+        ushort index = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset % 8;
 
         DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
         ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
-        ushort address = Global::ferDeviceInfo.Runctr_Address + (tankIndex - info.startIndex) * runctrlByteSize + offset;
+        ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
         bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,address,index,1,0,stime,etime};
@@ -292,8 +292,8 @@ void FanControlDialog::parseFerStepData(QMap<float,QString> dataMap)
 void FanControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
 {
     isFanRun = Global::getFerRunctrValueByName(tankIndex,"FAN_Run_BOOL", dataMap);
-    isFanRemote = Global::getFerRunctrValueByName(tankIndex,"FAN_Remote_BOOL", dataMap);
-    fanMode = Global::getFerRunctrValueByName(tankIndex,"FAN_Auto_BOOL", dataMap);
+    //isFanRemote = Global::getFerRunctrValueByName(tankIndex,"FAN_Remote_BOOL", dataMap);
+    fanMode = Global::getFerRunctrValueByName(tankIndex,"FER_Auto_BOOL", dataMap);
 
     ui->runStateLabel->setObjectName("runstate");
     if(isFanRun)
@@ -309,13 +309,13 @@ void FanControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
         ui->fanStopPushButton->setEnabled(false);
     }
 
-    if(!isFanRemote)
-    {
-        ui->fanOpenPushButton->setEnabled(false);
-        ui->fanStopPushButton->setEnabled(false);
-    }
-    else
-    {
+    //if(!isFanRemote)
+    //{
+        //ui->fanOpenPushButton->setEnabled(false);
+        //ui->fanStopPushButton->setEnabled(false);
+    //}
+    //else
+    //{
         if(isFanRun)
         {
             ui->fanOpenPushButton->setEnabled(false);
@@ -326,7 +326,7 @@ void FanControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
             ui->fanOpenPushButton->setEnabled(true);
             ui->fanStopPushButton->setEnabled(false);
         }
-    }
+    //}
 
     if(fanMode)
     {
@@ -337,7 +337,7 @@ void FanControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
         ui->switchFanModePushButton->setIcon(QIcon(fanManualControlBg));
     }
 
-    bool faultState = Global::getFerRunctrValueByName(tankIndex,"FAN_Fault_BOOL", dataMap);
+    bool faultState = Global::getFerRunctrValueByName(tankIndex,"FAN_FAULT_BOOL", dataMap);
     ui->faultStateLabel->setObjectName("faultstate");
     if(faultState)
     {

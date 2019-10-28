@@ -78,7 +78,7 @@ void CustomFerSettingDialog::setTankLocation(int value)
 void CustomFerSettingDialog::on_customFerButton_pressed()
 {
     bool ok;
-    uint aerationTimeValue = ui->aerationTimeLineEdit->text().toUInt(&ok);
+    ushort aerationTimeValue = ui->aerationTimeLineEdit->text().toUShort(&ok);
     if(!ok)
     {
         msgBox.setText(QStringLiteral("发酵时长格式不正确"));
@@ -95,7 +95,7 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
         }
     }
 
-    uint aerationSpaceValue = ui->aerationSpaceLineEdit->text().toUInt(&ok);
+    ushort aerationSpaceValue = ui->aerationSpaceLineEdit->text().toUShort(&ok);
     if(!ok)
     {
         msgBox.setText(QStringLiteral("发酵间隔时长格式不正确"));
@@ -116,26 +116,79 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
     if(user != Q_NULLPTR)
     {
         DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankLocation);
+
         StreamPack bpack;
-        ushort address = Global::getFermenationNodeInfoByName("FER_Hand_RunTime").Offset +
-                (info.offset + tankLocation - info.startIndex) * 4;
-        bpack = {sizeof(StreamPack),1,0,w_RealData,UInt,address,0,1,0,0,0};
-        uint uintData = aerationTimeValue * 60;
-        QVariant uint_var_data = QVariant(uintData);
+        bpack = {sizeof(StreamPack),1,0,W_Send_Control,UShort,0,0,1,0,0,0};
+        //Length of ushort address and value, plus length of scrc.
+        bpack.bDataLength = 2;
+        bpack.bStreamLength += (2+2)*2 + 4;
 
-        aerationTimeTcpClient->abort();
-        aerationTimeTcpClient->sendRequestWithResult(bpack,uint_var_data,4);
+        QList<ushort> addrs;
+        QList<ushort> values;
+        DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_RunTime");
+        ushort addr = deviceNode.Offset + (info.offset + tankLocation - info.startIndex)
+                * Global::getLengthByDataType(deviceNode.DataType);
+        addrs.append(addr);
+        ushort ushortData = aerationTimeValue * 60;
+        values.append(ushortData);
 
-        address = Global::getFermenationNodeInfoByName("FER_Hand_SpaceTime").Offset +
-                (info.offset + tankLocation - info.startIndex) * 4;;
-        bpack = {sizeof(StreamPack),1,0,w_RealData,UInt,address,0,1,0,0,0};
-        uintData = aerationSpaceValue * 60;
-        uint_var_data = QVariant(uintData);
+        deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_SpaceTime");
+        addr = deviceNode.Offset + (info.offset + tankLocation - info.startIndex)
+                * Global::getLengthByDataType(deviceNode.DataType);
+        addrs.append(addr);
+        ushortData = aerationSpaceValue * 60;
+        values.append(ushortData);
 
-        aerationSpaceTcpClient->abort();
-        aerationSpaceTcpClient->sendRequestWithResult(bpack,uint_var_data,4);
+        QByteArray allPackData, SData, crcData;
+        QDataStream out(&SData,QIODevice::WriteOnly);
+        out.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+        out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+        //QDataStream::BigEndian或QDataStream::LittleEndian
+        out.setByteOrder(QDataStream::LittleEndian);
 
-        ushort offset = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset / 8;
+        allPackData.append((char*)&bpack, sizeof(bpack));
+
+        foreach(ushort item, addrs)
+        {
+            out << item;
+        }
+
+        foreach(ushort item, values)
+        {
+            out << item;
+        }
+
+        SData.insert(0, allPackData);
+
+        uint scrc = aerationTimeTcpClient->StreamLen_CRC32(SData);
+
+        QDataStream out1(&crcData,QIODevice::WriteOnly);
+        out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+        out1.setFloatingPointPrecision(QDataStream::SinglePrecision);
+        //QDataStream::BigEndian或QDataStream::LittleEndian
+        out1.setByteOrder(QDataStream::LittleEndian);
+        out1 << scrc;
+
+        SData.append(crcData);
+
+        aerationTimeTcpClient->sendRequestWithResults(SData);
+
+        ushort offset = Global::getFermenationNodeInfoByName("Aeration_Start").Offset / 8;
+        ushort index = Global::getFermenationNodeInfoByName("Aeration_Start").Offset % 8;
+
+        ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
+        addr = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankLocation - info.startIndex) * runctrlByteSize + offset;
+
+        bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,addr,index,1,0,0,0};
+        bool data = true;
+        QVariant var_data = QVariant(data);
+
+        tcpClient1->abort();
+        disconnect(tcpClient1,0,0,0);
+        connect(tcpClient1, SIGNAL(updateClients(QByteArray)),this,SLOT(showFerStart(QByteArray)));
+        tcpClient1->sendRequestWithResult(bpack,var_data,1);
+
+        /*ushort offset = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset / 8;
         ushort index = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset % 8;
 
         info = Global::getFerDeviceGroupInfo(tankLocation);
@@ -150,7 +203,7 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
         tcpClient->abort();
         disconnect(tcpClient,0,0,0);
         connect(tcpClient, SIGNAL(updateClients(QByteArray)),this,SLOT(showSetFerAuto(QByteArray)));
-        tcpClient->sendRequestWithResult(bpack,var_data,1);
+        tcpClient->sendRequestWithResult(bpack,var_data,1);*/
     }
     else
     {
@@ -161,7 +214,7 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
 
 void CustomFerSettingDialog::on_customFerButton_released()
 {
-    User *user = Identity::getInstance()->getUser();
+    /*User *user = Identity::getInstance()->getUser();
     if(user != Q_NULLPTR)
     {
         StreamPack bpack;
@@ -180,7 +233,7 @@ void CustomFerSettingDialog::on_customFerButton_released()
         disconnect(tcpClient,0,0,0);
         connect(tcpClient, SIGNAL(updateClients(QByteArray)),this,SLOT(showSetFerAuto(QByteArray)));
         tcpClient->sendRequestWithResult(bpack,var_data,1);
-    }
+    }*/
 }
 
 void CustomFerSettingDialog::setSpaceTime(int value)

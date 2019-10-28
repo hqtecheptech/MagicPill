@@ -64,11 +64,12 @@ private:
     QStandardItemModel *runctrModel;
     QDataWidgetMapper *runctrMapper = Q_NULLPTR;
     CustomFerSettingDialog *customFerSettingDialog;
-    bool isFanRemote = false;
+    //bool isFanRemote = false;
     bool isFanAuto = false;
+    bool isFanRun = false;
 
-    uint handRunTime = 0;
-    uint handSpaceTime = 0;
+    ushort handRunTime = 0;
+    ushort handSpaceTime = 0;
 
     void parseFermentationData(QMap<float,QString> dataMap);
     void parseFerRunTimeData(QMap<float,QString> dataMap);

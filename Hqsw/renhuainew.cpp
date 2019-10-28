@@ -70,13 +70,13 @@ void RenhuaiNew::updateFerData(QSet<int> changedDeviceSet, QMap<float,QString> d
 {
     emit ferDataChanged(changedDeviceSet, dataMap);
 
-    for(int i=0; i<5; i++)
+    for(int i=0; i<7; i++)
     {
-        DeviceNode node = Global::getFermenationNodeInfoByName("ES_ET_R");
+        DeviceNode node = Global::getFermenationNodeInfoByName("FER_ET_R");
         uint address = node.Offset + i * 4;
         envParamsArray[i]->setTemperature(dataMap[address].toFloat());
 
-        node = Global::getFermenationNodeInfoByName("ES_EH_R");
+        node = Global::getFermenationNodeInfoByName("FER_HM_R");
         address = node.Offset + i * 4;
         envParamsArray[i]->setHumidity(dataMap[address].toFloat());
 

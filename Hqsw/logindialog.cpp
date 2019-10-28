@@ -142,153 +142,32 @@ void LoginDialog::on_logoutButton_clicked()
 
 void LoginDialog::on_testSendControlButton_clicked()
 {
-    /*QDateTime currentdt = QDateTime::currentDateTime();
     StreamPack bpack;
-    uint stime =currentdt.toTime_t();
-    uint etime =currentdt.toTime_t();
-    //ushort address = Global::ferDeviceInfo.Aeration_Runtime_Setting_Address + 4 * ui->tankComboBox->currentIndex();
-    //bpack = {sizeof(StreamPack),1,0,w_SetData,UInt,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Aeration_Runtime_Setting_Category,0,stime,etime};
-    ushort address = 0;
-    bpack = {sizeof(StreamPack),6,0,W_Send_Control,Float,address,0,3,0,stime,etime};
+    ushort offset = Global::getFermenationNodeInfoByName("FER_State_BOOL").Offset / 8;
+    ushort index = Global::getFermenationNodeInfoByName("FER_State_BOOL").Offset % 8;
 
-    bpack.bStreamLength += 3 * (2 + 4) + 4;
+    DeviceGroupInfo info = Global::getFerDeviceGroupInfo(0);
+    ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
+    ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + 0 - info.startIndex) * runctrlByteSize + offset;
 
-    quint16 strlen= sizeof(bpack);
-    BYTE *p = new BYTE[strlen];
-    QByteArray SData;
-    memcpy(p,reinterpret_cast<char*>(&bpack),sizeof(bpack));
-    QDataStream out(&SData,QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_8); //设计数据流版本
-    out.setFloatingPointPrecision(QDataStream::SinglePrecision);
-    //QDataStream::BigEndian或QDataStream::LittleEndian
-    out.setByteOrder(QDataStream::LittleEndian);
-    for(int i=0;i<strlen;i++) {out << *(p+i);}
-    delete p;
-
-    QVector<ushort> settingAddress;
-    QVector<float> settingValues;
-
-    settingAddress.append(0);
-    settingAddress.append(4);
-    settingAddress.append(8);
-
-    settingValues.append(101.3);
-    settingValues.append(201.0);
-    settingValues.append(512.3);
-
-    int len = SData.length();
-    foreach(ushort value, settingAddress)
-    {
-        out << value;
-    }
-
-    len = SData.length();
-    foreach(float value, settingValues)
-    {
-        out << value;
-    }
-
-    len = SData.length();
-    uint scrc = tcpClient->StreamLen_CRC32(SData);
-    out << scrc;
-
-    tcpClient->sendRequestWithResults(SData);*/
-
-    QDateTime currentdt = QDateTime::currentDateTime();
-    uint stime =currentdt.toTime_t();
-    uint etime =currentdt.toTime_t();
-
-    //ushort offset = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset / 8;
-    //ushort index = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset % 8;
-    ushort offset = 1;
-    ushort index = 1;
-
-    //DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
-    //ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
-    //ushort address = Global::ferDeviceInfo.Runctr_Address + (tankIndex - info.startIndex) * runctrlByteSize + offset;
-    ushort address = 2800 + offset;
-
-    StreamPack bpack;
-    bpack = {sizeof(StreamPack),6,0,W_Send_Control,Bool,address,index,1,0,stime,etime};
-    bpack.bStartTime = stime;
-    bpack.bEndTime = etime;
+    bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,address,index,1,0,0,0};
     bool data = true;
     QVariant var_data = QVariant(data);
 
     tcpClient->sendRequestWithResult(bpack,var_data,1);
-
-    /*QDateTime currentdt = QDateTime::currentDateTime();
-    StreamPack bpack;
-    uint stime =currentdt.toTime_t();
-    uint etime =currentdt.toTime_t();
-    bpack = {sizeof(StreamPack),6,0,W_Send_Control,Float,0,0,3,0,stime,etime};
-    //bpack = {sizeof(StreamPack),1,0,w_SetData,UInt,address,0,Global::ferDeviceInfo.Aeration_Runtime_Setting_Category,0,stime,etime};
-
-    QString values = "101";
-    values += ",201";
-    values += ",301";
-    QByteArray ba = values.toLatin1();
-    int baLen = ba.size();
-    char* chValues = ba.data();
-    bpack.bStreamLength += 3 * sizeof(float) + baLen + 4;
-
-    QVector<float> address;
-    address.append(4.0);
-    address.append(8.0);
-    address.append(12.0);
-
-    quint16 strlen= sizeof(bpack);
-    BYTE *p = new BYTE[strlen];
-    QByteArray SData;
-    memcpy(p,reinterpret_cast<char*>(&bpack),sizeof(bpack));
-    QDataStream out(&SData,QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_8); //设计数据流版本
-    out.setFloatingPointPrecision(QDataStream::SinglePrecision);
-    //QDataStream::BigEndian或QDataStream::LittleEndian
-    out.setByteOrder(QDataStream::LittleEndian);
-    for(int i=0;i<strlen;i++) {out << *(p+i);}
-    delete p;
-
-    int len = SData.length();
-
-    BYTE *pStr = new BYTE[baLen];
-    memcpy(pStr,chValues,baLen);
-    for(int i=0;i<baLen;i++) {out << *(pStr+i);}
-    delete pStr;
-
-    len = SData.length();
-    foreach(float item, address)
-    {
-        out << item;
-    }
-
-    len = SData.length();
-    uint scrc = tcpClient->StreamLen_CRC32(SData);
-    out << scrc;
-
-    tcpClient->sendRequestWithResults(SData);*/
 }
 
 void LoginDialog::on_testSendControlButton_2_clicked()
 {
-    QDateTime currentdt = QDateTime::currentDateTime();
-    uint stime =currentdt.toTime_t();
-    uint etime =currentdt.toTime_t();
-
-    //ushort offset = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset / 8;
-    //ushort index = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset % 8;
-    ushort offset = 1;
-    ushort index = 1;
-
-    //DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
-    //ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
-    //ushort address = Global::ferDeviceInfo.Runctr_Address + (tankIndex - info.startIndex) * runctrlByteSize + offset;
-    ushort address = 2800 + offset;
-
     StreamPack bpack;
-    bpack = {sizeof(StreamPack),6,0,W_Send_Control,Bool,address,index,1,0,stime,etime};
-    bpack.bStartTime = stime;
-    bpack.bEndTime = etime;
+    ushort offset = Global::getFermenationNodeInfoByName("FER_State_BOOL").Offset / 8;
+    ushort index = Global::getFermenationNodeInfoByName("FER_State_BOOL").Offset % 8;
+
+    DeviceGroupInfo info = Global::getFerDeviceGroupInfo(0);
+    ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
+    ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + 0 - info.startIndex) * runctrlByteSize + offset;
+
+    bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,address,index,1,0,0,0};
     bool data = false;
     QVariant var_data = QVariant(data);
 

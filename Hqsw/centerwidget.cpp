@@ -235,7 +235,7 @@ void CenterWidget::parseFermentationData(QMap<float,QString> dataMap)
 
     for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
     {
-        tanks[j]->setupFermentationMapper(realValues, j);
+        //tanks[j]->setupFermentationMapper(realValues, j);
     }
 }
 
@@ -260,7 +260,7 @@ void CenterWidget::parseRunTimeData(QMap<float,QString> dataMap)
     }
     for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
     {
-        tanks[j]->setupStepRunningTimeMapper(uintValues, j);
+        //tanks[j]->setupStepRunningTimeMapper(uintValues, j);
     }
 }
 
@@ -286,7 +286,7 @@ void CenterWidget::parseStepData(QMap<float,QString> dataMap)
 
     for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
     {
-        tanks[j]->setupStepMapper(ushortValues, j);
+        //tanks[j]->setupStepMapper(ushortValues, j);
     }
 }
 
@@ -342,7 +342,7 @@ void CenterWidget::parseRunCtrData(QMap<float,QString> dataMap)
 
     for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
     {
-        tanks[j]->setupRunCtrMapper(boolValues, j);
+        //tanks[j]->setupRunCtrMapper(boolValues, j);
     }
 }
 
@@ -370,7 +370,7 @@ void CenterWidget::showFermentationData(QByteArray data)
         }
         for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
         {
-            tanks[j]->setupFermentationMapper(realValues, j);
+            //tanks[j]->setupFermentationMapper(realValues, j);
         }
     }
 }
@@ -399,7 +399,7 @@ void CenterWidget::showRunTimeData(QByteArray data)
         }
         for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
         {
-            tanks[j]->setupStepRunningTimeMapper(values, j);
+            //tanks[j]->setupStepRunningTimeMapper(values, j);
         }
     }
 }
@@ -428,7 +428,7 @@ void CenterWidget::showStepData(QByteArray data)
         }
         for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
         {
-            tanks[j]->setupStepMapper(values, j);
+            //tanks[j]->setupStepMapper(values, j);
         }
     }
 }
@@ -459,7 +459,7 @@ void CenterWidget::showRunCtrData(QByteArray data)
         }
         for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
         {
-            tanks[j]->setupRunCtrMapper(values, j);
+            //tanks[j]->setupRunCtrMapper(values, j);
         }
     }
 }

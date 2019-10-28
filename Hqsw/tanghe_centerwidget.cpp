@@ -163,7 +163,7 @@ void TangHe_CenterWidget::parseFermentationData(QMap<float,QString> dataMap)
     //qDebug() << "high point tempture: " << realValues[0];
     for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
     {
-        tanks[j]->setupFermentationMapper(realValues, tanks[j]->getLocation());
+        //tanks[j]->setupFermentationMapper(realValues, tanks[j]->getLocation());
     }
 }
 
@@ -188,7 +188,7 @@ void TangHe_CenterWidget::parseRunTimeData(QMap<float,QString> dataMap)
     }
     for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
     {
-        tanks[j]->setupStepRunningTimeMapper(uintValues, tanks[j]->getLocation());
+        //tanks[j]->setupStepRunningTimeMapper(uintValues, tanks[j]->getLocation());
     }
 }
 
@@ -213,7 +213,7 @@ void TangHe_CenterWidget::parseStepData(QMap<float,QString> dataMap)
     }
     for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
     {
-        tanks[j]->setupStepMapper(ushortValues, tanks[j]->getLocation());
+        //tanks[j]->setupStepMapper(ushortValues, tanks[j]->getLocation());
     }
 }
 
@@ -268,7 +268,7 @@ void TangHe_CenterWidget::parseRunCtrData(QMap<float,QString> dataMap)
 
     for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
     {
-        tanks[j]->setupRunCtrMapper(boolValues, tanks[j]->getLocation());
+        //tanks[j]->setupRunCtrMapper(boolValues, tanks[j]->getLocation());
     }
 }
 
@@ -296,7 +296,7 @@ void TangHe_CenterWidget::showFermentationData(QByteArray data)
         }
         for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
         {
-            tanks[j]->setupFermentationMapper(realValues, j);
+            //tanks[j]->setupFermentationMapper(realValues, j);
         }
     }
 }
@@ -325,7 +325,7 @@ void TangHe_CenterWidget::showRunTimeData(QByteArray data)
         }
         for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
         {
-            tanks[j]->setupStepRunningTimeMapper(values, j);
+            //tanks[j]->setupStepRunningTimeMapper(values, j);
         }
     }
 }
@@ -354,7 +354,7 @@ void TangHe_CenterWidget::showStepData(QByteArray data)
         }
         for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
         {
-            tanks[j]->setupStepMapper(values, j);
+            //tanks[j]->setupStepMapper(values, j);
         }
     }
 }
@@ -385,7 +385,7 @@ void TangHe_CenterWidget::showRunCtrData(QByteArray data)
         }
         for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
         {
-            tanks[j]->setupRunCtrMapper(values, j);
+            //tanks[j]->setupRunCtrMapper(values, j);
         }
     }
 }

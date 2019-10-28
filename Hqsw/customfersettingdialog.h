@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QMessageBox>
+#include <QList>
 
 #include "tcpclientsocket.h"
 
@@ -28,7 +29,7 @@ public:
 private slots:
     void showSetFerAuto(QByteArray);
     void showFerStart(QByteArray);
-    
+
     void on_customFerButton_pressed();
     void on_customFerButton_released();
 

@@ -213,11 +213,11 @@ void Yhcc::handleControllerResult()
 
 void Yhcc::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap)
 {
-    //if(changedDeviceSet.contains(deviceIndex))
-    //{
+    if(changedDeviceSet.count() > 0)
+    {
         parseYhcData(dataMap);
         parseYhcRunCtrData(dataMap);
-    //}
+    }
 }
 
 void Yhcc::wirteTestData()
@@ -249,7 +249,7 @@ void Yhcc::updateWatchs()
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->test_label->setText(Global::currentYhcDataMap.value(address, "false"));
+    //ui->test_label->setText(Global::currentYhcDataMap.value(address, "false"));
 
     data.address = address;
     strcpy(data.dataType, deviceNode.Name.toLatin1().data());

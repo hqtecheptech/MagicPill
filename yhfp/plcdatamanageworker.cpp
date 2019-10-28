@@ -63,8 +63,8 @@ void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Pl
     for(int i=0; i < DB_FLOAT_LEN; i++)
     {
         address = Global::convertIndexToAddress(i, "r");
-        dataMap.insert(i,QString::number(newPlcDb.f_data[i]));
-        if(!Global::currentYhcDataMap.contains(i))
+        dataMap.insert(address,QString::number(newPlcDb.f_data[i]));
+        if(!Global::currentYhcDataMap.contains(address))
         {
             diff = true;
             Global::currentYhcDataMap.insert(address,QString::number(newPlcDb.f_data[i]));
@@ -84,8 +84,8 @@ void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Pl
     for(int i=0; i < DB_INT_LEN; i++)
     {
         address = Global::convertIndexToAddress(i, "di");
-        dataMap.insert(i,QString::number(newPlcDb.i_data[i]));
-        if(!Global::currentYhcDataMap.contains(i))
+        dataMap.insert(address,QString::number(newPlcDb.i_data[i]));
+        if(!Global::currentYhcDataMap.contains(address))
         {
             diff = true;
             Global::currentYhcDataMap.insert(address,QString::number(newPlcDb.i_data[i]));
@@ -105,8 +105,8 @@ void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Pl
     for(int i=0; i < DB_UINT32_LEN; i++)
     {
         address = Global::convertIndexToAddress(i, "dw");
-        dataMap.insert(i,QString::number(newPlcDb.dw_data[i]));
-        if(!Global::currentYhcDataMap.contains(i))
+        dataMap.insert(address,QString::number(newPlcDb.dw_data[i]));
+        if(!Global::currentYhcDataMap.contains(address))
         {
             diff = true;
             Global::currentYhcDataMap.insert(address,QString::number(newPlcDb.dw_data[i]));
@@ -126,8 +126,8 @@ void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Pl
     for(int i=0; i < DB_UINT16_LEN; i++)
     {
         address = Global::convertIndexToAddress(i, "w");
-        dataMap.insert(i,QString::number(newPlcDb.w_data[i]));
-        if(!Global::currentYhcDataMap.contains(i))
+        dataMap.insert(address,QString::number(newPlcDb.w_data[i]));
+        if(!Global::currentYhcDataMap.contains(address))
         {
             diff = true;
             Global::currentYhcDataMap.insert(address,QString::number(newPlcDb.w_data[i]));
@@ -255,8 +255,8 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
     for(int i=0; i < DB_FLOAT_LEN; i++)
     {
         address = Global::convertIndexToAddress(i, "r");
-        dataMap.insert(i,QString::number(newPlcDb.f_data[i]));
-        if(!Global::currentFermenationDataMap.contains(i))
+        dataMap.insert(address,QString::number(newPlcDb.f_data[i]));
+        if(!Global::currentFermenationDataMap.contains(address))
         {
             diff = true;
             Global::currentFermenationDataMap.insert(address,QString::number(newPlcDb.f_data[i]));
@@ -276,8 +276,8 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
     for(int i=0; i < DB_INT_LEN; i++)
     {
         address = Global::convertIndexToAddress(i, "di");
-        dataMap.insert(i,QString::number(newPlcDb.i_data[i]));
-        if(!Global::currentFermenationDataMap.contains(i))
+        dataMap.insert(address,QString::number(newPlcDb.i_data[i]));
+        if(!Global::currentFermenationDataMap.contains(address))
         {
             diff = true;
             Global::currentFermenationDataMap.insert(address,QString::number(newPlcDb.i_data[i]));
@@ -297,8 +297,8 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
     for(int i=0; i < DB_UINT32_LEN; i++)
     {
         address = Global::convertIndexToAddress(i, "dw");
-        dataMap.insert(i,QString::number(newPlcDb.dw_data[i]));
-        if(!Global::currentFermenationDataMap.contains(i))
+        dataMap.insert(address,QString::number(newPlcDb.dw_data[i]));
+        if(!Global::currentFermenationDataMap.contains(address))
         {
             diff = true;
             Global::currentFermenationDataMap.insert(address,QString::number(newPlcDb.dw_data[i]));
@@ -318,8 +318,8 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
     for(int i=0; i < DB_UINT16_LEN; i++)
     {
         address = Global::convertIndexToAddress(i, "w");
-        dataMap.insert(i,QString::number(newPlcDb.w_data[i]));
-        if(!Global::currentFermenationDataMap.contains(i))
+        dataMap.insert(address,QString::number(newPlcDb.w_data[i]));
+        if(!Global::currentFermenationDataMap.contains(address))
         {
             diff = true;
             Global::currentFermenationDataMap.insert(address,QString::number(newPlcDb.w_data[i]));
