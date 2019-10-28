@@ -4,6 +4,9 @@
 #include <QDialog>
 #include <QStandardItemModel>
 #include <QMessageBox>
+#include <QList>
+#include <QVector>
+#include <QMap>
 
 #include "dataformat.h"
 #include "tcpclientsocket.h"
@@ -12,6 +15,8 @@
 #include "mytimerthread.h"
 #include "customfersettingdialog.h"
 #include "ufftank.h"
+#include "ferconfig.h"
+#include "ferstep.h"
 
 namespace Ui {
 class FerControlDialog;
@@ -67,6 +72,7 @@ private:
     //bool isFanRemote = false;
     bool isFanAuto = false;
     bool isFanRun = false;
+    QMap<int, QList<FerStep *>> _ferConfigs;
 
     ushort handRunTime = 0;
     ushort handSpaceTime = 0;
@@ -78,6 +84,7 @@ private:
     void parseFerStartEndTime(QMap<float,QString> dataMap);
 
     QString formatLongDateString(uint value);
+    void setFerRunSteps();
 
 public slots:
     void updateFermentationData(QSet<int>, QMap<float,QString> dataMap);
@@ -95,6 +102,7 @@ private slots:
     void on_endFerButton_pressed();
     void on_endFerButton_released();
     void on_tankIndexComboBox_currentIndexChanged(int index);
+    void on_changeStepButton_clicked();
 };
 
 #endif // FERCONTROLDIALOG_H

@@ -27,10 +27,6 @@ FerControlDialog::FerControlDialog(QWidget *parent) :
         ui->tankIndexComboBox->addItem(QStringLiteral("%1#发酵槽").arg(QString::number(i+1)));
     }
 
-    for(int j=0;j<4;j++)
-    {
-        ui->runStepComboBox->addItem(QString::number(j+1));
-    }
     connect(ui->tankIndexComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(tankIndexChanged(int)));
     connect(ui->runStepComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(stepIndexChanged(int)));
 
@@ -47,7 +43,7 @@ FerControlDialog::~FerControlDialog()
 
 void FerControlDialog::showEvent(QShowEvent *)
 {
-
+    setFerRunSteps();
 }
 
 void FerControlDialog::closeEvent(QCloseEvent *event)
@@ -500,12 +496,101 @@ QString FerControlDialog::formatLongDateString(uint value)
     return QStringLiteral("%1天%2时%3分%4秒").arg(QString::number(day)).arg(QString::number(hour)).arg(QString::number(minute)).arg(QString::number(second));
 }
 
+void FerControlDialog::setFerRunSteps()
+{
+    int deviceIndex = ui->tankIndexComboBox->currentIndex();
+    if(deviceIndex >= 0)
+    {
+        if(_ferConfigs.contains(deviceIndex))
+        {
+            ui->runStepComboBox->clear();
+            for(int i=0;i<_ferConfigs[deviceIndex].length();i++)
+            {
+                ui->runStepComboBox->addItem(QString::number(i+1));
+            }
+        }
+        else
+        {
+            QList<FerStep *> ferSteps;
+            FerConfig::loadConfig(&ferSteps, deviceIndex);
+            if(ferSteps.length() > 0)
+            {
+                _ferConfigs.insert(deviceIndex, ferSteps);
+                ui->runStepComboBox->clear();
+                for(int i=0;i<ferSteps.length();i++)
+                {
+                    ui->runStepComboBox->addItem(QString::number(i+1));
+                }
+            }
+            else
+            {
+                ui->runStepComboBox->clear();
+            }
+        }
+    }
+}
+
 void FerControlDialog::on_tankIndexComboBox_currentIndexChanged(int index)
 {
     tankIndex = index;
+    setFerRunSteps();
     parseFermentationData(Global::currentFermenationDataMap);
     parseFerRunCtrData(Global::currentFermenationDataMap);
     parseFerRunTimeData(Global::currentFermenationDataMap);
     parseFerStepData(Global::currentFermenationDataMap);
     parseFerStartEndTime(Global::currentFermenationDataMap);
+}
+
+void FerControlDialog::on_changeStepButton_clicked()
+{
+    DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
+
+    StreamPack bpack;
+    bpack = {sizeof(StreamPack),1,0,W_Send_Control,Int,0,0,1,0,0,0};
+    //Length of ushort address and value, plus length of scrc.
+    bpack.bDataLength = 1;
+    bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
+
+    QList<ushort> addrs;
+    QList<ushort> values;
+    DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_STEPCTR_UI_CTRL");
+    ushort addr = deviceNode.Offset + (info.offset + tankIndex - info.startIndex)
+            * Global::getLengthByDataType(deviceNode.DataType);
+    addrs.append(addr);
+    int data = ui->runStepComboBox->currentIndex() + 1;
+    values.append(data);
+
+    QByteArray allPackData, SData, crcData;
+    QDataStream out(&SData,QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+    out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    //QDataStream::BigEndian或QDataStream::LittleEndian
+    out.setByteOrder(QDataStream::LittleEndian);
+
+    allPackData.append((char*)&bpack, sizeof(bpack));
+
+    foreach(ushort item, addrs)
+    {
+        out << item;
+    }
+
+    foreach(int item, values)
+    {
+        out << item;
+    }
+
+    SData.insert(0, allPackData);
+
+    uint scrc = tcpClient->StreamLen_CRC32(SData);
+
+    QDataStream out1(&crcData,QIODevice::WriteOnly);
+    out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+    out1.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    //QDataStream::BigEndian或QDataStream::LittleEndian
+    out1.setByteOrder(QDataStream::LittleEndian);
+    out1 << scrc;
+
+    SData.append(crcData);
+
+    tcpClient->sendRequestWithResults(SData);
 }

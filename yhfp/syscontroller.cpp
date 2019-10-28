@@ -347,14 +347,14 @@ void Syscontroller::resetControlShare(int dataType, QMap<float, QString> control
         foreach(float address, controlData.keys())
         {
             int index = Global::convertAddressToIndex(address, "di");
-            controlDb->i_data[index] = controlData.value(address).toFloat();
+            controlDb->i_data[index] = controlData.value(address).toInt();
         }
         break;
     case UInt:
         foreach(float address, controlData.keys())
         {
             int index = Global::convertAddressToIndex(address, "dw");
-            controlDb->dw_data[index] = controlData.value(address).toFloat();
+            controlDb->dw_data[index] = controlData.value(address).toUInt();
         }
         break;
     case UShort:

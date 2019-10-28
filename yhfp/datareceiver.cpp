@@ -166,7 +166,7 @@ void DataReceiver::dataReceive()
                 QSet<int> changedDeviceSet;
                 foreach(float address, dataMap.keys())
                 {
-                    if(address < DB_BOOL_LEN)
+                    if(address < Global::getDataStartByType("x0"))
                     {
                         changedDeviceSet.insert(startIndex + Global::getYhcDeviceIndexByAddress(address));
                     }
@@ -186,7 +186,7 @@ void DataReceiver::dataReceive()
                 QSet<int> changedDeviceSet;
                 foreach(float address, dataMap.keys())
                 {
-                    if(address < DB_BOOL_LEN)
+                    if(address < Global::getDataStartByType("x0"))
                     {
                         changedDeviceSet.insert(startIndex + Global::getFerDeviceIndexByAddress(address));
                     }

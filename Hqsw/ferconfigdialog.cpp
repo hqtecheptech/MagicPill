@@ -13,7 +13,7 @@ FerConfigDialog::FerConfigDialog(QWidget *parent) :
         ui->step_seq_comboBox->addItem(QString::number(i + 1) + QStringLiteral("号发酵池"));
     }
 
-    _ferConfig.loadConfig(&_ferSteps, 0);
+    FerConfig::loadConfig(&_ferSteps, 0);
 
     centerLayout = new QVBoxLayout;
     centerLayout->setSpacing(5);
@@ -302,7 +302,7 @@ void FerConfigDialog::clearUI()
 void FerConfigDialog::on_reload_push_button_clicked()
 {
     clearUI();
-    _ferConfig.loadConfig(&_ferSteps, ui->step_seq_comboBox->currentIndex());
+    FerConfig::loadConfig(&_ferSteps, ui->step_seq_comboBox->currentIndex());
     initUI();
 }
 
@@ -363,7 +363,7 @@ void FerConfigDialog::on_step_seq_comboBox_currentIndexChanged(int index)
     if(isVisible())
     {
         clearUI();
-        _ferConfig.loadConfig(&_ferSteps, index);
+        FerConfig::loadConfig(&_ferSteps, index);
         initUI();
     }
 }

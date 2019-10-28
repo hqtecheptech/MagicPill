@@ -311,10 +311,16 @@ void Yhcc::parseYhcData(QMap<float, QString> dataMap)
     qDebug() << "Speed value: " << Global::currentYhcDataMap[address];
     ui->speedLabel->setText(Global::currentYhcDataMap[address]);
 
-    deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_RunTime");
+    /*deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_RunTime");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
     qDebug() << "FER_Hand_RunTime: " << Global::currentFermenationDataMap[address];
+    ui->test_label->setText(Global::currentFermenationDataMap[address]);*/
+
+    deviceNode = Global::getFermenationNodeInfoByName("FER_STEPCTR_UI_CTRL");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    qDebug() << "FER_STEPCTR_UI: " << Global::currentFermenationDataMap[address];
     ui->test_label->setText(Global::currentFermenationDataMap[address]);
 }
 
