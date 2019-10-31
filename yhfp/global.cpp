@@ -41,22 +41,22 @@ ServerInfo Global::readServerInfo()
     {
         if(node.toElement().tagName()=="server")
         {
-            qDebug() << node.toElement().tagName();
+            //qDebug() << node.toElement().tagName();
             QDomNode childNode = node.firstChild();
             while(!childNode.isNull())
             {
-                qDebug() << childNode.toElement().tagName();
+                //qDebug() << childNode.toElement().tagName();
                 if(childNode.toElement().tagName()=="ip")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.IP = leafNode.toText().data();
-                    qDebug() << leafNode.toText().data();
+                    //qDebug() << leafNode.toText().data();
                 }
                 if(childNode.toElement().tagName()=="port")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.Port = leafNode.toText().data().toInt();
-                    qDebug() << leafNode.toText().data();
+                    //qDebug() << leafNode.toText().data();
                 }
                 childNode = childNode.nextSibling();
             }
@@ -69,7 +69,7 @@ ServerInfo Global::readServerInfo()
 
 SystemConfig Global::readSystemConfig()
 {
-    qDebug() << "Reading readSystemConfig ...!";
+    //qDebug() << "Reading readSystemConfig ...!";
 
     QFile file("sysconfig.xml");
     SystemConfig retValue;
@@ -91,227 +91,249 @@ SystemConfig Global::readSystemConfig()
         return retValue;
     }
 
-    qDebug() << "Reading readSystemConfig successful!";
+    //qDebug() << "Reading readSystemConfig successful!";
 
     QDomNode node = root.firstChild();
     while(!node.isNull())
     {
         if(node.toElement().tagName()=="server")
         {
-            qDebug() << node.toElement().tagName();
+            //qDebug() << node.toElement().tagName();
             QDomNode childNode = node.firstChild();
             while(!childNode.isNull())
             {
-                qDebug() << childNode.toElement().tagName();
+                //qDebug() << childNode.toElement().tagName();
                 if(childNode.toElement().tagName()=="ip")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.IP = leafNode.toText().data();
-                    qDebug() << retValue.IP;
+                    //qDebug() << retValue.IP;
                 }
                 if(childNode.toElement().tagName()=="port")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.Port = leafNode.toText().data().toInt();
-                    qDebug() << retValue.Port;
+                    //qDebug() << retValue.Port;
                 }
                 childNode = childNode.nextSibling();
             }
         }
         else if(node.toElement().tagName()=="data_sem")
         {
-            qDebug() << node.toElement().tagName();
+            //qDebug() << node.toElement().tagName();
             QDomNode childNode = node.firstChild();
             while(!childNode.isNull())
             {
-                qDebug() << childNode.toElement().tagName();
+                //qDebug() << childNode.toElement().tagName();
                 if(childNode.toElement().tagName()=="pathname")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.dataSemPath = leafNode.toText().data();
-                    qDebug() << retValue.dataSemPath;
+                    //qDebug() << retValue.dataSemPath;
                 }
                 if(childNode.toElement().tagName()=="proj_id")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.dataSemKey = leafNode.toText().data().toInt();
-                    qDebug() << retValue.dataSemKey;
+                    //qDebug() << retValue.dataSemKey;
                 }
                 childNode = childNode.nextSibling();
             }
         }
         else if(node.toElement().tagName()=="data_msg")
         {
-            qDebug() << node.toElement().tagName();
+            //qDebug() << node.toElement().tagName();
             QDomNode childNode = node.firstChild();
             while(!childNode.isNull())
             {
-                qDebug() << childNode.toElement().tagName();
+                //qDebug() << childNode.toElement().tagName();
                 if(childNode.toElement().tagName()=="pathname")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.dataMsgPath = leafNode.toText().data();
-                    qDebug() << retValue.dataMsgPath;
+                    //qDebug() << retValue.dataMsgPath;
                 }
                 if(childNode.toElement().tagName()=="proj_id")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.dataMsgKey = leafNode.toText().data().toInt();
-                    qDebug() << retValue.dataMsgKey;
+                    //qDebug() << retValue.dataMsgKey;
                 }
                 childNode = childNode.nextSibling();
             }
         }
         else if(node.toElement().tagName()=="data_share")
         {
-            qDebug() << node.toElement().tagName();
+            //qDebug() << node.toElement().tagName();
             QDomNode childNode = node.firstChild();
             while(!childNode.isNull())
             {
-                qDebug() << childNode.toElement().tagName();
+                //qDebug() << childNode.toElement().tagName();
                 if(childNode.toElement().tagName()=="pathname")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.dataSharePath = leafNode.toText().data();
-                    qDebug() << retValue.dataSharePath;
+                    //qDebug() << retValue.dataSharePath;
                 }
                 if(childNode.toElement().tagName()=="proj_id")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.dataShareKey = leafNode.toText().data().toInt();
-                    qDebug() << retValue.dataShareKey;
+                    //qDebug() << retValue.dataShareKey;
                 }
                 childNode = childNode.nextSibling();
             }
         }
         else if(node.toElement().tagName()=="control_share")
         {
-            qDebug() << node.toElement().tagName();
+            //qDebug() << node.toElement().tagName();
             QDomNode childNode = node.firstChild();
             while(!childNode.isNull())
             {
-                qDebug() << childNode.toElement().tagName();
+                //qDebug() << childNode.toElement().tagName();
                 if(childNode.toElement().tagName()=="pathname")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.controlSharePath = leafNode.toText().data();
-                    qDebug() << retValue.controlSharePath;
+                    //qDebug() << retValue.controlSharePath;
                 }
                 if(childNode.toElement().tagName()=="proj_id")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.controlShareKey = leafNode.toText().data().toInt();
-                    qDebug() << leafNode.toText().data();
+                    //qDebug() << leafNode.toText().data();
                 }
                 childNode = childNode.nextSibling();
             }
         }
         else if(node.toElement().tagName()=="control_sem")
         {
-            qDebug() << node.toElement().tagName();
+            //qDebug() << node.toElement().tagName();
             QDomNode childNode = node.firstChild();
             while(!childNode.isNull())
             {
-                qDebug() << childNode.toElement().tagName();
+                //qDebug() << childNode.toElement().tagName();
                 if(childNode.toElement().tagName()=="pathname")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.controlSemPath = leafNode.toText().data();
-                    qDebug() << retValue.controlSemPath;
+                    //qDebug() << retValue.controlSemPath;
                 }
                 if(childNode.toElement().tagName()=="proj_id")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.controlSemKey = leafNode.toText().data().toInt();
-                    qDebug() << retValue.controlSemKey;
+                    //qDebug() << retValue.controlSemKey;
                 }
                 childNode = childNode.nextSibling();
             }
         }
         else if(node.toElement().tagName()=="control_msg")
         {
-            qDebug() << node.toElement().tagName();
+            //qDebug() << node.toElement().tagName();
             QDomNode childNode = node.firstChild();
             while(!childNode.isNull())
             {
-                qDebug() << childNode.toElement().tagName();
+                //qDebug() << childNode.toElement().tagName();
                 if(childNode.toElement().tagName()=="pathname")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.controlMsgPath = leafNode.toText().data();
-                    qDebug() << retValue.controlMsgPath;
+                    //qDebug() << retValue.controlMsgPath;
                 }
                 if(childNode.toElement().tagName()=="proj_id")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.controlMsgKey = leafNode.toText().data().toInt();
-                    qDebug() << retValue.controlMsgKey;
+                    //qDebug() << retValue.controlMsgKey;
                 }
                 childNode = childNode.nextSibling();
             }
         }
         else if(node.toElement().tagName()=="yhc_control_share")
         {
-            qDebug() << node.toElement().tagName();
+            //qDebug() << node.toElement().tagName();
             QDomNode childNode = node.firstChild();
             while(!childNode.isNull())
             {
-                qDebug() << childNode.toElement().tagName();
+                //qDebug() << childNode.toElement().tagName();
                 if(childNode.toElement().tagName()=="pathname")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.yhcControlSharePath = leafNode.toText().data();
-                    qDebug() << retValue.yhcControlSharePath;
+                    //qDebug() << retValue.yhcControlSharePath;
                 }
                 if(childNode.toElement().tagName()=="proj_id")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.yhcControlShareKey = leafNode.toText().data().toInt();
-                    qDebug() << leafNode.toText().data();
+                    //qDebug() << leafNode.toText().data();
                 }
                 childNode = childNode.nextSibling();
             }
         }
         else if(node.toElement().tagName()=="yhc_control_sem")
         {
-            qDebug() << node.toElement().tagName();
+            //qDebug() << node.toElement().tagName();
             QDomNode childNode = node.firstChild();
             while(!childNode.isNull())
             {
-                qDebug() << childNode.toElement().tagName();
+                //qDebug() << childNode.toElement().tagName();
                 if(childNode.toElement().tagName()=="pathname")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.yhcControlSemPath = leafNode.toText().data();
-                    qDebug() << retValue.yhcControlSemPath;
+                    //qDebug() << retValue.yhcControlSemPath;
                 }
                 if(childNode.toElement().tagName()=="proj_id")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.yhcControlSemKey = leafNode.toText().data().toInt();
-                    qDebug() << retValue.yhcControlSemKey;
+                    //qDebug() << retValue.yhcControlSemKey;
                 }
                 childNode = childNode.nextSibling();
             }
         }
         else if(node.toElement().tagName()=="yhc_control_msg")
         {
-            qDebug() << node.toElement().tagName();
+            //qDebug() << node.toElement().tagName();
             QDomNode childNode = node.firstChild();
             while(!childNode.isNull())
             {
-                qDebug() << childNode.toElement().tagName();
+                //qDebug() << childNode.toElement().tagName();
                 if(childNode.toElement().tagName()=="pathname")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.yhcControlMsgPath = leafNode.toText().data();
-                    qDebug() << retValue.yhcControlMsgPath;
+                    //qDebug() << retValue.yhcControlMsgPath;
                 }
                 if(childNode.toElement().tagName()=="proj_id")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.yhcControlMsgKey = leafNode.toText().data().toInt();
-                    qDebug() << retValue.yhcControlMsgKey;
+                    //qDebug() << retValue.yhcControlMsgKey;
+                }
+                childNode = childNode.nextSibling();
+            }
+        }
+        else if(node.toElement().tagName()=="ferconfig")
+        {
+            //qDebug() << node.toElement().tagName();
+            QDomNode childNode = node.firstChild();
+            while(!childNode.isNull())
+            {
+                //qDebug() << childNode.toElement().tagName();
+                if(childNode.toElement().tagName()=="path")
+                {
+                    QDomNode leafNode = childNode.firstChild();
+                    retValue.ferconfigPath = leafNode.toText().data();
+                    //qDebug() << retValue.ferconfigPath;
+                }
+                if(childNode.toElement().tagName()=="prefix")
+                {
+                    QDomNode leafNode = childNode.firstChild();
+                    retValue.ferconfigPrefix = leafNode.toText().data();
+                    //qDebug() << retValue.ferconfigPrefix;
                 }
                 childNode = childNode.nextSibling();
             }
@@ -320,8 +342,8 @@ SystemConfig Global::readSystemConfig()
         node = node.nextSibling();
     }
 
-    qDebug() << "dataMsgPath:" <<retValue.dataMsgPath;
-    qDebug() << "dataMsgKey:" <<retValue.dataMsgKey;
+    //qDebug() << "dataMsgPath:" <<retValue.dataMsgPath;
+    //qDebug() << "dataMsgKey:" <<retValue.dataMsgKey;
 
     return retValue;
 }
@@ -613,7 +635,7 @@ DeodorationDeviceInfo Global::readDeodorationDeviceInfo()
             {
                 if(!child_list.item(j).toElement().attribute("name").contains("check", Qt::CaseInsensitive))
                 {
-                    qDebug() << "Name = " << child_list.item(j).toElement().attribute("name");
+                    //qDebug() << "Name = " << child_list.item(j).toElement().attribute("name");
                     displaySettingNum += 1;
                 }
                 varNum += child_list.item(j).toElement().attribute("length").toInt();
@@ -947,7 +969,7 @@ QVector<DeviceNode> readDeviceNodes(QString filename)
             if(node.DataType == "x0")
             {
                 node.Offset = j;
-                qDebug() << "j = " << j;
+                //qDebug() << "j = " << j;
             }
             else
             {
@@ -964,7 +986,7 @@ QVector<DeviceNode> readDeviceNodes(QString filename)
 QVector<DeviceGroupInfo> readDeviceGroupInfo(QString filename)
 {
     QString cp = QDir::currentPath();
-    qDebug()<<cp;
+    //qDebug()<<cp;
 
     QVector<DeviceGroupInfo> nodes;
 
@@ -974,7 +996,7 @@ QVector<DeviceGroupInfo> readDeviceGroupInfo(QString filename)
         return nodes;
     }
 
-    qDebug() << "Read " << filename << "succesfully!";
+    //qDebug() << "Read " << filename << "succesfully!";
 
     QDomDocument document;
     QString error;
@@ -1626,3 +1648,4 @@ QMap<float,QString> Global::currentFanValveGroupDataMap;
 QMap<float,QString> Global::currentYhcDataMap;
 
 int Global::alertIndex = 0;
+bool Global::isPrint = false;

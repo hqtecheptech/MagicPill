@@ -17,7 +17,7 @@ int SQLiteHelper::select_all_callback(void * data, int col_count, char ** col_va
         {
             Results.append(col_values[i]);
         }
-        qDebug() << s;
+        //qDebug() << s;
     }
 
     return 0;

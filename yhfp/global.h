@@ -99,6 +99,7 @@ public:
     static uint getLengthByDataType(QString dataType);
 
     static int alertIndex;
+    static bool isPrint;
 
 private:
     static FermenationDeviceInfo readFermenationDeviceInfo();

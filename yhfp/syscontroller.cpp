@@ -108,14 +108,14 @@ void Syscontroller::setPlcControlDb(Plc_Db data)
 
 void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
 {
-    qDebug() << "Start Press Speed Up!";
+    //qDebug() << "Start Press Speed Up!";
 
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertAddressToIndex(address, "r");
 
-    qDebug() << "handle Press Speed Up!";
+    //qDebug() << "handle Press Speed Up!";
     Plc_Db db;
     yhcDbShare->LockShare();
     yhcCtrlShare->LockShare();
@@ -127,7 +127,7 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
 
     applyControlRequest();
 
-    qDebug() << "Press Speed Up!";
+    //qDebug() << "Press Speed Up!";
 }
 
 void Syscontroller::yhcStart(int deviceIndex, bool value)
@@ -135,7 +135,7 @@ void Syscontroller::yhcStart(int deviceIndex, bool value)
     // To do: using a test name temporary.
     int index = Global::getYhcDataIndexByName("FAN_VALVE_HAND_OPEN", deviceIndex);
 
-    qDebug() << "Begin yhc start or stop!";
+    //qDebug() << "Begin yhc start or stop!";
     Plc_Db db;
     yhcDbShare->LockShare();
     yhcCtrlShare->LockShare();
@@ -154,7 +154,7 @@ void Syscontroller::yhcStart(int deviceIndex, bool value)
 
     applyControlRequest();
 
-    qDebug() << "End yhc start or stop!";
+    //qDebug() << "End yhc start or stop!";
 }
 
 msgname Syscontroller::getDataType()

@@ -6,6 +6,8 @@
 #include <QDataStream>
 #include <QByteArray>
 
+#include "global.h"
+
 class DataSender : QObject
 {
     Q_OBJECT

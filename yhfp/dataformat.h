@@ -264,6 +264,8 @@ struct SystemConfig
     QString yhcControlSharePath;
     QString yhcControlSemPath;
     QString yhcControlMsgPath;
+    QString ferconfigPath;
+    QString ferconfigPrefix;
     int dataShareKey;
     int dataSemKey;
     int dataMsgKey;

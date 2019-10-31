@@ -10,8 +10,8 @@ using namespace std;
 
 DataSender::DataSender()
 {
-    port = 8500;
-    serverIP = new QHostAddress("192.168.0.106");
+    port = Global::serverInfo.Port;
+    serverIP = new QHostAddress(Global::serverInfo.IP);
     _tcpSocket = new QTcpSocket();
     connect(_tcpSocket,SIGNAL(readyRead()),this,SLOT(dataReceive()));
     connect(_tcpSocket, &QAbstractSocket::disconnected, _tcpSocket, &QObject::deleteLater);
@@ -61,6 +61,15 @@ int DataSender::sendRequestWithResults(const QString strData)
 
 int DataSender::sendRequestWithResults(QByteArray data)
 {
+    qDebug() << Global::isPrint;
+
+    if(!Global::isPrint)
+    {
+        qDebug() << "serverIP" << Global::serverInfo.IP;
+        qDebug() << "port" << port;
+    }
+
+
     if(_tcpSocket->state() != QAbstractSocket::ConnectedState)
     {
         _tcpSocket->abort(); //取消已有的连接
@@ -72,6 +81,13 @@ int DataSender::sendRequestWithResults(QByteArray data)
             return 0;
         }
     }
+
+    if(!Global::isPrint)
+    {
+        qDebug() << "Local server connected!";
+    }
+
+    Global::isPrint = true;
 
     _tcpSocket->write(data);
     _tcpSocket->waitForBytesWritten();

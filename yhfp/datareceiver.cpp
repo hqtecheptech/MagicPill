@@ -220,7 +220,7 @@ void DataReceiver::dataReceive()
             QByteArray byteValues = sDataWithoutCRC.mid(sizeof(bDevice), sDataWithoutCRC.length() - sizeof(bDevice));
             QString strConfig = byteValues;
             qDebug() << strConfig;
-            QFile file("fer_para_conf_" + QString::number(bDevice.bIndex+1));
+            QFile file(Global::systemConfig.ferconfigPath + Global::systemConfig.ferconfigPrefix + QString::number(bDevice.bIndex+1));
             if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
             {
                 pack.bErrorCode = 0;
@@ -241,6 +241,7 @@ void DataReceiver::dataReceive()
     }
     else if(bDevice.bCommandType == r_LoadConfig)
     {
+        qDebug() << "r_LoadConfig";
         if(bDevice.bDeviceId == 1)
         {
             StreamPack pack;
@@ -252,7 +253,7 @@ void DataReceiver::dataReceive()
             pack.bEndTime =etime;
 
             QString result = "";
-            QFile file("fer_para_conf_" + QString::number(bDevice.bIndex+1));
+            QFile file(Global::systemConfig.ferconfigPath + Global::systemConfig.ferconfigPrefix + QString::number(bDevice.bIndex+1));
             if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
             {
                 qDebug() << "Read configuration file failed!";

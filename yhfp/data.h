@@ -27,6 +27,7 @@
 #define DB_UINT16_LEN 128
 #define DB_BOOL_LEN 320
 
+
 typedef struct {
     uint32_t  dw_link[16];
     float f_data[DB_FLOAT_LEN];

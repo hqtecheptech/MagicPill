@@ -33,7 +33,7 @@ void HistoryDlg::on_oneButton_clicked()
     dbHelper.select(db, table, strSql);
 
     ampere1Values = SQLiteHelper::Results;
-    qDebug() << "Ampere1 values counts: " << ampere1Values.length();
+    //qDebug() << "Ampere1 values counts: " << ampere1Values.length();
 
     ui->preButton->setEnabled(false);
     ui->nextButton->setEnabled(false);
@@ -63,7 +63,7 @@ void HistoryDlg::on_oneButton_clicked()
 void HistoryDlg::on_preButton_clicked()
 {
     currentPage -= 1;
-    qDebug() << "current page:" << currentPage;
+    //qDebug() << "current page:" << currentPage;
 
     for(int i=CP-1; i >= 0; i--)
     {
@@ -84,7 +84,7 @@ void HistoryDlg::on_preButton_clicked()
 void HistoryDlg::on_nextButton_clicked()
 {
     currentPage += 1;
-    qDebug() << "current page:" << currentPage;
+    //qDebug() << "current page:" << currentPage;
 
     for(int i=CP-1; i >= 0; i--)
     {

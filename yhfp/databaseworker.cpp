@@ -43,11 +43,11 @@ void DatabaseWorker::saveHistData(HistData hist)
     bool result = dbHelper.insert(db, table, strSql);
     if(result)
     {
-        qDebug() << "mission completed !";
+        //qDebug() << "mission completed !";
     }
     else
     {
-        qDebug() << "mission failed !";
+        //qDebug() << "mission failed !";
     }
 }
 

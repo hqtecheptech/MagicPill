@@ -40,4 +40,8 @@
     <pathname>/home/hqtech/yhc_control/</pathname>
     <proj_id>97</proj_id>
   </yhc_control_msg>
+  <ferconfig>
+    <path>/home/root/</path>
+    <prefix>fer_para_conf_</prefix>
+  </ferconfig>
 </system>

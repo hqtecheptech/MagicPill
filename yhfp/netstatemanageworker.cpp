@@ -30,7 +30,7 @@ void NetStateManageWorker::checkNetState(QString type)
     QString retStr = cmd->readAll();
     if (retStr.toUpper().indexOf("TTL") != -1)
     {
-        qDebug() << type <<"is online!\n";
+        //qDebug() << type <<"is online!\n";
         emit checkNetFinished(type, true);
     }
     else
