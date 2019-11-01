@@ -61,14 +61,11 @@ int DataSender::sendRequestWithResults(const QString strData)
 
 int DataSender::sendRequestWithResults(QByteArray data)
 {
-    qDebug() << Global::isPrint;
-
     if(!Global::isPrint)
     {
         qDebug() << "serverIP" << Global::serverInfo.IP;
         qDebug() << "port" << port;
     }
-
 
     if(_tcpSocket->state() != QAbstractSocket::ConnectedState)
     {

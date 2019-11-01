@@ -49,7 +49,7 @@ Yhcc::Yhcc(QWidget *parent) :
     testTimer = new QTimer(this);
     connect(testTimer, SIGNAL(timeout()), this, SLOT(wirteTestData()));
 
-    controller = Syscontroller::getInstance(fjsw, 0);
+    controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
     if(controller != Q_NULLPTR)
     {
         connect(controller, SIGNAL(resultReady()), this, SLOT(handleControllerResult()));
@@ -200,9 +200,9 @@ void Yhcc::closeEvent(QCloseEvent *)
         testTimer->stop();
     }
 
-    netManageThread.requestInterruption();
-    netManageThread.quit();
-    netManageThread.wait();
+    //netManageThread.requestInterruption();
+    //netManageThread.quit();
+    //netManageThread.wait();
 }
 
 void Yhcc::handleControllerResult()
@@ -223,16 +223,11 @@ void Yhcc::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> d
 void Yhcc::wirteTestData()
 {
     //controller->yhcSpeedUp(deviceIndex, 5);
-    controller->yhcStart(0, !started);
+    //controller->yhcStart(0, !started);
 }
 
 void Yhcc::updateWatchs()
 {
-    /*qsrand(time(NULL));
-    int rs = qrand() % 20 + 5;
-    int prs = qrand() % 20 + 5;
-    ui->widget_2->updateUI(rs, prs);*/
-
     int leftValue = qrand() % 400 + 100;
     int rightValue = qrand() % 400 + 100;
     ui->yhcWatchsWidget->updateDydl(leftValue, rightValue);
@@ -249,7 +244,6 @@ void Yhcc::updateWatchs()
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    //ui->test_label->setText(Global::currentYhcDataMap.value(address, "false"));
 
     data.address = address;
     strcpy(data.dataType, deviceNode.Name.toLatin1().data());

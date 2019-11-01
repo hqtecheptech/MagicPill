@@ -44,4 +44,8 @@
     <path>/home/root/</path>
     <prefix>fer_para_conf_</prefix>
   </ferconfig>
+  <device>
+    <type>1</type>
+    <group>0</group>
+  </device>
 </system>

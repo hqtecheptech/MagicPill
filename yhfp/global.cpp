@@ -338,6 +338,28 @@ SystemConfig Global::readSystemConfig()
                 childNode = childNode.nextSibling();
             }
         }
+        else if(node.toElement().tagName()=="device")
+        {
+            //qDebug() << node.toElement().tagName();
+            QDomNode childNode = node.firstChild();
+            while(!childNode.isNull())
+            {
+                //qDebug() << childNode.toElement().tagName();
+                if(childNode.toElement().tagName()=="type")
+                {
+                    QDomNode leafNode = childNode.firstChild();
+                    retValue.deviceType = DeviceType(leafNode.toText().data().toInt());
+                    //qDebug() << retValue.deviceIdType;
+                }
+                if(childNode.toElement().tagName()=="group")
+                {
+                    QDomNode leafNode = childNode.firstChild();
+                    retValue.deviceGroup = leafNode.toText().data().toInt();
+                    //qDebug() << retValue.group;
+                }
+                childNode = childNode.nextSibling();
+            }
+        }
 
         node = node.nextSibling();
     }

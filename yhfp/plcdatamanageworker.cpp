@@ -24,7 +24,7 @@ PlcDataManageWorker::~PlcDataManageWorker()
     delete yhcDbSh;
 }
 
-void PlcDataManageWorker::getSharedDatas(msgname dataName, int groupId)
+void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
 {
     Plc_Db plcdata;
 
@@ -35,12 +35,12 @@ void PlcDataManageWorker::getSharedDatas(msgname dataName, int groupId)
     DeviceGroupInfo groupInfo;
     switch(dataName)
     {
-        case yhfpsw:
+        case YHC:
             groupInfo = Global::getYhcDeviceGroupInfoByGroupId(groupId);
             parseYhcServerData(groupInfo, plcdata);
 
             break;
-        case fjsw:
+        case FER:
             groupInfo = Global::getFerDeviceGroupInfoByGroupId(groupId);
             parseFerServerData(groupInfo, plcdata);
             break;
@@ -435,7 +435,7 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
     }
 }
 
-void PlcDataManageWorker::sendPlcdataToServer(msgname dataName, DeviceGroupInfo groupInfo, const Plc_Db data)
+void PlcDataManageWorker::sendPlcdataToServer(DeviceType dataName, DeviceGroupInfo groupInfo, const Plc_Db data)
 {
     DataSender ds;
     StreamPack bpack;

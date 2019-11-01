@@ -121,8 +121,8 @@ bool SQLiteHelper::insert(QString dbName, QString tableName, QString strQuery)
     }
     else
     {
-        qDebug() << "you have opened a sqlite3 database name"
-             << ba.data() << "successfully!";
+        //qDebug() << "you have opened a sqlite3 database name"
+             //<< ba.data() << "successfully!";
         //const char* sql = "select * from sqlite_master where name='hist1'";
         const char* sql = "select * from " + bb + " where 1=0;";
         rc = sqlite3_exec(db, sql, 0, 0, &zErrMsg);
@@ -130,7 +130,7 @@ bool SQLiteHelper::insert(QString dbName, QString tableName, QString strQuery)
         {
             sql = "select count(*) counts from " + bb + ";";
             sqlite3_exec(db, sql, select_counts_callback, 0, &zErrMsg);
-            qDebug() << "Records number : " << Counts;
+            //qDebug() << "Records number : " << Counts;
 
             // To do:
             if(Counts > 2500)
@@ -156,7 +156,7 @@ bool SQLiteHelper::insert(QString dbName, QString tableName, QString strQuery)
             }
             else
             {
-                qDebug() << "insert " + bb + " ok";
+                //qDebug() << "insert " + bb + " ok";
                 ret = true;
             }
 

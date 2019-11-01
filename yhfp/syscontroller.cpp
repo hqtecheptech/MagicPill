@@ -10,12 +10,12 @@ static void sig_handler_rpuData(int sig)
     }
 }
 
-Syscontroller::Syscontroller(msgname dataType, int groupId, QObject *parent) : QObject(parent)
+Syscontroller::Syscontroller(DeviceType dataType, int groupId, QObject *parent) : QObject(parent)
 {
     _dataType = dataType;
     _groupId = groupId;
 
-    qRegisterMetaType<msgname>("msgname");
+    qRegisterMetaType<DeviceType>("msgname");
 
     QString sharePath = Global::systemConfig.controlSharePath;
     int shareId = Global::systemConfig.controlShareKey;
@@ -64,7 +64,7 @@ Syscontroller::Syscontroller(msgname dataType, int groupId, QObject *parent) : Q
     pdmWorker = new PlcDataManageWorker;
     pdmWorker->moveToThread(&plcdataManageThread);
     connect(&plcdataManageThread, &QThread::finished, pdmWorker, &QObject::deleteLater);
-    connect(this, SIGNAL(pollingDatas(msgname,int)), pdmWorker, SLOT(getSharedDatas(msgname,int)));
+    connect(this, SIGNAL(pollingDatas(DeviceType,int)), pdmWorker, SLOT(getSharedDatas(DeviceType,int)));
     connect(pdmWorker, &PlcDataManageWorker::plcDbUpdated, this, &Syscontroller::handlePlcDbUpdated, Qt::QueuedConnection);
     plcdataManageThread.start();
 
@@ -73,7 +73,7 @@ Syscontroller::Syscontroller(msgname dataType, int groupId, QObject *parent) : Q
     updateStatusTimer->start(1000);
 }
 
-Syscontroller *Syscontroller::getInstance(msgname dataType, int groupId)
+Syscontroller *Syscontroller::getInstance(DeviceType dataType, int groupId)
 {
     if (instance == Q_NULLPTR)
     {
@@ -157,7 +157,7 @@ void Syscontroller::yhcStart(int deviceIndex, bool value)
     //qDebug() << "End yhc start or stop!";
 }
 
-msgname Syscontroller::getDataType()
+DeviceType Syscontroller::getDataType()
 {
     return _dataType;
 }
@@ -176,95 +176,7 @@ Syscontroller::~Syscontroller()
 
 void Syscontroller::updateSysStatus()
 {
-    //Start test
-    Plc_Db db;
-    yhcDbShare->LockShare();
-    yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
-
-    qsrand(time(NULL));
-    int rs = qrand() % 20 + 5;
-    int prs = qrand() % 20 + 5;
-    //ui->widget_2->updateUI(rs, prs);
-
-    int leftValue = qrand() % 400 + 100;
-    int rightValue = qrand() % 400 + 100;
-    //ui->yhcWatchsWidget->updateDydl(leftValue, rightValue);
-
-    leftValue = qrand() % 120 - 30;
-    rightValue = qrand() % 1000 + 300;
-    //ui->yhcWatchsWidget->updateWdyw(leftValue, rightValue);
-
-    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(0);
-    DeviceNode deviceNode = Global::getYhcNodeInfoByName("RevolvingSpeed");
-    float address = deviceNode.Offset + (info.offset + 0 - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    int index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    db.f_data[index] = (float)rs;
-
-    deviceNode = Global::getYhcNodeInfoByName("Ampere1");
-    address = deviceNode.Offset + (info.offset + 0 - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    db.f_data[index] = (float)prs;
-
-    yhcDbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
-    yhcDbShare->UnlockShare();
-
     emit pollingDatas(_dataType, _groupId);
-
-    //End test
-
-
-/*    int pid;
-    int cmd;
-    int msgStatus;
-
-    ctrlShare->GetShardMemory((void *)&Dev_data, sizeof(Dev_data));
-    if(!(Dev_data.Pru.RPid[1] !=0 && Dev_data.Pru.RPidLink[1] ==1))
-    {
-        ctrlInfo.isPruConnected = false;
-    }
-    else
-    {
-        ctrlInfo.isPruConnected = true;
-
-        msgStatus = mHD_Read_Msg_Cmd(yhfpsw-6, &pid, &cmd);
-        if(msgStatus == -1)
-        {
-            return;
-        }
-
-        ctrlInfo.pid = pid;
-        ctrlInfo.cmd = cmd;
-        ctrlInfo.msgStatus = msgStatus;
-        Run_data.Pid[1]  = pid;
-
-        //mHD_Read_Shm_ShareMemory_DevData(Run_data.Shmkey,Run_data.Semkey,&Dev_data);
-
-        //    if(cmd ==  Msg_SoftInitComplete)    //PRU发来的消息
-        //    if(cmd == Msg_Updata_Data)
-        //     if(cmd == Msg_WriteParaComplete)
-        //     if(cmd == Msg_ReadParaComplete)
-        //     if(cmd == Msg_ScanStartStatus)
-        //     if(cmd == Msg_ScanStopStatus)
-
-        if(cmd == Msg_Updata_Data)
-        {
-            emit resultReady();
-        }
-
-        //msgStatus = mHD_Read_Msg_Cmd(yhfpsw, &pid, &cmd);
-        //if(msgStatus == -1)
-        //{
-        //    return;
-        //}
-
-//        if(cmd == Msg_Updata_Data)
-//        {
-//            if(dbShare->GetShardMemory((void*)&plcDataDb, sizeof(Plc_Db)))
-//            {
-//                emit pollingDatas();
-//            }
-//        }
-    }*/
 }
 
 void Syscontroller::handlePlcDbUpdated(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)

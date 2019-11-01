@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(pruCheckTimer, SIGNAL(timeout()), this, SLOT(checkPruState()));
     pruCheckTimer->start(10000);
 
-    controller = Syscontroller::getInstance(fjsw, 0);
+    controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
 }
 
 MainWindow::~MainWindow()
@@ -73,7 +73,7 @@ void MainWindow::showEvent(QShowEvent *event)
 {
     if(controller == Q_NULLPTR)
     {
-        controller = Syscontroller::getInstance(fjsw, 0);
+        controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
     }
 }
 
@@ -126,7 +126,7 @@ void MainWindow::on_syssButton_clicked()
 
 void MainWindow::checkPruState()
 {
-    ControllerInfo info = Syscontroller::getInstance(fjsw, 0)->getControllerStatus();
+    ControllerInfo info = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup)->getControllerStatus();
     if(!info.isPruConnected)
     {
         ui->pru_status_label->setText("Pru has not connected. Please wait ...");

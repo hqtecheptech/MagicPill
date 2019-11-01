@@ -29,7 +29,7 @@
 
 #define MODEL_COLUMNS       21    //槽数据列
 
-enum DeviceIdType {
+enum DeviceType {
     FER = 1,
     DEO,
     FAN_VALVE,
@@ -39,12 +39,7 @@ enum DeviceIdType {
     FPJ
 };
 
-enum msgname {
-    fjsw  =  1,
-    yhfpsw
-};
-
-Q_DECLARE_METATYPE(msgname)
+Q_DECLARE_METATYPE(DeviceType)
 
 enum CommandType
 {
@@ -275,6 +270,8 @@ struct SystemConfig
     int yhcControlShareKey;
     int yhcControlSemKey;
     int yhcControlMsgKey;
+    DeviceType deviceType;
+    int deviceGroup;
 };
 
 #endif // DATAFORMAT_H
