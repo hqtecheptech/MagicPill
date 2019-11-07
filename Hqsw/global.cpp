@@ -65,6 +65,53 @@ ServerInfo Global::readServerInfo()
     return retValue;
 }
 
+int Global::readFerGroupShowing()
+{
+    QFile file("sysconfig.xml");
+    int retValue = -1;
+    QDomDocument document;
+    QString error;
+    int row = 0, column = 0;
+    if(!document.setContent(&file, false, &error, &row, &column))
+    {
+        return -1;
+    }
+    if(document.isNull())
+    {
+        return -1;
+    }
+
+    QDomElement root = document.documentElement();
+    if(root.isNull())
+    {
+        return -1;
+    }
+
+    QDomNode node = root.firstChild();
+    while(!node.isNull())
+    {
+        if(node.toElement().tagName()=="fer")
+        {
+            qDebug() << node.toElement().tagName();
+            QDomNode childNode = node.firstChild();
+            while(!childNode.isNull())
+            {
+                qDebug() << childNode.toElement().tagName();
+                if(childNode.toElement().tagName()=="group")
+                {
+                    QDomNode leafNode = childNode.firstChild();
+                    retValue = leafNode.toText().data().toInt();
+                    qDebug() << leafNode.toText().data();
+                }
+                childNode = childNode.nextSibling();
+            }
+            break;
+        }
+        node = node.nextSibling();
+    }
+    return retValue;
+}
+
 YhcDeviceInfo Global::readYhcDeviceInfo()
 {
     YhcDeviceInfo retValue;
@@ -1194,6 +1241,8 @@ uint Global::getLengthByDataType(QString dataType)
 }
 
 ServerInfo Global::serverInfo = readServerInfo();
+
+int Global::ferGroupShow = readFerGroupShowing();
 
 FermenationDeviceInfo Global::ferDeviceInfo = readFermenationDeviceInfo();
 

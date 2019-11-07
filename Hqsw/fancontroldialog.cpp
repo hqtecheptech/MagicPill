@@ -91,7 +91,7 @@ void FanControlDialog::on_fanOpenPushButton_clicked()
         ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = true;
@@ -136,7 +136,7 @@ void FanControlDialog::on_fanStopPushButton_clicked()
         ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = false;
@@ -170,7 +170,7 @@ void FanControlDialog::on_switchFanModePushButton_clicked()
         ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = !fanMode;

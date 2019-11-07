@@ -92,7 +92,7 @@ void SensorControlDialog::on_sensorFallPushButton_clicked()
         ushort address = Global::ferDeviceInfo.Runctr_Address + (tankIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,0,w_RealData,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = true;
@@ -125,7 +125,7 @@ void SensorControlDialog::on_sensorRaisePushButton_clicked()
         ushort address = Global::ferDeviceInfo.Runctr_Address + (tankIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,0,w_RealData,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = true;
@@ -164,7 +164,7 @@ void SensorControlDialog::on_sensorStopPushButton_clicked()
         ushort address = Global::ferDeviceInfo.Runctr_Address + (tankIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,0,w_RealData,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = false;
@@ -176,7 +176,7 @@ void SensorControlDialog::on_sensorStopPushButton_clicked()
         index = Global::getFermenationNodeInfoByName("sensor_rise").Offset % 8;        
         address = Global::ferDeviceInfo.Runctr_Address + (tankIndex - info.startIndex) * runctrlByteSize + offset;
 
-        bpack = {sizeof(StreamPack),1,0,w_RealData,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         data = false;

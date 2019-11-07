@@ -29,6 +29,7 @@ public slots:
 
 private:
     ShareHelper* yhcDbSh;
+    ShareHelper* yhcCtrlSh;
     DataSender ds;
 
     void sendPlcdataToServer(DeviceType dataName, DeviceGroupInfo groupInfo, const Plc_Db data);

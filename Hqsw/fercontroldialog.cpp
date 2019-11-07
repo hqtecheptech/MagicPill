@@ -92,7 +92,7 @@ void FerControlDialog::showSetFerAuto(QByteArray data)
         ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
         ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
 
-        bpack = {sizeof(StreamPack),1,0,w_RealData,Bool,address,index,1,0,0,0};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,0,0};
         bool data = true;
         QVariant var_data = QVariant(data);
 
@@ -177,7 +177,7 @@ void FerControlDialog::on_startFerButton_pressed()
         ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = true;
@@ -207,7 +207,7 @@ void FerControlDialog::on_startFerButton_released()
         ushort offset = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset / 8;
         ushort index = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset % 8;
         ushort address = Global::ferDeviceInfo.Runctr_Address + tankIndex * 4 + offset;
-        bpack = {sizeof(StreamPack),1,0,w_RealData,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = false;
@@ -237,7 +237,7 @@ void FerControlDialog::on_endFerButton_pressed()
         ushort index = Global::getFermenationNodeInfoByName("FER_Startctr_BOOL").Offset % 8;
         ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
         ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
-        bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bool data = false;
         QVariant var_data = QVariant(data);
         tcpClient->abort();
@@ -250,7 +250,7 @@ void FerControlDialog::on_endFerButton_pressed()
         index = Global::getFermenationNodeInfoByName("Aeration_Start").Offset % 8;
         runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
         address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
-        bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
         data = false;
         var_data = QVariant(data);
         tcpClient->abort();
@@ -281,7 +281,7 @@ void FerControlDialog::on_endFerButton_released()
         ushort address = Global::ferDeviceInfo.Runctr_Address + (tankIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,0,w_RealData,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = false;
@@ -546,7 +546,7 @@ void FerControlDialog::on_changeStepButton_clicked()
     DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
 
     StreamPack bpack;
-    bpack = {sizeof(StreamPack),1,0,W_Send_Control,Int,0,0,1,0,0,0};
+    bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Int,0,0,1,0,0,0};
     //Length of ushort address and value, plus length of scrc.
     bpack.bDataLength = 1;
     bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;

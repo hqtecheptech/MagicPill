@@ -33,7 +33,7 @@ void LoginDialog::on_loginButton_clicked()
         QDateTime currentdt = QDateTime::currentDateTime();
         uint stime =currentdt.toTime_t();
         uint etime =currentdt.toTime_t();
-        bpack = {sizeof(StreamPack),1,0,r_SignIn,String,0,0,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_SignIn,String,0,0,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         QString loginInfo = ui->userNameLineEdit->text().trimmed() + "," + ui->pwdLineEdit->text().trimmed();
@@ -150,7 +150,7 @@ void LoginDialog::on_testSendControlButton_clicked()
     ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
     ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + 0 - info.startIndex) * runctrlByteSize + offset;
 
-    bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,address,index,1,0,0,0};
+    bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,0,0};
     bool data = true;
     QVariant var_data = QVariant(data);
 
@@ -167,7 +167,7 @@ void LoginDialog::on_testSendControlButton_2_clicked()
     ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
     ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + 0 - info.startIndex) * runctrlByteSize + offset;
 
-    bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,address,index,1,0,0,0};
+    bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,0,0};
     bool data = false;
     QVariant var_data = QVariant(data);
 

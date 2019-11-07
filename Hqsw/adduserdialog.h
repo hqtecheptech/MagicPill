@@ -3,6 +3,7 @@
 
 #include <QDialog>
 
+#include "global.h"
 #include "dataformat.h"
 #include "requestworkthread.h"
 

@@ -29,7 +29,7 @@ void AddUserDialog::on_addPushButton_clicked()
             QDateTime currentdt = QDateTime::currentDateTime();
             uint stime =currentdt.toTime_t();
             uint etime =currentdt.toTime_t();
-            bpack = {sizeof(StreamPack),1,0,w_AddUser,String,0,0,1,0,stime,etime};
+            bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_AddUser,String,0,0,1,0,stime,etime};
             bpack.bStartTime =stime;
             bpack.bEndTime =etime;
             QString loginInfo = ui->usernameLineEdit->text().trimmed() + "," + ui->pwdLineEdit->text().trimmed();

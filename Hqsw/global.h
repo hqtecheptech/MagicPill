@@ -87,6 +87,7 @@ public:
 
     static uint getLengthByDataType(QString dataType);
 
+    static int ferGroupShow;
     static int alertIndex;
     static QStringList ferConfigStrContent;
 
@@ -98,6 +99,7 @@ private:
     static YhcDeviceInfo readYhcDeviceInfo();
 
     static ServerInfo readServerInfo();
+    static int readFerGroupShowing();
 };
 
 #endif // GLOBAL_H

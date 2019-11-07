@@ -74,7 +74,7 @@ void Environment::on_pushButton_clicked()
     StreamPack bpack;
     uint stime =currentdt.toTime_t();
     uint etime =currentdt.toTime_t();
-    bpack = {sizeof(StreamPack),1,0,1,6,(quint16)Global::ferDeviceInfo.Enviroment_Address,0,(quint16)Global::ferDeviceInfo.Enviroment_Num,0,stime,etime};
+    bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,1,6,(quint16)Global::ferDeviceInfo.Enviroment_Address,0,(quint16)Global::ferDeviceInfo.Enviroment_Num,0,stime,etime};
     bpack.bStartTime =stime;
     bpack.bEndTime =etime;
     requestEnvironmentData(bpack);

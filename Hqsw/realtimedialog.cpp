@@ -96,7 +96,7 @@ void RealTimeDialog::getRealTimeData()
             DeviceNode node = Global::getFermenationNodeInfoByCname(cname);
             DeviceGroupInfo info = Global::getFerDeviceGroupInfo(deviceIndex);
             ushort address = node.Offset + 4 * (info.offset + deviceIndex - info.startIndex);
-            bpack = {sizeof(StreamPack),1,0,r_RealData,Float,address,0,1,0,0,0};
+            bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_RealData,Float,address,0,1,0,0,0};
             getRealTimeDataTcpClient->sendRequest(bpack);
         }
     }
@@ -119,7 +119,7 @@ void RealTimeDialog::getAllData()
         DeviceNode node = Global::getFermenationNodeInfoByCname(cname);
         DeviceGroupInfo info = Global::getFerDeviceGroupInfo(deviceIndex);
         ushort address = node.Offset + 4 * (info.offset + deviceIndex - info.startIndex);
-        bpack = {sizeof(StreamPack),1,0,r_HisData,Float,address,(quint16)deviceIndex,0,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_HisData,Float,address,(quint16)deviceIndex,0,0,stime,etime};
         getAllDataTcpClient->sendRequest(bpack);
     }
 }

@@ -75,7 +75,7 @@ void HistoryDialog::on_queryDataButton_clicked()
             DeviceNode node = Global::getFermenationNodeInfoByCname(cname);
             DeviceGroupInfo info = Global::getFerDeviceGroupInfo(deviceIndex);
             ushort address = node.Offset + 4 * (info.offset + deviceIndex - info.startIndex);
-            StreamPack bpack = {sizeof(StreamPack),1,0,r_HisData,Float,address,(quint16)deviceIndex,1,0,stime,etime};
+            StreamPack bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_HisData,Float,address,(quint16)deviceIndex,1,0,stime,etime};
 
             queryTcpClient->sendRequest(bpack);
         }

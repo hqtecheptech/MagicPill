@@ -81,7 +81,7 @@ void ReportDialog::on_getReportButton_clicked()
 
             if(reportAddressList.length() > 0)
             {
-                bpack = {sizeof(StreamPack),1,0,r_Report,String,0,(quint16)(info.offset + deviceIndex - info.startIndex),(quint16)reportAddressList.length(),0,stime,etime};
+                bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_Report,String,0,(quint16)(info.offset + deviceIndex - info.startIndex),(quint16)reportAddressList.length(),0,stime,etime};
 
                 QVariant var_data = QVariant::fromValue(reportAddressList);
                 getReportTcpClient->sendRequestWithResult(bpack, var_data, reportAddressList.length()*4);
@@ -738,7 +738,7 @@ void ReportDialog::on_getDailyReportButton_clicked()
     uint etime = stime + 86400;
 
     DeviceNode node = Global::getFermenationNodeInfoByCname(QStringLiteral("发酵池权重温度"));
-    StreamPack bpack = {sizeof(StreamPack),1,0,r_DailyReport,Float,node.Offset,0,1,0,stime,etime};
+    StreamPack bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_DailyReport,Float,node.Offset,0,1,0,stime,etime};
 
     getDailyReportTcpClient->sendRequest(bpack);
 
@@ -766,7 +766,7 @@ void ReportDialog::on_getDailyReportButton_clicked()
 
     if(reportItemMap.keys().length() > 0)
     {
-        StreamPack bpack = {sizeof(StreamPack),1,0,r_Report,String,0,(quint16)(info.offset + deviceIndex - info.startIndex),(quint16)reportItemMap.keys().length(),0,stime,etime};
+        StreamPack bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_Report,String,0,(quint16)(info.offset + deviceIndex - info.startIndex),(quint16)reportItemMap.keys().length(),0,stime,etime};
         QVariant var_data = QVariant::fromValue(reportItemMap.keys());
         getDailyReportTcpClient->sendRequestWithResult(bpack, var_data, reportItemMap.keys().length()*4);
     }

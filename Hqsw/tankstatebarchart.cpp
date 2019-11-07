@@ -129,7 +129,7 @@ void TankStateBarChart::localServerConnected(bool isConnected)
         DeviceGroupInfo info = Global::getFerDeviceGroupInfo(0);
         ushort address = Global::getFermenationNodeInfoByName("FER_TOT_UDI").Offset +
                 (info.offset + 0 - info.startIndex) * 4;
-        StreamPack bpack = {sizeof(StreamPack),1,0,r_RealData,UInt,address,0,(quint16)Global::ferDeviceInfo.Device_Number,0,0,0};
+        StreamPack bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_RealData,UInt,address,0,(quint16)Global::ferDeviceInfo.Device_Number,0,0,0};
         getTotalRunTimeTcpClient->sendRequest(bpack);
     }
 }

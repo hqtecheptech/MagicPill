@@ -41,7 +41,7 @@ void CustomFerSettingDialog::showSetFerAuto(QByteArray data)
         ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
         ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankLocation - info.startIndex) * runctrlByteSize + offset;
 
-        bpack = {sizeof(StreamPack),1,0,w_RealData,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = true;
@@ -118,7 +118,7 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
         DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankLocation);
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,0,W_Send_Control,UShort,0,0,1,0,0,0};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,UShort,0,0,1,0,0,0};
         //Length of ushort address and value, plus length of scrc.
         bpack.bDataLength = 2;
         bpack.bStreamLength += (2+2)*2 + 4;
@@ -179,7 +179,7 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
         ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
         addr = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankLocation - info.startIndex) * runctrlByteSize + offset;
 
-        bpack = {sizeof(StreamPack),1,0,W_Send_Control,Bool,addr,index,1,0,0,0};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,addr,index,1,0,0,0};
         bool data = true;
         QVariant var_data = QVariant(data);
 
@@ -196,7 +196,7 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
         address = Global::ferDeviceInfo.Runctr_Address +
                 (info.offset + tankLocation - info.startIndex) * runctrlByteSize + offset;
 
-        bpack = {sizeof(StreamPack),1,0,w_RealData,Bool,address,index,1,0,0,0};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,0,0};
         bool data = false;
         QVariant var_data = QVariant(data);
 
@@ -225,7 +225,7 @@ void CustomFerSettingDialog::on_customFerButton_released()
         ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
         ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankLocation - info.startIndex) * runctrlByteSize + offset;
 
-        bpack = {sizeof(StreamPack),1,0,w_RealData,Bool,address,index,1,0,0,0};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,0,0};
         bool data = false;
         QVariant var_data = QVariant(data);
 

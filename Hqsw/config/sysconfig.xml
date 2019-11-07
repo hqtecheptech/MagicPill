@@ -4,4 +4,7 @@
     <ip>192.168.0.106</ip>
     <port>8500</port>
   </server>
+  <fer>
+    <group>0</group>
+  </fer>
 </system>

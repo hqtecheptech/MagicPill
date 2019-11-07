@@ -89,5 +89,6 @@
         <file>pic/no_mobile_signal.png</file>
         <file>pic/no_signal.png</file>
         <file>pic/no_wifi.png</file>
+        <file>config/controller_sysconfig.xml</file>
     </qresource>
 </RCC>

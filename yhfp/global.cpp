@@ -71,7 +71,7 @@ SystemConfig Global::readSystemConfig()
 {
     //qDebug() << "Reading readSystemConfig ...!";
 
-    QFile file("sysconfig.xml");
+    QFile file("controller_sysconfig.xml");
     SystemConfig retValue;
     QDomDocument document;
     QString error;

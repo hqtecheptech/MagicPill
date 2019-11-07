@@ -427,7 +427,7 @@ void RenHuai_CenterWidget::localServerConnected(bool isConnected)
     if(isConnected)
     {
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,0,r_AllCacheData,String,0,0,0,0,0,0};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_AllCacheData,String,0,0,0,0,0,0};
         getAllPlcDataTcpClient->sendRequest(bpack);
     }
 }

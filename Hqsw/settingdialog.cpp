@@ -381,7 +381,7 @@ void SettingDialog::getAerationRtSetting()
     uint etime = todayTime.toTime_t();
     ushort address = Global::ferDeviceInfo.Aeration_Runtime_Setting_Address + 4 * ui->tankComboBox->currentIndex();
     qDebug() << "Global::ferDeviceInfo.Aeration_Runtime_Setting_Category:" << Global::ferDeviceInfo.Aeration_Runtime_Setting_Category;
-    bpack = {sizeof(StreamPack),1,0,r_SetData,UInt,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Aeration_Runtime_Setting_Category,0,stime,etime};
+    bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_SetData,UInt,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Aeration_Runtime_Setting_Category,0,stime,etime};
 
     bpack.bStreamLength += 2 * Global::ferDeviceInfo.Aeration_Runtime_Setting_Category + 4;
 
@@ -425,7 +425,7 @@ void SettingDialog::getFerTimeSetting()
     uint etime = todayTime.toTime_t();
     ushort address = Global::ferDeviceInfo.Fermentation_Time_Setting_Address + 4 * ui->tankComboBox->currentIndex();
     qDebug() << "Current fermenation time setting address:" << address;
-    bpack = {sizeof(StreamPack),1,0,r_SetData,UInt,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Fermentation_Time_Setting_Category,0,stime,etime};
+    bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_SetData,UInt,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Fermentation_Time_Setting_Category,0,stime,etime};
 
     bpack.bStreamLength += 2 * Global::ferDeviceInfo.Fermentation_Time_Setting_Category + 4;
 
@@ -467,7 +467,7 @@ void SettingDialog::getFerTemptureSetting()
     uint etime = todayTime.toTime_t();
     ushort address = Global::ferDeviceInfo.Tempture_Setting_Address + 4 * ui->tankComboBox->currentIndex();
     qDebug() << "Current tempture setting address:" << address;
-    bpack = {sizeof(StreamPack),1,0,r_SetData,Float,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Tempture_Setting_Category,0,stime,etime};
+    bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_SetData,Float,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Tempture_Setting_Category,0,stime,etime};
 
     bpack.bStreamLength += 2 * Global::ferDeviceInfo.Tempture_Setting_Category + 4;
 
@@ -510,7 +510,7 @@ void SettingDialog::getFerHzSetting()
     uint etime = todayTime.toTime_t();
     ushort address = Global::ferDeviceInfo.Aeration_Hz_Setting_Address + 4 * ui->tankComboBox->currentIndex();
     qDebug() << "Current tempture setting address:" << address;
-    bpack = {sizeof(StreamPack),1,0,r_SetData,UInt,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Aeration_Hz_Setting_Category,0,stime,etime};
+    bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_SetData,UInt,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Aeration_Hz_Setting_Category,0,stime,etime};
 
     bpack.bStreamLength += 2 * Global::ferDeviceInfo.Aeration_Hz_Setting_Category + 4;
 
@@ -624,8 +624,8 @@ void SettingDialog::on_saveAerationRtSettingButton_clicked()
         uint stime =currentdt.toTime_t();
         uint etime =currentdt.toTime_t();
         ushort address = Global::ferDeviceInfo.Aeration_Runtime_Setting_Address + 4 * ui->tankComboBox->currentIndex();
-        bpack = {sizeof(StreamPack),1,0,w_SetData,UInt,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Aeration_Runtime_Setting_Category,0,stime,etime};
-        //bpack = {sizeof(StreamPack),1,0,w_SetData,UInt,address,0,Global::ferDeviceInfo.Aeration_Runtime_Setting_Category,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_SetData,UInt,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Aeration_Runtime_Setting_Category,0,stime,etime};
+        //bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_SetData,UInt,address,0,Global::ferDeviceInfo.Aeration_Runtime_Setting_Category,0,stime,etime};
 
         bpack.bStreamLength += Global::ferDeviceInfo.Aeration_Runtime_Setting_Category * (2 + 4) + 4;
 
@@ -697,7 +697,7 @@ void SettingDialog::on_saveFerTimeSettingButton_clicked()
         uint stime =currentdt.toTime_t();
         uint etime =currentdt.toTime_t();
         ushort address = Global::ferDeviceInfo.Fermentation_Time_Setting_Address + 4 * ui->tankComboBox->currentIndex();
-        bpack = {sizeof(StreamPack),1,0,w_SetData,UInt,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Fermentation_Time_Setting_Category,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_SetData,UInt,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Fermentation_Time_Setting_Category,0,stime,etime};
 
         bpack.bStreamLength += Global::ferDeviceInfo.Fermentation_Time_Setting_Category * (2 + 4) + 4;
 
@@ -759,7 +759,7 @@ void SettingDialog::on_saveFerTemptureSettingButton_clicked()
         uint stime =currentdt.toTime_t();
         uint etime =currentdt.toTime_t();
         ushort address = Global::ferDeviceInfo.Tempture_Setting_Address + 4 * ui->tankComboBox->currentIndex();
-        bpack = {sizeof(StreamPack),1,0,w_SetData,Float,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Tempture_Setting_Category,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_SetData,Float,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Tempture_Setting_Category,0,stime,etime};
 
         bpack.bStreamLength += Global::ferDeviceInfo.Tempture_Setting_Category * (2 + 4) + 4;
 
@@ -911,7 +911,7 @@ void SettingDialog::on_saveFerHzSettingButton_clicked()
         uint stime =currentdt.toTime_t();
         uint etime =currentdt.toTime_t();
         ushort address = Global::ferDeviceInfo.Aeration_Hz_Setting_Address + 4 * ui->tankComboBox->currentIndex();
-        bpack = {sizeof(StreamPack),1,0,w_SetData,UInt,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Aeration_Hz_Setting_Category,0,stime,etime};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_SetData,UInt,address,(quint16)ui->tankComboBox->currentIndex(),Global::ferDeviceInfo.Aeration_Hz_Setting_Category,0,stime,etime};
 
         bpack.bStreamLength += Global::ferDeviceInfo.Aeration_Hz_Setting_Category * (2 + 4) + 4;
 

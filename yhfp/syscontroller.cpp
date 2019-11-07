@@ -34,7 +34,7 @@ Syscontroller::Syscontroller(DeviceType dataType, int groupId, QObject *parent) 
     Run_data.Msgkey = msgKey;  //消息队列键值
     Run_data.Pid[0] = getpid();
 
-    sharePath = Global::systemConfig.dataSharePath;
+    /*sharePath = Global::systemConfig.dataSharePath;
     shareId = Global::systemConfig.dataShareKey;
     semPath = Global::systemConfig.dataSemPath;
     semId = Global::systemConfig.dataSemKey;
@@ -44,7 +44,7 @@ Syscontroller::Syscontroller(DeviceType dataType, int groupId, QObject *parent) 
     shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
     semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
     msgKey = ShareHelper::GenKey(msgPath.toLatin1(), msgId);
-    yhcDbShare = new ShareHelper(shareKey, semKey);
+    yhcDbShare = new ShareHelper(shareKey, semKey);*/
 
     sharePath = Global::systemConfig.yhcControlSharePath;
     shareId = Global::systemConfig.yhcControlShareKey;
@@ -95,7 +95,8 @@ ControllerInfo Syscontroller::getControllerStatus()
 Plc_Db Syscontroller::getPlcDataDb()
 {
     Plc_Db data;
-    yhcDbShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
+    yhcCtrlShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
+    //yhcDbShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
     return data;
 }
 
@@ -117,15 +118,16 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
 
     //qDebug() << "handle Press Speed Up!";
     Plc_Db db;
-    yhcDbShare->LockShare();
+    //yhcDbShare->LockShare();
     yhcCtrlShare->LockShare();
-    yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+    yhcCtrlShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+    //yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     db.f_data[index] = db.f_data[index] + value;
     yhcCtrlShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     yhcCtrlShare->UnlockShare();
-    yhcDbShare->UnlockShare();
+    //yhcDbShare->UnlockShare();
 
-    applyControlRequest();
+    //applyControlRequest();
 
     //qDebug() << "Press Speed Up!";
 }
@@ -137,9 +139,10 @@ void Syscontroller::yhcStart(int deviceIndex, bool value)
 
     //qDebug() << "Begin yhc start or stop!";
     Plc_Db db;
-    yhcDbShare->LockShare();
+    //yhcDbShare->LockShare();
     yhcCtrlShare->LockShare();
-    yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+    yhcCtrlShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+    //yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     if(value)
     {
         db.b_data[index] = 0;
@@ -150,9 +153,9 @@ void Syscontroller::yhcStart(int deviceIndex, bool value)
     }
     yhcCtrlShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     yhcCtrlShare->UnlockShare();
-    yhcDbShare->UnlockShare();
+    //yhcDbShare->UnlockShare();
 
-    applyControlRequest();
+    //applyControlRequest();
 
     //qDebug() << "End yhc start or stop!";
 }
@@ -205,26 +208,28 @@ void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet
     Plc_Db db;
     switch (pack.bDeviceId) {
     case YHC:
-        yhcDbShare->LockShare();
+        //yhcDbShare->LockShare();
         yhcCtrlShare->LockShare();
-        yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+        yhcCtrlShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+        //yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
         resetControlShare(pack.bDataType, dataMap, &db);
         yhcCtrlShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
         yhcCtrlShare->UnlockShare();
-        yhcDbShare->UnlockShare();
+        //yhcDbShare->UnlockShare();
         //Remove after test.
-        applyControlRequest();
+        //applyControlRequest();
         break;
     case FER:
-        yhcDbShare->LockShare();
+        //yhcDbShare->LockShare();
         yhcCtrlShare->LockShare();
-        yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+        yhcCtrlShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+        //yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
         resetControlShare(pack.bDataType, dataMap, &db);
         yhcCtrlShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
         yhcCtrlShare->UnlockShare();
-        yhcDbShare->UnlockShare();
+        //yhcDbShare->UnlockShare();
         //Remove after test.
-        applyControlRequest();
+        //applyControlRequest();
         break;
     default:
         break;

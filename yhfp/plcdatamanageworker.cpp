@@ -5,7 +5,7 @@
 
 PlcDataManageWorker::PlcDataManageWorker(QObject *parent) : QObject(parent)
 {
-    QString sharePath = Global::systemConfig.dataSharePath;
+    /*String sharePath = Global::systemConfig.dataSharePath;
     int shareId = Global::systemConfig.dataShareKey;
     QString semPath = Global::systemConfig.dataSemPath;
     int semId = Global::systemConfig.dataSemKey;
@@ -14,7 +14,18 @@ PlcDataManageWorker::PlcDataManageWorker(QObject *parent) : QObject(parent)
 
     key_t shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
     key_t semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
-    yhcDbSh = new ShareHelper(shareKey, semKey);
+    yhcDbSh = new ShareHelper(shareKey, semKey);*/
+
+    QString sharePath = Global::systemConfig.yhcControlSharePath;
+    int shareId = Global::systemConfig.yhcControlShareKey;
+    QString semPath = Global::systemConfig.yhcControlSemPath;
+    int semId = Global::systemConfig.yhcControlSemKey;
+    //QString msgPath = Global::systemConfig.dataMsgPath;
+    //int msgId = Global::systemConfig.dataMsgKey;
+
+    key_t shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
+    key_t semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
+    yhcCtrlSh = new ShareHelper(shareKey, semKey);
 
     qRegisterMetaType<Plc_Db>("Plc_Db");
 }
@@ -22,15 +33,20 @@ PlcDataManageWorker::PlcDataManageWorker(QObject *parent) : QObject(parent)
 PlcDataManageWorker::~PlcDataManageWorker()
 {
     delete yhcDbSh;
+    delete yhcCtrlSh;
 }
 
 void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
 {
     Plc_Db plcdata;
 
-    yhcDbSh->LockShare();
-    yhcDbSh->GetShardMemory((void *)&plcdata, sizeof(Plc_Db));
-    yhcDbSh->UnlockShare();
+    //yhcDbSh->LockShare();
+    //yhcDbSh->GetShardMemory((void *)&plcdata, sizeof(Plc_Db));
+    //yhcDbSh->UnlockShare();
+
+    yhcCtrlSh->LockShare();
+    yhcCtrlSh->GetShardMemory((void *)&plcdata, sizeof(Plc_Db));
+    yhcCtrlSh->UnlockShare();
 
     DeviceGroupInfo groupInfo;
     switch(dataName)
