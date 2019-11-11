@@ -1,5 +1,10 @@
 #include "syscontroller.h"
 #include <QMutexLocker>
+#include <signal.h>
+#include <QProcess>
+#include <QDebug>
+#include <QString>
+#include <QStringList>
 
 //接收信号更新共享内存数据到本地Dev_data
 static void sig_handler_rpuData(int sig)
@@ -206,6 +211,7 @@ void Syscontroller::applyControlRequest()
 void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
 {
     Plc_Db db;
+    int pid = 0;
     switch (pack.bDeviceId) {
     case YHC:
         //yhcDbShare->LockShare();
@@ -218,6 +224,11 @@ void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet
         //yhcDbShare->UnlockShare();
         //Remove after test.
         //applyControlRequest();
+        pid = Global::getPruPid();
+        if(pid > 0)
+        {
+            kill(pid, SIGTRPU);
+        }
         break;
     case FER:
         //yhcDbShare->LockShare();
@@ -230,6 +241,11 @@ void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet
         //yhcDbShare->UnlockShare();
         //Remove after test.
         //applyControlRequest();
+        pid = Global::getPruPid();
+        if(pid > 0)
+        {
+            kill(pid, SIGTRPU);
+        }
         break;
     default:
         break;

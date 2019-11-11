@@ -97,6 +97,7 @@ public:
     static int getYhcDataIndexByName(QString name, int deviceIndex);
 
     static uint getLengthByDataType(QString dataType);
+    static int getPruPid();
 
     static int alertIndex;
     static bool isPrint;

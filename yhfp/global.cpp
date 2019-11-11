@@ -1609,6 +1609,31 @@ uint Global::getLengthByDataType(QString dataType)
     return length;
 }
 
+int Global::getPruPid()
+{
+    QProcess *cmd = new QProcess;
+    QString strArg;
+    strArg = "ps -e";
+    cmd->start(strArg);
+    cmd->waitForReadyRead();
+    cmd->waitForFinished();
+    QString retStr = "";
+    while(cmd->canReadLine())
+    {
+        retStr = cmd->readLine();
+        if(retStr.contains("dev_app"))
+        {
+            retStr.trimmed();
+            QStringList strList = retStr.split(" ");
+            QByteArray retArray = strList.at(1).toLatin1();
+            int pid = retArray.toInt();
+            return pid;
+        }
+    }
+
+    return -1;
+}
+
 ServerInfo Global::serverInfo = readServerInfo();
 
 SystemConfig Global::systemConfig = readSystemConfig();
