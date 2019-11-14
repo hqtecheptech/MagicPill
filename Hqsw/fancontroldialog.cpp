@@ -311,8 +311,8 @@ void FanControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
 
     //if(!isFanRemote)
     //{
-        //ui->fanOpenPushButton->setEnabled(false);
-        //ui->fanStopPushButton->setEnabled(false);
+    //    ui->fanOpenPushButton->setEnabled(false);
+    //    ui->fanStopPushButton->setEnabled(false);
     //}
     //else
     //{
@@ -337,15 +337,25 @@ void FanControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
         ui->switchFanModePushButton->setIcon(QIcon(fanManualControlBg));
     }
 
-    bool faultState = Global::getFerRunctrValueByName(tankIndex,"FAN_FAULT_BOOL", dataMap);
+    isFault = Global::getFerRunctrValueByName(tankIndex,"FAN_FAULT_BOOL", dataMap);
     ui->faultStateLabel->setObjectName("faultstate");
-    if(faultState)
+    if(isFault)
     {
-        ui->faultStateLabel->setStyleSheet("QLabel#faultstate{background-color: rgb(0, 255, 0);}");
+        ui->faultStateLabel->setStyleSheet("QLabel#faultstate{background-color: rgb(255, 255, 0);}");
     }
     else
     {
-        ui->faultStateLabel->setStyleSheet("QLabel#faultstate{background-color: rgb(255, 0, 0);}");
+        ui->faultStateLabel->setStyleSheet("QLabel#faultstate{background-color: rgb(255, 255, 255);}");
+    }
+
+    isSwitchFault = Global::getFerRunctrValueByName(tankIndex,"FAN_Open_Timeout_BOOL", dataMap);
+    if(!isSwitchFault)
+    {
+        isSwitchFault = Global::getFerRunctrValueByName(tankIndex,"FAN_Close_Timeout_BOOL", dataMap);
+    }
+    if(isSwitchFault)
+    {
+        ui->faultStateLabel->setStyleSheet("QLabel#faultstate{background-color: rgb(255, 255, 0);}");
     }
 
     bool alertState = false;

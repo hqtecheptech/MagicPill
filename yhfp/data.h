@@ -2,34 +2,33 @@
 #define DATA_H
 
 #include <QMetaType>
-
-//char *m_shmkey ="/home/hqtech/test/shmkey";   //共享内存目录
-//char *m_semkey ="/home/hqtech/test/semkey";   //消息队列目录
-//char *m_msgkey ="/home/hqtech/test/msgkey";   //消息队列目录
-
-/* Signals.  */
-//SIGRTMIN = 34
-//SIGRTMAX = 64
- //SIGINT
+#include <signal.h>
 
 // History chart figure
 #define CP 30
 #define CV 15
 #define ALERT_COUNT 100
 
-#define SIGFRPU     SIGRTMIN+1   //来自PRU的数据更新信号
-#define SIGTRPU     SIGRTMIN+2   //发送给PRU的数据更新信号
+#define SIG_FROM_REMOTE     SIGRTMIN+2  //来自远程的数据更新信号
+#define SIG_TO_REMOTE       SIGRTMIN+1   //发送给远程的数据更新信号
 
 /* DB datas length */
+#define DB_COMM_DATA 32
 #define DB_FLOAT_LEN 96
 #define DB_INT_LEN 32
 #define DB_UINT32_LEN 128
 #define DB_UINT16_LEN 128
 #define DB_BOOL_LEN 320
 
+#define CTR_BLOCK_LEN 16
 
 typedef struct {
-    uint32_t  dw_link[16];
+    uint8_t fromPru[CTR_BLOCK_LEN];
+    uint8_t toPru[CTR_BLOCK_LEN];
+} Ctr_Block;
+
+typedef struct {
+    uint32_t  dw_link[DB_COMM_DATA];
     float f_data[DB_FLOAT_LEN];
     int i_data[DB_INT_LEN];
     uint32_t dw_data[DB_UINT32_LEN];
@@ -63,5 +62,6 @@ typedef enum {
 
 Q_DECLARE_METATYPE(Plc_Db)
 Q_DECLARE_METATYPE(HistData)
+Q_DECLARE_METATYPE(Ctr_Block)
 
 #endif // DATA_H

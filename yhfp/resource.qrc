@@ -79,7 +79,6 @@
         <file>pic/dydl.png</file>
         <file>pic/zsyl.png</file>
         <file>config/devices.xml</file>
-        <file>config/sysconfig.xml</file>
         <file>config/yhc_devices.xml</file>
         <file>config/yhc_devices_group.xml</file>
         <file>pic/翻抛机表盘组.png</file>
@@ -90,5 +89,6 @@
         <file>pic/no_signal.png</file>
         <file>pic/no_wifi.png</file>
         <file>config/controller_sysconfig.xml</file>
+        <file>config/fer_device_group.xml</file>
     </qresource>
 </RCC>

@@ -39,8 +39,8 @@ using namespace std;
 class ShareHelper
 {
 public:
-    ShareHelper(key_t shared_key);
-    ShareHelper(key_t shared_key, key_t sem_key);
+    ShareHelper(key_t shared_key, int size);
+    ShareHelper(key_t shared_key, key_t sem_key, int size);
     ~ShareHelper();
     static key_t GenKey(const char *pathname, int proj_id);
     bool SetSharedStr(string str);//修改共享内存中的字符串

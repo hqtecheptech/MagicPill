@@ -419,24 +419,6 @@ void TangHe_CenterWidget::localServerConnected(bool isConnected)
         StreamPack bpack;
         bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,r_AllCacheData,String,0,0,0,0,0,0};
         getAllPlcDataTcpClient->sendRequest(bpack);
-
-        /*qDebug() << "Connected : " << readNumber;
-        QDateTime currentdt = QDateTime::currentDateTime();
-        StreamPack bpack;
-        uint stime =currentdt.toTime_t();
-        uint etime =currentdt.toTime_t();
-        bpack = {sizeof(StreamPack),108,r_RealData,UShort,(quint16)Global::deviceInfo.Step_Address,0,(quint16)Global::deviceInfo.Step_Num,0,stime,etime};
-        requestStepData(bpack);
-        qDebug() << "Send Step Request : " << readNumber;
-        bpack = {sizeof(StreamPack),108,r_RealData,Float,(quint16)Global::deviceInfo.Fermentation_Address,0,(quint16)Global::deviceInfo.Fermentation_Num,0,stime,etime};
-        requestFermentationData(bpack);
-        qDebug() << "Send Fermentation Request : " << readNumber;
-        bpack = {sizeof(StreamPack),108,r_RealData,Bool,(quint16)Global::deviceInfo.Runctr_Address,0,(quint16)Global::deviceInfo.Runctr_Num,0,stime,etime};
-        requestRunCtrData(bpack);
-        qDebug() << "Send Runctr Request : " << readNumber;
-        bpack = {sizeof(StreamPack),108,r_RealData,UInt,(quint16)Global::deviceInfo.Runtime_Address,0,(quint16)Global::deviceInfo.Runtime_Num,0,stime,etime};
-        requestRunTimeData(bpack);
-        qDebug() << "Send Run time Request : " << readNumber;*/
     }
 }
 

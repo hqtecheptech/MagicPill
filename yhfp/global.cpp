@@ -1624,8 +1624,8 @@ int Global::getPruPid()
         if(retStr.contains("dev_app"))
         {
             retStr.trimmed();
-            QStringList strList = retStr.split(" ");
-            QByteArray retArray = strList.at(1).toLatin1();
+            QStringList strList = retStr.split(" ", QString::SkipEmptyParts);
+            QByteArray retArray = strList.at(0).toLatin1();
             int pid = retArray.toInt();
             return pid;
         }

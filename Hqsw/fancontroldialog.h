@@ -56,9 +56,11 @@ private:
     MyTimerThread *myTimerThread;
     int tankIndex = 0;
     int frequency = 0;
-    bool isFanRemote = false;
+    //bool isFanRemote = false;
     bool isFanRun = false;
     bool fanMode = false;
+    bool isFault = false;
+    bool isSwitchFault = false;
     RequestWorkThread *work;
     TcpClientSocket *tcpClient;
     QPalette p;

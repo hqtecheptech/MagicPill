@@ -1,8 +1,7 @@
 #include "sharehelper.h"
 #include <QDebug>
 
-//key_t sharedKey = 99;
-size_t maxSize = 200;
+#define maxSize 200
 
 union semum
 {
@@ -11,11 +10,11 @@ union semum
     unsigned short *array;
 }arg;
 
-ShareHelper::ShareHelper(key_t shared_key)
+ShareHelper::ShareHelper(key_t shared_key, int size)
 {
     sharedKey = shared_key;
 
-    shmid = shmget(sharedKey, maxSize, IPC_CREAT | 0777);
+    shmid = shmget(sharedKey, size, IPC_CREAT | 0777);
     if (shmid == -1)
     {
         std::cout << "Shared memory created error";
@@ -36,11 +35,11 @@ ShareHelper::ShareHelper(key_t shared_key)
     semctl(semid, 0, SETVAL, sem);
 }
 
-ShareHelper::ShareHelper(key_t shared_key, key_t sem_key)
+ShareHelper::ShareHelper(key_t shared_key, key_t sem_key, int size)
 {
     sharedKey = shared_key;
 
-    shmid = shmget(sharedKey, maxSize, IPC_CREAT | 0777);
+    shmid = shmget(sharedKey, size, IPC_CREAT | 0777);
     if (shmid == -1)
     {
         std::cout << "Shared memory created error";

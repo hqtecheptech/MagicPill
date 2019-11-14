@@ -1,19 +1,9 @@
 #include "syscontroller.h"
 #include <QMutexLocker>
-#include <signal.h>
 #include <QProcess>
 #include <QDebug>
 #include <QString>
 #include <QStringList>
-
-//接收信号更新共享内存数据到本地Dev_data
-static void sig_handler_rpuData(int sig)
-{
-    if(sig == SIGFRPU)
-    {
-        mHD_Read_Shm_ShareMemory_DevData(Run_data.Shmkey ,Run_data.Semkey,&Dev_data);  //读共享内存
-    }
-}
 
 Syscontroller::Syscontroller(DeviceType dataType, int groupId, QObject *parent) : QObject(parent)
 {
@@ -30,14 +20,14 @@ Syscontroller::Syscontroller(DeviceType dataType, int groupId, QObject *parent) 
     int msgId = Global::systemConfig.controlMsgKey;
 
     key_t shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
-    key_t semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
-    key_t msgKey = ShareHelper::GenKey(msgPath.toLatin1(), msgId);
-    ctrlShare = new ShareHelper(shareKey, semKey);
+    //key_t semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
+    //key_t msgKey = ShareHelper::GenKey(msgPath.toLatin1(), msgId);
+    ctrlShare = new ShareHelper(shareKey, sizeof(Ctr_Block));
 
-    Run_data.Shmkey = shareKey;  //共享内存键值
-    Run_data.Semkey = semKey;  //信号键值
-    Run_data.Msgkey = msgKey;  //消息队列键值
-    Run_data.Pid[0] = getpid();
+    //Run_data.Shmkey = shareKey;  //共享内存键值
+    //Run_data.Semkey = semKey;  //信号键值
+    //Run_data.Msgkey = msgKey;  //消息队列键值
+    //Run_data.Pid[0] = getpid();
 
     /*sharePath = Global::systemConfig.dataSharePath;
     shareId = Global::systemConfig.dataShareKey;
@@ -59,12 +49,16 @@ Syscontroller::Syscontroller(DeviceType dataType, int groupId, QObject *parent) 
     msgId = Global::systemConfig.yhcControlMsgKey;
 
     shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
-    semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
-    msgKey = ShareHelper::GenKey(msgPath.toLatin1(), msgId);
-    yhcCtrlShare = new ShareHelper(shareKey, semKey);
+    //semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
+    //msgKey = ShareHelper::GenKey(msgPath.toLatin1(), msgId);
+    yhcCtrlShare = new ShareHelper(shareKey, sizeof(Plc_Db));
 
-    //注册PRU Update 信号函数
-    signal(SIGFRPU,sig_handler_rpuData);
+    /*Plc_Db data;
+    yhcCtrlShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
+    yhcCtrlShare->LockShare();
+    data.dw_link[16] = (uint32_t)getpid();
+    yhcCtrlShare->SetSharedMemory((void*)&data, sizeof(Plc_Db));
+    yhcCtrlShare->UnlockShare();*/
 
     pdmWorker = new PlcDataManageWorker;
     pdmWorker->moveToThread(&plcdataManageThread);
@@ -107,9 +101,9 @@ Plc_Db Syscontroller::getPlcDataDb()
 
 void Syscontroller::setPlcControlDb(Plc_Db data)
 {
-    ctrlShare->LockShare();
-    ctrlShare->SetSharedMemory((void*)&data, sizeof(Plc_Db));
-    ctrlShare->UnlockShare();
+    //ctrlShare->LockShare();
+    //ctrlShare->SetSharedMemory((void*)&data, sizeof(Plc_Db));
+    //ctrlShare->UnlockShare();
 }
 
 void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
@@ -211,8 +205,9 @@ void Syscontroller::applyControlRequest()
 void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
 {
     Plc_Db db;
-    int pid = 0;
-    switch (pack.bDeviceId) {
+    Ctr_Block ctrBlock;
+    //int pid = 0;
+    /*switch (pack.bDeviceId) {
     case YHC:
         //yhcDbShare->LockShare();
         yhcCtrlShare->LockShare();
@@ -224,11 +219,6 @@ void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet
         //yhcDbShare->UnlockShare();
         //Remove after test.
         //applyControlRequest();
-        pid = Global::getPruPid();
-        if(pid > 0)
-        {
-            kill(pid, SIGTRPU);
-        }
         break;
     case FER:
         //yhcDbShare->LockShare();
@@ -241,14 +231,27 @@ void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet
         //yhcDbShare->UnlockShare();
         //Remove after test.
         //applyControlRequest();
-        pid = Global::getPruPid();
-        if(pid > 0)
-        {
-            kill(pid, SIGTRPU);
-        }
+
         break;
     default:
         break;
+    }*/
+    yhcCtrlShare->LockShare();
+    yhcCtrlShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+    resetControlShare(pack.bDataType, dataMap, &db);
+    yhcCtrlShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+    ctrlShare->LockShare();
+    ctrlShare->GetShardMemory((void*)&ctrBlock, sizeof(Ctr_Block));
+    ctrBlock.toPru[0] = 1;
+    ctrlShare->SetSharedMemory((void*)&ctrBlock, sizeof(Ctr_Block));
+    ctrlShare->UnlockShare();
+    yhcCtrlShare->UnlockShare();
+
+    //for test
+    int pid = Global::getPruPid();
+    if(pid > 0)
+    {
+        kill(pid, SIG_TO_REMOTE);
     }
 }
 

@@ -25,14 +25,14 @@ PlcDataManageWorker::PlcDataManageWorker(QObject *parent) : QObject(parent)
 
     key_t shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
     key_t semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
-    yhcCtrlSh = new ShareHelper(shareKey, semKey);
+    yhcCtrlSh = new ShareHelper(shareKey, sizeof(Plc_Db));
 
     qRegisterMetaType<Plc_Db>("Plc_Db");
 }
 
 PlcDataManageWorker::~PlcDataManageWorker()
 {
-    delete yhcDbSh;
+    //delete yhcDbSh;
     delete yhcCtrlSh;
 }
 
@@ -462,8 +462,8 @@ void PlcDataManageWorker::sendPlcdataToServer(DeviceType dataName, DeviceGroupIn
     // groupInfo.deviceId, can be ignore. Because there may be more than one deviceId in a single device config db.
     // but there must be groupInfo.groupId for distinguishing same type container devices.
     bpack = {sizeof(StreamPack),(quint16)groupInfo.deviceId,(quint16)groupInfo.groupId,W_Update_PlcData,dataName,0,0,sizeof(Plc_Db),0,stime,etime};
-    // minus size of controller info in Plc_Db (64), plus size of crc data.
-    bpack.bStreamLength += sizeof(Plc_Db) - 64 + 4;
+    // minus size of controller commdata in Plc_Db (64), plus size of crc data.
+    bpack.bStreamLength += sizeof(Plc_Db) - DB_COMM_DATA*4 + 4;
 
     QByteArray allPackData, SData, crcData;
     QDataStream out(&SData,QIODevice::WriteOnly);

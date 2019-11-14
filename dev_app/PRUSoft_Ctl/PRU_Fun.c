@@ -359,7 +359,7 @@ int mHD_ProcessMsg_CMD(void)
 
         switch (Run_data.Msg_Update_CMD)
         {
-        case MsgUpdate_DateChange: //仅数据改变            
+        case MsgUpdate_DateChange: //仅数据改变
             mHD_Write_Shm_ShareMemory_DevData(Run_data.Shmkey ,Run_data.Semkey,&Dev_data);
             Run_data.Msg_Update_CMD =MsgUpdate_None; //复位消息状态
             if((Run_data.Pid[i-6] !=0)&&(Run_data.PidLink[i-6] ==1))

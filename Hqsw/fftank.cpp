@@ -108,27 +108,14 @@ void FFTank::updateDeviceState()
 void FFTank::switchState()
 {
     ui->tankFrame->setObjectName("tankframe");
-
-    extraRuntimeAddition = extraRuntimeAddition + 2;
-
-    int deviceIndex = tankIndex;
-    DeviceGroupInfo info = Global::getFerDeviceGroupInfo(deviceIndex);
-
+    extraRuntimeAddition++;
     if(isFerStart)
     {
-        DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_TOT_UDI");
-        float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
-                * Global::getLengthByDataType(deviceNode.DataType);
-        uint runtime = Global::currentFermenationDataMap[address].toUInt() + extraRuntimeAddition;
-        ui->totalTimeValueLabel->setText(formatLongDateString(runtime));
+        ui->totalTimeValueLabel->setText(formatLongDateString(latestFerRunTime + extraRuntimeAddition));
 
         if(isFanOpen)
         {
-            deviceNode = Global::getFermenationNodeInfoByName("FER_AE_UDI");
-            float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
-                                    * Global::getLengthByDataType(deviceNode.DataType);
-            uint runtime = Global::currentFermenationDataMap[address].toUInt() + extraRuntimeAddition;
-            ui->runTimeValueLabel->setText(QString::number(runtime));
+            ui->runTimeValueLabel->setText(QString::number(latestFerAeTime + extraRuntimeAddition));
 
             if(switchFlag)
             {
@@ -141,12 +128,13 @@ void FFTank::switchState()
         }
         else
         {
-            deviceNode = Global::getFermenationNodeInfoByName("FER_STA_UDI");
-            float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
-                                    * Global::getLengthByDataType(deviceNode.DataType);
-            uint runtime = Global::currentFermenationDataMap[address].toUInt() + extraRuntimeAddition;
-            ui->spacTimeValueLabel->setText(QString::number(runtime));
+            ui->spacTimeValueLabel->setText(QString::number(latestFerStaTime + extraRuntimeAddition));
         }
+    }
+    else
+    {
+        ui->runTimeValueLabel->setText(QString::number(0));
+        ui->spacTimeValueLabel->setText(QString::number(0));
     }
 
     if(isFanFault)
@@ -154,6 +142,18 @@ void FFTank::switchState()
         if(switchFlag)
         {
             ui->fanButton->setIcon(QIcon(fanFaultBgImg));
+        }
+        else
+        {
+            ui->fanButton->setIcon(QIcon(fanCloseBgImg));
+        }
+    }
+
+    if(isSwitchFault)
+    {
+        if(switchFlag)
+        {
+            ui->fanButton->setIcon(QIcon(fanOpenBgImg));
         }
         else
         {
@@ -231,36 +231,32 @@ void FFTank::parseFerRunTimeData(QMap<float,QString> dataMap)
 
     DeviceNode deviceNode;
     float address;
-    uint runtime;
-    /*deviceNode = Global::getFermenationNodeInfoByName("FER_TOT_UDI");
-    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    uint runtime = dataMap[address].toUInt();
-    ui->totalTimeValueLabel->setText(formatLongDateString(runtime));
+    deviceNode = Global::getFermenationNodeInfoByName("FER_TOT_UDI");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    latestFerRunTime = dataMap[address].toUInt();
+    ui->totalTimeValueLabel->setText(formatLongDateString(latestFerRunTime));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_START_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    runtime = dataMap[address].toUInt();
-    QDateTime dt = QDateTime::fromTime_t(runtime);
+    QDateTime dt = QDateTime::fromTime_t(dataMap[address].toUInt());
     ui->startTimeValueLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_END_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    runtime = dataMap[address].toUInt();
-    qDebug() << "fercontrol endtime = " << runtime;
-    dt = QDateTime::fromTime_t(runtime);
-    ui->endTimeValueLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));*/
+    dt = QDateTime::fromTime_t(dataMap[address].toUInt());
+    ui->endTimeValueLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_AE_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    runtime = dataMap[address].toUInt();
-    ui->runTimeValueLabel->setText(QString::number(runtime));
+    latestFerAeTime = dataMap[address].toUInt();
+    ui->runTimeValueLabel->setText(QString::number(latestFerAeTime));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_STA_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    runtime = dataMap[address].toUInt();
-    ui->spacTimeValueLabel->setText(QString::number(runtime));
+    latestFerStaTime = dataMap[address].toUInt();
+    ui->spacTimeValueLabel->setText(QString::number(latestFerStaTime));
 }
 
 void FFTank::parseFerStepData(QMap<float,QString> dataMap)
@@ -282,6 +278,11 @@ void FFTank::parseFerRunCtrData(QMap<float,QString> dataMap)
     //isAeration = Global::getFerRunctrValueByName(tankIndex,"FER_AERATION_BOOL", dataMap);
     isFerAuto = Global::getFerRunctrValueByName(tankIndex,"FER_Auto_BOOL", dataMap);
     isFanFault = Global::getFerRunctrValueByName(tankIndex,"FAN_FAULT_BOOL", dataMap);
+    isSwitchFault = Global::getFerRunctrValueByName(tankIndex,"FAN_Open_Timeout_BOOL", dataMap);
+    if(!isSwitchFault)
+    {
+        isSwitchFault = Global::getFerRunctrValueByName(tankIndex,"FAN_Close_Timeout_BOOL", dataMap);
+    }
 
     ui->tankFrame->setObjectName("tankframe");
     ui->tankFrame->setStyleSheet("QFrame#tankframe{border-image:url(:/image/old/nerFer/FerAStop.bmp)}");

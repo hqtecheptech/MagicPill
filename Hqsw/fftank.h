@@ -73,9 +73,13 @@ private:
     //bool isAeration = false;
     bool isFerAuto = false;
     bool isFanFault = false;
+    bool isSwitchFault = false;
     bool switchFlag = true;
     int tankIndex = 0;
     int location = 0;
+    uint latestFerRunTime = 0;
+    uint latestFerAeTime = 0;
+    uint latestFerStaTime = 0;
 
     QString formatLongDateString(uint value);
 
