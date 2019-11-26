@@ -90,5 +90,7 @@
         <file>pic/no_wifi.png</file>
         <file>config/controller_sysconfig.xml</file>
         <file>config/fer_device_group.xml</file>
+        <file>config/mix_devices.xml</file>
+        <file>config/mix_device_group.xml</file>
     </qresource>
 </RCC>

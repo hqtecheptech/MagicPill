@@ -44,7 +44,8 @@ private:
     static Syscontroller* instance;
     static QMutex* mutex;
     QTimer *updateStatusTimer;
-    ShareHelper *ctrlShare, *yhcDbShare, *yhcCtrlShare;
+    ShareHelper *ctrlShare, *dbShare;
+    //ShareHelper *yhcDbShare,
     ControllerInfo ctrlInfo;
     Plc_Db plcDataDb, plcControlDb;
     QThread plcdataManageThread;

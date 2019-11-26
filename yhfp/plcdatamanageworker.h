@@ -28,8 +28,8 @@ public slots:
     void getSharedDatas(DeviceType dataName, int groupId);
 
 private:
-    ShareHelper* yhcDbSh;
-    ShareHelper* yhcCtrlSh;
+    ShareHelper* ctrlSh;
+    ShareHelper* dbSh;
     DataSender ds;
 
     void sendPlcdataToServer(DeviceType dataName, DeviceGroupInfo groupInfo, const Plc_Db data);

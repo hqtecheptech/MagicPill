@@ -14,44 +14,13 @@ Syscontroller::Syscontroller(DeviceType dataType, int groupId, QObject *parent) 
 
     QString sharePath = Global::systemConfig.controlSharePath;
     int shareId = Global::systemConfig.controlShareKey;
-    QString semPath = Global::systemConfig.controlSemPath;
-    int semId = Global::systemConfig.controlSemKey;
-    QString msgPath = Global::systemConfig.controlMsgPath;
-    int msgId = Global::systemConfig.controlMsgKey;
-
     key_t shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
-    //key_t semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
-    //key_t msgKey = ShareHelper::GenKey(msgPath.toLatin1(), msgId);
     ctrlShare = new ShareHelper(shareKey, sizeof(Ctr_Block));
 
-    //Run_data.Shmkey = shareKey;  //共享内存键值
-    //Run_data.Semkey = semKey;  //信号键值
-    //Run_data.Msgkey = msgKey;  //消息队列键值
-    //Run_data.Pid[0] = getpid();
-
-    /*sharePath = Global::systemConfig.dataSharePath;
+    sharePath = Global::systemConfig.dataSharePath;
     shareId = Global::systemConfig.dataShareKey;
-    semPath = Global::systemConfig.dataSemPath;
-    semId = Global::systemConfig.dataSemKey;
-    msgPath = Global::systemConfig.dataMsgPath;
-    msgId = Global::systemConfig.dataMsgKey;
-
     shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
-    semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
-    msgKey = ShareHelper::GenKey(msgPath.toLatin1(), msgId);
-    yhcDbShare = new ShareHelper(shareKey, semKey);*/
-
-    sharePath = Global::systemConfig.yhcControlSharePath;
-    shareId = Global::systemConfig.yhcControlShareKey;
-    semPath = Global::systemConfig.yhcControlSemPath;
-    semId = Global::systemConfig.yhcControlSemKey;
-    msgPath = Global::systemConfig.yhcControlMsgPath;
-    msgId = Global::systemConfig.yhcControlMsgKey;
-
-    shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
-    //semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
-    //msgKey = ShareHelper::GenKey(msgPath.toLatin1(), msgId);
-    yhcCtrlShare = new ShareHelper(shareKey, sizeof(Plc_Db));
+    dbShare = new ShareHelper(shareKey, sizeof(Plc_Db));
 
     /*Plc_Db data;
     yhcCtrlShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
@@ -94,7 +63,7 @@ ControllerInfo Syscontroller::getControllerStatus()
 Plc_Db Syscontroller::getPlcDataDb()
 {
     Plc_Db data;
-    yhcCtrlShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
+    dbShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
     //yhcDbShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
     return data;
 }
@@ -118,12 +87,12 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
     //qDebug() << "handle Press Speed Up!";
     Plc_Db db;
     //yhcDbShare->LockShare();
-    yhcCtrlShare->LockShare();
-    yhcCtrlShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+    dbShare->LockShare();
+    dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     //yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     db.f_data[index] = db.f_data[index] + value;
-    yhcCtrlShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
-    yhcCtrlShare->UnlockShare();
+    dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+    dbShare->UnlockShare();
     //yhcDbShare->UnlockShare();
 
     //applyControlRequest();
@@ -139,8 +108,8 @@ void Syscontroller::yhcStart(int deviceIndex, bool value)
     //qDebug() << "Begin yhc start or stop!";
     Plc_Db db;
     //yhcDbShare->LockShare();
-    yhcCtrlShare->LockShare();
-    yhcCtrlShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+    dbShare->LockShare();
+    dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     //yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     if(value)
     {
@@ -150,8 +119,8 @@ void Syscontroller::yhcStart(int deviceIndex, bool value)
     {
         db.b_data[index] = 1;
     }
-    yhcCtrlShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
-    yhcCtrlShare->UnlockShare();
+    dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+    dbShare->UnlockShare();
     //yhcDbShare->UnlockShare();
 
     //applyControlRequest();
@@ -188,7 +157,7 @@ void Syscontroller::handlePlcDbUpdated(QSet<int> changedDeviceSet, QMap<float, Q
 
 void Syscontroller::applyControlRequest()
 {
-    Plc_Db data;
+    /*Plc_Db data;
     yhcCtrlShare->LockShare();
     yhcDbShare->LockShare();
     yhcCtrlShare->GetShardMemory((void*)&data, sizeof(Plc_Db));
@@ -199,7 +168,7 @@ void Syscontroller::applyControlRequest()
     Plc_Db data1;
     yhcDbShare->LockShare();
     yhcDbShare->GetShardMemory((void*)&data1, sizeof(Plc_Db));
-    yhcDbShare->UnlockShare();
+    yhcDbShare->UnlockShare();*/
 }
 
 void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
@@ -236,23 +205,23 @@ void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet
     default:
         break;
     }*/
-    yhcCtrlShare->LockShare();
-    yhcCtrlShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+    dbShare->LockShare();
+    dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     resetControlShare(pack.bDataType, dataMap, &db);
-    yhcCtrlShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+    dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     ctrlShare->LockShare();
     ctrlShare->GetShardMemory((void*)&ctrBlock, sizeof(Ctr_Block));
     ctrBlock.toPru[0] = 1;
     ctrlShare->SetSharedMemory((void*)&ctrBlock, sizeof(Ctr_Block));
     ctrlShare->UnlockShare();
-    yhcCtrlShare->UnlockShare();
+    dbShare->UnlockShare();
 
     //for test
-    int pid = Global::getPruPid();
+    /*int pid = Global::getPruPid();
     if(pid > 0)
     {
         kill(pid, SIG_TO_REMOTE);
-    }
+    }*/
 }
 
 void Syscontroller::resetControlShare(int dataType, QMap<float, QString> controlData, Plc_Db* controlDb)

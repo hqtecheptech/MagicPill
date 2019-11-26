@@ -20,11 +20,11 @@
 #define DB_UINT16_LEN 128
 #define DB_BOOL_LEN 320
 
-#define CTR_BLOCK_LEN 16
+#define CTR_BLOCK_LEN 4
 
 typedef struct {
-    uint8_t fromPru[CTR_BLOCK_LEN];
-    uint8_t toPru[CTR_BLOCK_LEN];
+    int fromPru[CTR_BLOCK_LEN];
+    int toPru[CTR_BLOCK_LEN];
 } Ctr_Block;
 
 typedef struct {

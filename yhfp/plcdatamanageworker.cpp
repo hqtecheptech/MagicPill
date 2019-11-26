@@ -5,66 +5,63 @@
 
 PlcDataManageWorker::PlcDataManageWorker(QObject *parent) : QObject(parent)
 {
-    /*String sharePath = Global::systemConfig.dataSharePath;
-    int shareId = Global::systemConfig.dataShareKey;
-    QString semPath = Global::systemConfig.dataSemPath;
-    int semId = Global::systemConfig.dataSemKey;
-    QString msgPath = Global::systemConfig.dataMsgPath;
-    int msgId = Global::systemConfig.dataMsgKey;
-
+    QString sharePath = Global::systemConfig.controlSharePath;
+    int shareId = Global::systemConfig.controlShareKey;
     key_t shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
-    key_t semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
-    yhcDbSh = new ShareHelper(shareKey, semKey);*/
+    ctrlSh = new ShareHelper(shareKey, sizeof(Ctr_Block));
 
-    QString sharePath = Global::systemConfig.yhcControlSharePath;
-    int shareId = Global::systemConfig.yhcControlShareKey;
-    QString semPath = Global::systemConfig.yhcControlSemPath;
-    int semId = Global::systemConfig.yhcControlSemKey;
-    //QString msgPath = Global::systemConfig.dataMsgPath;
-    //int msgId = Global::systemConfig.dataMsgKey;
-
-    key_t shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
-    key_t semKey = ShareHelper::GenKey(semPath.toLatin1(), semId);
-    yhcCtrlSh = new ShareHelper(shareKey, sizeof(Plc_Db));
+    sharePath = Global::systemConfig.dataSharePath;
+    shareId = Global::systemConfig.dataShareKey;
+    shareKey = ShareHelper::GenKey(sharePath.toLatin1(), shareId);
+    dbSh = new ShareHelper(shareKey, sizeof(Plc_Db));
 
     qRegisterMetaType<Plc_Db>("Plc_Db");
 }
 
 PlcDataManageWorker::~PlcDataManageWorker()
 {
-    //delete yhcDbSh;
-    delete yhcCtrlSh;
+    delete ctrlSh;
+    delete dbSh;
 }
 
 void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
 {
     Plc_Db plcdata;
+    Ctr_Block ctrlBlock;
 
-    //yhcDbSh->LockShare();
-    //yhcDbSh->GetShardMemory((void *)&plcdata, sizeof(Plc_Db));
-    //yhcDbSh->UnlockShare();
+    ctrlSh->LockShare();
+    ctrlSh->GetShardMemory((void *)&ctrlBlock, sizeof(Ctr_Block));
 
-    yhcCtrlSh->LockShare();
-    yhcCtrlSh->GetShardMemory((void *)&plcdata, sizeof(Plc_Db));
-    yhcCtrlSh->UnlockShare();
+    //To do
+    //if(ctrlBlock.fromPru[0] == 1)
+    //{
+        //ctrlBlock.fromPru[0] = 0;
+        //ctrlSh->SetSharedMemory((void *)&ctrlBlock, sizeof(Ctr_Block));
 
-    DeviceGroupInfo groupInfo;
-    switch(dataName)
-    {
-        case YHC:
-            groupInfo = Global::getYhcDeviceGroupInfoByGroupId(groupId);
-            parseYhcServerData(groupInfo, plcdata);
+        dbSh->LockShare();
+        dbSh->GetShardMemory((void *)&plcdata, sizeof(Plc_Db));
+        dbSh->UnlockShare();
 
-            break;
-        case FER:
-            groupInfo = Global::getFerDeviceGroupInfoByGroupId(groupId);
-            parseFerServerData(groupInfo, plcdata);
-            break;
-        default:
-            break;
-    }
+        DeviceGroupInfo groupInfo;
+        switch(dataName)
+        {
+            case YHC:
+                groupInfo = Global::getYhcDeviceGroupInfoByGroupId(groupId);
+                parseYhcServerData(groupInfo, plcdata);
 
-    sendPlcdataToServer(dataName, groupInfo, plcdata);
+                break;
+            case FER:
+                groupInfo = Global::getFerDeviceGroupInfoByGroupId(groupId);
+                parseFerServerData(groupInfo, plcdata);
+                break;
+            default:
+                break;
+        }
+
+        sendPlcdataToServer(dataName, groupInfo, plcdata);
+    //}
+
+    ctrlSh->UnlockShare();
 }
 
 void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Plc_Db dbData)
