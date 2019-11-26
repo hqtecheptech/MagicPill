@@ -54,6 +54,10 @@ void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
                 groupInfo = Global::getFerDeviceGroupInfoByGroupId(groupId);
                 parseFerServerData(groupInfo, plcdata);
                 break;
+            case MIX:
+                groupInfo = Global::getMixDeviceGroupInfoByGroupId(groupId);
+                parseMixServerData(groupInfo, plcdata);
+                break;
             default:
                 break;
         }
@@ -441,6 +445,198 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
             else
             {
                 changedDeviceSet.insert(startIndex + Global::getFerDeviceIndexByRunctrAddress(ca));
+            }
+        }
+
+        emit plcDbUpdated(changedDeviceSet, dataMap);
+    }
+}
+
+void PlcDataManageWorker::parseMixServerData(DeviceGroupInfo groupInfo, const Plc_Db dbData)
+{
+    Plc_Db newPlcDb = dbData;
+
+    bool diff = false;
+    QMap<float,QString> dataMap;
+    QVector<float> changedAddressArray;
+    float address = 0;
+
+    for(int i=0; i < DB_FLOAT_LEN; i++)
+    {
+        address = Global::convertIndexToAddress(i, "r");
+        dataMap.insert(address,QString::number(newPlcDb.f_data[i]));
+        if(!Global::currentMixDataMap.contains(address))
+        {
+            diff = true;
+            Global::currentMixDataMap.insert(address,QString::number(newPlcDb.f_data[i]));
+            changedAddressArray.append(address);
+        }
+        else
+        {
+            if(Global::currentMixDataMap[address] != QString::number(newPlcDb.f_data[i]))
+            {
+                diff = true;
+                changedAddressArray.append(address);
+                Global::currentMixDataMap[address] = QString::number(newPlcDb.f_data[i]);
+            }
+        }
+    }
+
+    for(int i=0; i < DB_INT_LEN; i++)
+    {
+        address = Global::convertIndexToAddress(i, "di");
+        dataMap.insert(address,QString::number(newPlcDb.i_data[i]));
+        if(!Global::currentMixDataMap.contains(address))
+        {
+            diff = true;
+            Global::currentMixDataMap.insert(address,QString::number(newPlcDb.i_data[i]));
+            changedAddressArray.append(address);
+        }
+        else
+        {
+            if(Global::currentMixDataMap[address] != QString::number(newPlcDb.i_data[i]))
+            {
+                diff = true;
+                changedAddressArray.append(address);
+                Global::currentMixDataMap[address] = QString::number(newPlcDb.i_data[i]);
+            }
+        }
+    }
+
+    for(int i=0; i < DB_UINT32_LEN; i++)
+    {
+        address = Global::convertIndexToAddress(i, "dw");
+        dataMap.insert(address,QString::number(newPlcDb.dw_data[i]));
+        if(!Global::currentMixDataMap.contains(address))
+        {
+            diff = true;
+            Global::currentMixDataMap.insert(address,QString::number(newPlcDb.dw_data[i]));
+            changedAddressArray.append(address);
+        }
+        else
+        {
+            if(Global::currentMixDataMap[address] != QString::number(newPlcDb.dw_data[i]))
+            {
+                diff = true;
+                changedAddressArray.append(address);
+                Global::currentMixDataMap[address] = QString::number(newPlcDb.dw_data[i]);
+            }
+        }
+    }
+
+    for(int i=0; i < DB_UINT16_LEN; i++)
+    {
+        address = Global::convertIndexToAddress(i, "w");
+        dataMap.insert(address,QString::number(newPlcDb.w_data[i]));
+        if(!Global::currentMixDataMap.contains(address))
+        {
+            diff = true;
+            Global::currentMixDataMap.insert(address,QString::number(newPlcDb.w_data[i]));
+            changedAddressArray.append(address);
+        }
+        else
+        {
+            if(Global::currentMixDataMap[address] != QString::number(newPlcDb.w_data[i]))
+            {
+                diff = true;
+                changedAddressArray.append(address);
+                Global::currentMixDataMap[address] = QString::number(newPlcDb.w_data[i]);
+            }
+        }
+    }
+
+    for(int i=0; i < DB_BOOL_LEN; i++)
+    {
+        QString strValue = "false";
+        if(newPlcDb.b_data[i] == 1)
+        {
+            strValue = "true";
+        }
+
+        address = Global::getRunctrAddressByIndex(i);
+
+        dataMap.insert(address,strValue);
+        if(!Global::currentMixDataMap.contains(address))
+        {
+            diff = true;
+            Global::currentMixDataMap.insert(address,strValue);
+            changedAddressArray.append(address);
+        }
+        else
+        {
+            if(Global::currentMixDataMap.value(address) != strValue)
+            {
+                diff = true;
+                changedAddressArray.append(address);
+                Global::currentMixDataMap[address] = strValue;
+
+                uint tankIndex = i / Global::mixDeviceInfo.RunCtr_Block_Size;
+                DeviceGroupInfo info = Global::getMixDeviceGroupInfo(tankIndex);
+
+                QList<QStandardItem *> newItemList;
+                QList<QStandardItem *> newSimpleItemList;
+                Global::alertIndex += 1;
+                QString simpleAlert;
+
+                newItemList.append(new QStandardItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")));
+                newItemList.append(new QStandardItem(QString::number((tankIndex + info.startIndex)+1)));
+                if(QVariant(strValue).toBool())
+                {
+                    newItemList.append(new QStandardItem(Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert1));
+                    simpleAlert = QString::number(Global::alertIndex) + ": " +
+                            QString::number(tankIndex+1) + "#" +
+                            Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert1 + " " +
+                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+                }
+                else
+                {
+                    newItemList.append(new QStandardItem(Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert0));
+                    simpleAlert = QString::number(Global::alertIndex) + ": " +
+                            QString::number(tankIndex+1) + "#" +
+                            Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert0 + " " +
+                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+
+                }
+                QStandardItem *simpleAlertItem = new QStandardItem(simpleAlert);
+                newSimpleItemList.append(simpleAlertItem);
+
+                /*if(Identity::getInstance()->getUser() != Q_NULLPTR)
+                {
+                    newItemList.append(new QStandardItem(Identity::getInstance()->getUser()->getUsername()));
+                }
+                else
+                {
+                    newItemList.append(new QStandardItem(""));
+                }*/
+
+                int count = Global::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
+                if(count > 50)
+                {
+                    Global::simpleAlertsModel->removeRows(ALERT_COUNT, count, QModelIndex());
+                }
+                Global::simpleAlertsModel->insertRow(0, newSimpleItemList);
+                Global::alertsModel->insertRow(0, newItemList);
+            }
+        }
+    }
+
+    int startIndex = groupInfo.startIndex;
+
+    //qDebug() << "startIndex = " << startIndex;
+    //qDebug() << "diff = " << diff;
+
+    if(startIndex >=0 && diff)
+    {
+        QSet<int> changedDeviceSet;
+        foreach(float ca, changedAddressArray)
+        {
+            if(ca < Global::mixDeviceInfo.Runctr_Address)
+            {
+                changedDeviceSet.insert(startIndex + Global::getMixDeviceIndexByAddress(ca));
+            }
+            else
+            {
+                changedDeviceSet.insert(startIndex + Global::getMixDeviceIndexByRunctrAddress(ca));
             }
         }
 

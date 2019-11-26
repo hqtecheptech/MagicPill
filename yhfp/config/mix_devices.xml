@@ -31,9 +31,11 @@
         <node id="5" name="BM_SPIRAL_RATE" cname="返混螺旋速度" length="1" offset="2" diff="0"/>
         <node id="5" name="BM_WHEEL_RATE" cname="返混转盘速度" length="1" offset="3" diff="0"/>
         <node id="5" name="SLUG_SPIRAL_RATE" cname="污泥螺旋速度" length="1" offset="4" diff="0"/>
-        <node id="5" name="ING_SPIRAL_RATE_SETTING" cname="辅料螺旋速度设定值" length="1" offset="5" diff="0"/>
-        <node id="5" name="BM_SPIRAL_RATE_SETTING" cname="返混螺旋速度设定值" length="1" offset="6" diff="0"/>
-        <node id="5" name="SLUG_CARG_RATE_SETTING" cname="污泥滑架速度设定值" length="1" offset="7" diff="0"/>
+    </area>
+    <area name="RATE_SETTING" datatype="w" start="1034" diff="0">
+        <node id="5" name="ING_SPIRAL_RATE_SETTING" cname="辅料螺旋速度设定值" length="1" offset="0" diff="0"/>
+        <node id="5" name="BM_SPIRAL_RATE_SETTING" cname="返混螺旋速度设定值" length="1" offset="1" diff="0"/>
+        <node id="5" name="SLUG_CARG_RATE_SETTING" cname="污泥滑架速度设定值" length="1" offset="2" diff="0"/>
     </area>
     <area name="RUNCTR" datatype="x0" start="1280" diff="0">
         <node id="5" name="SLUG_SPIRAL_EM_RUN" cname="污泥螺旋电机运行反馈" length="48" offset="0" diff="0" alert0="污泥螺旋电机停止运行" alert1="污泥螺旋电机正在运行" priority="0"/>

@@ -199,6 +199,26 @@ void DataReceiver::dataReceive()
                 emit dataChanged(bDevice, changedDeviceSet, dataMap);
             }
             break;
+        case MIX:
+            startIndex = Global::getMixDeviceStartIndex(bDevice.bDeviceId, bDevice.bDeviceGroup);
+            if(startIndex >=0)
+            {
+                QSet<int> changedDeviceSet;
+                foreach(float address, dataMap.keys())
+                {
+                    if(address < Global::getDataStartByType("x0"))
+                    {
+                        changedDeviceSet.insert(startIndex + Global::getMixDeviceIndexByAddress(address));
+                    }
+                    else
+                    {
+                        changedDeviceSet.insert(startIndex + Global::getMixDeviceIndexByRunctrAddress(address));
+                    }
+                }
+
+                emit dataChanged(bDevice, changedDeviceSet, dataMap);
+            }
+            break;
         default:
             break;
         }

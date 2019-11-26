@@ -452,6 +452,74 @@ YhcDeviceInfo Global::readYhcDeviceInfo()
     return retValue;
 }
 
+MixDeviceInfo Global::readMixDeviceInfo()
+{
+    MixDeviceInfo retValue;
+
+    QFile file("mix_devices.xml");
+    if(!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        return retValue;
+    }
+
+    QDomDocument document;
+    QString error;
+    int row = 0, column = 0;
+    if(!document.setContent(&file, false, &error, &row, &column))
+    {
+        return retValue;
+    }
+    if(document.isNull())
+    {
+        return retValue;
+    }
+
+    QDomElement root = document.documentElement();
+    if(root.isNull())
+    {
+        return retValue;
+    }
+
+    QDomElement areaSection = root.firstChildElement();
+    if(areaSection.isNull())
+    {
+        return retValue;
+    }
+    retValue.Device_Number = areaSection.attribute("devicenumber").toInt();
+    retValue.RunCtr_Block_Size = areaSection.attribute("runctrnumber").toInt();
+
+    QDomNodeList areaList = areaSection.elementsByTagName("area");
+    int count = areaList.count();
+    for(int i=0; i<count; i++)
+    {
+        QDomNode dom_node = areaList.item(i);
+        QDomElement element = dom_node.toElement();
+        QDomNodeList child_list = element.childNodes();
+        int child_count = child_list.count();
+        if(element.attribute("name")=="RATE_SETTING")
+        {
+            retValue.Rate_Setting_Type = element.attribute("datatype");
+            retValue.Rate_Setting_Address = element.attribute("start").toInt();
+            int varNum = 0;
+            int categoryNum = 0;
+            for(int j=0; j<child_count; j++)
+            {
+                varNum += child_list.item(j).toElement().attribute("length").toInt();
+                categoryNum += 1;
+            }
+            retValue.Rate_Setting_Num = varNum;
+            retValue.Rate_Setting_Category = categoryNum;
+        }
+        if(element.attribute("name")=="RUNCTR")
+        {
+            retValue.Runctr_Type = element.attribute("datatype");
+            retValue.Runctr_Address = element.attribute("start").toInt();
+            retValue.Runctr_Num = retValue.Device_Number * retValue.RunCtr_Block_Size;
+        }
+    }
+    return retValue;
+}
+
 FanDeviceInfo Global::readFanDeviceInfo()
 {
     FanDeviceInfo retValue;
@@ -1117,6 +1185,17 @@ DeviceNode Global::getYhcNodeInfoByName(QString name)
     }
 }
 
+DeviceNode Global::getMixNodeInfoByName(QString name)
+{
+    for(int i=0; i<mixDeviceNodes.length();i++)
+    {
+        if(mixDeviceNodes.at(i).Name==name)
+        {
+            return mixDeviceNodes.at(i);
+        }
+    }
+}
+
 DeviceNode Global::getFermenationNodeInfoByCname(QString cname)
 {
     for(int i=0; i<ferDeviceNodes.length();i++)
@@ -1168,6 +1247,17 @@ DeviceNode Global::getYhcNodeInfoByCname(QString cname)
         if(yhcDeviceNodes.at(i).Cname==cname)
         {
             return yhcDeviceNodes.at(i);
+        }
+    }
+}
+
+DeviceNode Global::getMixNodeInfoByCname(QString cname)
+{
+    for(int i=0; i<mixDeviceNodes.length();i++)
+    {
+        if(mixDeviceNodes.at(i).Cname==cname)
+        {
+            return mixDeviceNodes.at(i);
         }
     }
 }
@@ -1260,6 +1350,27 @@ int Global::getYhcDeviceIndexByAddress(ushort address)
     return index;
 }
 
+int Global::getMixDeviceIndexByAddress(ushort address)
+{
+    int index = -1;
+    if(mixDeviceInfo.Device_Number == 1)
+    {
+        index = 0;
+    }
+    else
+    {
+        foreach (DeviceNode node, mixDeviceNodes)
+        {
+            if(address >= node.Offset &&
+                        address < node.Offset + mixDeviceInfo.Device_Number)
+            {
+                index = address - node.Offset;
+            }
+        }
+    }
+    return index;
+}
+
 int Global::getFerDeviceIndexByRunctrAddress(float address)
 {
     uint blockSize = ferDeviceInfo.RunCtr_Block_Size / 8;
@@ -1308,6 +1419,30 @@ int Global::getYhcDeviceIndexByRunctrAddress(float address)
         {
             if((address >= yhcDeviceInfo.Runctr_Address + i * blockSize) &&
                     address < yhcDeviceInfo.Runctr_Address + (i + 1) * blockSize)
+            {
+                index = i;
+            }
+        }
+    }
+    return index;
+}
+
+int Global::getMixDeviceIndexByRunctrAddress(float address)
+{
+    int index = -1;
+    if(mixDeviceInfo.Device_Number == 1)
+    {
+        index = 0;
+    }
+    else
+    {
+        uint blockSize = mixDeviceInfo.RunCtr_Block_Size  / 8;
+
+        int index = -1;
+        for(uint i=0; i < mixDeviceInfo.Device_Number; i++)
+        {
+            if((address >= mixDeviceInfo.Runctr_Address + i * blockSize) &&
+                    address < mixDeviceInfo.Runctr_Address + (i + 1) * blockSize)
             {
                 index = i;
             }
@@ -1371,6 +1506,17 @@ DeviceGroupInfo Global::getYhcDeviceGroupInfo(int index)
     }
 }
 
+DeviceGroupInfo Global::getMixDeviceGroupInfo(int index)
+{
+    foreach(DeviceGroupInfo info, mixDeviceGroupInfos)
+    {
+        if(index >= info.startIndex && index < (info.startIndex + info.deviceNumber))
+        {
+            return info;
+        }
+    }
+}
+
 DeviceGroupInfo Global::getFerDeviceGroupInfoByGroupId(int groupId)
 {
     foreach(DeviceGroupInfo info, ferDeviceGroupInfos)
@@ -1385,6 +1531,17 @@ DeviceGroupInfo Global::getFerDeviceGroupInfoByGroupId(int groupId)
 DeviceGroupInfo Global::getYhcDeviceGroupInfoByGroupId(int groupId)
 {
     foreach(DeviceGroupInfo info, yhcDeviceGroupInfos)
+    {
+        if(groupId == info.groupId)
+        {
+            return info;
+        }
+    }
+}
+
+DeviceGroupInfo Global::getMixDeviceGroupInfoByGroupId(int groupId)
+{
+    foreach(DeviceGroupInfo info, mixDeviceGroupInfos)
     {
         if(groupId == info.groupId)
         {
@@ -1432,6 +1589,22 @@ bool Global::getYhcRunctrValueByName(int deviceIndex, QString name, QMap<float, 
             yhcDeviceInfo.RunCtr_Block_Size / 8 * (deviceIndex - groupInfo.startIndex);
 
     DeviceNode deviceNode = getYhcNodeInfoByName(name);
+    int offset = deviceNode.Offset;
+    uint step = offset / 8;
+    uint temp = offset % 8;
+    float index = float(temp) / 10;
+    float dictAddress = index + startAddrss + step;
+    QVariant tempValue = dataMap.value(dictAddress);
+    return tempValue.toBool();
+}
+
+bool Global::getMixRunctrValueByName(int deviceIndex, QString name, QMap<float, QString> dataMap)
+{
+    DeviceGroupInfo groupInfo = getYhcDeviceGroupInfo(deviceIndex);
+    int startAddrss = mixDeviceInfo.Runctr_Address +
+            mixDeviceInfo.RunCtr_Block_Size / 8 * (deviceIndex - groupInfo.startIndex);
+
+    DeviceNode deviceNode = getMixNodeInfoByName(name);
     int offset = deviceNode.Offset;
     uint step = offset / 8;
     uint temp = offset % 8;
@@ -1492,6 +1665,18 @@ int Global::getDeoDeviceStartIndex(int deviceId, int deviceGroup)
 int Global::getYhcDeviceStartIndex(int deviceId, int deviceGroup)
 {
     foreach(DeviceGroupInfo info, yhcDeviceGroupInfos)
+    {
+        if(info.deviceId == deviceId && info.groupId == deviceGroup)
+        {
+            return info.startIndex;
+        }
+    }
+    return -1;
+}
+
+int Global::getMixDeviceStartIndex(int deviceId, int deviceGroup)
+{
+    foreach(DeviceGroupInfo info, mixDeviceGroupInfos)
     {
         if(info.deviceId == deviceId && info.groupId == deviceGroup)
         {
@@ -1585,6 +1770,15 @@ int Global::getYhcDataIndexByName(QString name, int deviceIndex)
     return deviceNode.Offset + offset;
 }
 
+int Global::getMixDataIndexByName(QString name, int deviceIndex)
+{
+    DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
+    // To do: using a test name temporary.
+    DeviceNode deviceNode = Global::getMixNodeInfoByName(name);
+    int offset = (info.offset + deviceIndex - info.startIndex) * Global::mixDeviceInfo.Runctr_Num;
+    return deviceNode.Offset + offset;
+}
+
 uint Global::getLengthByDataType(QString dataType)
 {
     uint length = 0;
@@ -1648,6 +1842,8 @@ FanDeviceInfo Global::fanDeviceInfo = readFanDeviceInfo();
 
 YhcDeviceInfo Global::yhcDeviceInfo = readYhcDeviceInfo();
 
+MixDeviceInfo Global::mixDeviceInfo = readMixDeviceInfo();
+
 QVector<DeviceNode> Global::ferDeviceNodes = readDeviceNodes("devices.xml");
 
 QVector<DeviceNode> Global::deoDeviceNodes = readDeviceNodes("deo_devices.xml");
@@ -1657,6 +1853,8 @@ QVector<DeviceNode> Global::fanValveDeviceNodes = readDeviceNodes("fan_valve_dev
 QVector<DeviceNode> Global::fanDeviceNodes = readDeviceNodes("fan_devices.xml");
 
 QVector<DeviceNode> Global::yhcDeviceNodes = readDeviceNodes("yhc_devices.xml");
+
+QVector<DeviceNode> Global::mixDeviceNodes = readDeviceNodes("mix_devices.xml");
 
 QVector<DeviceNode> Global::ferRunCtrDeviceNodes = readRunctrDeviceNodes("devices.xml");
 
@@ -1668,6 +1866,8 @@ QVector<DeviceNode> Global::fanRunCtrDeviceNodes = readRunctrDeviceNodes("fan_de
 
 QVector<DeviceNode> Global::yhcRunCtrDeviceNodes = readRunctrDeviceNodes("yhc_devices.xml");
 
+QVector<DeviceNode> Global::mixRunCtrDeviceNodes = readRunctrDeviceNodes("mix_devices.xml");
+
 QVector<DeviceGroupInfo> Global::deoDeviceGroupInfos = readDeviceGroupInfo("deo_device_group.xml");
 
 QVector<DeviceGroupInfo> Global::fanValveDeviceGroupInfos = readDeviceGroupInfo("fan_Valve_device_group.xml");
@@ -1677,6 +1877,8 @@ QVector<DeviceGroupInfo> Global::fanDeviceGroupInfos = readDeviceGroupInfo("fan_
 QVector<DeviceGroupInfo> Global::ferDeviceGroupInfos = readDeviceGroupInfo("fer_device_group.xml");
 
 QVector<DeviceGroupInfo> Global::yhcDeviceGroupInfos = readDeviceGroupInfo("yhc_devices_group.xml");
+
+QVector<DeviceGroupInfo> Global::mixDeviceGroupInfos = readDeviceGroupInfo("mix_device_group.xml");
 
 QStandardItemModel* Global::alertsModel = new QStandardItemModel(0,4);
 
@@ -1693,6 +1895,8 @@ QMap<float,QString> Global::currentFanGroupDataMap;
 QMap<float,QString> Global::currentFanValveGroupDataMap;
 
 QMap<float,QString> Global::currentYhcDataMap;
+
+QMap<float,QString> Global::currentMixDataMap;
 
 int Global::alertIndex = 0;
 bool Global::isPrint = false;

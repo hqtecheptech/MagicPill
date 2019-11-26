@@ -324,7 +324,7 @@ void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
     ui->test_label_2->setText(QString::number(value));
     value = Global::getFerRunctrValueByName(deviceIndex + 1, "FER_Auto_BOOL", dataMap);
     ui->test_label_3->setText(QString::number(value));
-    value = Global::getFerRunctrValueByName(deviceIndex + 5, "FER_Auto_BOOL", dataMap);
+    value = Global::getMixRunctrValueByName(deviceIndex, "SLUG_SPIRAL_EM_FAULT", dataMap);
     ui->test_label_4->setText(QString::number(value));
     // to do: just for test temporay.
     if(value == 0)

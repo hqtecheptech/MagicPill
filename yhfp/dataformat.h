@@ -119,6 +119,21 @@ struct YhcDeviceInfo
     QString Runctr_Type;                    //使能变量数据类型
 };
 
+struct MixDeviceInfo
+{
+    quint32 Device_Number;                  //设备总数
+    quint32 RunCtr_Block_Size;              //使能参数总数
+    quint32 Rate_Setting_Address;            //设定起始地址
+    quint32 Rate_Setting_Num;                //设定变量个数
+    quint32 Rate_Setting_Display_Num;        //设定界面显示个数
+    quint32 Rate_Setting_Category;           //设定变量种类
+    QString Rate_Setting_Type;               //设定数据类型
+    quint32 Runctr_Address;                 //使能变量起始地址
+    quint32 Runctr_Num;                     //使能变量个数
+    quint32 Runctr_Category;                //使能变量种类
+    QString Runctr_Type;                    //使能变量数据类型
+};
+
 struct FermenationDeviceInfo
 {
     quint32 Device_Number;                //设备总数
