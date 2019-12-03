@@ -408,7 +408,7 @@ background-image: url(:/pic/历史记录-拷贝.png);</string>
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="yhcExitButton">
+  <widget class="QPushButton" name="exitButton">
    <property name="geometry">
     <rect>
      <x>1739</x>
@@ -575,9 +575,9 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SmallPlate</class>
+   <class>ZsylChart</class>
    <extends>QWidget</extends>
-   <header>smallplate.h</header>
+   <header>zsylchart.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -587,9 +587,9 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>ZsylChart</class>
+   <class>SmallPlate</class>
    <extends>QWidget</extends>
-   <header>zsylchart.h</header>
+   <header>smallplate.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

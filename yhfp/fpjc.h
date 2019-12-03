@@ -22,7 +22,8 @@ public:
     ~Fpjc();
 
 private slots:
-    void on_yhcExitButton_clicked();
+
+    void on_exitButton_clicked();
 
 private:
     Ui::fpjc *ui;

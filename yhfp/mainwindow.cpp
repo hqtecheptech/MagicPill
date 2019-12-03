@@ -39,10 +39,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->syssButton->setStyleSheet(syssStyleStr);
     ui->exitButton->setStyleSheet(eixtStyleStr);
 
-    yhc = new Yhcc(this);
-    fpj = new Fpjc(this);
-    //ui->yhccButton->setStyleSheet("QPushButton{background: transparent; background-image: url(:/pic/车1..png);}");
-    //ui->fpjcButton->setStyleSheet("QPushButton{background: transparent; background-image: url(:/pic/翻1.png);}");
+    //yhc = new Yhcc(this);
+    //fpj = new Fpjc(this);
+    mixDlg = new MixerDlg(this);
 
     taskManager = new TaskManager(8000, this);
     taskManager->moveToThread(&taskManageThread);
@@ -75,6 +74,8 @@ void MainWindow::showEvent(QShowEvent *event)
     {
         controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
     }
+
+    mixDlg->show();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -84,7 +85,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::on_yhccButton_clicked()
 {
-    yhc->show();
+    //yhc->show();
 }
 
 void MainWindow::on_exitButton_clicked()
@@ -126,7 +127,7 @@ void MainWindow::on_syssButton_clicked()
 
 void MainWindow::checkPruState()
 {
-    ControllerInfo info = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup)->getControllerStatus();
+    /*ControllerInfo info = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup)->getControllerStatus();
     if(!info.isPruConnected)
     {
         ui->pru_status_label->setText("Pru has not connected. Please wait ...");
@@ -134,10 +135,10 @@ void MainWindow::checkPruState()
     else
     {
         ui->pru_status_label->setText("Pru has connected!");
-    }
+    }*/
 }
 
 void MainWindow::on_fpjcButton_clicked()
 {
-    fpj->show();
+    //fpj->show();
 }

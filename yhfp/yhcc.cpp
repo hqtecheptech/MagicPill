@@ -222,8 +222,8 @@ void Yhcc::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> d
 
 void Yhcc::wirteTestData()
 {
-    //controller->yhcSpeedUp(deviceIndex, 5);
-    //controller->yhcStart(0, !started);
+    controller->yhcSpeedUp(deviceIndex, 2);
+    controller->yhcStart(deviceIndex, !started);
 }
 
 void Yhcc::updateWatchs()
@@ -293,17 +293,18 @@ void Yhcc::updateWatchs()
 
 void Yhcc::parseYhcData(QMap<float, QString> dataMap)
 {
-    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
-    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Tempture");
+    DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getMixNodeInfoByName("ING_SPIRAL_RATE_SETTING");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    //ui->test_label->setText(Global::currentYhcDataMap[address]);
+    ui->test_label->setText(Global::currentMixDataMap[address]);
+    ui->speedLabel->setText(dataMap[address]);
 
-    deviceNode = Global::getYhcNodeInfoByName("Speed");
+    /*deviceNode = Global::getYhcNodeInfoByName("Speed");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
     //qDebug() << "Speed value: " << Global::currentYhcDataMap[address];
-    ui->speedLabel->setText(Global::currentYhcDataMap[address]);
+    ui->speedLabel->setText(Global::currentYhcDataMap[address]);*/
 
     /*deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_RunTime");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
@@ -311,11 +312,11 @@ void Yhcc::parseYhcData(QMap<float, QString> dataMap)
     //qDebug() << "FER_Hand_RunTime: " << Global::currentFermenationDataMap[address];
     ui->test_label->setText(Global::currentFermenationDataMap[address]);*/
 
-    deviceNode = Global::getFermenationNodeInfoByName("FER_STEPCTR_UI_CTRL");
+    /*deviceNode = Global::getFermenationNodeInfoByName("FER_STEPCTR_UI_CTRL");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
     //qDebug() << "FER_STEPCTR_UI: " << Global::currentFermenationDataMap[address];
-    ui->test_label->setText(Global::currentFermenationDataMap[address]);
+    ui->test_label->setText(Global::currentFermenationDataMap[address]);*/
 }
 
 void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)

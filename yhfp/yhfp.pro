@@ -47,7 +47,8 @@ SOURCES += main.cpp\
     sqlitehelper.cpp \
     databaseworker.cpp \
     historydlg.cpp \
-    controlhistory.cpp
+    controlhistory.cpp \
+    mixerdlg.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -83,7 +84,8 @@ HEADERS  += mainwindow.h \
     sqlitehelper.h \
     databaseworker.h \
     historydlg.h \
-    controlhistory.h
+    controlhistory.h \
+    mixerdlg.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \
@@ -98,7 +100,8 @@ FORMS    += mainwindow.ui \
     smallplate.ui \
     fpjwatchs.ui \
     historydlg.ui \
-    controlhistory.ui
+    controlhistory.ui \
+    mixerdlg.ui
 
 RESOURCES += \
     resource.qrc

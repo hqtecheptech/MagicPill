@@ -92,5 +92,22 @@
         <file>config/fer_device_group.xml</file>
         <file>config/mix_devices.xml</file>
         <file>config/mix_device_group.xml</file>
+        <file>pic/bins.png</file>
+        <file>pic/bmbin.png</file>
+        <file>pic/slugbin.png</file>
+        <file>pic/ingbin.png</file>
+        <file>pic/firstlpsb.png</file>
+        <file>pic/secondlpsb.png</file>
+        <file>pic/otherdevices.png</file>
+        <file>pic/em_run.png</file>
+        <file>pic/em_fault.png</file>
+        <file>pic/em_stop.png</file>
+        <file>pic/wheel_fault.png</file>
+        <file>pic/wheel_run.png</file>
+        <file>pic/wheel_stop.png</file>
+        <file>pic/carriage.png</file>
+        <file>pic/inve.png</file>
+        <file>pic/coro.png</file>
+        <file>pic/total_current.png</file>
     </qresource>
 </RCC>

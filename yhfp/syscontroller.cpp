@@ -79,7 +79,7 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
 {
     //qDebug() << "Start Press Speed Up!";
 
-    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    /*DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertAddressToIndex(address, "r");
@@ -98,12 +98,34 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
     //applyControlRequest();
 
     //qDebug() << "Press Speed Up!";
+    */
+
+    DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getMixNodeInfoByName("ING_SPIRAL_RATE_SETTING");
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index = Global::convertAddressToIndex(address, deviceNode.DataType);
+
+    //qDebug() << "handle mix setting data!";
+    Plc_Db db;
+    dbShare->LockShare();
+    dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+    db.w_data[index] = db.w_data[index] + value;
+    dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+    //Set data changed flag.
+    Ctr_Block cb;
+    ctrlShare->LockShare();
+    ctrlShare->GetShardMemory((void*)&cb, sizeof(Ctr_Block));
+    cb.toPru[0] = 1;
+    ctrlShare->SetSharedMemory((void*)&cb, sizeof(Ctr_Block));
+    ctrlShare->UnlockShare();
+    //
+    dbShare->UnlockShare();
 }
 
 void Syscontroller::yhcStart(int deviceIndex, bool value)
 {
     // To do: using a test name temporary.
-    int index = Global::getYhcDataIndexByName("FAN_VALVE_HAND_OPEN", deviceIndex);
+    /*int index = Global::getYhcDataIndexByName("FAN_VALVE_HAND_OPEN", deviceIndex);
 
     //qDebug() << "Begin yhc start or stop!";
     Plc_Db db;
@@ -126,6 +148,31 @@ void Syscontroller::yhcStart(int deviceIndex, bool value)
     //applyControlRequest();
 
     //qDebug() << "End yhc start or stop!";
+    */
+
+    qDebug() << "Begin mix data change!";
+    int index = Global::getMixDataIndexByName("SLUG_SPIRAL_EM_FAULT", deviceIndex);
+    Plc_Db db;
+    dbShare->LockShare();
+    dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+    if(value)
+    {
+        db.b_data[index] = 0;
+    }
+    else
+    {
+        db.b_data[index] = 1;
+    }
+    dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+    //Set data changed flag.
+    Ctr_Block cb;
+    ctrlShare->LockShare();
+    ctrlShare->GetShardMemory((void*)&cb, sizeof(Ctr_Block));
+    cb.toPru[0] = 1;
+    ctrlShare->SetSharedMemory((void*)&cb, sizeof(Ctr_Block));
+    ctrlShare->UnlockShare();
+    //
+    dbShare->UnlockShare();
 }
 
 DeviceType Syscontroller::getDataType()

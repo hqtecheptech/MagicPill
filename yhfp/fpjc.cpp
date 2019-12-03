@@ -18,10 +18,10 @@ Fpjc::Fpjc(QWidget *parent) :
 
     qRegisterMetaType<Plc_Db>("Plc_Db");
 
-    QString eixtStyleStr="QPushButton#yhcExitButton{background: transparent; background-image: url(:/pic/退出.png);}"
-                         "QPushButton#yhcExitButton:hover{background: transparent; background-image: url(:/pic/退出.png);}"
-                         "QPushButton#yhcExitButton:pressed{background: transparent; background-image: url(:/pic/退出.png);}";
-    ui->yhcExitButton->setStyleSheet(eixtStyleStr);
+    QString eixtStyleStr="QPushButton#exitButton{background: transparent; background-image: url(:/pic/退出.png);}"
+                         "QPushButton#exitButton:hover{background: transparent; background-image: url(:/pic/退出.png);}"
+                         "QPushButton#exitButton:pressed{background: transparent; background-image: url(:/pic/退出.png);}";
+    ui->exitButton->setStyleSheet(eixtStyleStr);
 
     ui->speedDownButton->setStyleSheet("QPushButton#speedDownButton{background: transparent; background-image: url(:/pic/_02.png);}");
     ui->speedUpButton->setStyleSheet("QPushButton#speedUpButton{background: transparent; background-image: url(:/pic/+02.png);}");
@@ -43,7 +43,7 @@ Fpjc::~Fpjc()
     delete ui;
 }
 
-void Fpjc::on_yhcExitButton_clicked()
+void Fpjc::on_exitButton_clicked()
 {
     close();
 }

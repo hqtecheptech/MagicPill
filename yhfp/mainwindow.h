@@ -6,6 +6,7 @@
 #include <QTimer>
 #include "yhcc.h"
 #include "fpjc.h"
+#include "mixerdlg.h"
 #include "taskmanager.h"
 #include "syscontroller.h"
 
@@ -42,6 +43,7 @@ private:
 
     Yhcc* yhc;
     Fpjc* fpj;
+    MixerDlg* mixDlg;
     QThread taskManageThread;
     TaskManager* taskManager;
     QTimer* pruCheckTimer;
