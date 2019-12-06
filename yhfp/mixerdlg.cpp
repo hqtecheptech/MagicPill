@@ -27,6 +27,9 @@ MixerDlg::MixerDlg(QWidget *parent) :
     testTimer = new QTimer(this);
     connect(testTimer, SIGNAL(timeout()), this, SLOT(wirteTestData()));
 
+    switchStateTimer = new QTimer(this);
+    connect(switchStateTimer, SIGNAL(timeout()), this, SLOT(switchState()));
+
     controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
     if(controller != Q_NULLPTR)
     {
@@ -101,7 +104,129 @@ void MixerDlg::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float, QStri
 void MixerDlg::wirteTestData()
 {
     controller->yhcSpeedUp(deviceIndex, 2);
-    controller->yhcStart(deviceIndex, !started);
+    started = !started;
+    controller->yhcStart(deviceIndex, started);
+}
+
+void MixerDlg::switchState()
+{
+    if(wnyxywLow)
+    {
+        if(stateFlag)
+        {
+            ui->SLUG_BIN_LEVEL_SIG_label->setText(QStringLiteral("低"));
+            ui->SLUG_BIN_LEVEL_SIG_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 0, 0)");
+        }
+        else
+        {
+            ui->SLUG_BIN_LEVEL_SIG_label->setText(QStringLiteral("低"));
+            ui->SLUG_BIN_LEVEL_SIG_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+        }
+    }
+
+    if(flyxywLow)
+    {
+        if(stateFlag)
+        {
+            ui->ING_BIN_LEVEL_SIG_label->setText(QStringLiteral("低"));
+            ui->ING_BIN_LEVEL_SIG_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 0, 0)");
+        }
+        else
+        {
+            ui->ING_BIN_LEVEL_SIG_label->setText(QStringLiteral("低"));
+            ui->ING_BIN_LEVEL_SIG_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+        }
+    }
+
+    if(wnjrFault)
+    {
+        if(stateFlag)
+        {
+            ui->SLUG_BIN_HEATER_RUN_label->setText(QStringLiteral("故障"));
+            ui->SLUG_BIN_HEATER_RUN_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+        }
+        else
+        {
+            ui->SLUG_BIN_HEATER_RUN_label->setText(QStringLiteral("故障"));
+            ui->SLUG_BIN_HEATER_RUN_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 0, 0)");
+        }
+    }
+
+    if(fljrFault)
+    {
+        if(stateFlag)
+        {
+            ui->ING_BIN_HEATER_RUN_label->setText(QStringLiteral("故障"));
+            ui->ING_BIN_HEATER_RUN_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+        }
+        else
+        {
+            ui->ING_BIN_HEATER_RUN_label->setText(QStringLiteral("故障"));
+            ui->ING_BIN_HEATER_RUN_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 0, 0)");
+        }
+    }
+
+    if(wnhjdjFault)
+    {
+        if(stateFlag)
+        {
+            ui->wnhjdj_1_1_label->setStyleSheet("QLabel#wnhjdj_1_1_label{background-image:url(:/pic/em_fault.png)}");
+        }
+        else
+        {
+            ui->wnhjdj_1_1_label->setStyleSheet("QLabel#wnhjdj_1_1_label{background-image:url(:/pic/em_stop.png)}");
+        }
+    }
+
+    if(wnzpdjFault)
+    {
+        if(stateFlag)
+        {
+            ui->wnzpdj_1_1_label->setStyleSheet("QLabel#wnzpdj_1_1_label{background-image:url(:/pic/em_fault.png)}");
+        }
+        else
+        {
+            ui->wnzpdj_1_1_label->setStyleSheet("QLabel#wnzpdj_1_1_label{background-image:url(:/pic/em_stop.png)}");
+        }
+    }
+
+    if(flzpdjFault)
+    {
+        if(stateFlag)
+        {
+            ui->flzpdj_2_1_label->setStyleSheet("QLabel#flzpdj_2_1_label{background-image:url(:/pic/em_fault.png)}");
+        }
+        else
+        {
+            ui->flzpdj_2_1_label->setStyleSheet("QLabel#flzpdj_2_1_label{background-image:url(:/pic/em_stop.png)}");
+        }
+    }
+
+    if(fllxdjFault)
+    {
+        if(stateFlag)
+        {
+            ui->fllxdj_2_1_label->setStyleSheet("QLabel#fllxdj_2_1_label{background-image:url(:/pic/em_fault.png)}");
+        }
+        else
+        {
+            ui->fllxdj_2_1_label->setStyleSheet("QLabel#fllxdj_2_1_label{background-image:url(:/pic/em_stop.png)}");
+        }
+    }
+
+    if(fhlxdjFault)
+    {
+        if(stateFlag)
+        {
+            ui->fhlxdj_2_2_label->setStyleSheet("QLabel#fhlxdj_2_2_label{background-image:url(:/pic/em_fault.png)}");
+        }
+        else
+        {
+            ui->fhlxdj_2_2_label->setStyleSheet("QLabel#fhlxdj_2_2_label{background-image:url(:/pic/em_stop.png)}");
+        }
+    }
+
+    stateFlag = !stateFlag;
 }
 
 void MixerDlg::showEvent(QShowEvent *)
@@ -124,7 +249,12 @@ void MixerDlg::showEvent(QShowEvent *)
 
     if(!testTimer->isActive())
     {
-        testTimer->start(3000);
+        testTimer->start(5000);
+    }
+
+    if(!switchStateTimer->isActive())
+    {
+        switchStateTimer->start(500);
     }
 }
 
@@ -138,6 +268,11 @@ void MixerDlg::closeEvent(QCloseEvent *)
     if(testTimer->isActive())
     {
         testTimer->stop();
+    }
+
+    if(switchStateTimer->isActive())
+    {
+        switchStateTimer->stop();
     }
 }
 
@@ -310,8 +445,10 @@ void MixerDlg::parseData(QMap<float, QString> dataMap)
 
 void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
 {
-    bool value = Global::getMixRunctrValueByName(deviceIndex, "SLUG_BIN_LEVEL_SIG", dataMap);
-    if(value == 1)
+    bool value;
+
+    wnyxywLow = Global::getMixRunctrValueByName(deviceIndex, "SLUG_BIN_LEVEL_SIG", dataMap);
+    if(wnyxywLow == 1)
     {
         ui->SLUG_BIN_LEVEL_SIG_label->setText(QStringLiteral("低"));
         ui->SLUG_BIN_LEVEL_SIG_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 0, 0)");
@@ -322,8 +459,8 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
         ui->SLUG_BIN_LEVEL_SIG_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(0, 170, 0)");
     }
 
-    value = Global::getMixRunctrValueByName(deviceIndex, "SLUG_BIN_HEATER_FAULT", dataMap);
-    if(value == 1)
+    wnjrFault = Global::getMixRunctrValueByName(deviceIndex, "SLUG_BIN_HEATER_FAULT", dataMap);
+    if(wnjrFault == 1)
     {
         ui->SLUG_BIN_HEATER_RUN_label->setText(QStringLiteral("故障"));
         ui->SLUG_BIN_HEATER_RUN_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
@@ -343,8 +480,8 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
         }
     }
 
-    value = Global::getMixRunctrValueByName(deviceIndex, "ING_BIN_LEVEL_SIG", dataMap);
-    if(value == 1)
+    flyxywLow = Global::getMixRunctrValueByName(deviceIndex, "ING_BIN_LEVEL_SIG", dataMap);
+    if(flyxywLow == 1)
     {
         ui->ING_BIN_LEVEL_SIG_label->setText(QStringLiteral("低"));
         ui->ING_BIN_LEVEL_SIG_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 0, 0)");
@@ -355,8 +492,8 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
         ui->ING_BIN_LEVEL_SIG_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(0, 170, 0)");
     }
 
-    value = Global::getMixRunctrValueByName(deviceIndex, "ING_BIN_HEATER_FAULT", dataMap);
-    if(value == 1)
+    fljrFault = Global::getMixRunctrValueByName(deviceIndex, "ING_BIN_HEATER_FAULT", dataMap);
+    if(fljrFault == 1)
     {
         ui->ING_BIN_HEATER_RUN_label->setText(QStringLiteral("故障"));
         ui->ING_BIN_HEATER_RUN_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
@@ -376,8 +513,8 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
         }
     }
 
-    value = Global::getMixRunctrValueByName(deviceIndex, "CY_1_EM_FAULT", dataMap);
-    if(value == 1)
+    wnhjdjFault = Global::getMixRunctrValueByName(deviceIndex, "CY_1_EM_FAULT", dataMap);
+    if(wnhjdjFault == 1)
     {
         ui->wnhjdj_1_1_label->setStyleSheet("QLabel#wnhjdj_1_1_label{background-image:url(:/pic/em_fault.png)}");
     }
@@ -394,8 +531,8 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
         }
     }
 
-    value = Global::getMixRunctrValueByName(deviceIndex, "SLUG_WHEEL_EM_FAULT", dataMap);
-    if(value == 1)
+    wnzpdjFault = Global::getMixRunctrValueByName(deviceIndex, "SLUG_WHEEL_EM_FAULT", dataMap);
+    if(wnzpdjFault == 1)
     {
         ui->wnzpdj_1_1_label->setStyleSheet("QLabel#wnzpdj_1_1_label{background-image:url(:/pic/em_fault.png)}");
     }
@@ -413,8 +550,8 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     }
 
 
-    value = Global::getMixRunctrValueByName(deviceIndex, "ING_WHEEL_EM_FAULT", dataMap);
-    if(value == 1)
+    flzpdjFault = Global::getMixRunctrValueByName(deviceIndex, "ING_WHEEL_EM_FAULT", dataMap);
+    if(flzpdjFault == 1)
     {
         ui->flzpdj_2_1_label->setStyleSheet("QLabel#flzpdj_2_1_label{background-image:url(:/pic/em_fault.png)}");
     }
@@ -431,39 +568,39 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
         }
     }
 
-    value = Global::getMixRunctrValueByName(deviceIndex, "SLUG_SPIRAL_EM_FAULT", dataMap);
-    if(value == 1)
+    fllxdjFault = Global::getMixRunctrValueByName(deviceIndex, "SLUG_SPIRAL_EM_FAULT", dataMap);
+    if(fllxdjFault == 1)
     {
-        ui->wnlsdj_2_1_label->setStyleSheet("QLabel#wnlsdj_2_1_label{background-image:url(:/pic/em_fault.png)}");
+        ui->fllxdj_2_1_label->setStyleSheet("QLabel#fllxdj_2_1_label{background-image:url(:/pic/em_fault.png)}");
     }
     else
     {
         value = Global::getMixRunctrValueByName(deviceIndex, "SLUG_SPIRAL_EM_RUN", dataMap);
         if(value == 1)
         {
-            ui->wnlsdj_2_1_label->setStyleSheet("QLabel#wnlsdj_2_1_label{background-image:url(:/pic/em_run.png)}");
+            ui->fllxdj_2_1_label->setStyleSheet("QLabel#fllxdj_2_1_label{background-image:url(:/pic/em_run.png)}");
         }
         else
         {
-            ui->wnlsdj_2_1_label->setStyleSheet("QLabel#wnlsdj_2_1_label{background-image:url(:/pic/em_stop.png)}");
+            ui->fllxdj_2_1_label->setStyleSheet("QLabel#fllxdj_2_1_label{background-image:url(:/pic/em_stop.png)}");
         }
     }
 
-    value = Global::getMixRunctrValueByName(deviceIndex, "BM_SPIRAL_EM_FAULT", dataMap);
-    if(value == 1)
+    fhlxdjFault = Global::getMixRunctrValueByName(deviceIndex, "BM_SPIRAL_EM_FAULT", dataMap);
+    if(fhlxdjFault == 1)
     {
-        ui->fhlsdj_2_2_label->setStyleSheet("QLabel#fhlsdj_2_2_label{background-image:url(:/pic/em_fault.png)}");
+        ui->fhlxdj_2_2_label->setStyleSheet("QLabel#fhlxdj_2_2_label{background-image:url(:/pic/em_fault.png)}");
     }
     else
     {
         value = Global::getMixRunctrValueByName(deviceIndex, "BM_SPIRAL_EM_RUN", dataMap);
         if(value == 1)
         {
-            ui->fhlsdj_2_2_label->setStyleSheet("QLabel#fhlsdj_2_2_label{background-image:url(:/pic/em_run.png)}");
+            ui->fhlxdj_2_2_label->setStyleSheet("QLabel#fhlxdj_2_2_label{background-image:url(:/pic/em_run.png)}");
         }
         else
         {
-            ui->fhlsdj_2_2_label->setStyleSheet("QLabel#fhlsdj_2_2_label{background-image:url(:/pic/em_stop.png)}");
+            ui->fhlxdj_2_2_label->setStyleSheet("QLabel#fhlxdj_2_2_label{background-image:url(:/pic/em_stop.png)}");
         }
     }
 
@@ -527,11 +664,11 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     }
     if(isCoro || isInve)
     {
-        ui->wnzp_1_1_label->setStyleSheet("QLabel#wnzp_1_1_label{background-image:url(:/pic/wheel_stop.png)}");
+        ui->wnzp_1_1_label->setStyleSheet("QLabel#wnzp_1_1_label{background-image:url(:/pic/wheel_run.png)}");
     }
     else
     {
-        ui->wnzp_1_1_label->setStyleSheet("QLabel#wnzp_1_1_label{background-image:url(:/pic/wheel_run.png)}");
+        ui->wnzp_1_1_label->setStyleSheet("QLabel#wnzp_1_1_label{background-image:url(:/pic/wheel_stop.png)}");
     }
 
 
@@ -555,11 +692,11 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     }
     if(isCoro || isInve)
     {
-        ui->flzp_2_1_label->setStyleSheet("QLabel#flzp_2_1_label{background-image:url(:/pic/wheel_stop.png)}");
+        ui->flzp_2_1_label->setStyleSheet("QLabel#flzp_2_1_label{background-image:url(:/pic/wheel_run.png)}");
     }
     else
     {
-        ui->flzp_2_1_label->setStyleSheet("QLabel#flzp_2_1_label{background-image:url(:/pic/wheel_run.png)}");
+        ui->flzp_2_1_label->setStyleSheet("QLabel#flzp_2_1_label{background-image:url(:/pic/wheel_stop.png)}");
     }
 
 
@@ -583,11 +720,11 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     }
     if(isCoro || isInve)
     {
-        ui->fhzp_2_1_label->setStyleSheet("QLabel#fhzp_2_1_label{background-image:url(:/pic/wheel_stop.png)}");
+        ui->fhzp_2_1_label->setStyleSheet("QLabel#fhzp_2_1_label{background-image:url(:/pic/wheel_run.png)}");
     }
     else
     {
-        ui->fhzp_2_1_label->setStyleSheet("QLabel#fhzp_2_1_label{background-image:url(:/pic/wheel_run.png)}");
+        ui->fhzp_2_1_label->setStyleSheet("QLabel#fhzp_2_1_label{background-image:url(:/pic/wheel_stop.png)}");
     }
 
 
@@ -611,11 +748,11 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     }
     if(isCoro || isInve)
     {
-        ui->fllx_2_1_label->setStyleSheet("QLabel#fllx_2_1_label{background-image:url(:/pic/wheel_stop.png)}");
+        ui->fllx_2_1_label->setStyleSheet("QLabel#fllx_2_1_label{background-image:url(:/pic/wheel_run.png)}");
     }
     else
     {
-        ui->fllx_2_1_label->setStyleSheet("QLabel#fllx_2_1_label{background-image:url(:/pic/wheel_run.png)}");
+        ui->fllx_2_1_label->setStyleSheet("QLabel#fllx_2_1_label{background-image:url(:/pic/wheel_stop.png)}");
     }
 
 
@@ -639,11 +776,11 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     }
     if(isCoro || isInve)
     {
-        ui->wnlx_2_1_label->setStyleSheet("QLabel#wnlx_2_1_label{background-image:url(:/pic/wheel_stop.png)}");
+        ui->wnlx_2_1_label->setStyleSheet("QLabel#wnlx_2_1_label{background-image:url(:/pic/wheel_run.png)}");
     }
     else
     {
-        ui->wnlx_2_1_label->setStyleSheet("QLabel#wnlx_2_1_label{background-image:url(:/pic/wheel_run.png)}");
+        ui->wnlx_2_1_label->setStyleSheet("QLabel#wnlx_2_1_label{background-image:url(:/pic/wheel_stop.png)}");
     }
 
 
@@ -667,11 +804,11 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     }
     if(isCoro || isInve)
     {
-        ui->fhlx_2_1_label->setStyleSheet("QLabel#fhlx_2_1_label{background-image:url(:/pic/wheel_stop.png)}");
+        ui->fhlx_2_1_label->setStyleSheet("QLabel#fhlx_2_1_label{background-image:url(:/pic/wheel_run.png)}");
     }
     else
     {
-        ui->fhlx_2_1_label->setStyleSheet("QLabel#fhlx_2_1_label{background-image:url(:/pic/wheel_run.png)}");
+        ui->fhlx_2_1_label->setStyleSheet("QLabel#fhlx_2_1_label{background-image:url(:/pic/wheel_stop.png)}");
     }
 
 }

@@ -33,10 +33,10 @@ void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
     ctrlSh->GetShardMemory((void *)&ctrlBlock, sizeof(Ctr_Block));
 
     //To do
-    //if(ctrlBlock.fromPru[0] == 1)
-    //{
-        //ctrlBlock.fromPru[0] = 0;
-        //ctrlSh->SetSharedMemory((void *)&ctrlBlock, sizeof(Ctr_Block));
+    if(ctrlBlock.fromPru[1] == 1 && ctrlBlock.fromPru[0] == 1)
+    {
+        ctrlBlock.fromPru[0] = 0;
+        ctrlSh->SetSharedMemory((void *)&ctrlBlock, sizeof(Ctr_Block));
 
         dbSh->LockShare();
         dbSh->GetShardMemory((void *)&plcdata, sizeof(Plc_Db));
@@ -62,8 +62,8 @@ void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
                 break;
         }
 
-        sendPlcdataToServer(dataName, groupInfo, plcdata);
-    //}
+        //sendPlcdataToServer(dataName, groupInfo, plcdata);
+    }
 
     ctrlSh->UnlockShare();
 }

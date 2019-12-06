@@ -120,7 +120,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -147,7 +147,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -174,7 +174,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -201,7 +201,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -228,7 +228,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -255,7 +255,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -282,7 +282,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -309,7 +309,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -513,7 +513,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -541,7 +541,7 @@ border:0px;
 background-color: rgb(237, 14, 14);</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -569,7 +569,7 @@ border:0px;
 background-color: rgb(237, 14, 14);</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -681,7 +681,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -708,7 +708,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -735,7 +735,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -762,7 +762,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -789,7 +789,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -816,7 +816,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -843,7 +843,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -870,7 +870,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -929,7 +929,7 @@ border:0px</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="wnlsdj_2_1_label">
+   <widget class="QLabel" name="fllxdj_2_1_label">
     <property name="geometry">
      <rect>
       <x>231</x>
@@ -945,7 +945,7 @@ border:0px</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="fhlsdj_2_2_label">
+   <widget class="QLabel" name="fhlxdj_2_2_label">
     <property name="geometry">
      <rect>
       <x>425</x>
@@ -1222,7 +1222,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1250,7 +1250,7 @@ border:0px;
 background-color: rgb(237, 14, 14);</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1278,7 +1278,7 @@ border:0px;
 background-color: rgb(237, 14, 14);</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1326,7 +1326,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1353,7 +1353,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1380,7 +1380,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1407,7 +1407,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1434,7 +1434,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1461,7 +1461,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1488,7 +1488,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1515,7 +1515,7 @@ border:0px</string>
 border:0px</string>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -1583,7 +1583,7 @@ border:0px</string>
 border:0px</string>
      </property>
      <property name="text">
-      <string>TextLabel</string>
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

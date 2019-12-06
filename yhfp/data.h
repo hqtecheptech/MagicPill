@@ -14,17 +14,17 @@
 
 /* DB datas length */
 #define DB_COMM_DATA 32
-#define DB_FLOAT_LEN 96
-#define DB_INT_LEN 32
+#define DB_FLOAT_LEN 320
+#define DB_INT_LEN 128
 #define DB_UINT32_LEN 128
-#define DB_UINT16_LEN 128
-#define DB_BOOL_LEN 320
+#define DB_UINT16_LEN 8
+#define DB_BOOL_LEN 400
 
 #define CTR_BLOCK_LEN 4
 
 typedef struct {
-    int fromPru[CTR_BLOCK_LEN];
-    int toPru[CTR_BLOCK_LEN];
+    int16_t fromPru[CTR_BLOCK_LEN];
+    int16_t toPru[CTR_BLOCK_LEN];
 } Ctr_Block;
 
 typedef struct {

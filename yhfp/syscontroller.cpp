@@ -103,13 +103,25 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
     DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getMixNodeInfoByName("ING_SPIRAL_RATE_SETTING");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    int index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    int index1 = Global::convertAddressToIndex(address, deviceNode.DataType);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("TOTAL_CURRENT");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index2 = Global::convertAddressToIndex(address, deviceNode.DataType);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("SLUG_SPIRAL_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index3 = Global::convertAddressToIndex(address, deviceNode.DataType);
 
     //qDebug() << "handle mix setting data!";
     Plc_Db db;
     dbShare->LockShare();
     dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
-    db.w_data[index] = db.w_data[index] + value;
+    db.w_data[index1] = db.w_data[index1] + value;
+    db.i_data[index2] = db.i_data[index2] + value;
+    db.i_data[index3] = db.i_data[index2] + value;
     dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     //Set data changed flag.
     Ctr_Block cb;
@@ -151,17 +163,34 @@ void Syscontroller::yhcStart(int deviceIndex, bool value)
     */
 
     qDebug() << "Begin mix data change!";
-    int index = Global::getMixDataIndexByName("SLUG_SPIRAL_EM_FAULT", deviceIndex);
     Plc_Db db;
     dbShare->LockShare();
     dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     if(value)
     {
-        db.b_data[index] = 0;
+        db.b_data[Global::getMixDataIndexByName("SLUG_SPIRAL_EM_FAULT", deviceIndex)] = 1;
+        db.b_data[Global::getMixDataIndexByName("SLUG_WHEEL_EM_FAULT", deviceIndex)] = 1;
+        db.b_data[Global::getMixDataIndexByName("CY_1_CORO", deviceIndex)] = 1;
+        db.b_data[Global::getMixDataIndexByName("CY_1_INVE", deviceIndex)] = 1;
+        db.b_data[Global::getMixDataIndexByName("ING_WHEEL_CORO", deviceIndex)] = 1;
+        db.b_data[Global::getMixDataIndexByName("ING_WHEEL_INVE", deviceIndex)] = 1;
+        db.b_data[Global::getMixDataIndexByName("SLUG_BIN_HEATER_FAULT", deviceIndex)] = 1;
+        db.b_data[Global::getMixDataIndexByName("ING_BIN_HEATER_FAULT", deviceIndex)] = 1;
+        db.b_data[Global::getMixDataIndexByName("SLUG_BIN_LEVEL_SIG", deviceIndex)] = 1;
+        db.b_data[Global::getMixDataIndexByName("ING_BIN_LEVEL_SIG", deviceIndex)] = 1;
     }
     else
     {
-        db.b_data[index] = 1;
+        db.b_data[Global::getMixDataIndexByName("SLUG_SPIRAL_EM_FAULT", deviceIndex)] = 0;
+        db.b_data[Global::getMixDataIndexByName("SLUG_WHEEL_EM_FAULT", deviceIndex)] = 0;
+        db.b_data[Global::getMixDataIndexByName("CY_1_CORO", deviceIndex)] = 0;
+        db.b_data[Global::getMixDataIndexByName("CY_1_INVE", deviceIndex)] = 0;
+        db.b_data[Global::getMixDataIndexByName("ING_WHEEL_CORO", deviceIndex)] = 0;
+        db.b_data[Global::getMixDataIndexByName("ING_WHEEL_INVE", deviceIndex)] = 0;
+        db.b_data[Global::getMixDataIndexByName("SLUG_BIN_HEATER_FAULT", deviceIndex)] = 0;
+        db.b_data[Global::getMixDataIndexByName("ING_BIN_HEATER_FAULT", deviceIndex)] = 0;
+        db.b_data[Global::getMixDataIndexByName("SLUG_BIN_LEVEL_SIG", deviceIndex)] = 0;
+        db.b_data[Global::getMixDataIndexByName("ING_BIN_LEVEL_SIG", deviceIndex)] = 0;
     }
     dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     //Set data changed flag.
