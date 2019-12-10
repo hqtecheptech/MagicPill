@@ -43,6 +43,9 @@ public:
 
     QString checkStepValidation();
 
+    int defaultParaFEQ() const;
+    void setDefaultParaFEQ(int defaultParaFEQ);
+
 signals:
 
 public slots:
@@ -54,6 +57,7 @@ private:
     int _nextStepTimeMin = 0;
     int _defaultParaAE = 0;
     int _defaultParaSTA = 0;
+    int _defaultParaFEQ = 0;
     float _nextStepTemp = 0.0;
     float _hopeTemp = 0.0;
     QList<FerCase*> _ferCases;

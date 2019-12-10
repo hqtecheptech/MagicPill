@@ -13,6 +13,7 @@ FerStepForm::FerStepForm(QWidget *parent) :
 
     ui->def_ae_text_edit->installEventFilter(this);
     ui->def_sta_text_edit->installEventFilter(this);
+    ui->def_frq_text_edit->installEventFilter(this);
     ui->max_time_text_edit->installEventFilter(this);
     ui->min_time_text_edit->installEventFilter(this);
     ui->step_tmp_text_edit->installEventFilter(this);
@@ -41,6 +42,8 @@ void FerStepForm::initStep(FerStep *step)
     _ferStep.setDefaultParaAE(step->defaultParaAE());
     ui->def_sta_text_edit->setText(QString::number(step->defaultParaSTA()));
     _ferStep.setDefaultParaSTA(step->defaultParaSTA());
+    ui->def_frq_text_edit->setText(QString::number(step->defaultParaFEQ()));
+    _ferStep.setDefaultParaFEQ(step->defaultParaFEQ());
     ui->expect_tmp_text_edit->setText(QString::number(step->hopeTemp()));
     _ferStep.setHopeTemp(step->hopeTemp());
     QList<FerCase*> ferCases;
@@ -55,6 +58,7 @@ void FerStepForm::initStep(FerStep *step)
         FerCase *ferCase = new FerCase;
         ferCase->setAe(step->ferCases().at(i)->ae());
         ferCase->setSta(step->ferCases().at(i)->sta());
+        ferCase->setFreq(step->ferCases().at(i)->freq());
         ferCase->setLowTempture(step->ferCases().at(i)->lowTempture());
         ferCase->setHighTempture(step->ferCases().at(i)->highTempture());
         ferCases.append(ferCase);
@@ -111,7 +115,8 @@ QString FerStepForm::checkStepValidation()
     Global::ferConfigStrContent.append("next_step_temp " + QString::number(_ferStep.nextStepTemp()));
     Global::ferConfigStrContent.append("hope_temp " + QString::number(_ferStep.hopeTemp()));
     Global::ferConfigStrContent.append("default_para " + QString::number(_ferStep.defaultParaAE())
-                                       + " " + QString::number(_ferStep.defaultParaSTA()));
+                                       + " " + QString::number(_ferStep.defaultParaSTA())
+                                       + " " + QString::number(_ferStep.defaultParaFEQ()));
 
     for(int i=0; i<caseLayoutWidgets.length();i++)
     {
@@ -275,6 +280,31 @@ bool FerStepForm::eventFilter(QObject *watched, QEvent *event)
                     else
                     {
                         _ferStep.setDefaultParaSTA(value);
+                    }
+                }
+                else
+                {
+                    msgBox.setText("输入格式错误，请输入大于0的整数!");
+                    msgBox.show();
+                }
+            }
+        }
+        else if(watched == ui->def_frq_text_edit)
+        {
+            textValue = ui->def_frq_text_edit->toPlainText();
+            if(textValue != "")
+            {
+                int value = textValue.toInt(&isValid);
+                if(isValid)
+                {
+                    if(value <= 0)
+                    {
+                        msgBox.setText("频率必须大于0!");
+                        msgBox.show();
+                    }
+                    else
+                    {
+                        _ferStep.setDefaultParaFEQ(value);
                     }
                 }
                 else

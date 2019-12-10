@@ -114,3 +114,13 @@ QString FerStep::checkStepValidation()
 
     return "OK";
 }
+
+int FerStep::defaultParaFEQ() const
+{
+    return _defaultParaFEQ;
+}
+
+void FerStep::setDefaultParaFEQ(int defaultParaFEQ)
+{
+    _defaultParaFEQ = defaultParaFEQ;
+}

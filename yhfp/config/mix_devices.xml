@@ -24,7 +24,7 @@
         <node id="5" name="BM_SPIRAL_PRESSURE" cname="返混螺旋压力" length="1" offset="19" diff="0.5"/>
         <node id="5" name="SLUG_SPIRAL_PRESSURE" cname="污泥螺旋压力" length="1" offset="20" diff="0.5"/>
         <node id="5" name="TOTAL_CURRENT" cname="总电流反馈" length="1" offset="21" diff="0.5"/>
-        <node id="5" name="MIXER_CURRENT" cname="混料机电流反馈" length="1" offset="21" diff="0.5"/>
+        <node id="5" name="MIXER_CURRENT" cname="混料机电流反馈" length="1" offset="22" diff="0.5"/>
     </area>
     <area name="RATE" datatype="w" start="2304" diff="0">
         <node id="5" name="ING_SPIRAL_RATE" cname="辅料螺旋速度" length="1" offset="0" diff="0"/>

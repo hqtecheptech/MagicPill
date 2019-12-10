@@ -4,49 +4,48 @@
     <area name="FERMENTATION" datatype="r" start="0" diff="0.5">
         <node id="1" name="FER_RT_R" cname="发酵池实时温度" length="12" offset="0" diff="0.5"/>
         <node id="1" name="FER_HT_R" cname="发酵池高点温度" length="12" offset="1" diff="0.5"/>
-        <node id="1" name="FER_WT_R" cname="发酵池权重温度" length="12" offset="2" diff="0.5"/>
-        <node id="1" name="FER_ET_R" cname="发酵池环境温度" length="12" offset="3" diff="0.5"/>
-        <node id="1" name="FER_HM_R" cname="发酵池环境湿度" length="12" offset="4" diff="0.5"/>
-        <node id="1" name="FER_AI_R" cname="总电流反馈" length="1" offset="5" diff="0.5"/>
+        <node id="1" name="FER_MT_R" cname="发酵池测量温度" length="12" offset="2" diff="0.5"/>
+        <node id="1" name="FER_WT_R" cname="发酵池权重温度" length="12" offset="3" diff="0.5"/>
+        <node id="1" name="FER_HT_R" cname="发酵池环境温度" length="12" offset="4" diff="0.5"/>
+        <node id="1" name="FER_HM_R" cname="发酵池环境湿度" length="12" offset="5" diff="0.5"/>
     </area>
-    <area name="ENVIRONMENT" datatype="r" start="196" diff="0.5">
-        <node id="1" name="ES_H2S_R" cname="环境H2S含量" length="7" offset="0" diff="0.5"/>
-        <node id="1" name="ES_NH3_R" cname="环境NH3含量" length="7" offset="1" diff="0.5"/>
+    <area name="ENVIRONMENT" datatype="r" start="288" diff="0.5">
+        <node id="1" name="ES_E2S_R" cname="环境中硫化氢含量" length="12" offset="0" diff="0.5"/>
+        <node id="1" name="ES_NH3_R" cname="环境中氨气含量" length="12" offset="1" diff="0.5"/>
+        <node id="1" name="ES_TEMP_R" cname="环境中温度" length="12" offset="2" diff="0.5"/>
+        <node id="1" name="TOTAL_CURRENT_R" cname="总电流反馈" length="12" offset="3" diff="0.5"/>
     </area>
-    <area name="TANK_STATE" datatype="di" start="384" diff="0">
-        <node id="1" name="FER_STEPCTR_UI_CTRL" cname="发酵运行步骤控制" length="12" offset="0" diff="0"/>
-        <node id="1" name="FER_STEPCTR_UI" cname="发酵运行步骤" length="12" offset="1" diff="0"/>
-    </area>
-    <area name="RUNNING_TIME" datatype="dw" start="512" diff="300">
-        <node id="1" name="FER_AE_UDI" cname="曝气耗时" length="12" offset="0" diff="30"/>
-        <node id="1" name="FER_STA_UDI" cname="静止耗时" length="12" offset="1" diff="30"/>
-        <node id="1" name="FER_START_UDI" cname="发酵开始时间" length="12" offset="2" diff="0"/>
-        <node id="1" name="FER_END_UDI" cname="发酵结束时间" length="12" offset="3" diff="0"/>
-        <node id="1" name="FER_TOT_UDI" cname="发酵总时间" length="12" offset="4" diff="300"/>
-        <node id="1" name="Max_Delay" cname="操作最大延时设置" length="1" offset="5" diff="0"/>
-    </area>
-    <area name="CUSTOM_FER_SETTING" datatype="w" start="1024" diff="0">
+    <area name="CUSTOM_FER_SETTING" datatype="di" start="1280" diff="0">
         <node id="1" name="FER_Hand_RunTime" cname="手动发酵曝气时长" length="12" offset="0" diff="0"/>
         <node id="1" name="FER_Hand_SpaceTime" cname="手动发酵曝气间隔" length="12" offset="1" diff="0"/>
+        <node id="1" name="Max_Delay" cname="操作最大延时设置" length="12" offset="2" diff="0"/>
+        <node id="1" name="FER_STEPCTR_UI_CTRL" cname="发酵运行步骤控制" length="12" offset="3" diff="0"/>
     </area>
-    <area name="RUNCTR" datatype="x0" start="1280" diff="0">
-        <node id="1" name="FER_Startctr_BOOL" cname="远程开始发酵使能" length="24" offset="0" diff="0" alert0="远程停止发酵" alert1="远程开始发酵" priority="0"/>
-        <node id="1" name="FAN_HandStart_BOOL" cname="远程风机手动启动" length="24" offset="1" diff="0" alert0="远程风机手动停止" alert1="远程风机手动启动" priority="0"/>
-        <node id="1" name="FER_Auto_BOOL" cname="远程发酵手动自动使能" length="24" offset="2" diff="0" alert0="远程手动发酵" alert1="远程发酵自动" priority="0"/>
-        <node id="1" name="SPARE" cname="暂不使用" length="24" offset="3" diff="0" alert0="暂不使用" alert1="暂不使用"  priority="1"/>
-        <node id="1" name="FER_Pause_BOOL" cname="远程发酵暂停使能" length="24" offset="4" diff="0" alert0="远程发酵继续" alert1="远程发酵暂停" priority="0"/>
-        <node id="1" name="HM_FER_Startctr_BOOL" cname="人机界面开始发酵使能" length="5" offset="14" diff="0" alert0="人机界面停止发酵" alert1="人机界面开始发酵" priority="0"/>
-        <node id="1" name="HM_FAN_HandStart_BOOL" cname="人机界面风机手动启动" length="6" offset="16" diff="0" alert0="人机界面风机手动停止" alert1="人机界面风机手动启动" priority="0"/>
-        <node id="1" name="HM_FER_Pause_BOOL" cname="人机界面发酵暂停使能" length="7" offset="13" diff="0" alert0="人机界面发酵继续" alert1="人机界面发酵暂停" priority="0"/>
-        <node id="1" name="Aeration_Start" cname="远程曝气使能" length="24" offset="8" diff="0" alert0="远程曝气结束" alert1="远程曝气开始" priority="0"/>
-        <node id="1" name="SPARE" cname="暂不使用" length="24" offset="9" diff="0" alert0="暂不使用" alert1="暂不使用"  priority="1"/>
-        <node id="1" name="FER_State_BOOL" cname="发酵状态" length="24" offset="10" diff="0" alert0="发酵停止" alert1="发酵运行中"  priority="1"/>
-        <node id="1" name="Panel_Atuo_BOOL" cname="面板手自动状态" length="24" offset="11" diff="0" alert0="面板手动" alert1="面板自动"  priority="1"/>
-        <node id="1" name="Panel_Lock_BOOL" cname="面板锁定状态" length="24" offset="12" diff="0" alert0="面板未锁定" alert1="面板锁定"  priority="1"/>
-        <node id="1" name="FAN_Open_Timeout_BOOL" cname="风机开超时故障" length="13" offset="0" diff="0" alert0="风机开未超时" alert1="风机开超时"  priority="1"/>
-        <node id="1" name="FAN_Close_Timeout_BOOL" cname="风机关超时故障" length="14" offset="0" diff="0" alert0="风机关未超时" alert1="风机关超时"  priority="1"/>
-        <node id="1" name="FAN_Run_BOOL" cname="风机运行状态" length="24" offset="15" diff="0" alert0="风机停止运行" alert1="风机正在运行" priority="0"/>
-        <node id="1" name="FAN_FAULT_BOOL" cname="风机故障状态" length="24" offset="16" diff="0" alert0="风机无故障" alert1="风机故障" priority="0"/>
+    <area name="RUNNING_TIME" datatype="dw" start="1792" diff="300">
+        <node id="1" name="FER_AE_UDI" cname="曝气耗时" length="12" offset="0" diff="30"/>
+        <node id="1" name="FER_STA_UDI" cname="静止耗时" length="12" offset="1" diff="30"/>
+        <node id="1" name="FER_CURRENT_STEP_UDI" cname="当前阶段运行时间" length="12" offset="2" diff="30"/>
+        <node id="1" name="FER_START_UDI" cname="发酵开始时间" length="12" offset="3" diff="0"/>
+        <node id="1" name="FER_END_UDI" cname="发酵结束时间" length="12" offset="4" diff="0"/>
+        <node id="1" name="FER_TOT_UDI" cname="发酵总时间" length="12" offset="5" diff="300"/>
+    </area>
+    <area name="TANK_STATE" datatype="dw" start="2080" diff="0">
+        <node id="1" name="FER_STEPCTR_UI" cname="发酵运行步骤" length="12" offset="1" diff="0"/>
+    </area>
+    <area name="RUNCTR" datatype="x0" start="2320" diff="0">
+        <node id="1" name="FER_Startctr_BOOL" cname="远程开始发酵使能" length="24" offset="0" diff="0" alert0="无动作" alert1="远程开始发酵" priority="0"/>
+        <node id="1" name="FER_Stopctr_BOOL" cname="远程结束发酵使能" length="24" offset="1" diff="0" alert0="无动作" alert1="远程停止发酵" priority="0"/>
+        <node id="1" name="FAN_HandStart_BOOL" cname="远程风机手动启动" length="24" offset="2" diff="0" alert0="无动作" alert1="远程风机手动启动" priority="0"/>
+        <node id="1" name="FAN_HandStop_BOOL" cname="远程风机手动关闭" length="24" offset="3" diff="0" alert0="无动作" alert1="远程风机手动关闭" priority="0"/>
+        <node id="1" name="Aeration_Start" cname="远程手动爆气方案启动" length="24" offset="4" diff="0" alert0="无动作" alert1="远程手动爆气方案启动" priority="0"/>
+        <node id="1" name="Aeration_Stop" cname="远程手动曝气方案停止" length="24" offset="5" diff="0" alert0="无动作" alert1="远程手动曝气方案停止" priority="0"/>
+        <node id="1" name="FER_Auto_BOOL" cname="远程发酵手动自动使能" length="24" offset="6" diff="0" alert0="远程手动发酵" alert1="远程发酵自动" priority="0"/>
+        <node id="1" name="FER_Pause" cname="发酵暂停" length="24" offset="7" diff="0" alert0="发酵继续" alert1="发酵暂停"  priority="1"/>
+        <node id="1" name="FER_State_BOOL" cname="发酵状态" length="24" offset="8" diff="0" alert0="发酵停止" alert1="发酵运行中"  priority="1"/>
+        <node id="1" name="FAN_Open_Timeout_BOOL" cname="风机开超时故障" length="9" offset="0" diff="0" alert0="风机开未超时" alert1="风机开超时"  priority="1"/>
+        <node id="1" name="FAN_Close_Timeout_BOOL" cname="风机关超时故障" length="10" offset="0" diff="0" alert0="风机关未超时" alert1="风机关超时"  priority="1"/>
+        <node id="1" name="FAN_Run_BOOL" cname="风机运行状态" length="24" offset="11" diff="0" alert0="风机停止运行" alert1="风机正在运行" priority="0"/>
+        <node id="1" name="FAN_FAULT_BOOL" cname="风机故障状态" length="24" offset="12" diff="0" alert0="风机无故障" alert1="风机故障" priority="0"/>
     </area>
   </areas>
 </device>

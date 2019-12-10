@@ -23,11 +23,15 @@ public:
 
     QString checkCaseValidation(int caseSeq);
 
+    int freq() const;
+    void setFreq(int freq);
+
 private:
     float _lowTempture = 0.0;
     float _highTempture = 0.0;
     int _ae = 0;
     int _sta = 0;
+    int _freq = 0;
 };
 
 #endif // FERCASE_H

@@ -105,6 +105,7 @@ bool FerConfig::loadConfig(QList<FerStep *> *steps, int deviceIndex)
                         {
                             ferStep->setDefaultParaAE(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toInt());
                             ferStep->setDefaultParaSTA(QByteArray(fieldsStrList.at(2).toLocal8Bit().constData()).toInt());
+                            ferStep->setDefaultParaFEQ(QByteArray(fieldsStrList.at(3).toLocal8Bit().constData()).toInt());
                         }
                         else if(value == "case_" + QString::number(caseNum+1))
                         {
@@ -113,6 +114,7 @@ bool FerConfig::loadConfig(QList<FerStep *> *steps, int deviceIndex)
                             ferCase->setHighTempture(QByteArray(fieldsStrList.at(5).toLocal8Bit().constData()).toFloat());
                             ferCase->setAe(QByteArray(fieldsStrList.at(6).toLocal8Bit().constData()).toFloat());
                             ferCase->setSta(QByteArray(fieldsStrList.at(7).toLocal8Bit().constData()).toFloat());
+                            ferCase->setFreq(QByteArray(fieldsStrList.at(8).toLocal8Bit().constData()).toFloat());
                             ferCases.append(ferCase);
                             caseNum++;
                         }

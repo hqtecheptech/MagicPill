@@ -62,9 +62,24 @@ QString FerCase::checkCaseValidation(int caseSeq)
        return "间隔时长必须大于0";
     }
 
+    if(_freq <=0)
+    {
+       return "频率必须大于0";
+    }
+
     Global::ferConfigStrContent.append("case_" + QString::number(caseSeq+1) + " "
             + QString::number(_lowTempture) + " < x < " + QString::number(_highTempture) + " "
-            + QString::number(_ae) + " " + QString::number(_sta));
+            + QString::number(_ae) + " " + QString::number(_sta) + " " + QString::number(_freq));
 
     return "OK";
+}
+
+int FerCase::freq() const
+{
+    return _freq;
+}
+
+void FerCase::setFreq(int freq)
+{
+    _freq = freq;
 }

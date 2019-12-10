@@ -115,6 +115,11 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index3 = Global::convertAddressToIndex(address, deviceNode.DataType);
 
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("SLUG_BIN_OUTPUT_QUANTITY");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index4 = Global::convertAddressToIndex(address, deviceNode.DataType);
+
     //qDebug() << "handle mix setting data!";
     Plc_Db db;
     dbShare->LockShare();
@@ -122,6 +127,7 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
     db.w_data[index1] = db.w_data[index1] + value;
     db.i_data[index2] = db.i_data[index2] + value;
     db.i_data[index3] = db.i_data[index2] + value;
+    db.i_data[index4] = db.i_data[index2] + value + 10;
     dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     //Set data changed flag.
     Ctr_Block cb;

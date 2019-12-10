@@ -10,6 +10,7 @@ FerCaseForm::FerCaseForm(QWidget *parent) :
     ui->high_tmp_text_edit->installEventFilter(this);
     ui->ae_text_edit->installEventFilter(this);
     ui->sta_text_edit->installEventFilter(this);
+    ui->freq_text_edit->installEventFilter(this);
 }
 
 FerCaseForm::~FerCaseForm()
@@ -32,6 +33,8 @@ void FerCaseForm::setFercase(const FerCase &fercase)
     ui->high_tmp_text_edit->setText(QString::number(fercase.highTempture()));
     _fercase.setLowTempture(fercase.lowTempture());
     ui->low_tmp_text_edit->setText(QString::number(fercase.lowTempture()));
+    _fercase.setFreq(fercase.freq());
+    ui->freq_text_edit->setText(QString::number(fercase.freq()));
 }
 
 QString FerCaseForm::checkCaseValidation()
@@ -140,6 +143,31 @@ bool FerCaseForm::eventFilter(QObject *watched, QEvent *event)
                     else
                     {
                         _fercase.setSta(value);
+                    }
+                }
+                else
+                {
+                    msgBox.setText("输入格式错误，请输入大于0的整数!");
+                    msgBox.show();
+                }
+            }
+        }
+        else if(watched == ui->freq_text_edit)
+        {
+            textValue = ui->freq_text_edit->toPlainText();
+            if(textValue != "")
+            {
+                int value = textValue.toInt(&isValid);
+                if(isValid)
+                {
+                    if(value <= 0)
+                    {
+                        msgBox.setText("频率必须大于0!");
+                        msgBox.show();
+                    }
+                    else
+                    {
+                        _fercase.setFreq(value);
                     }
                 }
                 else

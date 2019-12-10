@@ -47,7 +47,6 @@ private:
     int h = 0;
 
     QList<FerStep *> _ferSteps;
-    bool loadConfig(QList<FerStep *> *steps);
     void initUI();
     void clearUI();
 };

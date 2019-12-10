@@ -158,105 +158,6 @@ void FerConfigDialog::updateSize(int aw, int ah)
     qDebug() << h;
 }
 
-bool FerConfigDialog::loadConfig(QList<FerStep *> *steps)
-{
-    QFile file("fer_para_conf_1");
-    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        qDebug() << "Read configuration file failed!";
-        return false;
-    }
-
-    int stepNum = 0;
-    while(!file.atEnd())
-    {
-        QString rawStr = QString(file.readLine());
-        QStringList contentStrList = rawStr.split("\n", QString::SplitBehavior::SkipEmptyParts);
-        if(contentStrList.length() > 0 && contentStrList.at(0).toLocal8Bit().constData() != "<end>")
-        {
-            QStringList fieldsStrList = contentStrList.at(0).split(" ", QString::SplitBehavior::SkipEmptyParts);
-            if(fieldsStrList.length() > 0)
-            {
-                QString value = fieldsStrList.at(0);
-                if(value == "<step_" + QString::number(stepNum + 1) + ">")
-                {
-                    FerStep* ferStep = new FerStep();
-                    QList<FerCase *> ferCases;
-
-                    int caseNum = 0;
-                    while(!file.atEnd())
-                    {
-                        rawStr = "";
-                        contentStrList.clear();
-                        fieldsStrList.clear();
-                        rawStr = QString(file.readLine());
-                        contentStrList = rawStr.split("\n", QString::SplitBehavior::SkipEmptyParts);
-
-                        QString endStr = "";
-                        if(contentStrList.length() > 0)
-                        {
-                            endStr = contentStrList.at(0).toLocal8Bit().constData();
-                        }
-
-                        if(contentStrList.length() > 0 && endStr != "<end>")
-                        {
-                            fieldsStrList = contentStrList.at(0).split(" ", QString::SplitBehavior::SkipEmptyParts);
-                            if(fieldsStrList.length() > 0)
-                            {
-                                value = fieldsStrList.at(0).toLocal8Bit().constData();
-                                if(value == "plan_numb")
-                                {
-                                    ferStep->setPlanNum(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toInt());
-                                }
-                                else if(value == "air_mode")
-                                {
-                                    ferStep->setAirMode(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toInt());
-                                }
-                                else if(value == "next_step_time_max")
-                                {
-                                    ferStep->setNextStepTimeMax(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toInt());
-                                }
-                                else if(value == "next_step_time_min")
-                                {
-                                    ferStep->setNextStepTimeMin(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toInt());
-                                }
-                                else if(value == "next_step_temp")
-                                {
-                                    ferStep->setNextStepTemp(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toFloat());
-                                }
-                                else if(value == "hope_temp")
-                                {
-                                    ferStep->setHopeTemp(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toFloat());
-                                }
-                                else if(value == "case_" + QString::number(caseNum+1))
-                                {
-                                    FerCase* ferCase = new FerCase;
-                                    ferCase->setLowTempture(QByteArray(fieldsStrList.at(1).toLocal8Bit().constData()).toFloat());
-                                    ferCase->setHighTempture(QByteArray(fieldsStrList.at(5).toLocal8Bit().constData()).toFloat());
-                                    ferCase->setAe(QByteArray(fieldsStrList.at(6).toLocal8Bit().constData()).toFloat());
-                                    ferCase->setSta(QByteArray(fieldsStrList.at(7).toLocal8Bit().constData()).toFloat());
-                                    ferCases.append(ferCase);
-                                    caseNum++;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            ferStep->setFerCases(ferCases);
-                            break;
-                        }
-                    }
-
-                    steps->append(ferStep);
-                    stepNum++;
-                }
-            }
-        }
-    }
-
-    return true;
-}
-
 void FerConfigDialog::initUI()
 {
     for(int i=0; i < _ferSteps.length(); i++)
@@ -316,7 +217,7 @@ void FerConfigDialog::on_save_push_button_clicked()
     }
     else
     {
-        QFile file("fer_para_conf_5");
+        QFile file("fer_para_conf_" + QString::number(ui->step_seq_comboBox->currentIndex() + 1));
         if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Open configuration file failed!";
