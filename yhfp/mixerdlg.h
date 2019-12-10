@@ -58,6 +58,7 @@ private:
 
     bool wnhjdjFault, wnzpdjFault, flzpdjFault, fllxdjFault, fhlxdjFault;
     bool wnjrFault, wnyxywLow, fljrFault, flyxywLow;
+    bool hljFault, flczdFault, fhczdFault, shpd_1_Fault, shpd_2_Fault, shpd_3_Fault;
 
     void parseData(QMap<float,QString> dataMap);
     void parseRunCtrData(QMap<float,QString> dataMap);

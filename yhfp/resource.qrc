@@ -109,5 +109,6 @@
         <file>pic/inve.png</file>
         <file>pic/coro.png</file>
         <file>pic/total_current.png</file>
+        <file>pic/mixer_current.png</file>
     </qresource>
 </RCC>

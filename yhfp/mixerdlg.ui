@@ -1545,10 +1545,10 @@ border:0px</string>
    <widget class="QFrame" name="frame_7">
     <property name="geometry">
      <rect>
-      <x>1540</x>
-      <y>40</y>
-      <width>193</width>
-      <height>45</height>
+      <x>1390</x>
+      <y>20</y>
+      <width>323</width>
+      <height>69</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -1565,15 +1565,63 @@ border:0px</string>
     <widget class="QLabel" name="TOTAL_CURRENT_label">
      <property name="geometry">
       <rect>
-       <x>100</x>
+       <x>195</x>
        <y>0</y>
-       <width>96</width>
-       <height>42</height>
+       <width>125</width>
+       <height>68</height>
       </rect>
      </property>
      <property name="font">
       <font>
-       <pointsize>20</pointsize>
+       <pointsize>30</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background: transparent; 
+border:0px</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_8">
+    <property name="geometry">
+     <rect>
+      <x>1390</x>
+      <y>110</y>
+      <width>323</width>
+      <height>69</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: transparent; 
+background-image: url(:/pic/mixer_current.png);
+border:0px</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="MIXER_CURRENT_label">
+     <property name="geometry">
+      <rect>
+       <x>195</x>
+       <y>0</y>
+       <width>125</width>
+       <height>68</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>30</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -1608,6 +1656,168 @@ background-image: url(:/pic/no_wifi.png);</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="MIX_MA_RUN_label">
+   <property name="geometry">
+    <rect>
+     <x>1773</x>
+     <y>613</y>
+     <width>78</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent; 
+border:0px</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="CONVEYER_1_RUN_label">
+   <property name="geometry">
+    <rect>
+     <x>1773</x>
+     <y>673</y>
+     <width>78</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent; 
+border:0px</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="CONVEYER_2_RUN_label">
+   <property name="geometry">
+    <rect>
+     <x>1773</x>
+     <y>732</y>
+     <width>78</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent; 
+border:0px</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="CONVEYER_3_RUN_label">
+   <property name="geometry">
+    <rect>
+     <x>1773</x>
+     <y>788</y>
+     <width>78</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent; 
+border:0px</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="BM_BIN_RIDL_RUN_label">
+   <property name="geometry">
+    <rect>
+     <x>1773</x>
+     <y>846</y>
+     <width>78</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent; 
+border:0px</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ING_BIN_RIDL_RUN_label">
+   <property name="geometry">
+    <rect>
+     <x>1773</x>
+     <y>905</y>
+     <width>78</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent; 
+border:0px</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>
