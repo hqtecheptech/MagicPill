@@ -100,7 +100,7 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
     //qDebug() << "Press Speed Up!";
     */
 
-    DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
+    /*DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getMixNodeInfoByName("ING_SPIRAL_RATE_SETTING");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index1 = Global::convertAddressToIndex(address, deviceNode.DataType);
@@ -118,16 +118,32 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("SLUG_BIN_OUTPUT_QUANTITY");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    int index4 = Global::convertAddressToIndex(address, deviceNode.DataType);
+    int index4 = Global::convertAddressToIndex(address, deviceNode.DataType);*/
 
     //qDebug() << "handle mix setting data!";
+
+    DeviceGroupInfo info = Global::getFerDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_MT_R");
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index1 = Global::convertAddressToIndex(address, deviceNode.DataType);
+
+    info = Global::getFerDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getFermenationNodeInfoByName("FER_WT_R");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index2 = Global::convertAddressToIndex(address, deviceNode.DataType);
+
+    info = Global::getFerDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getFermenationNodeInfoByName("TOTAL_CURRENT_R");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index3 = Global::convertAddressToIndex(address, deviceNode.DataType);
+
     Plc_Db db;
     dbShare->LockShare();
     dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
-    db.w_data[index1] = db.w_data[index1] + value;
-    db.i_data[index2] = db.i_data[index2] + value;
-    db.i_data[index3] = db.i_data[index2] + value;
-    db.i_data[index4] = db.i_data[index2] + value + 10;
+    db.f_data[index1] = db.f_data[index1] + value;
+    db.f_data[index2] = db.f_data[index2] + value;
+    db.f_data[index3] = db.f_data[index3] + value;
+    //db.i_data[index4] = db.i_data[index2] + value + 10;
     dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     //Set data changed flag.
     Ctr_Block cb;

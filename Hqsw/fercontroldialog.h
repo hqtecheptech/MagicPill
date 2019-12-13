@@ -72,6 +72,8 @@ private:
     //bool isFanRemote = false;
     bool isFanAuto = false;
     bool isFanRun = false;
+    bool isFerPaused = false;
+    bool isFerStarted = false;
     QMap<int, QList<FerStep *>> _ferConfigs;
 
     ushort handRunTime = 0;
@@ -103,6 +105,7 @@ private slots:
     void on_endFerButton_released();
     void on_tankIndexComboBox_currentIndexChanged(int index);
     void on_changeStepButton_clicked();
+    void on_pauseFerButton_clicked();
 };
 
 #endif // FERCONTROLDIALOG_H

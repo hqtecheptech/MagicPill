@@ -46,7 +46,7 @@ private:
     MixerDlg* mixDlg;
     QThread taskManageThread;
     TaskManager* taskManager;
-    QTimer* pruCheckTimer;
+    //QTimer* pruCheckTimer;
     Syscontroller *controller;
 };
 

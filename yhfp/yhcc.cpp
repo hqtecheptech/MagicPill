@@ -223,7 +223,7 @@ void Yhcc::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> d
 void Yhcc::wirteTestData()
 {
     controller->yhcSpeedUp(deviceIndex, 2);
-    controller->yhcStart(deviceIndex, !started);
+    //controller->yhcStart(deviceIndex, !started);
 }
 
 void Yhcc::updateWatchs()
@@ -293,18 +293,24 @@ void Yhcc::updateWatchs()
 
 void Yhcc::parseYhcData(QMap<float, QString> dataMap)
 {
-    DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
+    /*DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getMixNodeInfoByName("ING_SPIRAL_RATE_SETTING");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertAddressToIndex(address, deviceNode.DataType);
     ui->test_label->setText(Global::currentMixDataMap[address]);
     ui->speedLabel->setText(dataMap[address]);
 
-    /*deviceNode = Global::getYhcNodeInfoByName("Speed");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    //qDebug() << "Speed value: " << Global::currentYhcDataMap[address];
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Speed value: " << Global::currentYhcDataMap[address];
     ui->speedLabel->setText(Global::currentYhcDataMap[address]);*/
+
+    DeviceGroupInfo info = Global::getFerDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_MT_R");
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "FER_MT_R value: " << dataMap[address];
+    ui->speedLabel->setText(Global::currentFermenationDataMap[address]);
 
     /*deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_RunTime");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
@@ -325,8 +331,8 @@ void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
     ui->test_label_2->setText(QString::number(value));
     value = Global::getFerRunctrValueByName(deviceIndex + 1, "FER_Auto_BOOL", dataMap);
     ui->test_label_3->setText(QString::number(value));
-    value = Global::getMixRunctrValueByName(deviceIndex, "SLUG_SPIRAL_EM_FAULT", dataMap);
-    ui->test_label_4->setText(QString::number(value));
+    //value = Global::getMixRunctrValueByName(deviceIndex, "SLUG_SPIRAL_EM_FAULT", dataMap);
+    //ui->test_label_4->setText(QString::number(value));
     // to do: just for test temporay.
     if(value == 0)
     {

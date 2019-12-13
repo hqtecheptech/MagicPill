@@ -48,7 +48,6 @@ void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
             case YHC:
                 groupInfo = Global::getYhcDeviceGroupInfoByGroupId(groupId);
                 parseYhcServerData(groupInfo, plcdata);
-
                 break;
             case FER:
                 groupInfo = Global::getFerDeviceGroupInfoByGroupId(groupId);
@@ -62,7 +61,7 @@ void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
                 break;
         }
 
-        //sendPlcdataToServer(dataName, groupInfo, plcdata);
+        sendPlcdataToServer(dataName, groupInfo, plcdata);
     //}
 
     ctrlSh->UnlockShare();

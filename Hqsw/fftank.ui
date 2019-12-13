@@ -721,88 +721,6 @@ color: rgba(250, 250, 250, 250);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="ocValueLabel">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>65</x>
-      <y>150</y>
-      <width>40</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: transparent;
-color: rgba(250, 250, 250, 250);</string>
-    </property>
-    <property name="text">
-     <string>0</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="oxygenContent">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>150</y>
-      <width>55</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Verdana</family>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: transparent;
-color: rgba(250, 250, 250, 250);</string>
-    </property>
-    <property name="text">
-     <string>氧气含量：</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="wtValueLabel_3">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>105</x>
-      <y>150</y>
-      <width>16</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: transparent;
-color: rgba(250, 250, 250, 250);</string>
-    </property>
-    <property name="text">
-     <string>%</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="SpaceTimeLabel">
     <property name="geometry">
      <rect>
@@ -1410,6 +1328,88 @@ color: rgba(250, 250, 250, 250);</string>
    </property>
    <property name="autoExclusive">
     <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="totalCurrentValueLabel">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>65</x>
+     <y>150</y>
+     <width>40</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: transparent;
+color: rgba(250, 250, 250, 250);</string>
+   </property>
+   <property name="text">
+    <string>0</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="totalCurrentUnitLabel">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>105</x>
+     <y>150</y>
+     <width>16</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: transparent;
+color: rgba(250, 250, 250, 250);</string>
+   </property>
+   <property name="text">
+    <string>A</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="totalCurrentLabel">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>5</x>
+     <y>150</y>
+     <width>55</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Verdana</family>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: transparent;
+color: rgba(250, 250, 250, 250);</string>
+   </property>
+   <property name="text">
+    <string>总电流：</string>
    </property>
   </widget>
  </widget>

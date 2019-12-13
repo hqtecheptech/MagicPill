@@ -21,10 +21,6 @@ FFTank::FFTank(QWidget *parent) :
     switchStateTimer = new QTimer(this);
     connect(switchStateTimer, SIGNAL(timeout()), this, SLOT(switchState()));
 
-    ui->ocValueLabel->setVisible(false);
-    ui->oxygenContent->setVisible(false);
-    ui->wtValueLabel_3->setVisible(false);
-
     tankRunBgImg.load("://image/old/nerFer/FerARun.bmp");
     tankRunQBgImg.load("://image/old/nerFer/FerARunBQ.bmp");
     tankStopBgImg.load("://image/old/nerFer/FerAStop.bmp");
@@ -195,9 +191,10 @@ void FFTank::parseFermentationData(QMap<float,QString> dataMap)
                             * Global::getLengthByDataType(deviceNode.DataType);
     ui->wtValueLabel->setText(dataMap[address]);
 
-    /*deviceNode = Global::getFermenationNodeInfoByName("FER_CO_R");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->ocValueLabel->setText(dataMap[address]);*/
+    deviceNode = Global::getFermenationNodeInfoByName("TOTAL_CURRENT_R");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            * Global::getLengthByDataType(deviceNode.DataType);
+    ui->totalCurrentValueLabel->setText(dataMap[address]);
 }
 
 void FFTank::parseFerStartEndTime(QMap<float,QString> dataMap)
@@ -236,16 +233,6 @@ void FFTank::parseFerRunTimeData(QMap<float,QString> dataMap)
     latestFerRunTime = dataMap[address].toUInt();
     ui->totalTimeValueLabel->setText(formatLongDateString(latestFerRunTime));
 
-    deviceNode = Global::getFermenationNodeInfoByName("FER_START_UDI");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    QDateTime dt = QDateTime::fromTime_t(dataMap[address].toUInt());
-    ui->startTimeValueLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
-
-    deviceNode = Global::getFermenationNodeInfoByName("FER_END_UDI");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    dt = QDateTime::fromTime_t(dataMap[address].toUInt());
-    ui->endTimeValueLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
-
     deviceNode = Global::getFermenationNodeInfoByName("FER_AE_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
@@ -266,7 +253,7 @@ void FFTank::parseFerStepData(QMap<float,QString> dataMap)
     DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_STEPCTR_UI");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    int step = dataMap[address].toInt();
+    int step = dataMap[address].toUInt();
 }
 
 void FFTank::parseFerRunCtrData(QMap<float,QString> dataMap)

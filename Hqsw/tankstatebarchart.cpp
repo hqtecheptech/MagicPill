@@ -29,7 +29,7 @@ TankStateBarChart::TankStateBarChart(QWidget *parent) :
     getTotalRunTimeTcpClient = new TcpClientSocket(this);
     connect(getTotalRunTimeTcpClient,SIGNAL(updateClients(QByteArray)),this,SLOT(showRunTimeData(QByteArray)));
 
-    testRunCode();
+    //testRunCode();
 
     myTimerThread = new MyTimerThread(3600, this);
     connect(myTimerThread, SIGNAL(timeout()),this, SLOT(requestRunTimeData()));
@@ -66,8 +66,8 @@ void TankStateBarChart::testRunCode()
 
 void TankStateBarChart::showEvent(QShowEvent *event)
 {
-    //QTimer::singleShot(10000, this, SLOT(requestRunTimeData()));
-    //myTimerThread->start();
+    QTimer::singleShot(10000, this, SLOT(requestRunTimeData()));
+    myTimerThread->start();
 }
 
 void TankStateBarChart::showRunTimeData(QByteArray data)
