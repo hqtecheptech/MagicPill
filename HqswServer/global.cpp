@@ -1765,7 +1765,7 @@ int Global::getYhcDataIndexByName(QString name, int deviceIndex)
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
     // To do: using a test name temporary.
     DeviceNode deviceNode = Global::getYhcNodeInfoByName(name);
-    int offset = (info.offset + deviceIndex - info.startIndex) * Global::yhcDeviceInfo.Runctr_Num;
+    int offset = (info.offset + deviceIndex - info.startIndex) * Global::yhcDeviceInfo.RunCtr_Block_Size;
     return deviceNode.Offset + offset;
 }
 
@@ -1774,7 +1774,16 @@ int Global::getMixDataIndexByName(QString name, int deviceIndex)
     DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
     // To do: using a test name temporary.
     DeviceNode deviceNode = Global::getMixNodeInfoByName(name);
-    int offset = (info.offset + deviceIndex - info.startIndex) * Global::mixDeviceInfo.Runctr_Num;
+    int offset = (info.offset + deviceIndex - info.startIndex) * Global::mixDeviceInfo.RunCtr_Block_Size;
+    return deviceNode.Offset + offset;
+}
+
+int Global::getFerDataIndexByName(QString name, int deviceIndex)
+{
+    DeviceGroupInfo info = Global::getFerDeviceGroupInfo(deviceIndex);
+    // To do: using a test name temporary.
+    DeviceNode deviceNode = Global::getFermenationNodeInfoByName(name);
+    int offset = (info.offset + deviceIndex - info.startIndex) * Global::ferDeviceInfo.RunCtr_Block_Size;
     return deviceNode.Offset + offset;
 }
 

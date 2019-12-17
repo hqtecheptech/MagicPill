@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<device>
+  <areas devicenumber="1" runctrnumber="128">
+    <area name="DEODORATION" datatype="di" start="0" diff="0.5">
+        <node id="2" name="Level_Switch_Read" length="1" offset="0" diff="0.5"/>
+        <node id="2" name="Temp_Read" length="1" offset="4" diff="0.5"/>
+        <node id="2" name="TimeRead_MidTag" length="1" offset="8" diff="0.5"/>
+    </area>
+    <area name="DEODORATION_SETTING" datatype="di" start="12" diff="0.5">
+        <node id="2" name="HMI_TimeStartSet_Hour_First" cname="风机时钟第一次启动时间设定-时" category="Deodoration_Setting" length="1" offset="12" diff="0.5"/>
+        <node id="2" name="HMI_TimeStartSet_Min_First" cname="风机时钟第一次启动时间设定-分" category="Deodoration_Setting" length="1" offset="16" diff="0.5"/>
+        <node id="2" name="HMI_TimeStartSet_Hour_Second" cname="风机时钟第二次启动时间设定-时" category="Deodoration_Setting" length="1" offset="20" diff="0.5"/>
+        <node id="2" name="HMI_TimeStartSet_Min_Second" cname="风机时钟第二次启动时间设定-分" category="Deodoration_Setting" length="1" offset="24" diff="0.5"/>
+        <node id="2" name="HMI_TimeStopSet_Hour_First" cname="风机时钟第一次停止时间设定-时" category="Deodoration_Setting" length="1" offset="28" diff="0.5"/>
+        <node id="2" name="HMI_TimeStopSet_Min_First" cname="风机时钟第一次停止时间设定-分" category="Deodoration_Setting" length="1" offset="32" diff="0.5"/>
+        <node id="2" name="HMI_TimeStopSet_Hour_Second" cname="风机时钟第二次停止时间设定-时" category="Deodoration_Setting" length="1" offset="36" diff="0.5"/>
+        <node id="2" name="HMI_TimeStopSet_Min_Second" cname="风机时钟第二次停止时间设定-分" category="Deodoration_Setting" length="1" offset="40" diff="0.5"/>
+        <node id="2" name="HMI_PumpTimeStartSet_Hour_First" cname="喷淋第一次启动时间设定-时" category="Deodoration_Setting" length="1" offset="44" diff="0.5"/>
+        <node id="2" name="HMI_PumpTimeStartSet_Min_First" cname="喷淋第一次启动时间设定-分" category="Deodoration_Setting" length="1" offset="48" diff="0.5"/>
+        <node id="2" name="HMI_PumpTimeStopSet_Hour_First" cname="喷淋第一次停止时间设定-时" category="Deodoration_Setting" length="1" offset="52" diff="0.5"/>
+        <node id="2" name="HMI_PumpTimeStopSet_Min_First" cname="喷淋第一次停止时间设定-分" category="Deodoration_Setting" length="1" offset="56" diff="0.5"/>
+        <node id="2" name="HMI_PumpTimeStartSet_Hour_Second" cname="喷淋第二次启动时间设定-时" category="Deodoration_Setting" length="1" offset="60" diff="0.5"/>
+        <node id="2" name="HMI_PumpTimeStartSet_Min_Second" cname="喷淋第二次启动时间设定-分" category="Deodoration_Setting" length="1" offset="64" diff="0.5"/>
+        <node id="2" name="HMI_PumpTimeStopSet_Hour_Second" cname="喷淋第二次停止时间设定-时" category="Deodoration_Setting" length="1" offset="68" diff="0.5"/>
+        <node id="2" name="HMI_PumpTimeStopSet_Min_Second" cname="喷淋第二次停止时间设定-分" category="Deodoration_Setting" length="1" offset="72" diff="0.5"/>
+        <node id="2" name="HMI_TeMP_High_Set" cname="加热高温度设定" category="Deodoration_Setting" length="1" offset="76" diff="0.5"/>
+        <node id="2" name="HMI_TeMP_Low_Set" cname="加热低温度设定" category="Deodoration_Setting" length="1" offset="80" diff="0.5"/>
+    </area>
+    <area name="ENVIRONMENT" datatype="di" start="84" diff="0.5">
+        <node id="2" name="ES_H2S" length="1" offset="84" diff="0.5"/>
+        <node id="2" name="ES_NH3" length="1" offset="88" diff="0.5"/>
+    </area>
+    <area name="RUNCTR" datatype="x0" start="500" diff="0">
+        <node id="2" name="Fan_1_Run_Signal" cname="1#引风机运行信号" length="128" offset="0" diff="0" alert0="1#引风机结束运行" alert1="1#引风机开始运行"  priority="1"/>
+        <node id="2" name="Fan_1_False_Signal" cname="1#引风机故障信号" length="128" offset="1" diff="0" alert0="1#引风机无故障" alert1="1#引风机故障"  priority="1"/>
+        <node id="2" name="ValveBW_1_Run_Signal" cname="1#补水电磁阀运行信号" length="128" offset="4" diff="0" alert0="1#补水电磁阀结束运行" alert1="1#补水电磁阀开始运行"  priority="1"/>
+        <node id="2" name="ValveBW_1_False_Signal" cname="1#补水电磁阀故障信号" length="128" offset="5" diff="0" alert0="1#补水电磁阀无故障" alert1="1#补水电磁阀故障"  priority="1"/>
+        <node id="2" name="Pump_1_Run_Signal" cname="1#循环水泵运行信号" length="128" offset="8" diff="0" alert0="1#循环水泵结束运行" alert1="1#循环水泵开始运行"  priority="1"/>
+        <node id="2" name="Pump_1_False_Signal" cname="1#循环水泵故障信号" length="128" offset="9" diff="0" alert0="1#循环水泵无故障" alert1="1#循环水泵故障"  priority="1"/>
+        <node id="2" name="Pump_PL_1_Run_Signal" cname="1#喷淋水泵运行信号" length="128" offset="10" diff="0" alert0="1#喷淋水泵结束运行" alert1="1#喷淋水泵开始运行"  priority="1"/>
+        <node id="2" name="Pump_PL_1_False_Signal" cname="1#喷淋水泵故障信号" length="128" offset="11" diff="0" alert0="1#喷淋水泵无故障" alert1="1#喷淋水泵故障"  priority="1"/>
+        <node id="2" name="Heater_1_Run_Signal" cname="加热器运行信号" length="128" offset="12" diff="0" alert0="1#加热器结束运行" alert1="1#加热器开始运行"  priority="1"/>
+        <node id="2" name="Heater_1_False_Signal" cname="加热器故障信号" length="128" offset="13" diff="0" alert0="1#加热器无故障" alert1="1#加热器故障"  priority="1"/>
+        <node id="2" name="ValveGD_1_Opened_Signal" cname="1#管道风阀开到位信号" length="128" offset="10" diff="0" alert0="6#管道风阀未开到位" alert1="1#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_1_fault_Signal" cname="1#管道风阀故障信号" length="128" offset="43" diff="0" alert0="1#管道风阀无故障" alert1="1#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_2_Opened_Signal" cname="2#管道风阀开到位信号" length="128" offset="46" diff="0" alert0="2#管道风阀未开到位" alert1="2#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_2_fault_Signal" cname="2#管道风阀故障信号" length="128" offset="48" diff="0" alert0="2#管道风阀无故障" alert1="2#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_3_Opened_Signal" cname="3#管道风阀开到位信号" length="128" offset="51" diff="0" alert0="3#管道风阀未开到位" alert1="3#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_3_fault_Signal" cname="3#管道风阀故障信号" length="128" offset="53" diff="0" alert0="3#管道风阀无故障" alert1="3#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_4_Opened_Signal" cname="4#管道风阀开到位信号" length="128" offset="56" diff="0" alert0="4#管道风阀未开到位" alert1="4#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_4_fault_Signal" cname="4#管道风阀故障信号" length="128" offset="58" diff="0" alert0="4#管道风阀无故障" alert1="4#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_5_Opened_Signal" cname="5#管道风阀开到位信号" length="128" offset="61" diff="0" alert0="5#管道风阀未开到位" alert1="5#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_5_fault_Signal" cname="5#管道风阀故障信号" length="128" offset="63" diff="0" alert0="5#管道风阀无故障" alert1="5#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_6_Opened_Signal" cname="6#管道风阀开到位信号" length="128" offset="66" diff="0" alert0="6#管道风阀未开到位" alert1="6#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_6_fault_Signal" cname="6#管道风阀故障信号" length="128" offset="68" diff="0" alert0="6#管道风阀无故障" alert1="6#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_7_Opened_Signal" cname="7#管道风阀开到位信号" length="128" offset="71" diff="0" alert0="7#管道风阀未开到位" alert1="7#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_7_fault_Signal" cname="7#管道风阀故障信号" length="128" offset="73" diff="0" alert0="7#管道风阀无故障" alert1="7#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_8_Opened_Signal" cname="8#管道风阀开到位信号" length="128" offset="76" diff="0" alert0="8#管道风阀未开到位" alert1="8#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_8_fault_Signal" cname="8#管道风阀故障信号" length="128" offset="78" diff="0" alert0="8#管道风阀无故障" alert1="8#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_9_Opened_Signal" cname="9#管道风阀开到位信号" length="128" offset="81" diff="0" alert0="9#管道风阀未开到位" alert1="9#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_9_fault_Signal" cname="9#管道风阀故障信号" length="128" offset="83" diff="0" alert0="9#管道风阀无故障" alert1="9#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_10_Opened_Signal" cname="10#管道风阀开到位信号" length="128" offset="86" diff="0" alert0="10#管道风阀未开到位" alert1="10#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_10_fault_Signal" cname="10#管道风阀故障信号" length="128" offset="88" diff="0" alert0="10#管道风阀无故障" alert1="10#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_11_Opened_Signal" cname="11#管道风阀开到位信号" length="128" offset="91" diff="0" alert0="11#管道风阀未开到位" alert1="11#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_11_fault_Signal" cname="11#管道风阀故障信号" length="128" offset="93" diff="0" alert0="11#管道风阀无故障" alert1="11#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_12_Opened_Signal" cname="12#管道风阀开到位信号" length="128" offset="96" diff="0" alert0="12#管道风阀未开到位" alert1="12#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_12_fault_Signal" cname="12#管道风阀故障信号" length="128" offset="98" diff="0" alert0="12#管道风阀无故障" alert1="12#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_13_Opened_Signal" cname="13#管道风阀开到位信号" length="128" offset="101" diff="0" alert0="13#管道风阀未开到位" alert1="13#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_13_fault_Signal" cname="13#管道风阀故障信号" length="128" offset="103" diff="0" alert0="13#管道风阀无故障" alert1="13#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_14_Opened_Signal" cname="14#管道风阀开到位信号" length="128" offset="106" diff="0" alert0="14#管道风阀未开到位" alert1="14#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_14_fault_Signal" cname="14#管道风阀故障信号" length="128" offset="108" diff="0" alert0="14#管道风阀无故障" alert1="14#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_15_Opened_Signal" cname="15#管道风阀开到位信号" length="128" offset="111" diff="0" alert0="15#管道风阀未开到位" alert1="15#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_15_fault_Signal" cname="15#管道风阀故障信号" length="128" offset="113" diff="0" alert0="15#管道风阀无故障" alert1="15#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_16_Opened_Signal" cname="16#管道风阀开到位信号" length="128" offset="111" diff="0" alert0="16#管道风阀未开到位" alert1="16#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_16_fault_Signal" cname="16#管道风阀故障信号" length="128" offset="113" diff="0" alert0="16#管道风阀无故障" alert1="16#管道风阀故障"  priority="1"/>
+        <node id="2" name="ValveGD_17_Opened_Signal" cname="17#管道风阀开到位信号" length="128" offset="111" diff="0" alert0="17#管道风阀未开到位" alert1="17#管道风阀已开到位"  priority="1"/>
+        <node id="2" name="ValveGD_17_fault_Signal" cname="17#管道风阀故障信号" length="128" offset="113" diff="0" alert0="17#管道风阀无故障" alert1="17#管道风阀故障"  priority="1"/>
+        <node id="2" name="Level_Switch_Low_Signal" cname="水箱低液位信号" length="128" offset="114" diff="0" alert0="水箱低液正常" alert1="水箱低液位低"  priority="1"/>
+        <node id="2" name="TimeControl_Choose" cname="控制选择" length="128" offset="128" diff="0" alert0="本地控制已选择" alert1="时钟控制已选择"  priority="1"/>
+        <node id="2" name="spare" cname="待定" length="128" offset="174" diff="0" alert0="待定" alert1="待定"  priority="1" save="false"/>
+        <node id="2" name="spare" cname="待定" length="128" offset="175" diff="0" alert0="待定" alert1="待定"  priority="1" save="false"/>
+        <node id="2" name="ValveGD_1_Start_Signal" cname="1#发酵槽阀打开信号" length="128" offset="48" diff="0" alert0="1#发酵槽阀未打开" alert1="1#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_1_Shut_Signal" cname="1#发酵槽阀关闭信号" length="128" offset="49" diff="0" alert0="1#发酵槽阀未关闭" alert1="1#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_2_Start_Signal" cname="2#发酵槽阀打开信号" length="128" offset="137" diff="0" alert0="2#发酵槽阀未打开" alert1="2#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_2_Shut_Signal" cname="2#发酵槽阀关闭信号" length="128" offset="138" diff="0" alert0="2#发酵槽阀未关闭" alert1="2#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_3_Start_Signal" cname="3#发酵槽阀打开信号" length="128" offset="139" diff="0" alert0="3#发酵槽阀未打开" alert1="3#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_3_Shut_Signal" cname="3#发酵槽阀关闭信号" length="128" offset="140" diff="0" alert0="3#发酵槽阀未关闭" alert1="3#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_4_Start_Signal" cname="4#发酵槽阀打开信号" length="128" offset="141" diff="0" alert0="4#发酵槽阀未打开" alert1="4#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_4_Shut_Signal" cname="4#发酵槽阀关闭信号" length="128" offset="142" diff="0" alert0="4#发酵槽阀未关闭" alert1="4#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_5_Start_Signal" cname="5#发酵槽阀打开信号" length="128" offset="143" diff="0" alert0="5#发酵槽阀未打开" alert1="5#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_5_Shut_Signal" cname="5#发酵槽阀关闭信号" length="128" offset="144" diff="0" alert0="5#发酵槽阀未关闭" alert1="5#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_6_Start_Signal" cname="6#发酵槽阀打开信号" length="128" offset="145" diff="0" alert0="6#发酵槽阀未打开" alert1="6#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_6_Shut_Signal" cname="6#发酵槽阀关闭信号" length="128" offset="146" diff="0" alert0="6#发酵槽阀未关闭" alert1="6#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_7_Start_Signal" cname="7#发酵槽阀打开信号" length="128" offset="147" diff="0" alert0="7#发酵槽阀未打开" alert1="7#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_7_Shut_Signal" cname="7#发酵槽阀关闭信号" length="128" offset="148" diff="0" alert0="7#发酵槽阀未关闭" alert1="7#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_8_Start_Signal" cname="8#发酵槽阀打开信号" length="128" offset="149" diff="0" alert0="8#发酵槽阀未打开" alert1="8#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_8_Shut_Signal" cname="8#发酵槽阀关闭信号" length="128" offset="150" diff="0" alert0="8#发酵槽阀未关闭" alert1="8#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_9_Start_Signal" cname="9#发酵槽阀打开信号" length="128" offset="151" diff="0" alert0="9#发酵槽阀未打开" alert1="9#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_9_Shut_Signal" cname="9#发酵槽阀关闭信号" length="128" offset="152" diff="0" alert0="9#发酵槽阀未关闭" alert1="9#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_10_Start_Signal" cname="10#发酵槽阀打开信号" length="128" offset="153" diff="0" alert0="10#发酵槽阀未打开" alert1="10#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_10_Close_Signal" cname="10#发酵槽阀关闭信号" length="128" offset="154" diff="0" alert0="10#发酵槽阀未关闭" alert1="10#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_11_Start_Signal" cname="11#发酵槽阀打开信号" length="128" offset="155" diff="0" alert0="11#发酵槽阀未打开" alert1="11#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_11_Shut_Signal" cname="11#发酵槽阀关闭信号" length="128" offset="156" diff="0" alert0="11#发酵槽阀未关闭" alert1="11#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_12_Start_Signal" cname="12#发酵槽阀打开信号" length="128" offset="157" diff="0" alert0="12#发酵槽阀未打开" alert1="12#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_12_Shut_Signal" cname="12#发酵槽阀关闭信号" length="128" offset="158" diff="0" alert0="12#发酵槽阀未关闭" alert1="12#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_13_Start_Signal" cname="13#发酵槽阀打开信号" length="128" offset="159" diff="0" alert0="13#发酵槽阀未打开" alert1="13#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_13_Shut_Signal" cname="13#发酵槽阀关闭信号" length="128" offset="160" diff="0" alert0="13#发酵槽阀未关闭" alert1="13#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_14_Start_Signal" cname="14#发酵槽阀打开信号" length="128" offset="161" diff="0" alert0="14#发酵槽阀未打开" alert1="14#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_14_Shut_Signal" cname="14#发酵槽阀关闭信号" length="128" offset="162" diff="0" alert0="14#发酵槽阀未关闭" alert1="14#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_15_Start_Signal" cname="15#发酵槽阀打开信号" length="128" offset="163" diff="0" alert0="15#发酵槽阀未打开" alert1="15#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_15_Shut_Signal" cname="15#发酵槽阀关闭信号" length="128" offset="164" diff="0" alert0="15#发酵槽阀未关闭" alert1="15#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_16_Start_Signal" cname="16#发酵槽阀打开信号" length="128" offset="163" diff="0" alert0="16#发酵槽阀未打开" alert1="16#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_16_Shut_Signal" cname="16#发酵槽阀关闭信号" length="128" offset="164" diff="0" alert0="16#发酵槽阀未关闭" alert1="16#发酵槽阀已关闭"  priority="1"/>
+        <node id="2" name="ValveGD_17_Start_Signal" cname="17#发酵槽阀打开信号" length="128" offset="163" diff="0" alert0="17#发酵槽阀未打开" alert1="17#发酵槽阀已打开"  priority="1"/>
+        <node id="2" name="ValveGD_17_Shut_Signal" cname="17#发酵槽阀关闭信号" length="128" offset="164" diff="0" alert0="17#发酵槽阀未关闭" alert1="17#发酵槽阀已关闭"  priority="1"/>
+    </area>
+  </areas>
+</device>

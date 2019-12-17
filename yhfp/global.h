@@ -2,9 +2,8 @@
 #define GLOBAL_H
 
 #include "dataformat.h"
-
-#include <QStandardItemModel>
 #include <QMap>
+#include <QVector>
 
 class Global
 {
@@ -80,9 +79,6 @@ public:
     static DeviceGroupInfo getYhcDeviceGroupInfoByGroupId(int groupId);
     static DeviceGroupInfo getMixDeviceGroupInfoByGroupId(int groupId);
 
-    static QStandardItemModel *alertsModel;
-    static QStandardItemModel *simpleAlertsModel;
-    static QStandardItemModel *loginHistoryModel;
     static QMap<float,QString> currentFermenationDataMap;
     static QMap<float,QString> currentDeodorationDataMap;
     static QMap<float,QString> currentFanGroupDataMap;
@@ -109,6 +105,7 @@ public:
     static float getRunctrAddressByIndex(int index);
     static int getYhcDataIndexByName(QString name, int deviceIndex);
     static int getMixDataIndexByName(QString name, int deviceIndex);
+    static int getFerDataIndexByName(QString name, int deviceIndex);
 
     static uint getLengthByDataType(QString dataType);
     static int getPruPid();

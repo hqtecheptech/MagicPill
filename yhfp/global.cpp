@@ -1,17 +1,16 @@
 ﻿#include "global.h"
 #include <QDomDocument>
 #include <QFile>
-#include <QStandardItemModel>
+#include <QDir>
+#include <QVariant>
+#include <math.h>
+#include <QProcess>
 
 #include "data.h"
 
 Global::Global()
 {
-    alertsModel->setHeaderData(0,Qt::Horizontal,QStringLiteral("时间"));
-    alertsModel->setHeaderData(1,Qt::Horizontal,QStringLiteral("设备号"));
-    alertsModel->setHeaderData(2,Qt::Horizontal,QStringLiteral("事件"));
-    alertsModel->setHeaderData(3,Qt::Horizontal,QStringLiteral("用户"));
-    alertsModel->removeRows(0,alertsModel->rowCount(QModelIndex()),QModelIndex());
+
 }
 
 ServerInfo Global::readServerInfo()
@@ -1766,7 +1765,7 @@ int Global::getYhcDataIndexByName(QString name, int deviceIndex)
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
     // To do: using a test name temporary.
     DeviceNode deviceNode = Global::getYhcNodeInfoByName(name);
-    int offset = (info.offset + deviceIndex - info.startIndex) * Global::yhcDeviceInfo.Runctr_Num;
+    int offset = (info.offset + deviceIndex - info.startIndex) * Global::yhcDeviceInfo.RunCtr_Block_Size;
     return deviceNode.Offset + offset;
 }
 
@@ -1775,7 +1774,16 @@ int Global::getMixDataIndexByName(QString name, int deviceIndex)
     DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
     // To do: using a test name temporary.
     DeviceNode deviceNode = Global::getMixNodeInfoByName(name);
-    int offset = (info.offset + deviceIndex - info.startIndex) * Global::mixDeviceInfo.Runctr_Num;
+    int offset = (info.offset + deviceIndex - info.startIndex) * Global::mixDeviceInfo.RunCtr_Block_Size;
+    return deviceNode.Offset + offset;
+}
+
+int Global::getFerDataIndexByName(QString name, int deviceIndex)
+{
+    DeviceGroupInfo info = Global::getFerDeviceGroupInfo(deviceIndex);
+    // To do: using a test name temporary.
+    DeviceNode deviceNode = Global::getFermenationNodeInfoByName(name);
+    int offset = (info.offset + deviceIndex - info.startIndex) * Global::ferDeviceInfo.RunCtr_Block_Size;
     return deviceNode.Offset + offset;
 }
 
@@ -1879,12 +1887,6 @@ QVector<DeviceGroupInfo> Global::ferDeviceGroupInfos = readDeviceGroupInfo("fer_
 QVector<DeviceGroupInfo> Global::yhcDeviceGroupInfos = readDeviceGroupInfo("yhc_devices_group.xml");
 
 QVector<DeviceGroupInfo> Global::mixDeviceGroupInfos = readDeviceGroupInfo("mix_device_group.xml");
-
-QStandardItemModel* Global::alertsModel = new QStandardItemModel(0,4);
-
-QStandardItemModel* Global::simpleAlertsModel = new QStandardItemModel(0,1);
-
-QStandardItemModel* Global::loginHistoryModel = new QStandardItemModel(0,1);
 
 QMap<float,QString> Global::currentFermenationDataMap;
 

@@ -10,9 +10,10 @@ using namespace std;
 
 DataSender::DataSender()
 {
-    port = Global::serverInfo.Port;
-    serverIP = new QHostAddress(Global::serverInfo.IP);
+    port = Global::systemConfig.Port;
+    serverIP = new QHostAddress(Global::systemConfig.IP);
     _tcpSocket = new QTcpSocket();
+    qDebug() << "Send to " << serverIP->toString() << ":" << port;
     connect(_tcpSocket,SIGNAL(readyRead()),this,SLOT(dataReceive()));
     connect(_tcpSocket, &QAbstractSocket::disconnected, _tcpSocket, &QObject::deleteLater);
 }
@@ -61,12 +62,6 @@ int DataSender::sendRequestWithResults(const QString strData)
 
 int DataSender::sendRequestWithResults(QByteArray data)
 {
-    if(!Global::isPrint)
-    {
-        qDebug() << "serverIP" << Global::serverInfo.IP;
-        qDebug() << "port" << port;
-    }
-
     if(_tcpSocket->state() != QAbstractSocket::ConnectedState)
     {
         _tcpSocket->abort(); //取消已有的连接

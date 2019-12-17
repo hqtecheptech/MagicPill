@@ -188,7 +188,7 @@ void Syscontroller::yhcStart(int deviceIndex, bool value)
     Plc_Db db;
     dbShare->LockShare();
     dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
-    if(value)
+    /*if(value)
     {
         db.b_data[Global::getMixDataIndexByName("SLUG_SPIRAL_EM_FAULT", deviceIndex)] = 1;
         db.b_data[Global::getMixDataIndexByName("SLUG_WHEEL_EM_FAULT", deviceIndex)] = 1;
@@ -213,7 +213,17 @@ void Syscontroller::yhcStart(int deviceIndex, bool value)
         db.b_data[Global::getMixDataIndexByName("ING_BIN_HEATER_FAULT", deviceIndex)] = 0;
         db.b_data[Global::getMixDataIndexByName("SLUG_BIN_LEVEL_SIG", deviceIndex)] = 0;
         db.b_data[Global::getMixDataIndexByName("ING_BIN_LEVEL_SIG", deviceIndex)] = 0;
+    }*/
+
+    if(value)
+    {
+        db.b_data[Global::getFerDataIndexByName("FAN_FAULT_BOOL", deviceIndex)] = 1;
     }
+    else
+    {
+        db.b_data[Global::getFerDataIndexByName("FAN_FAULT_BOOL", deviceIndex)] = 0;
+    }
+
     dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     //Set data changed flag.
     Ctr_Block cb;

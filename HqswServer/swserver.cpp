@@ -11,12 +11,14 @@ SwServer::SwServer(QObject *parent) : QObject(parent)
 
     controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
 
-    //testTimer = new QTimer();
-    //connect(testTimer, SIGNAL(timeout()), this, SLOT(writeTestData()));
-    //testTimer->start(2000);
+    testTimer = new QTimer();
+    connect(testTimer, SIGNAL(timeout()), this, SLOT(writeTestData()));
+    testTimer->start(2000);
 }
 
 void SwServer::writeTestData()
 {
     controller->yhcSpeedUp(0, 2);
+    started = !started;
+    controller->yhcStart(1, started);
 }

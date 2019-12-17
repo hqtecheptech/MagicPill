@@ -105,6 +105,7 @@ public:
     static float getRunctrAddressByIndex(int index);
     static int getYhcDataIndexByName(QString name, int deviceIndex);
     static int getMixDataIndexByName(QString name, int deviceIndex);
+    static int getFerDataIndexByName(QString name, int deviceIndex);
 
     static uint getLengthByDataType(QString dataType);
     static int getPruPid();

@@ -26,6 +26,7 @@ private:
     //QTimer* pruCheckTimer;
     Syscontroller *controller;
     QTimer* testTimer;
+    bool started;
 };
 
 #endif // SWSERVER_H

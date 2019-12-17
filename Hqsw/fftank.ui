@@ -651,7 +651,7 @@ color: rgba(250, 250, 250, 250);</string>
      <rect>
       <x>40</x>
       <y>105</y>
-      <width>40</width>
+      <width>60</width>
       <height>16</height>
      </rect>
     </property>
@@ -673,7 +673,7 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="wtValueLabel_1">
     <property name="geometry">
      <rect>
-      <x>80</x>
+      <x>98</x>
       <y>105</y>
       <width>16</width>
       <height>16</height>
