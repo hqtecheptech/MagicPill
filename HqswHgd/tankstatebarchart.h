@@ -42,6 +42,7 @@ private slots:
     void localServerConnected(bool);
 
     void testRunCode();
+    void getDataFromLocal();
 
 public:
     void setData(QVector<qreal> values);

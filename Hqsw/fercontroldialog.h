@@ -72,8 +72,8 @@ private:
     //bool isFanRemote = false;
     bool isFanAuto = false;
     bool isFanRun = false;
-    bool isFerPaused = false;
     bool isFerStarted = false;
+    bool isFerPaused = false;
     QMap<int, QList<FerStep *>> _ferConfigs;
 
     ushort handRunTime = 0;

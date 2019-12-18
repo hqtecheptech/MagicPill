@@ -137,13 +137,18 @@ void Syscontroller::changeDataValue(int deviceIndex, float value)
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index3 = Global::convertAddressToIndex(address, deviceNode.DataType);
 
+    info = Global::getFerDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getFermenationNodeInfoByName("FER_TOT_UDI");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index4 = Global::convertAddressToIndex(address, deviceNode.DataType);
+
     Plc_Db db;
     dbShare->LockShare();
     dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     db.f_data[index1] = db.f_data[index1] + value;
     db.f_data[index2] = db.f_data[index2] + value;
     db.f_data[index3] = db.f_data[index3] + value;
-    //db.i_data[index4] = db.i_data[index2] + value + 10;
+    db.dw_data[index4] = db.dw_data[index4] + 3600;
     dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     //Set data changed flag.
 

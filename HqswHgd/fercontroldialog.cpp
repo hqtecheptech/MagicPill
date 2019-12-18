@@ -21,12 +21,15 @@ FerControlDialog::FerControlDialog(QWidget *parent) :
     icoRed.load("://image/old/FerLEDY.bmp");
     ui->ferTotalRunTimeProgressBar->setRange(0,86400*30);
 
-    int temp = Global::ferDeviceInfo.Device_Number;
     for(int i=0;i<Global::ferDeviceInfo.Device_Number;i++)
     {
         ui->tankIndexComboBox->addItem(QStringLiteral("%1#发酵槽").arg(QString::number(i+1)));
     }
 
+    /*for(int j=0;j<4;j++)
+    {
+        ui->runStepComboBox->addItem(QString::number(j+1));
+    }*/
     connect(ui->tankIndexComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(tankIndexChanged(int)));
     connect(ui->runStepComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(stepIndexChanged(int)));
 
@@ -92,7 +95,7 @@ void FerControlDialog::showSetFerAuto(QByteArray data)
         ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
         ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
 
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,0,0};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,0,0};
         bool data = true;
         QVariant var_data = QVariant(data);
 
@@ -165,10 +168,7 @@ void FerControlDialog::on_startFerButton_pressed()
     User *user = Identity::getInstance()->getUser();
     if(user != Q_NULLPTR)
     {
-        QDateTime currentdt = QDateTime::currentDateTime();
-        uint stime =currentdt.toTime_t();
-        uint etime =currentdt.toTime_t();
-
+        StreamPack bpack;
         ushort offset = Global::getFermenationNodeInfoByName("FER_Startctr_BOOL").Offset / 8;
         ushort index = Global::getFermenationNodeInfoByName("FER_Startctr_BOOL").Offset % 8;
 
@@ -176,10 +176,7 @@ void FerControlDialog::on_startFerButton_pressed()
         ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
         ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
 
-        StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
-        bpack.bStartTime =stime;
-        bpack.bEndTime =etime;
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,0,0};
         bool data = true;
         QVariant var_data = QVariant(data);
 
@@ -187,6 +184,29 @@ void FerControlDialog::on_startFerButton_pressed()
         disconnect(tcpClient1,0,0,0);
         connect(tcpClient1, SIGNAL(updateClients(QByteArray)),this,SLOT(showFerStart(QByteArray)));
         tcpClient1->sendRequestWithResult(bpack,var_data,1);
+
+        /*QDateTime currentdt = QDateTime::currentDateTime();
+        uint stime =currentdt.toTime_t();
+        uint etime =currentdt.toTime_t();
+
+        ushort offset = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset / 8;
+        ushort index = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset % 8;
+
+        DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
+        ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
+        ushort address = Global::ferDeviceInfo.Runctr_Address + (tankIndex - info.startIndex) * runctrlByteSize + offset;
+
+        StreamPack bpack;
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,stime,etime};
+        bpack.bStartTime =stime;
+        bpack.bEndTime =etime;
+        bool data = true;
+        QVariant var_data = QVariant(data);
+
+        tcpClient->abort();
+        disconnect(tcpClient,0,0,0);
+        connect(tcpClient, SIGNAL(updateClients(QByteArray)),this,SLOT(showSetFerAuto(QByteArray)));
+        tcpClient->sendRequestWithResult(bpack,var_data,1);*/
     }
     else
     {
@@ -257,6 +277,28 @@ void FerControlDialog::on_endFerButton_pressed()
         disconnect(tcpClient,0,0,0);
         connect(tcpClient, SIGNAL(updateClients(QByteArray)),this,SLOT(showFerStop(QByteArray)));
         tcpClient->sendRequestWithResult(bpack,var_data,1);
+
+        /*QDateTime currentdt = QDateTime::currentDateTime();
+        uint stime =currentdt.toTime_t();
+        uint etime =currentdt.toTime_t();
+        ushort offset = Global::getFermenationNodeInfoByName("FER_STOPCTR_BOOL").Offset / 8;
+        ushort index = Global::getFermenationNodeInfoByName("FER_STOPCTR_BOOL").Offset % 8;
+
+        DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
+        ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
+        ushort address = Global::ferDeviceInfo.Runctr_Address + (tankIndex - info.startIndex) * runctrlByteSize + offset;
+
+        StreamPack bpack;
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,stime,etime};
+        bpack.bStartTime =stime;
+        bpack.bEndTime =etime;
+        bool data = true;
+        QVariant var_data = QVariant(data);
+
+        tcpClient->abort();
+        disconnect(tcpClient,0,0,0);
+        connect(tcpClient, SIGNAL(updateClients(QByteArray)),this,SLOT(showFerStop(QByteArray)));
+        tcpClient->sendRequestWithResult(bpack,var_data,1);*/
     }
     else
     {
@@ -312,27 +354,31 @@ void FerControlDialog::parseFermentationData(QMap<float,QString> dataMap)
     DeviceGroupInfo info = Global::getFerDeviceGroupInfo(deviceIndex);
 
     DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_WT_R");
-    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            * Global::getLengthByDataType(deviceNode.DataType);
     ui->weightTemptureLabel->setText(dataMap[address]);
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_HT_R");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            *  Global::getLengthByDataType(deviceNode.DataType);
     ui->highTemptureLabel->setText(dataMap[address]);
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_MT_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
     ui->midTemptureLabel->setText(dataMap[address]);
 
-    /*deviceNode = Global::getFermenationNodeInfoByName("FER_LT_R");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->lowTemptureLabel->setText(dataMap[address]);*/
+    //deviceNode = Global::getFermenationNodeInfoByName("FER_LT_R");
+    //address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    //ui->lowTemptureLabel->setText(dataMap[address]);
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_ET_R");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            * Global::getLengthByDataType(deviceNode.DataType);
     ui->envTemptureLabel->setText(dataMap[address]);
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_HM_R");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            *  Global::getLengthByDataType(deviceNode.DataType);
     ui->envhumidityLabel->setText(dataMap[address]);
 
     /*deviceNode = Global::getFermenationNodeInfoByName("FER_CO_R");
@@ -459,7 +505,7 @@ void FerControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
     //isFanRemote = Global::getFerRunctrValueByName(tankIndex,"FAN_Remote_BOOL", dataMap);
     isFanAuto = Global::getFerRunctrValueByName(tankIndex,"FER_Auto_BOOL", dataMap);
     isFanRun = Global::getFerRunctrValueByName(tankIndex,"FAN_Run_BOOL", dataMap);
-    isFerPaused = Global::getFerRunctrValueByName(tankIndex,"FER_Pause", dataMap);
+    //isFerPaused = Global::getFerRunctrValueByName(tankIndex,"FER_Pause", dataMap);
     isFerStarted = Global::getFerRunctrValueByName(tankIndex,"FER_State_BOOL", dataMap);
     if(isFerStarted)
     {
@@ -472,7 +518,7 @@ void FerControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
         {
             ui->aerationStateLabel->setText(QStringLiteral("曝气终止"));
         }
-        ui->pauseFerButton->setEnabled(true);
+        /*ui->pauseFerButton->setEnabled(true);
         if(isFerPaused)
         {
             ui->pauseFerButton->setText(QStringLiteral("暂停发酵"));
@@ -480,11 +526,11 @@ void FerControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
         else
         {
             ui->pauseFerButton->setText(QStringLiteral("继续发酵"));
-        }
+        }*/
     }
     else
     {
-        ui->pauseFerButton->setEnabled(false);
+        //ui->pauseFerButton->setEnabled(false);
         ui->ferStateLabel->setText(QStringLiteral("发酵终止"));
         ui->aerationStateLabel->setText(QStringLiteral(""));
     }
@@ -568,7 +614,7 @@ void FerControlDialog::on_changeStepButton_clicked()
     bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
 
     QList<ushort> addrs;
-    QList<ushort> values;
+    QList<int> values;
     DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_STEPCTR_UI_CTRL");
     ushort addr = deviceNode.Offset + (info.offset + tankIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
@@ -610,6 +656,7 @@ void FerControlDialog::on_changeStepButton_clicked()
 
     tcpClient->sendRequestWithResults(SData);
 }
+
 
 void FerControlDialog::on_pauseFerButton_clicked()
 {

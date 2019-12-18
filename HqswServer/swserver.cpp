@@ -19,6 +19,7 @@ SwServer::SwServer(QObject *parent) : QObject(parent)
 void SwServer::writeTestData()
 {
     controller->changeDataValue(0, 2);
+    controller->changeDataValue(5, 3);
     started = !started;
     controller->changeRunctrlValue(1, started);
 }

@@ -31,8 +31,9 @@ TankStateBarChart::TankStateBarChart(QWidget *parent) :
 
     //testRunCode();
 
-    myTimerThread = new MyTimerThread(3600, this);
-    connect(myTimerThread, SIGNAL(timeout()),this, SLOT(requestRunTimeData()));
+    myTimerThread = new MyTimerThread(20, this);
+    //connect(myTimerThread, SIGNAL(timeout()),this, SLOT(requestRunTimeData()));
+    connect(myTimerThread, SIGNAL(timeout()),this, SLOT(getDataFromLocal()));
 }
 
 void TankStateBarChart::testRunCode()
@@ -64,9 +65,30 @@ void TankStateBarChart::testRunCode()
     setData(totalDays);
 }
 
+void TankStateBarChart::getDataFromLocal()
+{
+    QVector<qreal> totalDays;
+
+    DeviceGroupInfo info = Global::getFerDeviceGroupInfo(Global::ferGroupShow);
+    DeviceNode deviceNode;
+    for(int i=0; i<info.deviceNumber; i++)
+    {
+        deviceNode = Global::getFermenationNodeInfoByName("FER_TOT_UDI");
+        float address = deviceNode.Offset + (info.offset + i - info.startIndex)
+                * Global::getLengthByDataType(deviceNode.DataType);
+        uint runtime = Global::currentFermenationDataMap[address].toUInt();
+        qreal rTotalRunTime = (qreal)runtime;
+        qreal days = rTotalRunTime / (qreal)86400;
+        totalDays.append(days);
+    }
+
+    setData(totalDays);
+}
+
 void TankStateBarChart::showEvent(QShowEvent *event)
 {
-    QTimer::singleShot(10000, this, SLOT(requestRunTimeData()));
+    //QTimer::singleShot(10000, this, SLOT(requestRunTimeData()));
+    QTimer::singleShot(10000, this, SLOT(getDataFromLocal()));
     myTimerThread->start();
 }
 
