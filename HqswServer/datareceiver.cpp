@@ -231,14 +231,6 @@ void DataReceiver::dataReceive()
     {
         if(bDevice.bDeviceId == 1)
         {
-            StreamPack pack;
-            QDateTime currentdt = QDateTime::currentDateTime();
-            uint stime =currentdt.toTime_t();
-            uint etime =currentdt.toTime_t();
-            pack = {sizeof(StreamPack),1,0,W_Updata_Config,String,0,bDevice.bIndex,0,0,stime,etime};
-            pack.bStartTime =stime;
-            pack.bEndTime =etime;
-
             QString result = "";
 
             QByteArray byteValues = sDataWithoutCRC.mid(sizeof(bDevice), sDataWithoutCRC.length() - sizeof(bDevice));
@@ -247,20 +239,19 @@ void DataReceiver::dataReceive()
             QFile file(Global::systemConfig.ferconfigPath + Global::systemConfig.ferconfigPrefix + QString::number(bDevice.bIndex+1));
             if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
             {
-                pack.bErrorCode = 0;
+                bDevice.bErrorCode = 0;
                 qDebug() << "Open configuration file fer_para_conf failed!";
                 result = "Open configuration file fer_para_conf failed!";
-                pack.bErrorCode = 0;
             }
             else
             {
                 file.write(byteValues);
                 file.close();
-                pack.bErrorCode = 1;
+                bDevice.bErrorCode = 1;
                 result = "OK";
             }
 
-            sendReply(pack, result);
+            sendReply(bDevice, result);
         }
     }
     else if(bDevice.bCommandType == r_AllCacheData)
@@ -273,21 +264,13 @@ void DataReceiver::dataReceive()
         qDebug() << "r_LoadConfig";
         if(bDevice.bDeviceId == 1)
         {
-            StreamPack pack;
-            QDateTime currentdt = QDateTime::currentDateTime();
-            uint stime =currentdt.toTime_t();
-            uint etime =currentdt.toTime_t();
-            pack = {sizeof(StreamPack),1,0,r_LoadConfig,String,0,bDevice.bIndex,0,0,stime,etime};
-            pack.bStartTime =stime;
-            pack.bEndTime =etime;
-
             QString result = "";
             QFile file(Global::systemConfig.ferconfigPath + Global::systemConfig.ferconfigPrefix + QString::number(bDevice.bIndex+1));
             if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
             {
                 qDebug() << "Read configuration file failed!";
                 result = "Read configuration file failed!";
-                pack.bErrorCode = 0;
+                bDevice.bErrorCode = 0;
             }
             else
             {
@@ -297,12 +280,22 @@ void DataReceiver::dataReceive()
                 }
 
                 qDebug() << "Read configuration file success!";
-                pack.bErrorCode = 1;
+                bDevice.bErrorCode = 1;
             }
             file.close();
 
-            sendReply(pack, result);
+            sendReply(bDevice, result);
         }
+    }
+    else if(bDevice.bCommandType == W_Heart_Beat)
+    {
+        qDebug() << "Received heart beat data!";
+    }
+    else if(bDevice.bCommandType == r_SignIn)
+    {
+        bDevice.bErrorCode = 1;
+        sendReply(bDevice, "");
+        qDebug() << "Received sign in request!";
     }
 
     clear();
@@ -329,7 +322,7 @@ void DataReceiver::sendReply(StreamPack pack, QString result)
 
     QTextCodec *codec = QTextCodec::codecForLocale();
     QByteArray data = codec->fromUnicode(result);
-    pack.bStreamLength += data.length() + 4;
+    pack.bStreamLength = sizeof(StreamPack) + data.length() + 4;
 
     SData.append(result);
 

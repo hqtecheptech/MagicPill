@@ -75,7 +75,7 @@ void Syscontroller::setPlcControlDb(Plc_Db data)
     //ctrlShare->UnlockShare();
 }
 
-void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
+void Syscontroller::changeDataValue(int deviceIndex, float value)
 {
     //qDebug() << "Start Press Speed Up!";
 
@@ -146,46 +146,23 @@ void Syscontroller::yhcSpeedUp(int deviceIndex, float value)
     //db.i_data[index4] = db.i_data[index2] + value + 10;
     dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     //Set data changed flag.
+
     Ctr_Block cb;
     ctrlShare->LockShare();
     ctrlShare->GetShardMemory((void*)&cb, sizeof(Ctr_Block));
     cb.toPru[0] = 1;
     ctrlShare->SetSharedMemory((void*)&cb, sizeof(Ctr_Block));
+    // unlock ctrlShare firstly.
     ctrlShare->UnlockShare();
     //
     dbShare->UnlockShare();
 }
 
-void Syscontroller::yhcStart(int deviceIndex, bool value)
+void Syscontroller::changeRunctrlValue(int deviceIndex, bool value)
 {
-    // To do: using a test name temporary.
-    /*int index = Global::getYhcDataIndexByName("FAN_VALVE_HAND_OPEN", deviceIndex);
-
-    //qDebug() << "Begin yhc start or stop!";
-    Plc_Db db;
-    //yhcDbShare->LockShare();
-    dbShare->LockShare();
-    dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
-    //yhcDbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
-    if(value)
-    {
-        db.b_data[index] = 0;
-    }
-    else
-    {
-        db.b_data[index] = 1;
-    }
-    dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
-    dbShare->UnlockShare();
-    //yhcDbShare->UnlockShare();
-
-    //applyControlRequest();
-
-    //qDebug() << "End yhc start or stop!";
-    */
-
     qDebug() << "Begin mix data change!";
     Plc_Db db;
+    // Important: Lock db share firstly to prevent sharedata from being changed during data updating.
     dbShare->LockShare();
     dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     /*if(value)
@@ -318,11 +295,13 @@ void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet
     dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     resetControlShare(pack.bDataType, dataMap, &db);
     dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+
     ctrlShare->LockShare();
     ctrlShare->GetShardMemory((void*)&ctrBlock, sizeof(Ctr_Block));
     ctrBlock.toPru[0] = 1;
     ctrlShare->SetSharedMemory((void*)&ctrBlock, sizeof(Ctr_Block));
     ctrlShare->UnlockShare();
+
     dbShare->UnlockShare();
 
     //for test

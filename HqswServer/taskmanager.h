@@ -5,6 +5,8 @@
 #include <QHostAddress>
 #include <QTcpSocket>
 #include <QTcpServer>
+#include <QAbstractSocket>
+#include <QTimer>
 
 class TaskManager : public QObject
 {
@@ -21,6 +23,9 @@ signals:
 private slots:
     //处理客户端连接
     void processNewConnection();
+    void handleAcceptError(QAbstractSocket::SocketError error);
+    void sendHeartbeat();
+    void handleConnectionUpdate(bool connected);
 
 public slots:
     void listeningTask();
@@ -31,7 +36,7 @@ private:
     int _port;
     quint32 StreamLength = 0;
     QByteArray sData;
-
+    QTimer* hbTimer;
 };
 
 #endif // TASKMANAGER_H

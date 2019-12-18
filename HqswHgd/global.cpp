@@ -1120,8 +1120,8 @@ bool Global::getFerRunctrValueByName(int deviceIndex, QString name, QMap<float, 
     uint temp = offset % 8;
     float index = float(temp) / 10;
     float dictAddress = index + startAddrss + step;
-    qDebug() << "dictAddress: " << dictAddress;
-    qDebug() << "dataMap[dictAddress]: " << dataMap[dictAddress];
+    //qDebug() << "dictAddress: " << dictAddress;
+    //qDebug() << "dataMap[dictAddress]: " << dataMap[dictAddress];
     QVariant tempValue = dataMap[dictAddress];
     return tempValue.toBool();
 }

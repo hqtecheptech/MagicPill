@@ -21,8 +21,8 @@ public:
     ControllerInfo getControllerStatus();
     Plc_Db getPlcDataDb();
     void setPlcControlDb(Plc_Db data);
-    void yhcSpeedUp(int deviceIndex, float value);
-    void yhcStart(int deviceIndex, bool value);
+    void changeDataValue(int deviceIndex, float value);
+    void changeRunctrlValue(int deviceIndex, bool value);
     DeviceType getDataType();
     int getGroupId();
 

@@ -259,7 +259,7 @@ void XinyiFerControlTabWidget::localServerConnected(bool isConnected)
 void XinyiFerControlTabWidget::dispatchFerData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
 {
     emit dataUpdate(changedDeviceSet,dataMap);
-    qDebug() << "Dispatch server data";
+    //qDebug() << "Dispatch server data";
 
     uint startAddrss = Global::ferDeviceInfo.Runctr_Address;
     uint valueNumber = Global::ferDeviceInfo.Runctr_Num;

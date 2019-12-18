@@ -44,7 +44,6 @@
         <node id="1" name="FER_STEPCTR_UI" cname="发酵运行步骤" length="8" offset="1" diff="0"/>
         <node id="1" name="FER_TOT_UDI" cname="发酵总时间" length="8" offset="4" diff="300"/>
         <node id="1" name="Max_Delay" cname="操作最大延时设置" length="1" offset="5" diff="0"/>
-
         <node id="1" name="PAN_MANUAL" cname="面板手动反馈" length="1" offset="5" diff="0"/>
         <node id="1" name="PAN_AUTO" cname="面板自动反馈" length="1" offset="5" diff="0"/>
         <node id="1" name="PAN_AUTO" cname="面板允许运行" length="1" offset="5" diff="0"/>
@@ -54,7 +53,7 @@
         <node id="1" name="Pump_PL_Pan_Signal" cname="喷淋泵触摸屏启动" length="1" offset="5" diff="0"/>
         <node id="1" name="Other_Auto" cname="除发酵系统以外的设备自动" length="1" offset="5" diff="0"/>
     </area>
-    <area name="RUNCTR" datatype="x0" start="1280" diff="0">
+    <area name="RUNCTR" datatype="x0" start="2320" diff="0">
         <node id="1" name="FER_Startctr_BOOL" cname="远程开始发酵使能" length="24" offset="0" diff="0" alert0="无动作" alert1="远程开始发酵" priority="0"/>
         <node id="1" name="FER_Stopctr_BOOL" cname="远程结束发酵使能" length="24" offset="1" diff="0" alert0="无动作" alert1="远程停止发酵" priority="0"/>
         <node id="1" name="FAN_HandStart_BOOL" cname="远程风机手动启动" length="24" offset="2" diff="0" alert0="无动作" alert1="远程风机手动启动" priority="0"/>

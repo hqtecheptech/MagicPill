@@ -69,12 +69,6 @@ void ParseServerDataWorker::parseFerServerData(QByteArray data)
 
         ferDataFileSaved = true;
     }*/
-    // TestCode
-    if(addressArray.length() > 609)
-    {
-        qDebug() <<  "addressArray[609]: " << addressArray[609];
-        qDebug() <<  "strArray[609]: " << strArray[609];
-    }
 
     int startIndex = Global::getFerDeviceStartIndex(bDevice.bDeviceId, bDevice.bDeviceGroup);
 

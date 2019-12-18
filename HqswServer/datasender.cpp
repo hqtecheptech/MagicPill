@@ -13,7 +13,7 @@ DataSender::DataSender()
     port = Global::systemConfig.Port;
     serverIP = new QHostAddress(Global::systemConfig.IP);
     _tcpSocket = new QTcpSocket();
-    qDebug() << "Send to " << serverIP->toString() << ":" << port;
+    //qDebug() << "Send to " << serverIP->toString() << ":" << port;
     connect(_tcpSocket,SIGNAL(readyRead()),this,SLOT(dataReceive()));
     connect(_tcpSocket, &QAbstractSocket::disconnected, _tcpSocket, &QObject::deleteLater);
 }
@@ -40,9 +40,10 @@ int DataSender::sendRequestWithResults(const QString strData)
 {
     _tcpSocket->abort(); //取消已有的连接
     _tcpSocket->connectToHost(*serverIP,port);
-    const int timeout=500;
+    const int timeout=3000;
     if(!_tcpSocket->waitForConnected(timeout))
     {
+        emit updateConnectState(false);
         _tcpSocket->deleteLater();
         cout << "server is unavailable" << endl;
         return 0;
@@ -51,7 +52,6 @@ int DataSender::sendRequestWithResults(const QString strData)
     {
         cout << "updating data to server" << endl;
     }
-
 
     QByteArray data(strData.toUtf8());
     _tcpSocket->write(data);
@@ -69,17 +69,11 @@ int DataSender::sendRequestWithResults(QByteArray data)
         const int timeout=5000;
         if(!_tcpSocket->waitForConnected(timeout))
         {
+            emit updateConnectState(false);
             _tcpSocket->deleteLater();
             return 0;
         }
     }
-
-    if(!Global::isPrint)
-    {
-        qDebug() << "Local server connected!";
-    }
-
-    Global::isPrint = true;
 
     _tcpSocket->write(data);
     _tcpSocket->waitForBytesWritten();
@@ -181,6 +175,15 @@ void DataSender::dataReceive()
     }
 
     memcpy(&bDevice,sDataWithoutCRC,sizeof(StreamPack));
+
+    if(bDevice.bCommandType == W_Heart_Beat)
+    {
+        qDebug() << "heart beating received!";
+    }
+    else if(bDevice.bCommandType == W_Send_Control)
+    {
+        qDebug() << "control action received!";
+    }
 
     qDebug() << "Data receive success!";
 

@@ -8,7 +8,7 @@
 
 #include "global.h"
 
-class DataSender : QObject
+class DataSender : public QObject
 {
     Q_OBJECT
 public:

@@ -58,7 +58,8 @@ enum CommandType
     w_AddUser,    //写登录信息
     W_Update_PlcData, //更新PLC数据
     W_Send_Control,  //发送控制命令
-    W_Updata_Config  //更新配置
+    W_Updata_Config,  //更新配置
+    W_Heart_Beat      //发送心跳包
 };
 
 enum DataType
