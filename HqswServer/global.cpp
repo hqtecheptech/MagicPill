@@ -5,6 +5,7 @@
 #include <QVariant>
 #include <math.h>
 #include <QProcess>
+#include <QDebug>
 
 #include "data.h"
 
@@ -172,13 +173,13 @@ SystemConfig Global::readSystemConfig()
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.dataSharePath = leafNode.toText().data();
-                    //qDebug() << retValue.dataSharePath;
+                    qDebug() << retValue.dataSharePath;
                 }
                 if(childNode.toElement().tagName()=="proj_id")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.dataShareKey = leafNode.toText().data().toInt();
-                    //qDebug() << retValue.dataShareKey;
+                    qDebug() << retValue.dataShareKey;
                 }
                 childNode = childNode.nextSibling();
             }
@@ -194,13 +195,13 @@ SystemConfig Global::readSystemConfig()
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.controlSharePath = leafNode.toText().data();
-                    //qDebug() << retValue.controlSharePath;
+                    qDebug() << retValue.controlSharePath;
                 }
                 if(childNode.toElement().tagName()=="proj_id")
                 {
                     QDomNode leafNode = childNode.firstChild();
                     retValue.controlShareKey = leafNode.toText().data().toInt();
-                    //qDebug() << leafNode.toText().data();
+                    qDebug() << leafNode.toText().data();
                 }
                 childNode = childNode.nextSibling();
             }

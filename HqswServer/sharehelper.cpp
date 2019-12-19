@@ -107,12 +107,13 @@ bool ShareHelper::SetSharedMemory(void *data, int length)
 {
     try
     {
-        //qDebug() << "Setting shared memory";
+        qDebug() << "Befor Setting shared memory";
         memcpy(shmptr, data, length);
-        //qDebug() << "Set shared memory succesefully!";
+        qDebug() << "After Set shared memory succesefully!";
     }
     catch(exception ex)
     {
+        qDebug() << ex.what();
         return false;
     }
 
@@ -123,10 +124,13 @@ bool ShareHelper::GetShardMemory(void *data, int length)
 {
     try
     {
+        qDebug() << "Before getting shared memory";
         memcpy(data, shmptr, length);
+        qDebug() << "After getting shared memory";
     }
     catch(exception ex)
     {
+        qDebug() << ex.what();
         return false;
     }
 

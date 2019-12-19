@@ -144,6 +144,7 @@ void Syscontroller::changeDataValue(int deviceIndex, float value)
 
     Plc_Db db;
     dbShare->LockShare();
+    qDebug() << "changeDataValue dbShare locked!";
     dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     db.f_data[index1] = db.f_data[index1] + value;
     db.f_data[index2] = db.f_data[index2] + value;
@@ -152,23 +153,28 @@ void Syscontroller::changeDataValue(int deviceIndex, float value)
     dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     //Set data changed flag.
 
+    //qDebug() << "Before changeDataValue ctrlShare locked!";
     Ctr_Block cb;
-    ctrlShare->LockShare();
-    ctrlShare->GetShardMemory((void*)&cb, sizeof(Ctr_Block));
+    //ctrlShare->LockShare();
+    //qDebug() << "changeDataValue ctrlShare locked!";
+    //ctrlShare->GetShardMemory((void*)&cb, sizeof(Ctr_Block));
     cb.toPru[0] = 1;
     ctrlShare->SetSharedMemory((void*)&cb, sizeof(Ctr_Block));
     // unlock ctrlShare firstly.
-    ctrlShare->UnlockShare();
+    //ctrlShare->UnlockShare();
+    //qDebug() << "changeDataValue ctrlShare unlocked!";
     //
     dbShare->UnlockShare();
+    qDebug() << "changeDataValue dbShare unlocked!";
 }
 
 void Syscontroller::changeRunctrlValue(int deviceIndex, bool value)
 {
-    qDebug() << "Begin mix data change!";
+    qDebug() << "Begin runctrl data change!";
     Plc_Db db;
     // Important: Lock db share firstly to prevent sharedata from being changed during data updating.
     dbShare->LockShare();
+    qDebug() << "changeRunctrlValue dbShare locked!";
     dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     /*if(value)
     {
@@ -209,13 +215,16 @@ void Syscontroller::changeRunctrlValue(int deviceIndex, bool value)
     dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
     //Set data changed flag.
     Ctr_Block cb;
-    ctrlShare->LockShare();
-    ctrlShare->GetShardMemory((void*)&cb, sizeof(Ctr_Block));
+    //ctrlShare->LockShare();
+    //qDebug() << "changeRunctrlValue ctrlShare locked!";
+    //ctrlShare->GetShardMemory((void*)&cb, sizeof(Ctr_Block));
     cb.toPru[0] = 1;
     ctrlShare->SetSharedMemory((void*)&cb, sizeof(Ctr_Block));
-    ctrlShare->UnlockShare();
+    //ctrlShare->UnlockShare();
+    //qDebug() << "changeRunctrlValue ctrlShare unlocked!";
     //
     dbShare->UnlockShare();
+    qDebug() << "changeRunctrlValue dbShare unlocked!";
 }
 
 DeviceType Syscontroller::getDataType()
@@ -297,17 +306,20 @@ void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet
         break;
     }*/
     dbShare->LockShare();
+    qDebug() << "handlePlcControl dbShare locked!";
     dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
     resetControlShare(pack.bDataType, dataMap, &db);
     dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
 
-    ctrlShare->LockShare();
-    ctrlShare->GetShardMemory((void*)&ctrBlock, sizeof(Ctr_Block));
+    //ctrlShare->LockShare();
+    //qDebug() << "handlePlcControl ctrlShare locked!";
+    //ctrlShare->GetShardMemory((void*)&ctrBlock, sizeof(Ctr_Block));
     ctrBlock.toPru[0] = 1;
     ctrlShare->SetSharedMemory((void*)&ctrBlock, sizeof(Ctr_Block));
-    ctrlShare->UnlockShare();
-
+    //ctrlShare->UnlockShare();
+    //qDebug() << "handlePlcControl dbShare unlocked!";
     dbShare->UnlockShare();
+    qDebug() << "handlePlcControl ctrlShare unlocked!";
 
     //for test
     /*int pid = Global::getPruPid();
