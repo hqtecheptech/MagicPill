@@ -41,7 +41,7 @@
     <proj_id>93</proj_id>
   </yhc_control_msg>
   <ferconfig>
-    <path>/home/root/</path>
+    <path>/home/hqtech/ctrsoft/hqsystem_conf/fersys/</path>
     <prefix>fer_para_conf_</prefix>
   </ferconfig>
   <device>

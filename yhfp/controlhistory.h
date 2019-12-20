@@ -2,6 +2,7 @@
 #define CONTROLHISTORY_H
 
 #include <QWidget>
+#include "uiglobal.h"
 
 namespace Ui {
 class ControlHistory;

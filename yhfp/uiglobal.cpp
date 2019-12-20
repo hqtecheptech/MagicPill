@@ -9,8 +9,8 @@ UiGlobal::UiGlobal()
     alertsModel->removeRows(0,alertsModel->rowCount(QModelIndex()),QModelIndex());
 }
 
-QStandardItemModel* Global::alertsModel = new QStandardItemModel(0,4);
+QStandardItemModel* UiGlobal::alertsModel = new QStandardItemModel(0,4);
 
-QStandardItemModel* Global::simpleAlertsModel = new QStandardItemModel(0,1);
+QStandardItemModel* UiGlobal::simpleAlertsModel = new QStandardItemModel(0,1);
 
-QStandardItemModel* Global::loginHistoryModel = new QStandardItemModel(0,1);
+QStandardItemModel* UiGlobal::loginHistoryModel = new QStandardItemModel(0,1);

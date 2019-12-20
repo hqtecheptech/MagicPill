@@ -224,13 +224,13 @@ void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Pl
                     newItemList.append(new QStandardItem(""));
                 }*/
 
-                int count = Global::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
+                int count = UiGlobal::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
                 if(count > 50)
                 {
-                    Global::simpleAlertsModel->removeRows(ALERT_COUNT, count, QModelIndex());
+                    UiGlobal::simpleAlertsModel->removeRows(ALERT_COUNT, count, QModelIndex());
                 }
-                Global::simpleAlertsModel->insertRow(0, newSimpleItemList);
-                Global::alertsModel->insertRow(0, newItemList);
+                UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
+                UiGlobal::alertsModel->insertRow(0, newItemList);
             }
         }
     }
@@ -416,13 +416,13 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
                     newItemList.append(new QStandardItem(""));
                 }*/
 
-                int count = Global::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
+                int count = UiGlobal::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
                 if(count > 50)
                 {
-                    Global::simpleAlertsModel->removeRows(ALERT_COUNT, count, QModelIndex());
+                    UiGlobal::simpleAlertsModel->removeRows(ALERT_COUNT, count, QModelIndex());
                 }
-                Global::simpleAlertsModel->insertRow(0, newSimpleItemList);
-                Global::alertsModel->insertRow(0, newItemList);
+                UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
+                UiGlobal::alertsModel->insertRow(0, newItemList);
             }
         }
     }
@@ -608,13 +608,13 @@ void PlcDataManageWorker::parseMixServerData(DeviceGroupInfo groupInfo, const Pl
                     newItemList.append(new QStandardItem(""));
                 }*/
 
-                int count = Global::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
+                int count = UiGlobal::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
                 if(count > 50)
                 {
-                    Global::simpleAlertsModel->removeRows(ALERT_COUNT, count, QModelIndex());
+                    UiGlobal::simpleAlertsModel->removeRows(ALERT_COUNT, count, QModelIndex());
                 }
-                Global::simpleAlertsModel->insertRow(0, newSimpleItemList);
-                Global::alertsModel->insertRow(0, newItemList);
+                UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
+                UiGlobal::alertsModel->insertRow(0, newItemList);
             }
         }
     }

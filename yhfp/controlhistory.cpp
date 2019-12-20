@@ -7,7 +7,7 @@ ControlHistory::ControlHistory(QWidget *parent) :
     ui(new Ui::ControlHistory)
 {
     ui->setupUi(this);
-    ui->hisTableView->setModel(Global::simpleAlertsModel);
+    ui->hisTableView->setModel(UiGlobal::simpleAlertsModel);
     ui->hisTableView->horizontalHeader()->setVisible(false);
     ui->hisTableView->verticalHeader()->setVisible(false);
     ui->hisTableView->setShowGrid(false);

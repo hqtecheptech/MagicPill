@@ -7,11 +7,13 @@
 #include <signal.h>
 #include <unistd.h>//write function
 #include <sys/types.h>
+#include <QStandardItem>
 
 #include "data.h"
 #include "dataformat.h"
 #include "sharehelper.h"
 #include "datasender.h"
+#include "uiglobal.h"
 
 class PlcDataManageWorker : public QObject
 {

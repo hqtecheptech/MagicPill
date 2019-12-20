@@ -48,7 +48,8 @@ SOURCES += main.cpp\
     databaseworker.cpp \
     historydlg.cpp \
     controlhistory.cpp \
-    mixerdlg.cpp
+    mixerdlg.cpp \
+    uiglobal.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -85,7 +86,8 @@ HEADERS  += mainwindow.h \
     databaseworker.h \
     historydlg.h \
     controlhistory.h \
-    mixerdlg.h
+    mixerdlg.h \
+    uiglobal.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \
