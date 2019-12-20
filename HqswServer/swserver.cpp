@@ -13,7 +13,7 @@ SwServer::SwServer(QObject *parent) : QObject(parent)
 
     testTimer = new QTimer();
     connect(testTimer, SIGNAL(timeout()), this, SLOT(writeTestData()));
-    testTimer->start(5000);
+    testTimer->start(100);
 }
 
 void SwServer::writeTestData()

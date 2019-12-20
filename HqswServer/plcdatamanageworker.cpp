@@ -61,7 +61,7 @@ void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
                 break;
         }
 
-        sendPlcdataToServer(dataName, groupInfo, plcdata);
+        //sendPlcdataToServer(dataName, groupInfo, plcdata);
     //}
 
     //ctrlSh->UnlockShare();
