@@ -10,8 +10,8 @@ using namespace std;
 
 DataSender::DataSender()
 {
-    port = Global::systemConfig.Port;
-    serverIP = new QHostAddress(Global::systemConfig.IP);
+    _port = Global::systemConfig.Port;
+    _serverIP = new QHostAddress(Global::systemConfig.IP);
     _tcpSocket = new QTcpSocket();
     //qDebug() << "Send to " << serverIP->toString() << ":" << port;
     connect(_tcpSocket,SIGNAL(readyRead()),this,SLOT(dataReceive()));
@@ -23,6 +23,15 @@ DataSender::DataSender(QTcpSocket *sock)
     _tcpSocket = sock;
     connect(_tcpSocket,SIGNAL(readyRead()),this,SLOT(dataReceive()));
     //connect(_tcpSocket, &QAbstractSocket::disconnected, _tcpSocket, &QObject::deleteLater);
+}
+
+DataSender::DataSender(QHostAddress *serverIp, int port)
+{
+    _serverIP = serverIp;
+    _port = port;
+    _tcpSocket = new QTcpSocket();
+    connect(_tcpSocket,SIGNAL(readyRead()),this,SLOT(dataReceive()));
+    connect(_tcpSocket, &QAbstractSocket::disconnected, _tcpSocket, &QObject::deleteLater);
 }
 
 DataSender::~DataSender()
@@ -39,7 +48,7 @@ void DataSender::clear()
 int DataSender::sendRequestWithResults(const QString strData)
 {
     _tcpSocket->abort(); //取消已有的连接
-    _tcpSocket->connectToHost(*serverIP,port);
+    _tcpSocket->connectToHost(*_serverIP,_port);
     const int timeout=3000;
     if(!_tcpSocket->waitForConnected(timeout))
     {
@@ -65,7 +74,7 @@ int DataSender::sendRequestWithResults(QByteArray data)
     if(_tcpSocket->state() != QAbstractSocket::ConnectedState)
     {
         _tcpSocket->abort(); //取消已有的连接
-        _tcpSocket->connectToHost(*serverIP,port);
+        _tcpSocket->connectToHost(*_serverIP,_port);
         const int timeout=5000;
         if(!_tcpSocket->waitForConnected(timeout))
         {

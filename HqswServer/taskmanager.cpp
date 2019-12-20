@@ -37,7 +37,9 @@ void TaskManager::handleAcceptError(QAbstractSocket::SocketError error)
 
 void TaskManager::sendHeartbeat()
 {
-    DataSender *ds = new DataSender();
+    int port = Global::serverInfo.Port;
+    QHostAddress *serverIp = new QHostAddress(Global::serverInfo.IP);
+    DataSender *ds = new DataSender(serverIp, port);
     connect(ds, SIGNAL(updateConnectState(bool)), this, SLOT(handleConnectionUpdate(bool)));
     QByteArray allPackData, SData, crcData;
     QDataStream out(&SData,QIODevice::WriteOnly);

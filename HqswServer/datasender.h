@@ -14,6 +14,8 @@ class DataSender : public QObject
 public:
     DataSender();
     DataSender(QTcpSocket *sock);
+    DataSender(QHostAddress *serverIp, int port);
+
     ~DataSender();
 
     int sendRequestWithResults(const QString strData);
@@ -28,10 +30,10 @@ protected slots:
     void dataReceive();
 
 private:
-    QHostAddress *serverIP;
+    QHostAddress *_serverIP;
     QTcpSocket* _tcpSocket;
     bool status;
-    int port;
+    int _port;
     int StreamLength = 0;
     QByteArray sData;
     void clear();
