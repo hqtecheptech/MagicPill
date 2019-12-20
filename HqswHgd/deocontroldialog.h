@@ -10,6 +10,7 @@
 #include "mytimerthread.h"
 #include "tcpclientsocket.h"
 #include "deosettingdialog.h"
+#include "uiglobal.h"
 
 namespace Ui {
 class DeoControlDialog;

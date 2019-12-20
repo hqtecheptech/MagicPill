@@ -196,8 +196,8 @@ void SharedFanControlDialog::parseRunCtrData(QMap<float,QString> dataMap)
                     newItemList.append(new QStandardItem(""));
                 }
 
-                Global::simpleAlertsModel->insertRow(0, newSimpleItemList);
-                Global::alertsModel->insertRow(0, newItemList);
+                UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
+                UiGlobal::alertsModel->insertRow(0, newItemList);
                 Global::currentFanGroupDataMap[dictAddress] = dataMap[dictAddress];
             }
         }

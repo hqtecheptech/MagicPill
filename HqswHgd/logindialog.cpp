@@ -98,7 +98,7 @@ void LoginDialog::showLogin(QByteArray result)
         QStandardItem *item = new QStandardItem(temp);
         QList<QStandardItem *> newItemList;
         newItemList.append(item);
-        Global::loginHistoryModel->insertRow(0, newItemList);
+        UiGlobal::loginHistoryModel->insertRow(0, newItemList);
 
         emit LogingStateChanged();
 

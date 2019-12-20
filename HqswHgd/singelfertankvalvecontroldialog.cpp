@@ -173,8 +173,8 @@ void SingelFerTankValveControlDialog::parseRunCtrData(QMap<float,QString> dataMa
                     newItemList.append(new QStandardItem(""));
                 }
 
-                Global::simpleAlertsModel->insertRow(0, newSimpleAlertItemList);
-                Global::alertsModel->insertRow(0, newItemList);
+                UiGlobal::simpleAlertsModel->insertRow(0, newSimpleAlertItemList);
+                UiGlobal::alertsModel->insertRow(0, newItemList);
                 Global::currentFermenationDataMap[dictAddress] = dataMap[dictAddress];
             }
         }

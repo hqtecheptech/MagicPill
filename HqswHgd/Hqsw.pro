@@ -88,7 +88,8 @@ SOURCES += main.cpp\
     ferstepform.cpp \
     ferconfigdialog.cpp \
     ferconfig.cpp \
-    simpledeocontroldialog.cpp
+    simpledeocontroldialog.cpp \
+    uiglobal.cpp
 
 HEADERS  += mainwindow.h \
     ufftank.h \
@@ -152,7 +153,8 @@ HEADERS  += mainwindow.h \
     ferstepform.h \
     ferconfigdialog.h \
     ferconfig.h \
-    simpledeocontroldialog.h
+    simpledeocontroldialog.h \
+    uiglobal.h
 
 FORMS    += mainwindow.ui \
     fftank.ui \

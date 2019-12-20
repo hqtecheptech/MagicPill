@@ -270,7 +270,7 @@ void RenHuai_CenterWidget::parseRunCtrData(QMap<float,QString> dataMap)
                     newItemList.append(new QStandardItem(""));
                 }
 
-                Global::alertsModel->appendRow(newItemList);
+                UiGlobal::alertsModel->appendRow(newItemList);
                 Global::currentFermenationDataMap[dictAddress] = dataMap[dictAddress];
             }
         }

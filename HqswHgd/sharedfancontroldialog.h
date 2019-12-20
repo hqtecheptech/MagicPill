@@ -3,10 +3,12 @@
 
 #include <QDialog>
 #include <QMessageBox>
+#include <QStandardItem>
 
 #include "dataformat.h"
 #include "mytimerthread.h"
 #include "tcpclientsocket.h"
+#include "uiglobal.h"
 
 namespace Ui {
 class SharedFanControlDialog;

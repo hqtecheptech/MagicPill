@@ -7,7 +7,7 @@ AlertHistoryForm::AlertHistoryForm(QWidget *parent) :
     ui(new Ui::AlertHistoryForm)
 {
     ui->setupUi(this);
-    ui->tableView->setModel(Global::simpleAlertsModel);
+    ui->tableView->setModel(UiGlobal::simpleAlertsModel);
     ui->tableView->horizontalHeader()->setVisible(false);
     ui->tableView->verticalHeader()->setVisible(false);
     ui->tableView->setColumnWidth(0, 430);

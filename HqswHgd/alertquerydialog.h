@@ -2,6 +2,7 @@
 #define ALERTQUERYDIALOG_H
 
 #include <QDialog>
+#include "uiglobal.h"
 
 namespace Ui {
 class AlertQueryDialog;

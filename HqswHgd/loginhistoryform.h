@@ -2,6 +2,7 @@
 #define LOGINHISTORYFORM_H
 
 #include <QWidget>
+#include "uiglobal.h"
 
 namespace Ui {
 class loginHistoryForm;

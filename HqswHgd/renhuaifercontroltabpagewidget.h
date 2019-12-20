@@ -7,6 +7,7 @@
 
 #include "ufftank.h"
 #include "sharedfancontroldialog.h"
+#include "uiglobal.h"
 
 namespace Ui {
 class RenhuaiFerControlTabPageWidget;

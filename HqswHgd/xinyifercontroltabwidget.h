@@ -10,6 +10,7 @@
 #include "basetankwidget.h"
 #include "fftank.h"
 #include "parseserverdataworker.h"
+#include "uiglobal.h"
 
 namespace Ui {
 class XinyiFerControlTabWidget;
