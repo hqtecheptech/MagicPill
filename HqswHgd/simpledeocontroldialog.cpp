@@ -167,7 +167,7 @@ void SimpleDeoControlDialog::on_startWaterValveButton_clicked()
         bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
 
         QList<ushort> addrs;
-        QList<int> values;
+        QList<uint> values;
         DeviceNode deviceNode = Global::getFermenationNodeInfoByName("Start_Water_Valve");
         ushort addr = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
                 * Global::getLengthByDataType(deviceNode.DataType);
@@ -188,7 +188,7 @@ void SimpleDeoControlDialog::on_startWaterValveButton_clicked()
             out << item;
         }
 
-        foreach(int item, values)
+        foreach(uint item, values)
         {
             out << item;
         }
@@ -236,7 +236,7 @@ void SimpleDeoControlDialog::on_stopWaterValveButton_clicked()
         bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
 
         QList<ushort> addrs;
-        QList<int> values;
+        QList<uint> values;
         DeviceNode deviceNode = Global::getFermenationNodeInfoByName("Start_Water_Valve");
         ushort addr = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
                 * Global::getLengthByDataType(deviceNode.DataType);
@@ -257,7 +257,7 @@ void SimpleDeoControlDialog::on_stopWaterValveButton_clicked()
             out << item;
         }
 
-        foreach(int item, values)
+        foreach(uint item, values)
         {
             out << item;
         }
@@ -305,7 +305,7 @@ void SimpleDeoControlDialog::on_startSparyValveButton_clicked()
         bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
 
         QList<ushort> addrs;
-        QList<int> values;
+        QList<uint> values;
         DeviceNode deviceNode = Global::getFermenationNodeInfoByName("Start_Pump_PL");
         ushort addr = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
                 * Global::getLengthByDataType(deviceNode.DataType);
@@ -326,7 +326,7 @@ void SimpleDeoControlDialog::on_startSparyValveButton_clicked()
             out << item;
         }
 
-        foreach(int item, values)
+        foreach(uint item, values)
         {
             out << item;
         }
@@ -374,7 +374,7 @@ void SimpleDeoControlDialog::on_stopSparyValveButton_clicked()
         bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
 
         QList<ushort> addrs;
-        QList<int> values;
+        QList<uint> values;
         DeviceNode deviceNode = Global::getFermenationNodeInfoByName("Start_Pump_PL");
         ushort addr = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
                 * Global::getLengthByDataType(deviceNode.DataType);
@@ -395,7 +395,7 @@ void SimpleDeoControlDialog::on_stopSparyValveButton_clicked()
             out << item;
         }
 
-        foreach(int item, values)
+        foreach(uint item, values)
         {
             out << item;
         }
@@ -443,7 +443,7 @@ void SimpleDeoControlDialog::on_otherDeviceAutoButton_clicked()
         bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
 
         QList<ushort> addrs;
-        QList<int> values;
+        QList<uint> values;
         DeviceNode deviceNode = Global::getFermenationNodeInfoByName("Set_Other_Devices_Auto");
         ushort addr = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
                 * Global::getLengthByDataType(deviceNode.DataType);
@@ -464,7 +464,7 @@ void SimpleDeoControlDialog::on_otherDeviceAutoButton_clicked()
             out << item;
         }
 
-        foreach(int item, values)
+        foreach(uint item, values)
         {
             out << item;
         }
@@ -512,7 +512,7 @@ void SimpleDeoControlDialog::on_otherDeviceManualButton_clicked()
         bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
 
         QList<ushort> addrs;
-        QList<int> values;
+        QList<uint> values;
         DeviceNode deviceNode = Global::getFermenationNodeInfoByName("Set_Other_Devices_Auto");
         ushort addr = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
                 * Global::getLengthByDataType(deviceNode.DataType);
@@ -533,7 +533,7 @@ void SimpleDeoControlDialog::on_otherDeviceManualButton_clicked()
             out << item;
         }
 
-        foreach(int item, values)
+        foreach(uint item, values)
         {
             out << item;
         }

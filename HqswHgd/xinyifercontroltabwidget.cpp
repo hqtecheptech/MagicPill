@@ -41,7 +41,7 @@ XinyiFerControlTabWidget::XinyiFerControlTabWidget(QWidget *parent) :
     //getAllFanDataTcpClient = new TcpClientSocket(this);
     //connect(getAllFanDataTcpClient, SIGNAL(updateClients(QByteArray)), this, SLOT(showFanData(QByteArray)));
 
-    myTimerThread = new MyTimerThread(5, this);
+    myTimerThread = new MyTimerThread(1, this);
     connect(myTimerThread, SIGNAL(timeout()),this,SLOT(read_server_data()));
 }
 

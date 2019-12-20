@@ -44,7 +44,7 @@
         <node id="1" length="8" offset="6" name="FER_STEPCTR_UI" cname="发酵运行步骤" diff="0"/>
         <node id="1" length="1" offset="7" name="PAN_MANUAL" cname="面板手动反馈" diff="0"/>
         <node id="1" length="1" offset="8" name="PAN_AUTO" cname="面板自动反馈" diff="0"/>
-        <node id="1" length="1" offset="9" name="PAN_AUTO" cname="面板允许运行" diff="0"/>
+        <node id="1" length="1" offset="9" name="PAN_ALLOW_RUN" cname="面板允许运行" diff="0"/>
         <node id="1" length="1" offset="10" name="Pump_PL_Run_Signal" cname="喷淋水泵运行反馈" diff="0"/>
         <node id="1" length="1" offset="11" name="Pump_PL_False_Signal" cname="喷淋水泵故障反馈" diff="0"/>
         <node id="1" length="1" offset="12" name="Start_Water_Valve" cname="触摸屏启动补水阀" diff="0"/>
