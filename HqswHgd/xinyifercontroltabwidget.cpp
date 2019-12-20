@@ -122,7 +122,7 @@ void XinyiFerControlTabWidget::initUI()
     QHBoxLayout *tankRowLayout = new QHBoxLayout;
     tankRowLayout->setContentsMargins(50,0,0,0);
     tankRowLayout->setSpacing(50);
-    int mid = 9;
+    int mid = 8;
     /*if((Global::ferDeviceInfo.Device_Number % 2) == 0)
     {
         mid = Global::ferDeviceInfo.Device_Number / 2;

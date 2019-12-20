@@ -12,6 +12,7 @@ public:
     Global();
 
     static ServerInfo serverInfo;
+    static SystemConfig systemConfig;
 
     static DeviceNode getFermenationNodeInfoByName(QString name);
     static DeviceNode getDeodorationNodeInfoByName(QString name);
@@ -99,6 +100,7 @@ private:
     static YhcDeviceInfo readYhcDeviceInfo();
 
     static ServerInfo readServerInfo();
+    static SystemConfig readSystemConfig();
     static int readFerGroupShowing();
 };
 

@@ -20,7 +20,7 @@ RenhuaiNew::RenhuaiNew(QWidget *parent) :
     ui->serverIP_label->setText(Global::serverInfo.IP.split('.').at(3));
     ui->hostname_label->setText(QHostInfo::localHostName());
 
-    ui->fanValveControlButton->setVisible(false);
+    //ui->fanValveControlButton->setVisible(false);
 
     ui->title_frame->setObjectName("titleframe");
     ui->title_frame->setStyleSheet("QFrame#titleframe{border-image:url(:/image/new/title_banner.jpg)}");
@@ -52,9 +52,11 @@ RenhuaiNew::RenhuaiNew(QWidget *parent) :
     reportDialog = new ReportDialog(this);
     //settingDialog = new SettingDialog(this);
     ferconfigDialog = new FerConfigDialog(this);
+    sdcDialog = new SimpleDeoControlDialog(this);
     alertQueryDialog = new AlertQueryDialog(this);
     fercontrolDialog = new FerControlDialog(this);
     connect(this,SIGNAL(ferDataChanged(QSet<int>, QMap<float,QString>)),fercontrolDialog,SLOT(updateFermentationData(QSet<int>, QMap<float,QString>)));
+    connect(this,SIGNAL(ferDataChanged(QSet<int>, QMap<float,QString>)),sdcDialog,SLOT(updateFermentationData(QSet<int>, QMap<float,QString>)));
 
     m_nTimerId = startTimer(1000);
 }
@@ -70,13 +72,13 @@ void RenhuaiNew::updateFerData(QSet<int> changedDeviceSet, QMap<float,QString> d
 {
     emit ferDataChanged(changedDeviceSet, dataMap);
 
-    for(int i=0; i<7; i++)
+    for(int i=0; i<1; i++)
     {
-        DeviceNode node = Global::getFermenationNodeInfoByName("FER_ET_R");
+        DeviceNode node = Global::getFermenationNodeInfoByName("ES_TEMP_R");
         uint address = node.Offset + i * 4;
         envParamsArray[i]->setTemperature(dataMap[address].toFloat());
 
-        node = Global::getFermenationNodeInfoByName("FER_HM_R");
+        node = Global::getFermenationNodeInfoByName("TOTAL_CURRENT_R");
         address = node.Offset + i * 4;
         envParamsArray[i]->setHumidity(dataMap[address].toFloat());
 
@@ -90,7 +92,8 @@ void RenhuaiNew::updateFerData(QSet<int> changedDeviceSet, QMap<float,QString> d
     }
 
     QString strValue = "T:" + QString::number(envParamsArray.at(0)->getTemperature(), 'f', 2) + "  ";
-            strValue.append("W:" + QString::number(envParamsArray.at(0)->getHumidity(), 'f', 2) + " %  ");
+            //strValue.append("W:" + QString::number(envParamsArray.at(0)->getHumidity(), 'f', 2) + " %  ");
+            strValue.append("I:" + QString::number(envParamsArray.at(0)->getHumidity(), 'f', 2) + " A  ");
             strValue.append("NH3:" + QString::number(envParamsArray.at(0)->getNh3(), 'f', 2) + " ppm  ");
             strValue.append("H2S:" + QString::number(envParamsArray.at(0)->getH2s(), 'f', 2) + " ppm");
     ui->tab_banner_label->setText(strValue);
@@ -216,6 +219,7 @@ void RenhuaiNew::on_fanValveControlButton_clicked()
 {
     //fanValveControlDialog->show();
     //sensorControlDialog->show();
+    sdcDialog->show();
 }
 
 void RenhuaiNew::on_HistoryQueryButton_clicked()
@@ -249,6 +253,7 @@ void RenhuaiNew::on_exitButton_clicked()
     //settingDialog->close();
     ferconfigDialog->close();
     fercontrolDialog->close();
+    sdcDialog->close();
 
     QApplication::quit();
 }

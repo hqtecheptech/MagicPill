@@ -145,7 +145,7 @@
      <string notr="true">color: rgb(250, 250, 250);</string>
     </property>
     <property name="text">
-     <string>庆阳智能发酵处理系统</string>
+     <string>智能发酵处理系统</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

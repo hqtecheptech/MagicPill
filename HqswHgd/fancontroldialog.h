@@ -5,6 +5,7 @@
 #include <QStandardItemModel>
 #include <QMessageBox>
 #include <QDataWidgetMapper>
+#include <QMap>
 
 #include "dataformat.h"
 #include "requestworkthread.h"
@@ -56,25 +57,22 @@ private:
     MyTimerThread *myTimerThread;
     int tankIndex = 0;
     int frequency = 0;
+    int frequencySetting = 0;
     //bool isFanRemote = false;
     bool isFanRun = false;
     bool fanMode = false;
     bool isFault = false;
     bool isSwitchFault = false;
+    bool isValveOpened = false;
     RequestWorkThread *work;
     TcpClientSocket *tcpClient;
+    TcpClientSocket *freqTcpClient;
     QPalette p;
     QPixmap icoGreen;
     QPixmap icoYellow;
     QPixmap icoRed;
     QPixmap fanAutoControlBg;
     QPixmap fanManualControlBg;
-    //QVector<FFTank *> tanks;
-    //FFTank* _tank;
-    QStandardItemModel *ferModel;
-    QDataWidgetMapper *ferMapper = Q_NULLPTR;
-    QStandardItemModel *runctrModel;
-    QDataWidgetMapper *runctrMapper = Q_NULLPTR;
     QMessageBox msgBox;
 
     void parseFermentationData(QMap<float,QString> dataMap);

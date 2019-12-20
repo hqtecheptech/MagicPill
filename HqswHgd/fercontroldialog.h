@@ -76,8 +76,9 @@ private:
     bool isFerPaused = false;
     QMap<int, QList<FerStep *>> _ferConfigs;
 
-    ushort handRunTime = 0;
-    ushort handSpaceTime = 0;
+    int handRunTime = 0;
+    int handSpaceTime = 0;
+    int handFrequency = 0;
 
     void parseFermentationData(QMap<float,QString> dataMap);
     void parseFerRunTimeData(QMap<float,QString> dataMap);

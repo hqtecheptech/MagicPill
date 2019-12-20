@@ -29,6 +29,7 @@ FanControlDialog::FanControlDialog(QWidget *parent) :
     connect(ui->fanIndexComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(fanIndexChanged(int)));
 
     tcpClient = new TcpClientSocket(this);
+    freqTcpClient = new TcpClientSocket(this);
 }
 
 FanControlDialog::~FanControlDialog()
@@ -71,7 +72,7 @@ void FanControlDialog::setCombBoxVisible(bool value)
 
 void FanControlDialog::on_outputFreqSlider_valueChanged(int value)
 {
-    frequency = value;
+    frequencySetting = value;
 }
 
 void FanControlDialog::on_fanOpenPushButton_clicked()
@@ -83,14 +84,77 @@ void FanControlDialog::on_fanOpenPushButton_clicked()
         uint stime =currentdt.toTime_t();
         uint etime =currentdt.toTime_t();
 
+        DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
+        StreamPack bpack;
+
+        if(frequency == 0 && frequencySetting == 0)
+        {
+            msgBox.setText(QStringLiteral("当前风机频率为0，请先设置频率！"));
+            msgBox.show();
+            return;
+        }
+
+        if(frequencySetting > 0)
+        {
+            bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Int,0,0,1,0,0,0};
+            //Length of ushort address and value, plus length of scrc.
+            bpack.bStartTime =stime;
+            bpack.bEndTime =etime;
+            bpack.bDataLength = 1;
+            bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
+
+            QList<ushort> addrs;
+            QList<int> values;
+            DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_HAND_FS");
+            ushort addr = deviceNode.Offset + (info.offset + tankIndex - info.startIndex)
+                    * Global::getLengthByDataType(deviceNode.DataType);
+            addrs.append(addr);
+            values.append(frequencySetting);
+
+            QByteArray allPackData, SData, crcData;
+            QDataStream out(&SData,QIODevice::WriteOnly);
+            out.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+            out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+            //QDataStream::BigEndian或QDataStream::LittleEndian
+            out.setByteOrder(QDataStream::LittleEndian);
+
+            allPackData.append((char*)&bpack, sizeof(bpack));
+
+            foreach(ushort item, addrs)
+            {
+                out << item;
+            }
+
+            foreach(int item, values)
+            {
+                out << item;
+            }
+
+            SData.insert(0, allPackData);
+
+            uint scrc = freqTcpClient->StreamLen_CRC32(SData);
+
+            QDataStream out1(&crcData,QIODevice::WriteOnly);
+            out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+            out1.setFloatingPointPrecision(QDataStream::SinglePrecision);
+            //QDataStream::BigEndian或QDataStream::LittleEndian
+            out1.setByteOrder(QDataStream::LittleEndian);
+            out1 << scrc;
+
+            SData.append(crcData);
+
+            // Send frequency firstly.
+            freqTcpClient->sendRequestWithResults(SData);
+        }
+
+
         ushort offset = Global::getFermenationNodeInfoByName("FAN_HandStart_BOOL").Offset / 8;
         ushort index = Global::getFermenationNodeInfoByName("FAN_HandStart_BOOL").Offset % 8;
 
-        DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
+        info = Global::getFerDeviceGroupInfo(tankIndex);
         ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
         ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
 
-        StreamPack bpack;
         bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
@@ -255,14 +319,31 @@ void FanControlDialog::updateFermentationData(QSet<int> chengedDeviceSet, QMap<f
 
 void FanControlDialog::parseFermentationData(QMap<float,QString> dataMap)
 {
-    /*int deviceIndex = tankIndex;
+    int deviceIndex = tankIndex;
     DeviceGroupInfo info = Global::getFerDeviceGroupInfo(deviceIndex);
 
-    DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_RF_R");
-    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_RF_UDI");
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            * Global::getLengthByDataType(deviceNode.DataType);
     ui->runFreqLabel->setText(dataMap[address]);
+    frequency = dataMap[address].toInt();
 
-    deviceNode = Global::getFermenationNodeInfoByName("FER_OV_R");
+    deviceNode = Global::getFermenationNodeInfoByName("AIR_INPUT");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            * Global::getLengthByDataType(deviceNode.DataType);
+    ui->airInputLabel->setText(dataMap[address]);
+
+    deviceNode = Global::getFermenationNodeInfoByName("VALVE_OPEN_TIME");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            * Global::getLengthByDataType(deviceNode.DataType);
+    ui->valveOpenTimeLabel->setText(dataMap[address]);
+
+    deviceNode = Global::getFermenationNodeInfoByName("VALVE_CLOSE_TIME");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            * Global::getLengthByDataType(deviceNode.DataType);
+    ui->valveOpenTimeLabel->setText(dataMap[address]);
+
+    /*deviceNode = Global::getFermenationNodeInfoByName("FER_OV_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
     ui->ovLabel->setText(dataMap[address]);
 
@@ -294,39 +375,33 @@ void FanControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
     isFanRun = Global::getFerRunctrValueByName(tankIndex,"FAN_Run_BOOL", dataMap);
     //isFanRemote = Global::getFerRunctrValueByName(tankIndex,"FAN_Remote_BOOL", dataMap);
     fanMode = Global::getFerRunctrValueByName(tankIndex,"FER_Auto_BOOL", dataMap);
+    isValveOpened = Global::getFerRunctrValueByName(tankIndex,"AIR_VALVE_STATUS", dataMap);
 
-    ui->runStateLabel->setObjectName("runstate");
+    if(isValveOpened)
+    {
+        ui->airValveStateLabel->setStyleSheet("QLabel#airValveStateLabel{background-color: rgb(0, 255, 0);}");
+        ui->ValveOpenPushButton->setEnabled(false);
+        ui->ValveClosePushButton->setEnabled(true);
+    }
+    else
+    {
+        ui->airValveStateLabel->setStyleSheet("QLabel#airValveStateLabel{background-color: rgb(255, 0, 0);}");;
+        ui->ValveOpenPushButton->setEnabled(true);
+        ui->ValveClosePushButton->setEnabled(false);
+    }
+
     if(isFanRun)
     {
-        ui->runStateLabel->setStyleSheet("QLabel#runstate{background-color: rgb(0, 255, 0);}");
+        ui->runStateLabel->setStyleSheet("QLabel#runStateLabel{background-color: rgb(0, 255, 0);}");
         ui->fanOpenPushButton->setEnabled(false);
         ui->fanStopPushButton->setEnabled(true);
     }
     else
     {
-        ui->runStateLabel->setStyleSheet("QLabel#runstate{background-color: rgb(255, 0, 0);}");;
+        ui->runStateLabel->setStyleSheet("QLabel#runStateLabel{background-color: rgb(255, 0, 0);}");;
         ui->fanOpenPushButton->setEnabled(true);
         ui->fanStopPushButton->setEnabled(false);
     }
-
-    //if(!isFanRemote)
-    //{
-    //    ui->fanOpenPushButton->setEnabled(false);
-    //    ui->fanStopPushButton->setEnabled(false);
-    //}
-    //else
-    //{
-        if(isFanRun)
-        {
-            ui->fanOpenPushButton->setEnabled(false);
-            ui->fanStopPushButton->setEnabled(true);
-        }
-        else
-        {
-            ui->fanOpenPushButton->setEnabled(true);
-            ui->fanStopPushButton->setEnabled(false);
-        }
-    //}
 
     if(fanMode)
     {

@@ -8,6 +8,8 @@ FerConfigDialog::FerConfigDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setWindowTitle(QStringLiteral("参数设置"));
+
     for(int i=0; i < Global::ferDeviceInfo.Device_Number;i++)
     {
         ui->step_seq_comboBox->addItem(QString::number(i + 1) + QStringLiteral("号发酵池"));
@@ -217,7 +219,7 @@ void FerConfigDialog::on_save_push_button_clicked()
     }
     else
     {
-        QFile file("fer_para_conf_" + QString::number(ui->step_seq_comboBox->currentIndex() + 1));
+        QFile file(Global::systemConfig.ferconfigPath +  Global::systemConfig.ferconfigPrefix + QString::number(ui->step_seq_comboBox->currentIndex() + 1));
         if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Open configuration file failed!";

@@ -26,6 +26,8 @@ public:
 
     void setSpaceTime(int value);
 
+    void setFrequency(int value);
+
 private slots:
     void showSetFerAuto(QByteArray);
     void showFerStart(QByteArray);
@@ -38,12 +40,10 @@ private:
     QMessageBox msgBox;
     TcpClientSocket *tcpClient;
     TcpClientSocket *tcpClient1;
-    TcpClientSocket *aerationTimeTcpClient;
-    TcpClientSocket *aerationSpaceTcpClient;
-    TcpClientSocket *aerationHzTcpClient;
     int tankLocation = 0;
     int runTime = 0;
     int spaceTime = 0;
+    int frequency = 0;
 };
 
 #endif // CUSTOMFERSETTINGDIALOG_H

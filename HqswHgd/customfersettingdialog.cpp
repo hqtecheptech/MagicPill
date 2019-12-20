@@ -14,8 +14,6 @@ CustomFerSettingDialog::CustomFerSettingDialog(QWidget *parent) :
 
     tcpClient = new TcpClientSocket(this);
     tcpClient1 = new TcpClientSocket(this);
-    aerationTimeTcpClient = new TcpClientSocket(this);
-    aerationSpaceTcpClient = new TcpClientSocket(this);
 }
 
 CustomFerSettingDialog::~CustomFerSettingDialog()
@@ -61,7 +59,7 @@ void CustomFerSettingDialog::showFerStart(QByteArray data)
 
     if(bDevice.bErrorCode==1)
     {
-
+        close();
     }
 }
 
@@ -78,7 +76,7 @@ void CustomFerSettingDialog::setTankLocation(int value)
 void CustomFerSettingDialog::on_customFerButton_pressed()
 {
     bool ok;
-    ushort aerationTimeValue = ui->aerationTimeLineEdit->text().toUShort(&ok);
+    int aerationTimeValue = ui->aerationTimeLineEdit->text().toInt(&ok);
     if(!ok)
     {
         msgBox.setText(QStringLiteral("发酵时长格式不正确"));
@@ -95,7 +93,7 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
         }
     }
 
-    ushort aerationSpaceValue = ui->aerationSpaceLineEdit->text().toUShort(&ok);
+    int aerationSpaceValue = ui->aerationSpaceLineEdit->text().toInt(&ok);
     if(!ok)
     {
         msgBox.setText(QStringLiteral("发酵间隔时长格式不正确"));
@@ -112,32 +110,56 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
         }
     }
 
+    int frequency = ui->fanFrequencyLineEdit->text().toInt(&ok);
+    if(!ok)
+    {
+        msgBox.setText(QStringLiteral("风机频率格式不正确"));
+        msgBox.show();
+        return;
+    }
+    else
+    {
+        if(frequency >50 || frequency < 1)
+        {
+            msgBox.setText(QStringLiteral("风机频率超出允许范围"));
+            msgBox.show();
+            return;
+        }
+    }
+
     User *user = Identity::getInstance()->getUser();
     if(user != Q_NULLPTR)
     {
         DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankLocation);
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,UShort,0,0,1,0,0,0};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Int,0,0,3,0,0,0};
         //Length of ushort address and value, plus length of scrc.
-        bpack.bDataLength = 2;
-        bpack.bStreamLength += (2+2)*2 + 4;
+        bpack.bDataLength = 3;
+        bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
 
         QList<ushort> addrs;
-        QList<ushort> values;
+        QList<int> values;
         DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_RunTime");
         ushort addr = deviceNode.Offset + (info.offset + tankLocation - info.startIndex)
                 * Global::getLengthByDataType(deviceNode.DataType);
         addrs.append(addr);
-        ushort ushortData = aerationTimeValue * 60;
-        values.append(ushortData);
+        int intData = aerationTimeValue * 60;
+        values.append(intData);
 
         deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_SpaceTime");
         addr = deviceNode.Offset + (info.offset + tankLocation - info.startIndex)
                 * Global::getLengthByDataType(deviceNode.DataType);
         addrs.append(addr);
-        ushortData = aerationSpaceValue * 60;
-        values.append(ushortData);
+        intData = aerationSpaceValue * 60;
+        values.append(intData);
+
+        deviceNode = Global::getFermenationNodeInfoByName("FER_HAND_FSP");
+        addr = deviceNode.Offset + (info.offset + tankLocation - info.startIndex)
+                * Global::getLengthByDataType(deviceNode.DataType);
+        addrs.append(addr);
+        intData = frequency;
+        values.append(intData);
 
         QByteArray allPackData, SData, crcData;
         QDataStream out(&SData,QIODevice::WriteOnly);
@@ -153,14 +175,14 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
             out << item;
         }
 
-        foreach(ushort item, values)
+        foreach(int item, values)
         {
             out << item;
         }
 
         SData.insert(0, allPackData);
 
-        uint scrc = aerationTimeTcpClient->StreamLen_CRC32(SData);
+        uint scrc = tcpClient->StreamLen_CRC32(SData);
 
         QDataStream out1(&crcData,QIODevice::WriteOnly);
         out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
@@ -170,8 +192,8 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
         out1 << scrc;
 
         SData.append(crcData);
-
-        aerationTimeTcpClient->sendRequestWithResults(SData);
+        // Send manual fermentation paramters firstly.
+        tcpClient->sendRequestWithResults(SData);
 
         ushort offset = Global::getFermenationNodeInfoByName("Aeration_Start").Offset / 8;
         ushort index = Global::getFermenationNodeInfoByName("Aeration_Start").Offset % 8;
@@ -179,7 +201,7 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
         ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
         addr = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankLocation - info.startIndex) * runctrlByteSize + offset;
 
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,addr,index,1,0,0,0};
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,addr,index,2,0,0,0};
         bool data = true;
         QVariant var_data = QVariant(data);
 
@@ -187,23 +209,6 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
         disconnect(tcpClient1,0,0,0);
         connect(tcpClient1, SIGNAL(updateClients(QByteArray)),this,SLOT(showFerStart(QByteArray)));
         tcpClient1->sendRequestWithResult(bpack,var_data,1);
-
-        /*ushort offset = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset / 8;
-        ushort index = Global::getFermenationNodeInfoByName("FER_Auto_BOOL").Offset % 8;
-
-        info = Global::getFerDeviceGroupInfo(tankLocation);
-        ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
-        address = Global::ferDeviceInfo.Runctr_Address +
-                (info.offset + tankLocation - info.startIndex) * runctrlByteSize + offset;
-
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,w_RealData,Bool,address,index,1,0,0,0};
-        bool data = false;
-        QVariant var_data = QVariant(data);
-
-        tcpClient->abort();
-        disconnect(tcpClient,0,0,0);
-        connect(tcpClient, SIGNAL(updateClients(QByteArray)),this,SLOT(showSetFerAuto(QByteArray)));
-        tcpClient->sendRequestWithResult(bpack,var_data,1);*/
     }
     else
     {
@@ -234,6 +239,11 @@ void CustomFerSettingDialog::on_customFerButton_released()
         connect(tcpClient, SIGNAL(updateClients(QByteArray)),this,SLOT(showSetFerAuto(QByteArray)));
         tcpClient->sendRequestWithResult(bpack,var_data,1);
     }*/
+}
+
+void CustomFerSettingDialog::setFrequency(int value)
+{
+    frequency = value;
 }
 
 void CustomFerSettingDialog::setSpaceTime(int value)

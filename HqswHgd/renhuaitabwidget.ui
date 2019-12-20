@@ -61,27 +61,6 @@
     <layout class="QHBoxLayout" name="fer_tab_horizontalLayout"/>
    </widget>
   </widget>
-  <widget class="QWidget" name="tab">
-   <attribute name="icon">
-    <iconset resource="src.qrc">
-     <normaloff>:/image/new/deoTabUnselected.bmp</normaloff>
-     <normalon>:/image/new/deoTabSelected.bmp</normalon>:/image/new/deoTabUnselected.bmp</iconset>
-   </attribute>
-   <attribute name="title">
-    <string/>
-   </attribute>
-   <widget class="QWidget" name="horizontalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>1721</width>
-      <height>841</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="deo_tab_horizontalLayout"/>
-   </widget>
-  </widget>
  </widget>
  <resources>
   <include location="src.qrc"/>

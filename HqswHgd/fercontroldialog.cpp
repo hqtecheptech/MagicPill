@@ -154,6 +154,7 @@ void FerControlDialog::on_customFerButton_clicked()
         customFerSettingDialog->setTankLocation(ui->tankIndexComboBox->currentIndex());
         customFerSettingDialog->setRunTime(handRunTime);
         customFerSettingDialog->setSpaceTime(handSpaceTime);
+        customFerSettingDialog->setFrequency(handFrequency);
         customFerSettingDialog->show();
     }
     else
@@ -367,9 +368,9 @@ void FerControlDialog::parseFermentationData(QMap<float,QString> dataMap)
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
     ui->midTemptureLabel->setText(dataMap[address]);
 
-    //deviceNode = Global::getFermenationNodeInfoByName("FER_LT_R");
-    //address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    //ui->lowTemptureLabel->setText(dataMap[address]);
+    deviceNode = Global::getFermenationNodeInfoByName("FER_LT_R");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    ui->lowTemptureLabel->setText(dataMap[address]);
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_ET_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
@@ -381,11 +382,27 @@ void FerControlDialog::parseFermentationData(QMap<float,QString> dataMap)
             *  Global::getLengthByDataType(deviceNode.DataType);
     ui->envhumidityLabel->setText(dataMap[address]);
 
-    /*deviceNode = Global::getFermenationNodeInfoByName("FER_CO_R");
+    deviceNode = Global::getFermenationNodeInfoByName("FER_OX_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->aerobicRateLabel->setText(dataMap[address]);
+    ui->oxLabel->setText(dataMap[address]);
 
-    deviceNode = Global::getFermenationNodeInfoByName("FER_RO_R");
+    deviceNode = Global::getFermenationNodeInfoByName("FER_H2S_R");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    ui->co2Label->setText(dataMap[address]);
+
+    deviceNode = Global::getFermenationNodeInfoByName("FER_NH3_R");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    ui->nh3Label->setText(dataMap[address]);
+
+    deviceNode = Global::getFermenationNodeInfoByName("FER_VOC_R");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    ui->vocLabel->setText(dataMap[address]);
+
+    deviceNode = Global::getFermenationNodeInfoByName("FER_CO2_R");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    ui->vocLabel->setText(dataMap[address]);
+
+    /*deviceNode = Global::getFermenationNodeInfoByName("FER_RO_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
     ui->coRateLabel->setText(dataMap[address]);*/
 }
@@ -445,14 +462,20 @@ void FerControlDialog::parseFerRunTimeData(QMap<float,QString> dataMap)
     deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_RunTime");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    handRunTime = dataMap[address].toUShort() / 60;
+    handRunTime = dataMap[address].toInt() / 60;
     ui->handRunTimeValueLabel->setText(QString::number(handRunTime));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_SpaceTime");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    handSpaceTime = dataMap[address].toUShort() / 60;
+    handSpaceTime = dataMap[address].toInt() / 60;
     ui->handSpaceTimeValeLabel->setText(QString::number(handSpaceTime));
+
+    deviceNode = Global::getFermenationNodeInfoByName("FER_HAND_FSP");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            * Global::getLengthByDataType(deviceNode.DataType);
+    handFrequency = dataMap[address].toInt();
+    ui->handFrequencyValeLabel->setText(QString::number(handFrequency));
 
 
     /*deviceNode = Global::getFermenationNodeInfoByName("FER_START_UDI");

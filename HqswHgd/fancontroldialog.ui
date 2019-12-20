@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>460</height>
+    <height>550</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,8 +42,8 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>110</y>
+     <x>43</x>
+     <y>150</y>
      <width>54</width>
      <height>12</height>
     </rect>
@@ -55,8 +55,8 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>110</y>
+     <x>133</x>
+     <y>150</y>
      <width>54</width>
      <height>12</height>
     </rect>
@@ -68,7 +68,7 @@
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>560</x>
      <y>110</y>
      <width>54</width>
      <height>12</height>
@@ -81,7 +81,7 @@
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>230</x>
+     <x>620</x>
      <y>110</y>
      <width>54</width>
      <height>12</height>
@@ -94,7 +94,7 @@
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>290</x>
+     <x>680</x>
      <y>110</y>
      <width>54</width>
      <height>12</height>
@@ -107,7 +107,7 @@
   <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
-     <x>350</x>
+     <x>740</x>
      <y>110</y>
      <width>54</width>
      <height>12</height>
@@ -120,7 +120,7 @@
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
-     <x>410</x>
+     <x>800</x>
      <y>110</y>
      <width>65</width>
      <height>12</height>
@@ -133,8 +133,8 @@
   <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>80</y>
+     <x>50</x>
+     <y>110</y>
      <width>54</width>
      <height>12</height>
     </rect>
@@ -146,8 +146,8 @@
   <widget class="QLabel" name="runStateLabel">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>130</y>
+     <x>55</x>
+     <y>180</y>
      <width>30</width>
      <height>30</height>
     </rect>
@@ -168,8 +168,8 @@
   <widget class="QLabel" name="faultStateLabel">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>130</y>
+     <x>148</x>
+     <y>180</y>
      <width>30</width>
      <height>30</height>
     </rect>
@@ -190,7 +190,7 @@
   <widget class="QLabel" name="alertStateLabel">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>570</x>
      <y>130</y>
      <width>30</width>
      <height>30</height>
@@ -212,7 +212,7 @@
   <widget class="QLabel" name="ofStateLabel">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>630</x>
      <y>130</y>
      <width>30</width>
      <height>30</height>
@@ -234,7 +234,7 @@
   <widget class="QLabel" name="ovStateLabel">
    <property name="geometry">
     <rect>
-     <x>300</x>
+     <x>690</x>
      <y>130</y>
      <width>30</width>
      <height>30</height>
@@ -256,7 +256,7 @@
   <widget class="QLabel" name="ohStateLabel">
    <property name="geometry">
     <rect>
-     <x>360</x>
+     <x>750</x>
      <y>130</y>
      <width>30</width>
      <height>30</height>
@@ -278,7 +278,7 @@
   <widget class="QLabel" name="otStateLabel">
    <property name="geometry">
     <rect>
-     <x>420</x>
+     <x>810</x>
      <y>130</y>
      <width>30</width>
      <height>30</height>
@@ -300,8 +300,8 @@
   <widget class="QLabel" name="label_10">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>190</y>
+     <x>233</x>
+     <y>150</y>
      <width>54</width>
      <height>12</height>
     </rect>
@@ -313,7 +313,7 @@
   <widget class="QLabel" name="label_11">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>580</x>
      <y>190</y>
      <width>54</width>
      <height>12</height>
@@ -326,7 +326,7 @@
   <widget class="QLabel" name="label_12">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>680</x>
      <y>190</y>
      <width>54</width>
      <height>12</height>
@@ -339,7 +339,7 @@
   <widget class="QLabel" name="label_13">
    <property name="geometry">
     <rect>
-     <x>380</x>
+     <x>780</x>
      <y>190</y>
      <width>54</width>
      <height>12</height>
@@ -352,8 +352,8 @@
   <widget class="QLabel" name="runFreqLabel">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>220</y>
+     <x>223</x>
+     <y>180</y>
      <width>30</width>
      <height>12</height>
     </rect>
@@ -368,7 +368,7 @@
   <widget class="QLabel" name="ovLabel">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>570</x>
      <y>220</y>
      <width>30</width>
      <height>12</height>
@@ -384,7 +384,7 @@
   <widget class="QLabel" name="ocLabel">
    <property name="geometry">
     <rect>
-     <x>270</x>
+     <x>670</x>
      <y>220</y>
      <width>30</width>
      <height>12</height>
@@ -400,7 +400,7 @@
   <widget class="QLabel" name="opLabel">
    <property name="geometry">
     <rect>
-     <x>370</x>
+     <x>770</x>
      <y>220</y>
      <width>30</width>
      <height>12</height>
@@ -416,8 +416,8 @@
   <widget class="QLabel" name="label_18">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>220</y>
+     <x>263</x>
+     <y>180</y>
      <width>20</width>
      <height>12</height>
     </rect>
@@ -429,7 +429,7 @@
   <widget class="QLabel" name="label_19">
    <property name="geometry">
     <rect>
-     <x>210</x>
+     <x>610</x>
      <y>220</y>
      <width>20</width>
      <height>12</height>
@@ -442,7 +442,7 @@
   <widget class="QLabel" name="label_20">
    <property name="geometry">
     <rect>
-     <x>310</x>
+     <x>710</x>
      <y>220</y>
      <width>20</width>
      <height>12</height>
@@ -455,7 +455,7 @@
   <widget class="QLabel" name="label_21">
    <property name="geometry">
     <rect>
-     <x>410</x>
+     <x>810</x>
      <y>220</y>
      <width>20</width>
      <height>12</height>
@@ -469,7 +469,7 @@
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>270</y>
+     <y>240</y>
      <width>80</width>
      <height>12</height>
     </rect>
@@ -482,7 +482,7 @@
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>310</y>
+     <y>280</y>
      <width>25</width>
      <height>12</height>
     </rect>
@@ -495,7 +495,7 @@
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>310</y>
+     <y>280</y>
      <width>25</width>
      <height>12</height>
     </rect>
@@ -508,7 +508,7 @@
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>400</y>
+     <y>370</y>
      <width>110</width>
      <height>12</height>
     </rect>
@@ -521,7 +521,7 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>270</y>
+     <y>240</y>
      <width>80</width>
      <height>12</height>
     </rect>
@@ -534,7 +534,7 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>340</y>
+     <y>310</y>
      <width>251</width>
      <height>30</height>
     </rect>
@@ -568,7 +568,7 @@
    <property name="geometry">
     <rect>
      <x>260</x>
-     <y>390</y>
+     <y>360</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -581,7 +581,7 @@
    <property name="geometry">
     <rect>
      <x>350</x>
-     <y>390</y>
+     <y>360</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -594,7 +594,7 @@
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>320</y>
+     <y>290</y>
      <width>64</width>
      <height>64</height>
     </rect>
@@ -632,7 +632,7 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>296</y>
+     <y>266</y>
      <width>71</width>
      <height>20</height>
     </rect>
@@ -645,7 +645,7 @@
    <property name="geometry">
     <rect>
      <x>350</x>
-     <y>300</y>
+     <y>270</y>
      <width>51</width>
      <height>16</height>
     </rect>
@@ -658,7 +658,7 @@
    <property name="geometry">
     <rect>
      <x>410</x>
-     <y>300</y>
+     <y>270</y>
      <width>21</width>
      <height>16</height>
     </rect>
@@ -671,13 +671,213 @@
    <property name="geometry">
     <rect>
      <x>440</x>
-     <y>300</y>
+     <y>270</y>
      <width>20</width>
      <height>12</height>
     </rect>
    </property>
    <property name="text">
     <string>Hz</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_27">
+   <property name="geometry">
+    <rect>
+     <x>353</x>
+     <y>180</y>
+     <width>20</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_15">
+   <property name="geometry">
+    <rect>
+     <x>323</x>
+     <y>150</y>
+     <width>54</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>运行流量</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="airInputLabel">
+   <property name="geometry">
+    <rect>
+     <x>313</x>
+     <y>180</y>
+     <width>30</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>0.0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_28">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>450</y>
+     <width>20</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>秒</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_29">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>510</y>
+     <width>20</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_30">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>420</y>
+     <width>180</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>气源采集电磁阀开启时间</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="valveCloseTimeLabel">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>510</y>
+     <width>60</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>0.0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="valveOpenTimeLabel">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>450</y>
+     <width>60</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>0.0</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_31">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>480</y>
+     <width>180</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>气源电磁阀间隔时间</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_32">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>510</y>
+     <width>20</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>秒</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ValveOpenPushButton">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>500</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>气源阀开</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ValveClosePushButton">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>500</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>气源阀关</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_33">
+   <property name="geometry">
+    <rect>
+     <x>268</x>
+     <y>420</y>
+     <width>120</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>气源电磁阀状态</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="airValveStateLabel">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>450</y>
+     <width>30</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

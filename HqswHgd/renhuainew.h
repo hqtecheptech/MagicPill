@@ -14,6 +14,7 @@
 #include "fancontroldialog.h"
 #include "sensorcontroldialog.h"
 #include "ferconfigdialog.h"
+#include "simpledeocontroldialog.h"
 
 #include <QWidget>
 
@@ -82,6 +83,7 @@ private:
     AlertQueryDialog *alertQueryDialog;
     FanControlDialog *fanControlDialog;
     SensorControlDialog *sensorControlDialog;
+    SimpleDeoControlDialog *sdcDialog;
 
     QVector<EnvironmentParams *> envParamsArray;    
 };
