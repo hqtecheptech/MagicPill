@@ -87,7 +87,8 @@ SOURCES += main.cpp\
     ferstep.cpp \
     ferstepform.cpp \
     ferconfigdialog.cpp \
-    ferconfig.cpp
+    ferconfig.cpp \
+    uiglobal.cpp
 
 HEADERS  += mainwindow.h \
     ufftank.h \
@@ -150,7 +151,8 @@ HEADERS  += mainwindow.h \
     ferstep.h \
     ferstepform.h \
     ferconfigdialog.h \
-    ferconfig.h
+    ferconfig.h \
+    uiglobal.h
 
 FORMS    += mainwindow.ui \
     fftank.ui \

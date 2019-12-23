@@ -3,7 +3,6 @@
 
 #include "dataformat.h"
 
-#include <QStandardItemModel>
 #include <QMap>
 
 class Global
@@ -12,6 +11,7 @@ public:
     Global();
 
     static ServerInfo serverInfo;
+    static SystemConfig systemConfig;
 
     static DeviceNode getFermenationNodeInfoByName(QString name);
     static DeviceNode getDeodorationNodeInfoByName(QString name);
@@ -66,9 +66,6 @@ public:
     static DeviceGroupInfo getFerDeviceGroupInfo(int index);
     static DeviceGroupInfo getYhcDeviceGroupInfo(int index);
 
-    static QStandardItemModel *alertsModel;
-    static QStandardItemModel *simpleAlertsModel;
-    static QStandardItemModel *loginHistoryModel;
     static QMap<float,QString> currentFermenationDataMap;
     static QMap<float,QString> currentDeodorationDataMap;
     static QMap<float,QString> currentFanGroupDataMap;
@@ -99,6 +96,7 @@ private:
     static YhcDeviceInfo readYhcDeviceInfo();
 
     static ServerInfo readServerInfo();
+    static SystemConfig readSystemConfig();
     static int readFerGroupShowing();
 };
 

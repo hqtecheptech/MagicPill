@@ -28,7 +28,7 @@
 
 #define MODEL_COLUMNS       21    //槽数据列
 
-enum DeviceIdType {
+enum DeviceType {
     FER = 1,
     DEO,
     FAN_VALVE,
@@ -37,6 +37,8 @@ enum DeviceIdType {
     YHC,
     FPJ
 };
+
+Q_DECLARE_METATYPE(DeviceType)
 
 enum CommandType
 {
@@ -241,6 +243,34 @@ struct ServerInfo
 {
     int Port;
     QString IP;
+};
+
+struct SystemConfig
+{
+    int Port;
+    QString IP;
+    QString dataSharePath;
+    QString dataSemPath;
+    QString dataMsgPath;
+    QString controlSharePath;
+    QString controlSemPath;
+    QString controlMsgPath;
+    QString yhcControlSharePath;
+    QString yhcControlSemPath;
+    QString yhcControlMsgPath;
+    QString ferconfigPath;
+    QString ferconfigPrefix;
+    int dataShareKey;
+    int dataSemKey;
+    int dataMsgKey;
+    int controlShareKey;
+    int controlSemKey;
+    int controlMsgKey;
+    int yhcControlShareKey;
+    int yhcControlSemKey;
+    int yhcControlMsgKey;
+    DeviceType deviceType;
+    int deviceGroup;
 };
 
 #endif // DATAFORMAT_H

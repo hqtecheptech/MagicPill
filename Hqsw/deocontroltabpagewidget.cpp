@@ -595,8 +595,8 @@ void DeoControlTabPageWidget::dispatchDeoData(QSet<int> changedDeviceIndex, QMap
                     newItemList.append(new QStandardItem(""));
                 }
 
-                Global::simpleAlertsModel->insertRow(0, newSimpleItemList);
-                Global::alertsModel->appendRow(newItemList);
+                UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
+                UiGlobal::alertsModel->appendRow(newItemList);
                 Global::currentDeodorationDataMap[dictAddress] = dataMap[dictAddress];
             }
         }

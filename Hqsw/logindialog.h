@@ -3,9 +3,10 @@
 
 #include <QDialog>
 #include <QByteArray>
+#include <QStandardItem>
 #include "dataformat.h"
 #include "tcpclientsocket.h"
-//#include "datasender.h"
+#include "uiglobal.h"
 
 namespace Ui {
 class LoginDialog;

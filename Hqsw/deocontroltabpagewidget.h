@@ -17,6 +17,7 @@
 #include "qthread.h"
 #include "parseserverdataworker.h"
 #include "singledeodorationfan.h"
+#include "uiglobal.h"
 
 namespace Ui {
 class DeoControlTabPageWidget;

@@ -17,7 +17,7 @@ AlertQueryDialog::~AlertQueryDialog()
 
 void AlertQueryDialog::showEvent(QShowEvent *)
 {
-    ui->alertTableView->setModel(Global::alertsModel);
+    ui->alertTableView->setModel(UiGlobal::alertsModel);
     ui->alertTableView->setColumnWidth(0, 200);
     ui->alertTableView->sortByColumn(0,Qt::DescendingOrder);
 }

@@ -334,7 +334,7 @@ void CenterWidget::parseRunCtrData(QMap<float,QString> dataMap)
                     newItemList.append(new QStandardItem(""));
                 }
 
-                Global::alertsModel->insertRow(0, newItemList);
+                UiGlobal::alertsModel->insertRow(0, newItemList);
                 Global::currentFermenationDataMap[dictAddress] = dataMap[dictAddress];
             }
         }

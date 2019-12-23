@@ -17,6 +17,7 @@
 #include "settingdialog.h"
 #include "alertquerydialog.h"
 #include "deocontroldialog.h"
+#include "uiglobal.h"
 
 #include <QWidget>
 #include <QSplitter>

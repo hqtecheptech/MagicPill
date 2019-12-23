@@ -2,6 +2,7 @@
 #define ALERTHISTORYFORM_H
 
 #include <QWidget>
+#include "uiglobal.h"
 
 namespace Ui {
 class AlertHistoryForm;

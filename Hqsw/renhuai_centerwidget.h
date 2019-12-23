@@ -18,6 +18,7 @@
 #include "alertquerydialog.h"
 #include "deocontroldialog.h"
 #include "testdialog.h"
+#include "uiglobal.h"
 
 #include <QWidget>
 #include <QSplitter>
