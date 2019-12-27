@@ -84,7 +84,7 @@
   <widget class="QPushButton" name="loginButton">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>90</x>
      <y>180</y>
      <width>75</width>
      <height>23</height>
@@ -97,7 +97,7 @@
   <widget class="QPushButton" name="logoutButton">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>210</x>
      <y>180</y>
      <width>75</width>
      <height>23</height>
@@ -110,8 +110,8 @@
   <widget class="QPushButton" name="addUserButton">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>180</y>
+     <x>60</x>
+     <y>410</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -124,7 +124,7 @@
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>250</y>
+     <y>380</y>
      <width>111</width>
      <height>23</height>
     </rect>
@@ -137,7 +137,7 @@
    <property name="geometry">
     <rect>
      <x>210</x>
-     <y>250</y>
+     <y>380</y>
      <width>111</width>
      <height>23</height>
     </rect>

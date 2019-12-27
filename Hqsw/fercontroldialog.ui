@@ -1466,6 +1466,19 @@
     <string>暂停发酵</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="exitButton">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>10</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>关闭</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

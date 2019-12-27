@@ -50,6 +50,8 @@ private slots:
 
     void on_fanIndexComboBox_currentIndexChanged(int index);
 
+    void on_closePushButton_clicked();
+
 private:
     Ui::FanControlDialog *ui;
 

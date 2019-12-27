@@ -684,3 +684,8 @@ void FerControlDialog::on_pauseFerButton_clicked()
         msgBox.show();
     }
 }
+
+void FerControlDialog::on_exitButton_clicked()
+{
+    close();
+}

@@ -106,6 +106,7 @@ private slots:
     void on_tankIndexComboBox_currentIndexChanged(int index);
     void on_changeStepButton_clicked();
     void on_pauseFerButton_clicked();
+    void on_exitButton_clicked();
 };
 
 #endif // FERCONTROLDIALOG_H

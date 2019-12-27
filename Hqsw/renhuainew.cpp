@@ -21,6 +21,9 @@ RenhuaiNew::RenhuaiNew(QWidget *parent) :
     ui->hostname_label->setText(QHostInfo::localHostName());
 
     ui->fanValveControlButton->setVisible(false);
+    ui->HistoryQueryButton->setVisible(false);
+    ui->realTimeChartButton->setVisible(false);
+    ui->ReportButton->setVisible(false);
 
     ui->title_frame->setObjectName("titleframe");
     ui->title_frame->setStyleSheet("QFrame#titleframe{border-image:url(:/image/new/title_banner.jpg)}");

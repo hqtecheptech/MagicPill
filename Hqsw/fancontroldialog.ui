@@ -680,6 +680,19 @@
     <string>Hz</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="closePushButton">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>20</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>关闭</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>

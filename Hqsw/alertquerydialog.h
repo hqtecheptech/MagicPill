@@ -19,6 +19,9 @@ public:
 protected:
     void showEvent(QShowEvent *);
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::AlertQueryDialog *ui;
 };

@@ -268,3 +268,8 @@ void FerConfigDialog::on_step_seq_comboBox_currentIndexChanged(int index)
         initUI();
     }
 }
+
+void FerConfigDialog::on_exitButton_clicked()
+{
+    close();
+}

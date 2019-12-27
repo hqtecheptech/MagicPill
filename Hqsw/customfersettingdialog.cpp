@@ -247,3 +247,8 @@ void CustomFerSettingDialog::setRunTime(int value)
     runTime = value;
     ui->aerationTimeLineEdit->setText(QString::number(value));
 }
+
+void CustomFerSettingDialog::on_customFerButton_2_clicked()
+{
+    close();
+}

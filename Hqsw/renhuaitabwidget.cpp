@@ -12,14 +12,14 @@ RenhuaiTabWidget::RenhuaiTabWidget(QWidget *parent) :
 
     //ferControlTabPageWidget = new RenhuaiFerControlTabPageWidget(this);
     ferControlTabPageWidget = new XinyiFerControlTabWidget(this);
-    deoControlTabPageWidget = new DeoControlTabPageWidget(this);
+    //deoControlTabPageWidget = new DeoControlTabPageWidget(this);
     ui->fer_tab_horizontalLayout->addWidget(ferControlTabPageWidget);
-    ui->deo_tab_horizontalLayout->addWidget(deoControlTabPageWidget);
+    //ui->deo_tab_horizontalLayout->addWidget(deoControlTabPageWidget);
 
     connect(ferControlTabPageWidget, SIGNAL(dataChanged()), this, SLOT(handleDataChange()));
     connect(ferControlTabPageWidget, SIGNAL(serverConnectionChanged(bool)), this, SLOT(handleServerConnectionChanged(bool)));
     connect(ferControlTabPageWidget, SIGNAL(dataUpdate(QSet<int>, QMap<float,QString>)), this, SLOT(handleFerDataUpdate(QSet<int>, QMap<float,QString>)));
-    connect(deoControlTabPageWidget, SIGNAL(dataUpdate(QSet<int>, QMap<float,QString>)), this, SLOT(handleDeoDataUpdate(QSet<int>, QMap<float,QString>)));
+    //connect(deoControlTabPageWidget, SIGNAL(dataUpdate(QSet<int>, QMap<float,QString>)), this, SLOT(handleDeoDataUpdate(QSet<int>, QMap<float,QString>)));
 
     setStyleSheet("QTabBar::tab{background: transparent;}");
 }

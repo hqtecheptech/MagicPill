@@ -33,6 +33,8 @@ private slots:
     void on_customFerButton_pressed();
     void on_customFerButton_released();
 
+    void on_customFerButton_2_clicked();
+
 private:
     Ui::CustomFerSettingDialog *ui;
     QMessageBox msgBox;
