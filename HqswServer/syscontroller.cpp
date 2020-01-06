@@ -189,16 +189,27 @@ void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet
     Ctr_Block ctrBlock;
     ctrlShare->LockShare();
     qDebug() << "handlePlcControl ctrlShare locked!";
+    ctrlShare->GetShardMemory((void*)&ctrBlock, sizeof(Ctr_Block));
 
-    Plc_Db db;
-    dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
-    resetControlShare(pack.bDataType, dataMap, &db);
-    dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+    foreach(float key, dataMap.keys())
+    {
+        qDebug() << "handlePlcControl dataMap key: " << key << "; value: " << dataMap[key];
+    }
 
-    ctrBlock.toPru[0] = 1;
-    ctrlShare->SetSharedMemory((void*)&ctrBlock, sizeof(Ctr_Block));
+    if(ctrBlock.fromPru[0] == 1)
+    {
+        Plc_Db db;
+        dbShare->LockShare();
+        dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
+        resetDataShare(pack.bDataType, dataMap, &db);
+        dbShare->SetSharedMemory((void*)&db, sizeof(Plc_Db));
+        dbShare->UnlockShare();
+
+        ctrBlock.toPru[0] = 1;
+        ctrlShare->SetSharedMemory((void*)&ctrBlock, sizeof(Ctr_Block));
+    }
     ctrlShare->UnlockShare();
-    qDebug() << "handlePlcControl dbShare unlocked!";
+    qDebug() << "handlePlcControl ctrlShare unlocked!";
 
     //for test
     /*int pid = Global::getPruPid();
@@ -208,20 +219,21 @@ void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet
     }*/
 }
 
-void Syscontroller::resetControlShare(int dataType, QMap<float, QString> controlData, Plc_Db* controlDb)
+void Syscontroller::resetDataShare(int dataType, QMap<float, QString> controlData, Plc_Db* controlDb)
 {
     switch (dataType) {
     case Bool:
         foreach(float address, controlData.keys())
         {
             int index = Global::convertAddressToIndex(address, "x0");
-            if(controlData.value(address) == "1")
+            qDebug() << "controlData.value(" << address << "): " << controlData[address];
+            if(controlData[address] == "true")
             {
-               controlDb->b_data[index] = true;
+               controlDb->b_data[index] = 1;
             }
             else
             {
-               controlDb->b_data[index] = false;
+               controlDb->b_data[index] = 0;
             }
         }
         break;

@@ -84,11 +84,11 @@ void DataReceiver::dataReceive()
 
             if(byteValues.at(0) == 0x01)
             {
-                dataMap.insert(address, QString::number(true));
+                dataMap.insert(address, "true");
             }
             else
             {
-                dataMap.insert(address, QString::number(false));
+                dataMap.insert(address, "false");
             }
         }
         else if(bDevice.bDataType == Float)

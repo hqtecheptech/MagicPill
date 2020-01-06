@@ -53,7 +53,7 @@ private:
     DeviceType _dataType;
     int _groupId;
 
-    void resetControlShare(int dataType, QMap<float, QString> controlData, Plc_Db* controlDb);
+    void resetDataShare(int dataType, QMap<float, QString> controlData, Plc_Db* controlDb);
 };
 
 #endif // SYSCONTROLLER_H

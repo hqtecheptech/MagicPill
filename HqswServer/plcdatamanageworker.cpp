@@ -27,7 +27,7 @@ PlcDataManageWorker::~PlcDataManageWorker()
 void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
 {
     Plc_Db plcdata;
-    Ctr_Block ctrlBlock;
+    //Ctr_Block ctrlBlock;
 
     //ctrlSh->LockShare();
     //ctrlSh->GetShardMemory((void *)&ctrlBlock, sizeof(Ctr_Block));
@@ -61,7 +61,7 @@ void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
                 break;
         }
 
-        //sendPlcdataToServer(dataName, groupInfo, plcdata);
+        sendPlcdataToServer(dataName, groupInfo, plcdata);
     //}
 
     //ctrlSh->UnlockShare();

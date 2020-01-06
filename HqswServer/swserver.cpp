@@ -11,15 +11,15 @@ SwServer::SwServer(QObject *parent) : QObject(parent)
 
     controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
 
-    testTimer = new QTimer();
-    connect(testTimer, SIGNAL(timeout()), this, SLOT(writeTestData()));
-    testTimer->start(1000);
+    //testTimer = new QTimer();
+    //connect(testTimer, SIGNAL(timeout()), this, SLOT(writeTestData()));
+    //testTimer->start(1000);
 }
 
 void SwServer::writeTestData()
 {
-    controller->changeDataValue(0, 2);
-    controller->changeDataValue(5, 3);
-    started = !started;
-    controller->changeRunctrlValue(1, started);
+    //controller->changeDataValue(0, 2);
+    //controller->changeDataValue(5, 3);
+    //started = !started;
+    //controller->changeRunctrlValue(1, started);
 }
