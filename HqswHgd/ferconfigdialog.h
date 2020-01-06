@@ -35,6 +35,8 @@ private slots:
 
     void on_step_seq_comboBox_currentIndexChanged(int index);
 
+    void on_closeButton_clicked();
+
 public slots:
     void updateSize(int aw, int ah);
 

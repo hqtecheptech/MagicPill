@@ -21,3 +21,8 @@ void AlertQueryDialog::showEvent(QShowEvent *)
     ui->alertTableView->setColumnWidth(0, 200);
     ui->alertTableView->sortByColumn(0,Qt::DescendingOrder);
 }
+
+void AlertQueryDialog::on_closeButton_clicked()
+{
+    close();
+}

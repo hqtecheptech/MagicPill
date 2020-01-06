@@ -496,3 +496,8 @@ void FanControlDialog::on_fanIndexComboBox_currentIndexChanged(int index)
     parseFermentationData(Global::currentFermenationDataMap);
     parseFerRunCtrData(Global::currentFermenationDataMap);
 }
+
+void FanControlDialog::on_ValveClosePushButton_2_clicked()
+{
+    close();
+}

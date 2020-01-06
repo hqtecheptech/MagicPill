@@ -880,6 +880,19 @@
     <string/>
    </property>
   </widget>
+  <widget class="QPushButton" name="ValveClosePushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>429</x>
+     <y>18</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>关闭</string>
+   </property>
+  </widget>
  </widget>
  <customwidgets>
   <customwidget>

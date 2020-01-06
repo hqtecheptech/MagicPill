@@ -559,3 +559,8 @@ void SimpleDeoControlDialog::on_otherDeviceManualButton_clicked()
         msgBox.show();
     }
 }
+
+void SimpleDeoControlDialog::on_pushButton_clicked()
+{
+    close();
+}

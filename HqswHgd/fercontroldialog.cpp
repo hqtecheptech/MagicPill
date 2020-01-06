@@ -707,3 +707,8 @@ void FerControlDialog::on_pauseFerButton_clicked()
         msgBox.show();
     }
 }
+
+void FerControlDialog::on_closeButton_clicked()
+{
+    close();
+}
