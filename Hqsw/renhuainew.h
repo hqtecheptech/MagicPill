@@ -16,6 +16,7 @@
 #include "ferconfigdialog.h"
 
 #include <QWidget>
+#include <QTimer>
 
 namespace Ui {
 class RenhuaiNew;
@@ -83,7 +84,8 @@ private:
     FanControlDialog *fanControlDialog;
     SensorControlDialog *sensorControlDialog;
 
-    QVector<EnvironmentParams *> envParamsArray;    
+    QVector<EnvironmentParams *> envParamsArray;
+    QTimer *touchTimer;
 };
 
 #endif // RENHUAINEW_H

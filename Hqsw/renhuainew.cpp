@@ -4,6 +4,8 @@
 #include "realtimedialog.h"
 #include "global.h"
 
+#include <QDesktopWidget>
+
 RenhuaiNew::RenhuaiNew(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::RenhuaiNew)
@@ -60,6 +62,9 @@ RenhuaiNew::RenhuaiNew(QWidget *parent) :
     connect(this,SIGNAL(ferDataChanged(QSet<int>, QMap<float,QString>)),fercontrolDialog,SLOT(updateFermentationData(QSet<int>, QMap<float,QString>)));
 
     m_nTimerId = startTimer(1000);
+
+    touchTimer = new QTimer(this);
+
 }
 
 RenhuaiNew::~RenhuaiNew()
@@ -156,6 +161,9 @@ void RenhuaiNew::timerEvent( QTimerEvent *event )
 void RenhuaiNew::on_loginButton_clicked()
 {
     loginDialog->show();
+    qDebug() << "QApplication::desktop()->width()" << QApplication::desktop()->width();
+    qDebug() << "QApplication::desktop()->height()" << QApplication::desktop()->height();
+    loginDialog->move((1920 - loginDialog->width())/2,(1080 - loginDialog->height())/2);
 }
 
 void RenhuaiNew::updateLoginState()

@@ -190,11 +190,6 @@ void FFTank::parseFermentationData(QMap<float,QString> dataMap)
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
                             * Global::getLengthByDataType(deviceNode.DataType);
     ui->wtValueLabel->setText(dataMap[address]);
-
-    deviceNode = Global::getFermenationNodeInfoByName("TOTAL_CURRENT_R");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
-            * Global::getLengthByDataType(deviceNode.DataType);
-    ui->totalCurrentValueLabel->setText(dataMap[address]);
 }
 
 void FFTank::parseFerStartEndTime(QMap<float,QString> dataMap)

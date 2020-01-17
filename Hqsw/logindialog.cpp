@@ -11,7 +11,7 @@ LoginDialog::LoginDialog(QWidget *parent) :
     ui(new Ui::LoginDialog)
 {
     ui->setupUi(this);
-    //setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
+    setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     setWindowTitle(QStringLiteral("用户登录"));
 
     ui->pwdLineEdit->setEchoMode(QLineEdit::Password);

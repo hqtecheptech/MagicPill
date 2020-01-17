@@ -26,6 +26,9 @@ public:
 
     void setSpaceTime(int value);
 
+protected:
+    bool eventFilter(QObject *, QEvent *);
+
 private slots:
     void showSetFerAuto(QByteArray);
     void showFerStart(QByteArray);

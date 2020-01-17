@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <QStyleFactory>
 #include "ufftank.h"
 #include "fftank.h"
 #include "centerwidget.h"
@@ -14,6 +15,7 @@ QT_CHARTS_USE_NAMESPACE
 
 int main(int argc, char *argv[])
 {
+    QApplication::setStyle(QStyleFactory::create("Cleanlooks"));
     QApplication a(argc, argv);
     // new for immidiately exit with window closed.
     MainWindow *w = new MainWindow;

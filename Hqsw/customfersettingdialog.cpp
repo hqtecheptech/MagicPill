@@ -3,6 +3,7 @@
 #include "dataformat.h"
 #include "global.h"
 #include "identity.h"
+#include "keyboard.h"
 
 CustomFerSettingDialog::CustomFerSettingDialog(QWidget *parent) :
     QDialog(parent),
@@ -11,6 +12,12 @@ CustomFerSettingDialog::CustomFerSettingDialog(QWidget *parent) :
     ui->setupUi(this);
 
     setWindowTitle(QStringLiteral("发酵控制"));
+
+    Keyboard *keyboard = Keyboard::getInstance();
+    ui->aerationTimeLineEdit->installEventFilter(this);
+    ui->aerationSpaceLineEdit->installEventFilter(this);
+    connect(ui->aerationTimeLineEdit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_lineEdit()));
+    connect(ui->aerationSpaceLineEdit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_lineEdit()));
 
     tcpClient = new TcpClientSocket(this);
     tcpClient1 = new TcpClientSocket(this);
@@ -240,6 +247,26 @@ void CustomFerSettingDialog::setSpaceTime(int value)
 {
     spaceTime = value;
     ui->aerationSpaceLineEdit->setText(QString::number(value));
+}
+
+bool CustomFerSettingDialog::eventFilter(QObject *watched, QEvent *event)
+{
+    if(watched == ui->aerationSpaceLineEdit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+            emit ui->aerationSpaceLineEdit->selectionChanged();
+        }
+    }
+    else if(watched == ui->aerationTimeLineEdit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
+        {
+            emit ui->aerationTimeLineEdit->selectionChanged();
+        }
+    }
+
+    return QWidget::eventFilter(watched, event);
 }
 
 void CustomFerSettingDialog::setRunTime(int value)

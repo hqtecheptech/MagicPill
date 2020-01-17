@@ -218,5 +218,10 @@
         <file>image/new/thin_fan_opened.png</file>
         <file>image/new/thin_fan_switching.png</file>
         <file>config/yhc_devices.xml</file>
+        <file>image/KeyBoard/backspace.png</file>
+        <file>image/KeyBoard/clear.png</file>
+        <file>image/KeyBoard/enter.png</file>
+        <file>image/KeyBoard/lower.png</file>
+        <file>image/KeyBoard/upper.png</file>
     </qresource>
 </RCC>

@@ -13,6 +13,15 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(222, 222, 222);</string>
+  </property>
+  <property name="modal">
+   <bool>false</bool>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>

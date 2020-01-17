@@ -1,5 +1,6 @@
 #include "ferstepform.h"
 #include "ui_ferstepform.h"
+#include "keyboard.h"
 
 FerStepForm::FerStepForm(QWidget *parent) :
     QWidget(parent),
@@ -18,6 +19,15 @@ FerStepForm::FerStepForm(QWidget *parent) :
     ui->min_time_text_edit->installEventFilter(this);
     ui->step_tmp_text_edit->installEventFilter(this);
     ui->expect_tmp_text_edit->installEventFilter(this);
+
+    Keyboard *keyboard = Keyboard::getInstance();
+    connect(ui->def_ae_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
+    connect(ui->def_sta_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
+    connect(ui->def_frq_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
+    connect(ui->max_time_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
+    connect(ui->min_time_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
+    connect(ui->step_tmp_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
+    connect(ui->expect_tmp_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
 }
 
 FerStepForm::~FerStepForm()
@@ -144,6 +154,35 @@ bool FerStepForm::eventFilter(QObject *watched, QEvent *event)
             QPalette p=QPalette();
             p.setColor(QPalette::Base,Qt::green);
             ((QWidget *)watched)->setPalette(p);
+        }
+
+        if(watched == ui->step_tmp_text_edit)
+        {
+            emit ui->step_tmp_text_edit->selectionChanged();
+        }
+        else if(watched == ui->expect_tmp_text_edit)
+        {
+            emit ui->expect_tmp_text_edit->selectionChanged();
+        }
+        else if(watched == ui->max_time_text_edit)
+        {
+            emit ui->max_time_text_edit->selectionChanged();
+        }
+        else if(watched == ui->min_time_text_edit)
+        {
+            emit ui->min_time_text_edit->selectionChanged();
+        }
+        else if(watched == ui->def_ae_text_edit)
+        {
+            emit ui->def_ae_text_edit->selectionChanged();
+        }
+        else if(watched == ui->def_sta_text_edit)
+        {
+            emit ui->def_sta_text_edit->selectionChanged();
+        }
+        else if(watched == ui->def_frq_text_edit)
+        {
+            emit ui->def_frq_text_edit->selectionChanged();
         }
     }
     else if(event->type()==QEvent::FocusOut)

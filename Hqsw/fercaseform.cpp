@@ -1,16 +1,25 @@
 #include "fercaseform.h"
 #include "ui_fercaseform.h"
+#include "keyboard.h"
 
 FerCaseForm::FerCaseForm(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FerCaseForm)
 {
     ui->setupUi(this);
+
     ui->low_tmp_text_edit->installEventFilter(this);
     ui->high_tmp_text_edit->installEventFilter(this);
     ui->ae_text_edit->installEventFilter(this);
     ui->sta_text_edit->installEventFilter(this);
     ui->freq_text_edit->installEventFilter(this);
+
+    Keyboard *keyboard = Keyboard::getInstance();
+    connect(ui->low_tmp_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
+    connect(ui->high_tmp_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
+    connect(ui->ae_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
+    connect(ui->sta_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
+    connect(ui->freq_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
 }
 
 FerCaseForm::~FerCaseForm()
@@ -57,6 +66,27 @@ bool FerCaseForm::eventFilter(QObject *watched, QEvent *event)
             QPalette p=QPalette();
             p.setColor(QPalette::Base,Qt::green);
             ((QWidget *)watched)->setPalette(p);
+        }
+
+        if(watched == ui->low_tmp_text_edit)
+        {
+            emit ui->low_tmp_text_edit->selectionChanged();
+        }
+        else if(watched == ui->high_tmp_text_edit)
+        {
+            emit ui->high_tmp_text_edit->selectionChanged();
+        }
+        else if(watched == ui->ae_text_edit)
+        {
+            emit ui->ae_text_edit->selectionChanged();
+        }
+        else if(watched == ui->sta_text_edit)
+        {
+            emit ui->sta_text_edit->selectionChanged();
+        }
+        else if(watched == ui->freq_text_edit)
+        {
+            emit ui->freq_text_edit->selectionChanged();
         }
     }
     else if(event->type()==QEvent::FocusOut)
