@@ -82,10 +82,10 @@ FerConfigDialog::FerConfigDialog(QWidget *parent) :
                 " border-radius: 10px;"
                 " border-color: beige;"
                 " font: bold 24px;"
-                " min-width: 3em;"
-                " min-height: 3em;"
+                " min-width: 5em;"
+                " min-height: 5em;"
             "}"
-            "QLabel { min-width: 20em;min-height:10em;font:24px;background-color:#f0f0f0;}"
+            "QLabel { min-width: 20em;min-height:10em;font:24px;background-color:#89AFDE;padding:10px;}"
                 );
 
     initUI();

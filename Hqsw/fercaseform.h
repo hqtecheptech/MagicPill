@@ -26,6 +26,9 @@ public:
 public slots:
     bool eventFilter(QObject *watched, QEvent *event);
 
+private slots:
+    void handleTextChanged();
+
 private:
     Ui::FerCaseForm *ui;
     FerCase _fercase;

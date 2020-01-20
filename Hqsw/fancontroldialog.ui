@@ -14,7 +14,7 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(222, 222, 222);</string>
+   <string notr="true"/>
   </property>
   <widget class="QLabel" name="fanIndexLabel">
    <property name="geometry">
@@ -78,7 +78,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>报警状态</string>
+    <string>启动超时</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_5">
@@ -91,7 +91,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>过流报警</string>
+    <string>停机超时</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -193,8 +193,8 @@
   <widget class="QLabel" name="alertStateLabel">
    <property name="geometry">
     <rect>
-     <x>248</x>
-     <y>170</y>
+     <x>40</x>
+     <y>670</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -215,8 +215,8 @@
   <widget class="QLabel" name="ofStateLabel">
    <property name="geometry">
     <rect>
-     <x>348</x>
-     <y>170</y>
+     <x>140</x>
+     <y>670</y>
      <width>50</width>
      <height>50</height>
     </rect>
@@ -573,7 +573,7 @@
      <x>240</x>
      <y>290</y>
      <width>90</width>
-     <height>30</height>
+     <height>65</height>
     </rect>
    </property>
    <property name="text">
@@ -586,7 +586,7 @@
      <x>350</x>
      <y>290</y>
      <width>90</width>
-     <height>30</height>
+     <height>65</height>
     </rect>
    </property>
    <property name="text">
@@ -697,6 +697,126 @@
    </property>
    <property name="text">
     <string>关闭</string>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>500</width>
+     <height>3</height>
+    </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="lineWidth">
+    <number>3</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>517</y>
+     <width>500</width>
+     <height>3</height>
+    </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="lineWidth">
+    <number>3</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_3">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>3</width>
+     <height>520</height>
+    </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="lineWidth">
+    <number>3</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line_4">
+   <property name="geometry">
+    <rect>
+     <x>497</x>
+     <y>0</y>
+     <width>3</width>
+     <height>520</height>
+    </rect>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Plain</enum>
+   </property>
+   <property name="lineWidth">
+    <number>3</number>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="startStateLabel">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>170</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="endStateLabel">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>170</y>
+     <width>50</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

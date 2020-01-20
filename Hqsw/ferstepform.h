@@ -36,6 +36,7 @@ private slots:
     void on_add_case_push_button_clicked();
 
     void on_air_mode_comboBox_currentIndexChanged(int index);
+    void handleTextChanged();
 
 private:
     Ui::FerStepForm *ui;

@@ -16,6 +16,30 @@ FerControlDialog::FerControlDialog(QWidget *parent) :
     //setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     setWindowTitle(QStringLiteral("发酵控制"));
 
+    msgBox.setStyleSheet(
+        "QPushButton {"
+        " background-color: #89AFDE;"
+        " border-style: outset;"
+        " border-width: 2px;"
+        " border-radius: 10px;"
+        " border-color: beige;"
+        " font: bold 24px;"
+        " min-width: 5em;"
+        " min-height:5em;"
+        " padding: 20px;"
+        "}"
+        "QLabel {"
+        " min-height:5em;"
+        " font:24px;"
+        " background-color: #89AFDE;"
+        " border-style: outset;"
+        " border-width: 2px;"
+        " border-radius: 10px;"
+        " border-color: beige;"
+        " padding: 20px;"
+        "}"
+    );
+
     icoGreen.load("://image/old/FerLEDG.bmp");
     icoYellow.load("://image/old/FerLEDG.bmp");
     icoRed.load("://image/old/FerLEDY.bmp");

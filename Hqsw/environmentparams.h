@@ -19,11 +19,15 @@ public:
     float getNh3() const;
     void setNh3(float value);
 
+    float getCurrA() const;
+    void setCurrA(float value);
+
 private:
     float temperature;
     float humidity;
     float h2s;
     float nh3;
+    float currA;
 };
 
 #endif // ENVIRONMENTPARAMS_H

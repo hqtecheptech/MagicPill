@@ -524,6 +524,7 @@ void Keyboard::run_keyboard_lineEdit()
     setLineEdit(line);
     setWindowModality(Qt::ApplicationModal);
     show();
+    move((1920 - width())/2, 1080 - height() - 50);
 }
 
 void Keyboard::run_keyboard_textEdit()
@@ -533,6 +534,7 @@ void Keyboard::run_keyboard_textEdit()
     setTextEdit(text);
     setWindowModality(Qt::ApplicationModal);
     show();
+    move((1920 - width())/2, 1080 - height() - 50);
 }
 
 void Keyboard::on_btnPrev_clicked()

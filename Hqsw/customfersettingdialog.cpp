@@ -13,6 +13,30 @@ CustomFerSettingDialog::CustomFerSettingDialog(QWidget *parent) :
 
     setWindowTitle(QStringLiteral("发酵控制"));
 
+    msgBox.setStyleSheet(
+        "QPushButton {"
+        " background-color: #89AFDE;"
+        " border-style: outset;"
+        " border-width: 2px;"
+        " border-radius: 10px;"
+        " border-color: beige;"
+        " font: bold 24px;"
+        " min-width: 5em;"
+        " min-height:5em;"
+        " padding: 20px;"
+        "}"
+        "QLabel {"
+        " min-height:5em;"
+        " font:24px;"
+        " background-color: #89AFDE;"
+        " border-style: outset;"
+        " border-width: 2px;"
+        " border-radius: 10px;"
+        " border-color: beige;"
+        " padding: 20px;"
+        "}"
+    );
+
     Keyboard *keyboard = Keyboard::getInstance();
     ui->aerationTimeLineEdit->installEventFilter(this);
     ui->aerationSpaceLineEdit->installEventFilter(this);

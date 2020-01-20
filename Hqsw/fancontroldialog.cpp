@@ -16,6 +16,30 @@ FanControlDialog::FanControlDialog(QWidget *parent) :
     //setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     setWindowTitle(QStringLiteral("风机控制"));
 
+    msgBox.setStyleSheet(
+        "QPushButton {"
+        " background-color: #89AFDE;"
+        " border-style: outset;"
+        " border-width: 2px;"
+        " border-radius: 10px;"
+        " border-color: beige;"
+        " font: bold 24px;"
+        " min-width: 5em;"
+        " min-height:5em;"
+        " padding: 20px;"
+        "}"
+        "QLabel {"
+        " min-height:5em;"
+        " font:24px;"
+        " background-color: #89AFDE;"
+        " border-style: outset;"
+        " border-width: 2px;"
+        " border-radius: 10px;"
+        " border-color: beige;"
+        " padding: 20px;"
+        "}"
+    );
+
     icoGreen.load("://image/old/FerLEDG.bmp");
     icoYellow.load("://image/old/FerLEDG.bmp");
     icoRed.load("://image/old/FerLEDY.bmp");
@@ -328,7 +352,7 @@ void FanControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
         }
     //}
 
-    if(fanMode)
+    if(!fanMode)
     {
         ui->switchFanModePushButton->setIcon(QIcon(fanAutoControlBg));
     }
@@ -348,17 +372,29 @@ void FanControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
         ui->faultStateLabel->setStyleSheet("QLabel#faultstate{background-color: rgb(255, 255, 255);}");
     }
 
-    isSwitchFault = Global::getFerRunctrValueByName(tankIndex,"FAN_Open_Timeout_BOOL", dataMap);
-    if(!isSwitchFault)
+    bool startState = Global::getFerRunctrValueByName(tankIndex,"FAN_Open_Timeout_BOOL", dataMap);
+    ui->startStateLabel->setObjectName("startstatelabel");
+    if(!startState)
     {
-        isSwitchFault = Global::getFerRunctrValueByName(tankIndex,"FAN_Close_Timeout_BOOL", dataMap);
+        ui->startStateLabel->setStyleSheet("QLabel#startstatelabel{background-color: rgb(0, 255, 0);}");
     }
-    if(isSwitchFault)
+    else
     {
-        ui->faultStateLabel->setStyleSheet("QLabel#faultstate{background-color: rgb(255, 255, 0);}");
+        ui->startStateLabel->setStyleSheet("QLabel#startstatelabel{background-color: rgb(255, 0, 0);}");
     }
 
-    bool alertState = false;
+    bool endState = Global::getFerRunctrValueByName(tankIndex,"FAN_Close_Timeout_BOOL", dataMap);
+    ui->endStateLabel->setObjectName("endstatelabel");
+    if(!endState)
+    {
+        ui->endStateLabel->setStyleSheet("QLabel#endstatelabel{background-color: rgb(0, 255, 0);}");
+    }
+    else
+    {
+        ui->endStateLabel->setStyleSheet("QLabel#endstatelabel{background-color: rgb(255, 0, 0);}");
+    }
+
+    /*bool alertState = false;
     ui->alertStateLabel->setObjectName("alertstate");
     if(alertState)
     {
@@ -411,7 +447,7 @@ void FanControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
     else
     {
         ui->otStateLabel->setStyleSheet("QLabel#otState{background-color: rgb(255, 0, 0);}");
-    }
+    }*/
 }
 
 

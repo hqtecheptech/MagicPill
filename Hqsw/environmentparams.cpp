@@ -44,3 +44,13 @@ void EnvironmentParams::setNh3(float value)
 {
     nh3 = value;
 }
+
+float EnvironmentParams::getCurrA() const
+{
+    return currA;
+}
+
+void EnvironmentParams::setCurrA(float value)
+{
+    currA = value;
+}

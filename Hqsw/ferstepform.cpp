@@ -1,6 +1,7 @@
 #include "ferstepform.h"
 #include "ui_ferstepform.h"
 #include "keyboard.h"
+#include <QTextEdit>
 
 FerStepForm::FerStepForm(QWidget *parent) :
     QWidget(parent),
@@ -28,6 +29,14 @@ FerStepForm::FerStepForm(QWidget *parent) :
     connect(ui->min_time_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
     connect(ui->step_tmp_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
     connect(ui->expect_tmp_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
+
+    connect(ui->def_ae_text_edit, SIGNAL(textChanged()), this, SLOT(handleTextChanged()));
+    connect(ui->def_sta_text_edit, SIGNAL(textChanged()), this, SLOT(handleTextChanged()));
+    connect(ui->def_frq_text_edit, SIGNAL(textChanged()), this, SLOT(handleTextChanged()));
+    connect(ui->max_time_text_edit, SIGNAL(textChanged()), this, SLOT(handleTextChanged()));
+    connect(ui->min_time_text_edit, SIGNAL(textChanged()), this, SLOT(handleTextChanged()));
+    connect(ui->step_tmp_text_edit, SIGNAL(textChanged()), this, SLOT(handleTextChanged()));
+    connect(ui->expect_tmp_text_edit, SIGNAL(textChanged()), this, SLOT(handleTextChanged()));
 }
 
 FerStepForm::~FerStepForm()
@@ -185,175 +194,6 @@ bool FerStepForm::eventFilter(QObject *watched, QEvent *event)
             emit ui->def_frq_text_edit->selectionChanged();
         }
     }
-    else if(event->type()==QEvent::FocusOut)
-    {
-        QPalette p=QPalette();
-        p.setColor(QPalette::Base,Qt::white);
-        ((QWidget *)watched)->setPalette(p);
-
-        bool isValid = false;
-        QString textValue = "";
-
-        if(watched == ui->step_tmp_text_edit)
-        {
-            textValue = ui->step_tmp_text_edit->toPlainText();
-            if(textValue != "")
-            {
-                float value = textValue.toFloat(&isValid);
-                if(isValid)
-                {
-                    _ferStep.setNextStepTemp(value);
-                }
-                else
-                {
-                    msgBox.setText("格式错误，请输入数值类型!");
-                    msgBox.show();
-                }
-            }
-        }
-        else if(watched == ui->expect_tmp_text_edit)
-        {
-            textValue = ui->expect_tmp_text_edit->toPlainText();
-            if(textValue != "")
-            {
-                float value = textValue.toFloat(&isValid);
-                if(isValid)
-                {
-                    _ferStep.setHopeTemp(value);
-                }
-                else
-                {
-                    msgBox.setText("格式错误，请输入数值类型!");
-                    msgBox.show();
-                }
-            }
-        }
-        else if(watched == ui->max_time_text_edit)
-        {
-            textValue = ui->max_time_text_edit->toPlainText();
-            if(textValue != "")
-            {
-                int value = textValue.toInt(&isValid);
-                if(isValid)
-                {
-                    if(value <= 0)
-                    {
-                        msgBox.setText("最长跳步时间必须大于0!");
-                        msgBox.show();
-                    }
-                    else
-                    {
-                        _ferStep.setNextStepTimeMax(value);
-                    }
-                }
-                else
-                {
-                    msgBox.setText("输入格式错误，请输入大于0的整数!");
-                    msgBox.show();
-                }
-            }
-        }
-        else if(watched == ui->min_time_text_edit)
-        {
-            textValue = ui->min_time_text_edit->toPlainText();
-            if(textValue != "")
-            {
-                int value = textValue.toInt(&isValid);
-                if(isValid)
-                {
-                    if(value <= 0)
-                    {
-                        msgBox.setText("最短跳步时间必须大于0!");
-                        msgBox.show();
-                    }
-                    else
-                    {
-                        _ferStep.setNextStepTimeMin(value);
-                    }
-                }
-                else
-                {
-                    msgBox.setText("输入格式错误，请输入大于0的整数!");
-                    msgBox.show();
-                }
-            }
-        }
-        else if(watched == ui->def_ae_text_edit)
-        {
-            textValue = ui->def_ae_text_edit->toPlainText();
-            if(textValue != "")
-            {
-                int value = textValue.toInt(&isValid);
-                if(isValid)
-                {
-                    if(value <= 0)
-                    {
-                        msgBox.setText("曝气时长必须大于0!");
-                        msgBox.show();
-                    }
-                    else
-                    {
-                        _ferStep.setDefaultParaAE(value);
-                    }
-                }
-                else
-                {
-                    msgBox.setText("输入格式错误，请输入大于0的整数!");
-                    msgBox.show();
-                }
-            }
-        }
-        else if(watched == ui->def_sta_text_edit)
-        {
-            textValue = ui->def_sta_text_edit->toPlainText();
-            if(textValue != "")
-            {
-                int value = textValue.toInt(&isValid);
-                if(isValid)
-                {
-                    if(value <= 0)
-                    {
-                        msgBox.setText("曝气时长必须大于0!");
-                        msgBox.show();
-                    }
-                    else
-                    {
-                        _ferStep.setDefaultParaSTA(value);
-                    }
-                }
-                else
-                {
-                    msgBox.setText("输入格式错误，请输入大于0的整数!");
-                    msgBox.show();
-                }
-            }
-        }
-        else if(watched == ui->def_frq_text_edit)
-        {
-            textValue = ui->def_frq_text_edit->toPlainText();
-            if(textValue != "")
-            {
-                int value = textValue.toInt(&isValid);
-                if(isValid)
-                {
-                    if(value <= 0)
-                    {
-                        msgBox.setText("频率必须大于0!");
-                        msgBox.show();
-                    }
-                    else
-                    {
-                        _ferStep.setDefaultParaFEQ(value);
-                    }
-                }
-                else
-                {
-                    msgBox.setText("输入格式错误，请输入大于0的整数!");
-                    msgBox.show();
-                }
-            }
-        }
-    }
 
     return QWidget::eventFilter(watched,event);
 }
@@ -397,4 +237,200 @@ void FerStepForm::on_add_case_push_button_clicked()
 void FerStepForm::on_air_mode_comboBox_currentIndexChanged(int index)
 {
     _ferStep.setAirMode(index);
+}
+
+void FerStepForm::handleTextChanged()
+{
+    QTextEdit *te = (QTextEdit *)sender();
+
+    QPalette p=QPalette();
+    p.setColor(QPalette::Base,Qt::white);
+    te->setPalette(p);
+
+    bool isValid = false;
+    QString textValue = "";
+
+    if(te == ui->step_tmp_text_edit)
+    {
+        textValue = ui->step_tmp_text_edit->toPlainText();
+        if(textValue != "")
+        {
+            float value = textValue.toFloat(&isValid);
+            if(isValid)
+            {
+                _ferStep.setNextStepTemp(value);
+            }
+            else
+            {
+                msgBox.setText("格式错误，请输入数值类型!");
+                msgBox.show();
+                p.setColor(QPalette::Base,Qt::red);
+                te->setPalette(p);
+            }
+        }
+    }
+    else if(te == ui->expect_tmp_text_edit)
+    {
+        textValue = ui->expect_tmp_text_edit->toPlainText();
+        if(textValue != "")
+        {
+            float value = textValue.toFloat(&isValid);
+            if(isValid)
+            {
+                _ferStep.setHopeTemp(value);
+            }
+            else
+            {
+                msgBox.setText("格式错误，请输入数值类型!");
+                msgBox.show();
+                p.setColor(QPalette::Base,Qt::red);
+                te->setPalette(p);
+            }
+        }
+    }
+    else if(te == ui->max_time_text_edit)
+    {
+        textValue = ui->max_time_text_edit->toPlainText();
+        if(textValue != "")
+        {
+            int value = textValue.toInt(&isValid);
+            if(isValid)
+            {
+                if(value <= 0)
+                {
+                    msgBox.setText("最长跳步时间必须大于0!");
+                    msgBox.show();
+                    p.setColor(QPalette::Base,Qt::red);
+                    te->setPalette(p);
+                }
+                else
+                {
+                    _ferStep.setNextStepTimeMax(value);
+                }
+            }
+            else
+            {
+                msgBox.setText("输入格式错误，请输入大于0的整数!");
+                msgBox.show();
+                p.setColor(QPalette::Base,Qt::red);
+                te->setPalette(p);
+            }
+        }
+    }
+    else if(te == ui->min_time_text_edit)
+    {
+        textValue = ui->min_time_text_edit->toPlainText();
+        if(textValue != "")
+        {
+            int value = textValue.toInt(&isValid);
+            if(isValid)
+            {
+                if(value <= 0)
+                {
+                    msgBox.setText("最短跳步时间必须大于0!");
+                    msgBox.show();
+                    p.setColor(QPalette::Base,Qt::red);
+                    te->setPalette(p);
+                }
+                else
+                {
+                    _ferStep.setNextStepTimeMin(value);
+                }
+            }
+            else
+            {
+                msgBox.setText("输入格式错误，请输入大于0的整数!");
+                msgBox.show();
+                p.setColor(QPalette::Base,Qt::red);
+                te->setPalette(p);
+            }
+        }
+    }
+    else if(te == ui->def_ae_text_edit)
+    {
+        textValue = ui->def_ae_text_edit->toPlainText();
+        if(textValue != "")
+        {
+            int value = textValue.toInt(&isValid);
+            if(isValid)
+            {
+                if(value <= 0)
+                {
+                    msgBox.setText("曝气时长必须大于0!");
+                    msgBox.show();
+                    p.setColor(QPalette::Base,Qt::red);
+                    te->setPalette(p);
+                }
+                else
+                {
+                    _ferStep.setDefaultParaAE(value);
+                }
+            }
+            else
+            {
+                msgBox.setText("输入格式错误，请输入大于0的整数!");
+                msgBox.show();
+                p.setColor(QPalette::Base,Qt::red);
+                te->setPalette(p);
+            }
+        }
+    }
+    else if(te == ui->def_sta_text_edit)
+    {
+        textValue = ui->def_sta_text_edit->toPlainText();
+        if(textValue != "")
+        {
+            int value = textValue.toInt(&isValid);
+            if(isValid)
+            {
+                if(value <= 0)
+                {
+                    msgBox.setText("曝气时长必须大于0!");
+                    msgBox.show();
+                    p.setColor(QPalette::Base,Qt::red);
+                    te->setPalette(p);
+                }
+                else
+                {
+                    _ferStep.setDefaultParaSTA(value);
+                }
+            }
+            else
+            {
+                msgBox.setText("输入格式错误，请输入大于0的整数!");
+                msgBox.show();
+                p.setColor(QPalette::Base,Qt::red);
+                te->setPalette(p);
+            }
+        }
+    }
+    else if(te == ui->def_frq_text_edit)
+    {
+        textValue = ui->def_frq_text_edit->toPlainText();
+        if(textValue != "")
+        {
+            int value = textValue.toInt(&isValid);
+            if(isValid)
+            {
+                if(value <= 0)
+                {
+                    msgBox.setText("频率必须大于0!");
+                    msgBox.show();
+                    p.setColor(QPalette::Base,Qt::red);
+                    te->setPalette(p);
+                }
+                else
+                {
+                    _ferStep.setDefaultParaFEQ(value);
+                }
+            }
+            else
+            {
+                msgBox.setText("输入格式错误，请输入大于0的整数!");
+                msgBox.show();
+                p.setColor(QPalette::Base,Qt::red);
+                te->setPalette(p);
+            }
+        }
+    }
 }

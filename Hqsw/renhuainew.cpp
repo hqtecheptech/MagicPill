@@ -78,15 +78,11 @@ void RenhuaiNew::updateFerData(QSet<int> changedDeviceSet, QMap<float,QString> d
 {
     emit ferDataChanged(changedDeviceSet, dataMap);
 
-    for(int i=0; i<7; i++)
+    for(int i=0; i<2; i++)
     {
-        DeviceNode node = Global::getFermenationNodeInfoByName("FER_ET_R");
+        DeviceNode node = Global::getFermenationNodeInfoByName("TOTAL_CURRENT_R");
         uint address = node.Offset + i * 4;
-        envParamsArray[i]->setTemperature(dataMap[address].toFloat());
-
-        node = Global::getFermenationNodeInfoByName("FER_HM_R");
-        address = node.Offset + i * 4;
-        envParamsArray[i]->setHumidity(dataMap[address].toFloat());
+        envParamsArray[i]->setCurrA(dataMap[address].toFloat());
 
         node = Global::getFermenationNodeInfoByName("ES_H2S_R");
         address = node.Offset + i * 4;
@@ -97,8 +93,7 @@ void RenhuaiNew::updateFerData(QSet<int> changedDeviceSet, QMap<float,QString> d
         envParamsArray[i]->setNh3(dataMap[address].toFloat());
     }
 
-    QString strValue = "T:" + QString::number(envParamsArray.at(0)->getTemperature(), 'f', 2) + "  ";
-            strValue.append("W:" + QString::number(envParamsArray.at(0)->getHumidity(), 'f', 2) + " %  ");
+    QString strValue = "TI:" + QString::number(envParamsArray.at(0)->getCurrA(), 'f', 2) + "A  ";
             strValue.append("NH3:" + QString::number(envParamsArray.at(0)->getNh3(), 'f', 2) + " ppm  ");
             strValue.append("H2S:" + QString::number(envParamsArray.at(0)->getH2s(), 'f', 2) + " ppm");
     ui->tab_banner_label->setText(strValue);
@@ -186,12 +181,14 @@ void RenhuaiNew::updateLoginState()
 void RenhuaiNew::on_ferControlButton_clicked()
 {
     fercontrolDialog->show();
+    fercontrolDialog->move((1920 - fercontrolDialog->width())/2,(1080 - fercontrolDialog->height())/2);
 }
 
 void RenhuaiNew::on_SettingButton_clicked()
 {
     //settingDialog->show();
     ferconfigDialog->show();
+    ferconfigDialog->move((1920 - ferconfigDialog->width())/2,(1080 - ferconfigDialog->height())/2);
 }
 
 void RenhuaiNew::on_logoutPushButton_clicked()
@@ -221,6 +218,7 @@ void RenhuaiNew::on_fanControlButton_clicked()
 {
     //sfcontrolDialog->show();
     fanControlDialog->show();
+    fanControlDialog->move((1920 - fanControlDialog->width())/2,(1080 - fanControlDialog->height())/2);
 }
 
 void RenhuaiNew::on_fanValveControlButton_clicked()
@@ -248,6 +246,7 @@ void RenhuaiNew::on_ReportButton_clicked()
 void RenhuaiNew::on_AlertQueryButton_clicked()
 {
     alertQueryDialog->show();
+    alertQueryDialog->move((1920 - alertQueryDialog->width())/2,(1080 - alertQueryDialog->height())/2);
 }
 
 void RenhuaiNew::on_exitButton_clicked()
