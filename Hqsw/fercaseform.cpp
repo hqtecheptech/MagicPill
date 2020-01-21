@@ -8,6 +8,30 @@ FerCaseForm::FerCaseForm(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    msgBox.setStyleSheet(
+        "QPushButton {"
+        " background-color: #89AFDE;"
+        " border-style: outset;"
+        " border-width: 2px;"
+        " border-radius: 10px;"
+        " border-color: beige;"
+        " font: bold 24px;"
+        " min-width: 5em;"
+        " min-height:5em;"
+        " padding: 20px;"
+        "}"
+        "QLabel {"
+        " min-height:5em;"
+        " font:24px;"
+        " background-color: #89AFDE;"
+        " border-style: outset;"
+        " border-width: 2px;"
+        " border-radius: 10px;"
+        " border-color: beige;"
+        " padding: 20px;"
+        "}"
+    );
+
     ui->low_tmp_text_edit->installEventFilter(this);
     ui->high_tmp_text_edit->installEventFilter(this);
     ui->ae_text_edit->installEventFilter(this);
@@ -65,32 +89,44 @@ void FerCaseForm::setCaseSequence(int seq)
 
 bool FerCaseForm::eventFilter(QObject *watched, QEvent *event)
 {
-    if(event->type()==QEvent::FocusIn)
+    /*if (event->type()==QEvent::FocusIn)     //然后再判断控件的具体事件 (这里指获得焦点事件)
     {
-        if (event->type()==QEvent::FocusIn)     //然后再判断控件的具体事件 (这里指获得焦点事件)
-        {
-            QPalette p=QPalette();
-            p.setColor(QPalette::Base,Qt::green);
-            ((QWidget *)watched)->setPalette(p);
-        }
+        QPalette p=QPalette();
+        p.setColor(QPalette::Base,Qt::green);
+        ((QWidget *)watched)->setPalette(p);
+    }*/
 
-        if(watched == ui->low_tmp_text_edit)
+    if(watched == ui->low_tmp_text_edit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
         {
             emit ui->low_tmp_text_edit->selectionChanged();
         }
-        else if(watched == ui->high_tmp_text_edit)
+    }
+    else if(watched == ui->high_tmp_text_edit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
         {
             emit ui->high_tmp_text_edit->selectionChanged();
         }
-        else if(watched == ui->ae_text_edit)
+    }
+    else if(watched == ui->ae_text_edit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
         {
             emit ui->ae_text_edit->selectionChanged();
         }
-        else if(watched == ui->sta_text_edit)
+    }
+    else if(watched == ui->sta_text_edit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
         {
             emit ui->sta_text_edit->selectionChanged();
         }
-        else if(watched == ui->freq_text_edit)
+    }
+    else if(watched == ui->freq_text_edit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
         {
             emit ui->freq_text_edit->selectionChanged();
         }
@@ -124,6 +160,8 @@ void FerCaseForm::handleTextChanged()
             {
                 msgBox.setText("格式错误，请输入数值类型!");
                 msgBox.show();
+                p.setColor(QPalette::Base,Qt::red);
+                te->setPalette(p);
             }
         }
     }
@@ -141,6 +179,8 @@ void FerCaseForm::handleTextChanged()
             {
                 msgBox.setText("格式错误，请输入数值类型!");
                 msgBox.show();
+                p.setColor(QPalette::Base,Qt::red);
+                te->setPalette(p);
             }
         }
     }
@@ -156,6 +196,8 @@ void FerCaseForm::handleTextChanged()
                 {
                     msgBox.setText("曝气时长必须大于0!");
                     msgBox.show();
+                    p.setColor(QPalette::Base,Qt::red);
+                    te->setPalette(p);
                 }
                 else
                 {
@@ -166,6 +208,8 @@ void FerCaseForm::handleTextChanged()
             {
                 msgBox.setText("输入格式错误，请输入大于0的整数!");
                 msgBox.show();
+                p.setColor(QPalette::Base,Qt::red);
+                te->setPalette(p);
             }
         }
     }
@@ -181,6 +225,8 @@ void FerCaseForm::handleTextChanged()
                 {
                     msgBox.setText("间隔时长必须大于0!");
                     msgBox.show();
+                    p.setColor(QPalette::Base,Qt::red);
+                    te->setPalette(p);
                 }
                 else
                 {
@@ -191,6 +237,8 @@ void FerCaseForm::handleTextChanged()
             {
                 msgBox.setText("输入格式错误，请输入大于0的整数!");
                 msgBox.show();
+                p.setColor(QPalette::Base,Qt::red);
+                te->setPalette(p);
             }
         }
     }
@@ -206,6 +254,8 @@ void FerCaseForm::handleTextChanged()
                 {
                     msgBox.setText("频率必须大于0!");
                     msgBox.show();
+                    p.setColor(QPalette::Base,Qt::red);
+                    te->setPalette(p);
                 }
                 else
                 {
@@ -216,6 +266,8 @@ void FerCaseForm::handleTextChanged()
             {
                 msgBox.setText("输入格式错误，请输入大于0的整数!");
                 msgBox.show();
+                p.setColor(QPalette::Base,Qt::red);
+                te->setPalette(p);
             }
         }
     }

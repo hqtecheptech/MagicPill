@@ -57,7 +57,7 @@ FerControlDialog::FerControlDialog(QWidget *parent) :
     connect(ui->tankIndexComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(tankIndexChanged(int)));
     connect(ui->runStepComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(stepIndexChanged(int)));
 
-    customFerSettingDialog = new CustomFerSettingDialog(this);
+    customFerSettingDialog = new CustomFerSettingDialog();
 
     tcpClient = new TcpClientSocket(this);
     tcpClient1 = new TcpClientSocket(this);

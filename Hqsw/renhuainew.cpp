@@ -56,7 +56,7 @@ RenhuaiNew::RenhuaiNew(QWidget *parent) :
     historyDialog = new HistoryDialog(this);
     reportDialog = new ReportDialog(this);
     //settingDialog = new SettingDialog(this);
-    ferconfigDialog = new FerConfigDialog(this);
+    ferconfigDialog = new FerConfigDialog();
     alertQueryDialog = new AlertQueryDialog(this);
     fercontrolDialog = new FerControlDialog(this);
     connect(this,SIGNAL(ferDataChanged(QSet<int>, QMap<float,QString>)),fercontrolDialog,SLOT(updateFermentationData(QSet<int>, QMap<float,QString>)));

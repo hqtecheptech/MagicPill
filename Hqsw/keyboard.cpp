@@ -361,12 +361,20 @@ void Keyboard::keyboardHandler()
 
 void Keyboard::setLineEdit(QLineEdit * line)
 {
+    QPalette p=QPalette();
+    p.setColor(QPalette::Base,Qt::green);
+    ((QWidget *)line)->setPalette(p);
+
     outputLineEdit = line;
     ui->lineEdit->setText(line->text());
 }
 
 void Keyboard::setTextEdit(QTextEdit * text)
 {
+    QPalette p=QPalette();
+    p.setColor(QPalette::Base,Qt::green);
+    ((QWidget *)text)->setPalette(p);
+
     outputTextEdit = text;
     ui->lineEdit->setText(text->toPlainText());
 }
@@ -467,10 +475,18 @@ void Keyboard::on_enterButton_clicked()
     //qDebug() << "enter";
     if(et == LineEdit)
     {
+        QPalette p=QPalette();
+        p.setColor(QPalette::Base,Qt::white);
+        ((QWidget *)outputLineEdit)->setPalette(p);
+
         outputLineEdit->setText(outputText);
     }
     else if(et == TextEdit)
     {
+        QPalette p=QPalette();
+        p.setColor(QPalette::Base,Qt::white);
+        ((QWidget *)outputTextEdit)->setPalette(p);
+
         outputTextEdit->setText(outputText);
     }
     outputText="";
@@ -522,6 +538,7 @@ void Keyboard::run_keyboard_lineEdit()
     et = LineEdit;
     QLineEdit *line = (QLineEdit *)sender();
     setLineEdit(line);
+
     setWindowModality(Qt::ApplicationModal);
     show();
     move((1920 - width())/2, 1080 - height() - 50);

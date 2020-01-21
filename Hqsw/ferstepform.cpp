@@ -9,6 +9,30 @@ FerStepForm::FerStepForm(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    msgBox.setStyleSheet(
+        "QPushButton {"
+        " background-color: #89AFDE;"
+        " border-style: outset;"
+        " border-width: 2px;"
+        " border-radius: 10px;"
+        " border-color: beige;"
+        " font: bold 24px;"
+        " min-width: 5em;"
+        " min-height:5em;"
+        " padding: 20px;"
+        "}"
+        "QLabel {"
+        " min-height:5em;"
+        " font:24px;"
+        " background-color: #89AFDE;"
+        " border-style: outset;"
+        " border-width: 2px;"
+        " border-radius: 10px;"
+        " border-color: beige;"
+        " padding: 20px;"
+        "}"
+    );
+
     casesLayout = new QVBoxLayout(this);
     casesLayout->setSpacing(0);
     ui->cases_frame->setLayout(casesLayout);
@@ -156,40 +180,58 @@ void FerStepForm::setStepSequence(int seq)
 
 bool FerStepForm::eventFilter(QObject *watched, QEvent *event)
 {
-    if(event->type()==QEvent::FocusIn)
+    /*if (event->type()==QEvent::FocusIn)     //然后再判断控件的具体事件 (这里指获得焦点事件)
     {
-        if (event->type()==QEvent::FocusIn)     //然后再判断控件的具体事件 (这里指获得焦点事件)
-        {
-            QPalette p=QPalette();
-            p.setColor(QPalette::Base,Qt::green);
-            ((QWidget *)watched)->setPalette(p);
-        }
+        QPalette p=QPalette();
+        p.setColor(QPalette::Base,Qt::green);
+        ((QWidget *)watched)->setPalette(p);
+    }*/
 
-        if(watched == ui->step_tmp_text_edit)
+    if(watched == ui->step_tmp_text_edit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
         {
             emit ui->step_tmp_text_edit->selectionChanged();
         }
-        else if(watched == ui->expect_tmp_text_edit)
+    }
+    else if(watched == ui->expect_tmp_text_edit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
         {
             emit ui->expect_tmp_text_edit->selectionChanged();
         }
-        else if(watched == ui->max_time_text_edit)
+    }
+    else if(watched == ui->max_time_text_edit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
         {
             emit ui->max_time_text_edit->selectionChanged();
         }
-        else if(watched == ui->min_time_text_edit)
+    }
+    else if(watched == ui->min_time_text_edit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
         {
             emit ui->min_time_text_edit->selectionChanged();
         }
-        else if(watched == ui->def_ae_text_edit)
+    }
+    else if(watched == ui->def_ae_text_edit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
         {
             emit ui->def_ae_text_edit->selectionChanged();
         }
-        else if(watched == ui->def_sta_text_edit)
+    }
+    else if(watched == ui->def_sta_text_edit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
         {
             emit ui->def_sta_text_edit->selectionChanged();
         }
-        else if(watched == ui->def_frq_text_edit)
+    }
+    else if(watched == ui->def_frq_text_edit)
+    {
+        if(event->type() == QEvent::MouseButtonPress)
         {
             emit ui->def_frq_text_edit->selectionChanged();
         }
