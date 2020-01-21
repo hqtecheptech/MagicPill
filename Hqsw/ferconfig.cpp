@@ -12,7 +12,7 @@ bool FerConfig::loadConfig(QList<FerStep *> *steps, int deviceIndex)
         return false;
     }
 
-    QFile file("fer_para_conf_" + QString::number(deviceIndex+1));
+    QFile file(Global::systemConfig.ferconfigPath + Global::systemConfig.ferconfigPrefix + QString::number(deviceIndex+1));
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug() << "Read configuration file failed!";

@@ -217,7 +217,7 @@ void FerConfigDialog::on_save_push_button_clicked()
     }
     else
     {
-        QFile file("fer_para_conf_" + QString::number(ui->step_seq_comboBox->currentIndex() + 1));
+        QFile file(Global::systemConfig.ferconfigPath +  Global::systemConfig.ferconfigPrefix + QString::number(ui->step_seq_comboBox->currentIndex() + 1));
         if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             qDebug() << "Open configuration file failed!";
