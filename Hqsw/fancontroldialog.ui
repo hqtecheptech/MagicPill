@@ -626,9 +626,14 @@
     <rect>
      <x>40</x>
      <y>20</y>
-     <width>111</width>
-     <height>30</height>
+     <width>140</width>
+     <height>40</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+    </font>
    </property>
   </widget>
   <widget class="QLabel" name="label_24">
