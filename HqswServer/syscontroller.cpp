@@ -196,8 +196,8 @@ void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet
         qDebug() << "handlePlcControl dataMap key: " << key << "; value: " << dataMap[key];
     }
 
-    if(ctrBlock.fromPru[0] == 1)
-    {
+    //if(ctrBlock.fromPru[0] == 1)
+    //{
         Plc_Db db;
         dbShare->LockShare();
         dbShare->GetShardMemory((void*)&db, sizeof(Plc_Db));
@@ -207,7 +207,7 @@ void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet
 
         ctrBlock.toPru[0] = 1;
         ctrlShare->SetSharedMemory((void*)&ctrBlock, sizeof(Ctr_Block));
-    }
+    //}
     ctrlShare->UnlockShare();
     qDebug() << "handlePlcControl ctrlShare unlocked!";
 
