@@ -215,14 +215,14 @@ void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Pl
                 QStandardItem *simpleAlertItem = new QStandardItem(simpleAlert);
                 newSimpleItemList.append(simpleAlertItem);
 
-                /*if(Identity::getInstance()->getUser() != Q_NULLPTR)
-                {
-                    newItemList.append(new QStandardItem(Identity::getInstance()->getUser()->getUsername()));
-                }
-                else
-                {
-                    newItemList.append(new QStandardItem(""));
-                }*/
+                //if(Identity::getInstance()->getUser() != Q_NULLPTR)
+                //{
+                //    newItemList.append(new QStandardItem(Identity::getInstance()->getUser()->getUsername()));
+                //}
+                //else
+                //{
+                //    newItemList.append(new QStandardItem(""));
+                //}
 
                 int count = UiGlobal::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
                 if(count > 50)

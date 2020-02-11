@@ -44,10 +44,10 @@ private:
     Yhcc* yhc;
     Fpjc* fpj;
     MixerDlg* mixDlg;
-    QThread taskManageThread;
-    TaskManager* taskManager;
+    //QThread taskManageThread;
+    //TaskManager* taskManager;
     //QTimer* pruCheckTimer;
-    Syscontroller *controller;
+    //Syscontroller *controller;
 };
 
 #endif // MAINWINDOW_H

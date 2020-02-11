@@ -74,13 +74,6 @@ int DataSender::sendRequestWithResults(QByteArray data)
         }
     }
 
-    if(!Global::isPrint)
-    {
-        qDebug() << "Local server connected!";
-    }
-
-    Global::isPrint = true;
-
     _tcpSocket->write(data);
     _tcpSocket->waitForBytesWritten();
 

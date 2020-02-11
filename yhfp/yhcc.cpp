@@ -49,13 +49,21 @@ Yhcc::Yhcc(QWidget *parent) :
     testTimer = new QTimer(this);
     connect(testTimer, SIGNAL(timeout()), this, SLOT(wirteTestData()));
 
-    controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
+    /*controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
     if(controller != Q_NULLPTR)
     {
         connect(controller, SIGNAL(resultReady()), this, SLOT(handleControllerResult()));
         connect(controller, &Syscontroller::plcDbUpdated, this, &Yhcc::handlePlcDataUpdate);
         connect(this, SIGNAL(requestControl()), controller, SLOT(applyControlRequest()));
-    }
+    }*/
+
+    getServerConnectStateTcpClient = new TcpClientSocket(this);
+    connect(getServerConnectStateTcpClient, SIGNAL(updateConnectState(bool)), this, SLOT(localServerConnected(bool)));
+    getAllYhcDataTcpClient = new TcpClientSocket(this);
+    connect(getAllYhcDataTcpClient, SIGNAL(updateClients(QByteArray)), this, SLOT(showYhcData(QByteArray)));
+    actionTcpClient = new TcpClientSocket(this);
+
+    connect(this, SIGNAL(dataUpdate(QSet<int>, QMap<float,QString>)), this,SLOT(updateYhcData(QSet<int>, QMap<float,QString>)));
 
     dbWorker = new DatabaseWorker;
     dbWorker->moveToThread(&dbThread);
@@ -63,9 +71,20 @@ Yhcc::Yhcc(QWidget *parent) :
     connect(this, SIGNAL(histDataReady(HistData)), dbWorker, SLOT(saveHistData(HistData)));
     dbThread.start();
 
+    psWorker = new ParseServerDataWorker;
+    psWorker->moveToThread(&psThread);
+    connect(&psThread, &QThread::finished, psWorker, &QObject::deleteLater);
+    connect(this, SIGNAL(serverDataReceived(QByteArray)), psWorker, SLOT(parseYhcServerData(QByteArray)), Qt::QueuedConnection);
+    connect(psWorker, &ParseServerDataWorker::resultReady, this, &Yhcc::dispatchYhcData, Qt::QueuedConnection);
+    psThread.start();
+
     updateWatchsTimer = new QTimer(this);
     connect(updateWatchsTimer, SIGNAL(timeout()), this, SLOT(updateWatchs()));
     updateWatchsTimer->start(5000);
+
+    readYhcDataTimer = new QTimer(this);
+    connect(readYhcDataTimer, SIGNAL(timeout()), this, SLOT(readYhcData()));
+    readYhcDataTimer->start(1000);
 
     hisDlg = new HistoryDlg(this);
 }
@@ -222,7 +241,7 @@ void Yhcc::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> d
 
 void Yhcc::wirteTestData()
 {
-    controller->yhcSpeedUp(deviceIndex, 2);
+    //controller->yhcSpeedUp(deviceIndex, 2);
     //controller->yhcStart(deviceIndex, !started);
 }
 
@@ -240,7 +259,7 @@ void Yhcc::updateWatchs()
     uint stime =currentdt.toTime_t();
     HistData data;
 
-    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    /*DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertAddressToIndex(address, deviceNode.DataType);
@@ -288,7 +307,117 @@ void Yhcc::updateWatchs()
     strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
     emit histDataReady(data);
 
-    ui->widget_2->updateUI(rs, prs);
+    ui->widget_2->updateUI(rs, prs);*/
+}
+
+void Yhcc::showYhcData(QByteArray data)
+{
+    StreamPack bDevice;
+    memcpy(&bDevice,data,sizeof(bDevice));
+
+    if(bDevice.bErrorCode==1)
+    {
+        emit serverDataReceived(data);
+    }
+}
+
+void Yhcc::localServerConnected(bool isConnected)
+{
+    if(isServerConnected != isConnected)
+    {
+        isServerConnected = isConnected;
+        emit serverConnectionChanged(isConnected);
+    }
+
+    if(isConnected)
+    {
+        StreamPack bpack;
+        bpack = {sizeof(StreamPack),YHC,0,r_AllCacheData,String,0,0,0,0,0,0};
+        getAllYhcDataTcpClient->sendRequest(bpack);
+    }
+}
+
+void Yhcc::dispatchYhcData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
+{
+    emit dataUpdate(changedDeviceSet,dataMap);
+    qDebug() << "Dispatch server data";
+
+    uint startAddrss = Global::yhcDeviceInfo.Runctr_Address;
+    uint valueNumber = Global::yhcDeviceInfo.Runctr_Num;
+    QVector<bool> boolValues;
+    for(uint i=0; i < valueNumber; i++)
+    {
+        uint step = i / 8;
+        uint temp = i % 8;
+        float index = float(temp) / 10;
+        float dictAddress = index + startAddrss + step;
+        QVariant tempValue = dataMap[dictAddress];
+        boolValues.append(tempValue.toBool());
+
+        if(!Global::currentYhcDataMap.contains(dictAddress))
+        {
+            Global::currentYhcDataMap.insert(dictAddress,dataMap[dictAddress]);
+        }
+        else
+        {
+            if(Global::currentYhcDataMap[dictAddress] != dataMap[dictAddress])
+            {
+                uint tankIndex = i / Global::yhcDeviceInfo.RunCtr_Block_Size;
+                DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(tankIndex);
+
+                QList<QStandardItem *> newItemList;
+                QList<QStandardItem *> newSimpleItemList;
+                Global::alertIndex += 1;
+                QString simpleAlert;
+
+                newItemList.append(new QStandardItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")));
+                newItemList.append(new QStandardItem(QString::number((tankIndex + info.startIndex)+1)));
+                if(tempValue.toBool())
+                {
+                    newItemList.append(new QStandardItem(Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert1));
+                    simpleAlert = QString::number(Global::alertIndex) + ": " +
+                            QString::number(tankIndex+1) + "#" +
+                            Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert1 + " " +
+                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+                }
+                else
+                {
+                    newItemList.append(new QStandardItem(Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert0));
+                    simpleAlert = QString::number(Global::alertIndex) + ": " +
+                            QString::number(tankIndex+1) + "#" +
+                            Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert0 + " " +
+                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+
+                }
+                QStandardItem *simpleAlertItem = new QStandardItem(simpleAlert);
+                newSimpleItemList.append(simpleAlertItem);
+
+                if(Identity::getInstance()->getUser() != Q_NULLPTR)
+                {
+                    newItemList.append(new QStandardItem(Identity::getInstance()->getUser()->getUsername()));
+                }
+                else
+                {
+                    newItemList.append(new QStandardItem(""));
+                }
+
+                UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
+                UiGlobal::alertsModel->insertRow(0, newItemList);
+                Global::currentYhcDataMap[dictAddress] = dataMap[dictAddress];
+            }
+        }
+    }
+}
+
+void Yhcc::updateYhcData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
+{
+    parseYhcData(dataMap);
+    parseYhcRunCtrData(dataMap);
+}
+
+void Yhcc::readYhcData()
+{
+    getServerConnectStateTcpClient->sendTestConnectRequest();
 }
 
 void Yhcc::parseYhcData(QMap<float, QString> dataMap)
@@ -298,19 +427,14 @@ void Yhcc::parseYhcData(QMap<float, QString> dataMap)
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertAddressToIndex(address, deviceNode.DataType);
     ui->test_label->setText(Global::currentMixDataMap[address]);
-    ui->speedLabel->setText(dataMap[address]);
+    ui->speedLabel->setText(dataMap[address]);*/
 
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Speed value: " << Global::currentYhcDataMap[address];
-    ui->speedLabel->setText(Global::currentYhcDataMap[address]);*/
-
-    DeviceGroupInfo info = Global::getFerDeviceGroupInfo(deviceIndex);
-    DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_MT_R");
-    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "FER_MT_R value: " << dataMap[address];
-    ui->speedLabel->setText(Global::currentFermenationDataMap[address]);
+    qDebug() << "Speed value: " << dataMap[address];
+    currentSpeed = dataMap[address].toFloat();
+    ui->speedLabel->setText(dataMap[address]);
 
     /*deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_RunTime");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
@@ -346,12 +470,62 @@ void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
 
 void Yhcc::on_speedDownButton_clicked()
 {
-    controller->yhcSpeedUp(deviceIndex, -1);
+    //controller->yhcSpeedUp(deviceIndex, -1);
+
 }
 
 void Yhcc::on_speedUpButton_clicked()
 {
-    controller->yhcSpeedUp(deviceIndex, 1);
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+
+    StreamPack bpack;
+    bpack = {sizeof(StreamPack),6,0,W_Send_Control,Float,0,0,1,0,0,0};
+    //Length of ushort address and value, plus length of scrc.
+    bpack.bDataLength = 1;
+    bpack.bStreamLength += (2+4)*1 + 4;
+
+    QList<ushort> addrs;
+    QList<float> values;
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
+    ushort addr = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            * Global::getLengthByDataType(deviceNode.DataType);
+    addrs.append(addr);
+    float data = currentSpeed + 1;
+    values.append(data);
+
+    QByteArray allPackData, SData, crcData;
+    QDataStream out(&SData,QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+    out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    //QDataStream::BigEndian或QDataStream::LittleEndian
+    out.setByteOrder(QDataStream::LittleEndian);
+
+    allPackData.append((char*)&bpack, sizeof(bpack));
+
+    foreach(ushort item, addrs)
+    {
+        out << item;
+    }
+
+    foreach(float item, values)
+    {
+        out << item;
+    }
+
+    SData.insert(0, allPackData);
+
+    uint scrc = actionTcpClient->StreamLen_CRC32(SData);
+
+    QDataStream out1(&crcData,QIODevice::WriteOnly);
+    out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+    out1.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    //QDataStream::BigEndian或QDataStream::LittleEndian
+    out1.setByteOrder(QDataStream::LittleEndian);
+    out1 << scrc;
+
+    SData.append(crcData);
+
+    actionTcpClient->sendRequestWithResults(SData);
 }
 
 void Yhcc::on_historyButton_clicked()

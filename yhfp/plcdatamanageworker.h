@@ -25,6 +25,7 @@ public:
 signals:
     void sharedDatasReady(const Plc_Db datas);
     void plcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
+    void resultReady(QSet<int>, QMap<float,QString> dataMap);
 
 public slots:
     void getSharedDatas(DeviceType dataName, int groupId);

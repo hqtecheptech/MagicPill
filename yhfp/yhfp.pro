@@ -49,7 +49,11 @@ SOURCES += main.cpp\
     historydlg.cpp \
     controlhistory.cpp \
     mixerdlg.cpp \
-    uiglobal.cpp
+    uiglobal.cpp \
+    tcpclientsocket.cpp \
+    parseserverdataworker.cpp \
+    identity.cpp \
+    user.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -87,7 +91,11 @@ HEADERS  += mainwindow.h \
     historydlg.h \
     controlhistory.h \
     mixerdlg.h \
-    uiglobal.h
+    uiglobal.h \
+    tcpclientsocket.h \
+    parseserverdataworker.h \
+    identity.h \
+    user.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \
@@ -110,5 +118,5 @@ RESOURCES += \
 
 LIBS += -L/work/nfs/forlinx/OK5718-SDK-V1.0/OK57xx-linux-fs/usr/lib -lsqlite3 \
 
-target.path = /home/hqtech/test
+target.path = /home/hqtech/test/yhc
 INSTALLS += target

@@ -43,37 +43,37 @@ MainWindow::MainWindow(QWidget *parent) :
     //fpj = new Fpjc(this);
     //mixDlg = new MixerDlg(this);
 
-    taskManager = new TaskManager(8000, this);
-    taskManager->moveToThread(&taskManageThread);
-    connect(&taskManageThread, SIGNAL(finished()), taskManager, SLOT(deleteLater()));
-    connect(this, SIGNAL(startListenTask()), taskManager, SLOT(listeningTask()));
+    //taskManager = new TaskManager(8000, this);
+    //taskManager->moveToThread(&taskManageThread);
+    //connect(&taskManageThread, SIGNAL(finished()), taskManager, SLOT(deleteLater()));
+    //connect(this, SIGNAL(startListenTask()), taskManager, SLOT(listeningTask()));
 
-    emit(startListenTask());
+    //emit(startListenTask());
 
     //pruCheckTimer = new QTimer();
     //connect(pruCheckTimer, SIGNAL(timeout()), this, SLOT(checkPruState()));
     //pruCheckTimer->start(10000);
 
-    controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
+    //controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
 }
 
 MainWindow::~MainWindow()
 {
-    taskManageThread.requestInterruption();
-    taskManageThread.quit();
-    taskManageThread.wait();
+    //taskManageThread.requestInterruption();
+    //taskManageThread.quit();
+    //taskManageThread.wait();
 
-    delete taskManager;
+    //delete taskManager;
     //delete pruCheckTimer;
     delete ui;
 }
 
 void MainWindow::showEvent(QShowEvent *event)
 {
-    if(controller == Q_NULLPTR)
+    /*if(controller == Q_NULLPTR)
     {
         controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
-    }
+    }*/
 
     //mixDlg->show();
 }
@@ -95,7 +95,7 @@ void MainWindow::on_exitButton_clicked()
 
 void MainWindow::on_syssButton_clicked()
 {
-    DataSender ds;
+    /*DataSender ds;
     StreamPack bpack;
     bpack = {sizeof(StreamPack),1,0,r_Report,String,0,0,10,0,0,0};
     QTextCodec *codec = QTextCodec::codecForLocale();
@@ -122,7 +122,7 @@ void MainWindow::on_syssButton_clicked()
     uint scrc = ds.StreamLen_CRC32(SData);
     out << scrc;
 
-    ds.sendRequestWithResults(SData);
+    ds.sendRequestWithResults(SData);*/
 }
 
 void MainWindow::checkPruState()

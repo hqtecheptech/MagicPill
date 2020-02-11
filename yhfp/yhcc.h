@@ -11,6 +11,11 @@
 #include "dataformat.h"
 #include "historydlg.h"
 #include "netstatemanageworker.h"
+#include "tcpclientsocket.h"
+#include "parseserverdataworker.h"
+#include "global.h"
+#include "uiglobal.h"
+#include "identity.h"
 
 namespace Ui {
 class Yhcc;
@@ -60,13 +65,22 @@ protected:
 signals:
     void checkNetState(QString type);
     void pollingDatas();
-    void histDataReady(HistData data);
+    void histDataReady(HistData data);    
+    void dataChanged();
+    void serverConnectionChanged(bool isConnected);
+    void dataUpdate(QSet<int>, QMap<float,QString>);
+    void serverDataReceived(QByteArray);
 
 public slots:
     void handleControllerResult();
     void handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
     void wirteTestData();
     void updateWatchs();
+    void showYhcData(QByteArray);
+    void localServerConnected(bool);
+    void dispatchYhcData(QSet<int>, QMap<float,QString>);
+    void updateYhcData(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
+    void readYhcData();
 
 private:
     Ui::Yhcc *ui;
@@ -76,15 +90,25 @@ private:
     NetStateManageWorker* nsmWorker;
     QThread dbThread;
     DatabaseWorker* dbWorker;
+    QThread psThread;
+    ParseServerDataWorker *psWorker;
     QTimer* checkNetStateTimer;
     QTimer* testTimer;
     QTimer* updateWatchsTimer;
+    QTimer* readYhcDataTimer;
     QTime st;
     int uca = 0;
-    Syscontroller* controller;
+    //Syscontroller* controller;
     Plc_Db oldPlcDb;
     int deviceIndex = 0;
     bool started = false;
+
+    TcpClientSocket* getServerConnectStateTcpClient;
+    TcpClientSocket* getAllYhcDataTcpClient;
+    TcpClientSocket* actionTcpClient;
+    bool isServerConnected = false;
+
+    float currentSpeed = 0.0;
 
     void parseYhcData(QMap<float,QString> dataMap);
     void parseYhcRunCtrData(QMap<float,QString> dataMap);
