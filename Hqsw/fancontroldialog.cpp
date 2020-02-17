@@ -376,22 +376,22 @@ void FanControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
     ui->startStateLabel->setObjectName("startstatelabel");
     if(!startState)
     {
-        ui->startStateLabel->setStyleSheet("QLabel#startstatelabel{background-color: rgb(0, 255, 0);}");
+        ui->startStateLabel->setStyleSheet("QLabel#startstatelabel{background-color: rgb(255, 255, 255);}");
     }
     else
     {
-        ui->startStateLabel->setStyleSheet("QLabel#startstatelabel{background-color: rgb(255, 0, 0);}");
+        ui->startStateLabel->setStyleSheet("QLabel#startstatelabel{background-color: rgb(255, 255, 0);}");
     }
 
     bool endState = Global::getFerRunctrValueByName(tankIndex,"FAN_Close_Timeout_BOOL", dataMap);
     ui->endStateLabel->setObjectName("endstatelabel");
     if(!endState)
     {
-        ui->endStateLabel->setStyleSheet("QLabel#endstatelabel{background-color: rgb(0, 255, 0);}");
+        ui->endStateLabel->setStyleSheet("QLabel#endstatelabel{background-color: rgb(255, 255, 255);}");
     }
     else
     {
-        ui->endStateLabel->setStyleSheet("QLabel#endstatelabel{background-color: rgb(255, 0, 0);}");
+        ui->endStateLabel->setStyleSheet("QLabel#endstatelabel{background-color: rgb(255, 255, 0);}");
     }
 
     /*bool alertState = false;

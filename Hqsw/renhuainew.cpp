@@ -96,7 +96,14 @@ void RenhuaiNew::updateFerData(QSet<int> changedDeviceSet, QMap<float,QString> d
     QString strValue = "TI:" + QString::number(envParamsArray.at(0)->getCurrA(), 'f', 2) + "A  ";
             strValue.append("NH3:" + QString::number(envParamsArray.at(0)->getNh3(), 'f', 2) + " ppm  ");
             strValue.append("H2S:" + QString::number(envParamsArray.at(0)->getH2s(), 'f', 2) + " ppm");
-    ui->tab_banner_label->setText(strValue);
+
+    QString strSpan = "         ";
+
+    QString strValue1 = "TI:" + QString::number(envParamsArray.at(1)->getCurrA(), 'f', 2) + "A  ";
+            strValue1.append("NH3:" + QString::number(envParamsArray.at(1)->getNh3(), 'f', 2) + " ppm  ");
+            strValue1.append("H2S:" + QString::number(envParamsArray.at(1)->getH2s(), 'f', 2) + " ppm");
+
+    ui->tab_banner_label->setText(strValue + strSpan + strValue1);
 }
 
 void RenhuaiNew::updateDeoData(QSet<int> changedDeviceSet, QMap<float,QString> dataMap)
