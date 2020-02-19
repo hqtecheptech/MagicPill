@@ -19,6 +19,7 @@ public slots:
     void parseFerServerData(QByteArray data);
     void parseDeoServerData(QByteArray data);
     void parseYhcServerData(QByteArray data);
+    void parseMixServerData(QByteArray data);
 };
 
 #endif // PARSESERVERDATAWORKER_H

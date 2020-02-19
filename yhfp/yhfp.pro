@@ -53,7 +53,10 @@ SOURCES += main.cpp\
     tcpclientsocket.cpp \
     parseserverdataworker.cpp \
     identity.cpp \
-    user.cpp
+    user.cpp \
+    doublecyemform.cpp \
+    doubleemform.cpp \
+    singleemform.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -95,7 +98,10 @@ HEADERS  += mainwindow.h \
     tcpclientsocket.h \
     parseserverdataworker.h \
     identity.h \
-    user.h
+    user.h \
+    doublecyemform.h \
+    doubleemform.h \
+    singleemform.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \
@@ -111,7 +117,10 @@ FORMS    += mainwindow.ui \
     fpjwatchs.ui \
     historydlg.ui \
     controlhistory.ui \
-    mixerdlg.ui
+    mixerdlg.ui \
+    doublecyemform.ui \
+    doubleemform.ui \
+    singleemform.ui
 
 RESOURCES += \
     resource.qrc

@@ -91,6 +91,91 @@ void ParseServerDataWorker::parseYhcServerData(QByteArray data)
     }
 }
 
+void ParseServerDataWorker::parseMixServerData(QByteArray data)
+{
+    StreamPack bDevice;
+    memcpy(&bDevice,data,sizeof(bDevice));
+
+    QByteArray byteValues = data.mid(sizeof(bDevice), data.length() - sizeof(bDevice) - 4 * bDevice.bDataLength);
+    QTextCodec *codec = QTextCodec::codecForLocale();
+    QString strValues = codec->toUnicode(byteValues);
+    QString realStrValues = strValues.mid(4);
+    QStringList strValueList = realStrValues.split(",");
+    QVector<QString> strArray = strValueList.toVector();
+
+    byteValues = data.mid(data.length() - 4 * bDevice.bDataLength, 4 * bDevice.bDataLength);
+
+    bool diff = false;
+    QMap<float,QString> dataMap;
+    QVector<float> addressArray;
+    QVector<float> changedAddressArray;
+    for(quint16 i=0; i<bDevice.bDataLength; ++i)
+    {
+        QByteArray value = byteValues.mid(i*4,4);
+        float temp = 0;
+        memcpy(&temp,value,4);
+        addressArray.append(temp);
+        dataMap.insert(temp,strArray[i]);
+        if(!Global::currentMixDataMap.contains(temp))
+        {
+            diff = true;
+            Global::currentMixDataMap.insert(temp,strArray[i]);
+            changedAddressArray.append(temp);
+        }
+        else
+        {
+            if(Global::currentMixDataMap[temp] != strArray[i])
+            {
+                diff = true;
+                changedAddressArray.append(temp);
+                if(temp < Global::mixDeviceInfo.Runctr_Address)
+                {
+                    Global::currentMixDataMap[temp] = strArray[i];
+                }
+            }
+        }
+    }
+
+    // TestCode
+    /*if(!ferDataFileSaved)
+    {
+        QFile dataFile("ferdatafile0.txt");
+        if(!dataFile.open(QIODevice::WriteOnly))
+        {
+
+        }
+        QTextStream out(&dataFile);
+
+
+        for(int row = 0; row < addressArray.length(); row++)
+        {
+            out << addressArray[row] << " " << strArray[row] << endl;
+        }
+
+        ferDataFileSaved = true;
+    }*/
+
+    int startIndex = Global::getMixDeviceStartIndex(bDevice.bDeviceId, bDevice.bDeviceGroup);
+
+    if(startIndex >=0 && diff)
+    {
+        QSet<int> changedDeviceSet;
+        foreach(float address, changedAddressArray)
+        {
+            if(address < Global::mixDeviceInfo.Runctr_Address)
+            {
+                changedDeviceSet.insert(startIndex + Global::getMixDeviceIndexByAddress(address));
+            }
+            else
+            {
+                changedDeviceSet.insert(startIndex + Global::getMixDeviceIndexByRunctrAddress(address));
+            }
+        }
+
+        emit resultReady(changedDeviceSet, dataMap);
+    }
+}
+
 
 void ParseServerDataWorker::parseFerServerData(QByteArray data)
 {

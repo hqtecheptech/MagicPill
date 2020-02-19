@@ -5,6 +5,9 @@
 #include "netstatemanageworker.h"
 #include "syscontroller.h"
 #include "data.h"
+#include "tcpclientsocket.h"
+#include "parseserverdataworker.h"
+#include "identity.h"
 
 namespace Ui {
 class MixerDlg;
@@ -28,12 +31,21 @@ signals:
     void checkNetState(QString type);
     void pollingDatas();
     void histDataReady(HistData data);
+    void dataChanged();
+    void serverConnectionChanged(bool isConnected);
+    void dataUpdate(QSet<int>, QMap<float,QString>);
+    void serverDataReceived(QByteArray);
 
 public slots:
     void handleControllerResult();
     void handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
     void wirteTestData();
     void switchState();
+    void showData(QByteArray);
+    void localServerConnected(bool);
+    void dispatchData(QSet<int>, QMap<float,QString>);
+    void updateData(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
+    void readData();
 
 protected:
     void showEvent(QShowEvent *);
@@ -45,10 +57,13 @@ private:
     QThread netManageThread;
     NetStateManageWorker* nsmWorker;
     QThread dbThread;
+    ParseServerDataWorker *psWorker;
+    QThread psThread;
     QTimer* checkNetStateTimer;
     QTimer* testTimer;
     QTimer* switchStateTimer;
     QTimer* updateWatchsTimer;
+    QTimer* readDataTimer;
     int uca = 0;
     Syscontroller* controller;
     Plc_Db oldPlcDb;
@@ -59,6 +74,11 @@ private:
     bool wnhjdjFault, wnzpdjFault, flzpdjFault, fllxdjFault, fhlxdjFault;
     bool wnjrFault, wnyxywLow, fljrFault, flyxywLow;
     bool hljFault, flczdFault, fhczdFault, shpd_1_Fault, shpd_2_Fault, shpd_3_Fault;
+
+    TcpClientSocket* getServerConnectStateTcpClient;
+    TcpClientSocket* getAllDataTcpClient;
+    TcpClientSocket* actionTcpClient;
+    bool isServerConnected = false;
 
     void parseData(QMap<float,QString> dataMap);
     void parseRunCtrData(QMap<float,QString> dataMap);

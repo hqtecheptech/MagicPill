@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DoubleCyEmForm</class>
+ <widget class="QWidget" name="DoubleCyEmForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>190</width>
+    <height>230</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(96, 88, 180);</string>
+  </property>
+  <widget class="QLabel" name="em_label">
+   <property name="geometry">
+    <rect>
+     <x>16</x>
+     <y>7</y>
+     <width>58</width>
+     <height>58</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/pic/em_run.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="cy_1_label">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>195</y>
+     <width>29</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/pic/carriage.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="status_label">
+   <property name="geometry">
+    <rect>
+     <x>14</x>
+     <y>131</y>
+     <width>62</width>
+     <height>64</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/pic/switchstatus.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="vc_1_label">
+   <property name="geometry">
+    <rect>
+     <x>39</x>
+     <y>63</y>
+     <width>13</width>
+     <height>68</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/pic/vertical_connector_1.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="vc_2_label">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>76</y>
+     <width>13</width>
+     <height>56</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/pic/vertical_connector_1.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="cy_2_label">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>194</y>
+     <width>29</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/pic/carriage.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="status_label_2">
+   <property name="geometry">
+    <rect>
+     <x>114</x>
+     <y>130</y>
+     <width>62</width>
+     <height>64</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/pic/switchstatus.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="hc_label">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>76</y>
+     <width>113</width>
+     <height>11</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/pic/horizon_pipe.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="coro_1_label">
+   <property name="geometry">
+    <rect>
+     <x>14</x>
+     <y>137</y>
+     <width>17</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/pic/coro.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="coro_2_label">
+   <property name="geometry">
+    <rect>
+     <x>114</x>
+     <y>136</y>
+     <width>17</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/pic/coro.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="inve_1_label">
+   <property name="geometry">
+    <rect>
+     <x>59</x>
+     <y>137</y>
+     <width>17</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/pic/inve.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="inve_2_label">
+   <property name="geometry">
+    <rect>
+     <x>159</x>
+     <y>136</y>
+     <width>17</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/pic/inve.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="coro_text_1_label">
+   <property name="geometry">
+    <rect>
+     <x>3</x>
+     <y>122</y>
+     <width>24</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>正向</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="coro_text_2_label">
+   <property name="geometry">
+    <rect>
+     <x>101</x>
+     <y>122</y>
+     <width>24</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>正向</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="inve_text_1_label">
+   <property name="geometry">
+    <rect>
+     <x>63</x>
+     <y>122</y>
+     <width>24</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>反向</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="inve_text_2_label">
+   <property name="geometry">
+    <rect>
+     <x>163</x>
+     <y>122</y>
+     <width>24</width>
+     <height>12</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>反向</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

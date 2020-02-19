@@ -21,14 +21,33 @@ MixerDlg::MixerDlg(QWidget *parent) :
                          "QPushButton#exitButton:pressed{background: transparent; background-image: url(:/pic/退出.png);}";
     ui->exitButton->setStyleSheet(eixtStyleStr);
 
+    getServerConnectStateTcpClient = new TcpClientSocket(this);
+    connect(getServerConnectStateTcpClient, SIGNAL(updateConnectState(bool)), this, SLOT(localServerConnected(bool)));
+    getAllDataTcpClient = new TcpClientSocket(this);
+    connect(getAllDataTcpClient, SIGNAL(updateClients(QByteArray)), this, SLOT(showData(QByteArray)));
+    actionTcpClient = new TcpClientSocket(this);
+
+    connect(this, SIGNAL(dataUpdate(QSet<int>, QMap<float,QString>)), this,SLOT(updateData(QSet<int>, QMap<float,QString>)));
+
     checkNetStateTimer = new QTimer(this);
     connect(checkNetStateTimer, SIGNAL(timeout()), this, SLOT(getNetState()));
+
+    psWorker = new ParseServerDataWorker;
+    psWorker->moveToThread(&psThread);
+    connect(&psThread, &QThread::finished, psWorker, &QObject::deleteLater);
+    connect(this, SIGNAL(serverDataReceived(QByteArray)), psWorker, SLOT(parseMixServerData(QByteArray)), Qt::QueuedConnection);
+    connect(psWorker, &ParseServerDataWorker::resultReady, this, &MixerDlg::dispatchData, Qt::QueuedConnection);
+    psThread.start();
 
     testTimer = new QTimer(this);
     connect(testTimer, SIGNAL(timeout()), this, SLOT(wirteTestData()));
 
     switchStateTimer = new QTimer(this);
     connect(switchStateTimer, SIGNAL(timeout()), this, SLOT(switchState()));
+
+    readDataTimer = new QTimer(this);
+    connect(readDataTimer, SIGNAL(timeout()), this, SLOT(readData()));
+    readDataTimer->start(1000);
 
     controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
     if(controller != Q_NULLPTR)
@@ -110,7 +129,7 @@ void MixerDlg::wirteTestData()
 
 void MixerDlg::switchState()
 {
-    if(hljFault)
+    /*if(hljFault)
     {
         if(stateFlag)
         {
@@ -298,7 +317,116 @@ void MixerDlg::switchState()
         }
     }
 
-    stateFlag = !stateFlag;
+    stateFlag = !stateFlag;*/
+}
+
+void MixerDlg::showData(QByteArray data)
+{
+    StreamPack bDevice;
+    memcpy(&bDevice,data,sizeof(bDevice));
+
+    if(bDevice.bErrorCode==1)
+    {
+        emit serverDataReceived(data);
+    }
+}
+
+void MixerDlg::localServerConnected(bool isConnected)
+{
+    if(isServerConnected != isConnected)
+    {
+        isServerConnected = isConnected;
+        emit serverConnectionChanged(isConnected);
+    }
+
+    if(isConnected)
+    {
+        StreamPack bpack;
+        bpack = {sizeof(StreamPack),MIX,0,r_AllCacheData,String,0,0,0,0,0,0};
+        getAllDataTcpClient->sendRequest(bpack);
+    }
+}
+
+void MixerDlg::dispatchData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
+{
+    emit dataUpdate(changedDeviceSet,dataMap);
+    qDebug() << "Dispatch server data";
+
+    uint startAddrss = Global::mixDeviceInfo.Runctr_Address;
+    uint valueNumber = Global::mixDeviceInfo.Runctr_Num;
+    QVector<bool> boolValues;
+    for(uint i=0; i < valueNumber; i++)
+    {
+        uint step = i / 8;
+        uint temp = i % 8;
+        float index = float(temp) / 10;
+        float dictAddress = index + startAddrss + step;
+        QVariant tempValue = dataMap[dictAddress];
+        boolValues.append(tempValue.toBool());
+
+        if(!Global::currentMixDataMap.contains(dictAddress))
+        {
+            Global::currentMixDataMap.insert(dictAddress,dataMap[dictAddress]);
+        }
+        else
+        {
+            if(Global::currentMixDataMap[dictAddress] != dataMap[dictAddress])
+            {
+                uint tankIndex = i / Global::mixDeviceInfo.RunCtr_Block_Size;
+                DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(tankIndex);
+
+                QList<QStandardItem *> newItemList;
+                QList<QStandardItem *> newSimpleItemList;
+                Global::alertIndex += 1;
+                QString simpleAlert;
+
+                newItemList.append(new QStandardItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")));
+                newItemList.append(new QStandardItem(QString::number((tankIndex + info.startIndex)+1)));
+                if(tempValue.toBool())
+                {
+                    newItemList.append(new QStandardItem(Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert1));
+                    simpleAlert = QString::number(Global::alertIndex) + ": " +
+                            QString::number(tankIndex+1) + "#" +
+                            Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert1 + " " +
+                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+                }
+                else
+                {
+                    newItemList.append(new QStandardItem(Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert0));
+                    simpleAlert = QString::number(Global::alertIndex) + ": " +
+                            QString::number(tankIndex+1) + "#" +
+                            Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert0 + " " +
+                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+
+                }
+                QStandardItem *simpleAlertItem = new QStandardItem(simpleAlert);
+                newSimpleItemList.append(simpleAlertItem);
+
+                if(Identity::getInstance()->getUser() != Q_NULLPTR)
+                {
+                    newItemList.append(new QStandardItem(Identity::getInstance()->getUser()->getUsername()));
+                }
+                else
+                {
+                    newItemList.append(new QStandardItem(""));
+                }
+
+                UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
+                UiGlobal::alertsModel->insertRow(0, newItemList);
+                Global::currentMixDataMap[dictAddress] = dataMap[dictAddress];
+            }
+        }
+    }
+}
+
+void MixerDlg::updateData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
+{
+
+}
+
+void MixerDlg::readData()
+{
+    getServerConnectStateTcpClient->sendTestConnectRequest();
 }
 
 void MixerDlg::showEvent(QShowEvent *)
@@ -350,7 +478,7 @@ void MixerDlg::closeEvent(QCloseEvent *)
 
 void MixerDlg::parseData(QMap<float, QString> dataMap)
 {
-    DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
+    /*DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getMixNodeInfoByName("BM_BIN_CURRENT_WEIGHT");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertAddressToIndex(address, deviceNode.DataType);
@@ -517,12 +645,12 @@ void MixerDlg::parseData(QMap<float, QString> dataMap)
     deviceNode = Global::getMixNodeInfoByName("MIXER_CURRENT");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->MIXER_CURRENT_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
+    ui->MIXER_CURRENT_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));*/
 }
 
 void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
 {
-    bool value;
+    /*bool value;
 
     wnyxywLow = Global::getMixRunctrValueByName(deviceIndex, "SLUG_BIN_LEVEL_SIG", dataMap);
     if(wnyxywLow == 1)
@@ -994,7 +1122,7 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     else
     {
         ui->fhlx_2_1_label->setStyleSheet("QLabel#fhlx_2_1_label{background-image:url(:/pic/wheel_stop.png)}");
-    }
+    }*/
 
 }
 

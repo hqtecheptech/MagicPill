@@ -110,5 +110,19 @@
         <file>pic/coro.png</file>
         <file>pic/total_current.png</file>
         <file>pic/mixer_current.png</file>
+        <file>pic/qy_bins.png</file>
+        <file>pic/qy_firstlpsb.png</file>
+        <file>pic/smalltitle.png</file>
+        <file>pic/switchstatus.png</file>
+        <file>pic/horizon_pipe.png</file>
+        <file>pic/vertical_connector_1.png</file>
+        <file>pic/vertical_connector_2.png</file>
+        <file>pic/subtitle.png</file>
+        <file>pic/field_bg.png</file>
+        <file>pic/white_bg.png</file>
+        <file>pic/graphic_ex.png</file>
+        <file>pic/green_box.png</file>
+        <file>pic/red_box.png</file>
+        <file>pic/yellow_box.png</file>
     </qresource>
 </RCC>

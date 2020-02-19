@@ -76,11 +76,11 @@ public slots:
     void handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
     void wirteTestData();
     void updateWatchs();
-    void showYhcData(QByteArray);
+    void showData(QByteArray);
     void localServerConnected(bool);
-    void dispatchYhcData(QSet<int>, QMap<float,QString>);
-    void updateYhcData(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
-    void readYhcData();
+    void dispatchData(QSet<int>, QMap<float,QString>);
+    void updateData(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
+    void readData();
 
 private:
     Ui::Yhcc *ui;
@@ -95,7 +95,7 @@ private:
     QTimer* checkNetStateTimer;
     QTimer* testTimer;
     QTimer* updateWatchsTimer;
-    QTimer* readYhcDataTimer;
+    QTimer* readDataTimer;
     QTime st;
     int uca = 0;
     //Syscontroller* controller;
@@ -104,7 +104,7 @@ private:
     bool started = false;
 
     TcpClientSocket* getServerConnectStateTcpClient;
-    TcpClientSocket* getAllYhcDataTcpClient;
+    TcpClientSocket* getAllDataTcpClient;
     TcpClientSocket* actionTcpClient;
     bool isServerConnected = false;
 

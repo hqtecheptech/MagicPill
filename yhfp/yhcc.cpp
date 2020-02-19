@@ -59,11 +59,11 @@ Yhcc::Yhcc(QWidget *parent) :
 
     getServerConnectStateTcpClient = new TcpClientSocket(this);
     connect(getServerConnectStateTcpClient, SIGNAL(updateConnectState(bool)), this, SLOT(localServerConnected(bool)));
-    getAllYhcDataTcpClient = new TcpClientSocket(this);
-    connect(getAllYhcDataTcpClient, SIGNAL(updateClients(QByteArray)), this, SLOT(showYhcData(QByteArray)));
+    getAllDataTcpClient = new TcpClientSocket(this);
+    connect(getAllDataTcpClient, SIGNAL(updateClients(QByteArray)), this, SLOT(showData(QByteArray)));
     actionTcpClient = new TcpClientSocket(this);
 
-    connect(this, SIGNAL(dataUpdate(QSet<int>, QMap<float,QString>)), this,SLOT(updateYhcData(QSet<int>, QMap<float,QString>)));
+    connect(this, SIGNAL(dataUpdate(QSet<int>, QMap<float,QString>)), this,SLOT(updateData(QSet<int>, QMap<float,QString>)));
 
     dbWorker = new DatabaseWorker;
     dbWorker->moveToThread(&dbThread);
@@ -75,16 +75,16 @@ Yhcc::Yhcc(QWidget *parent) :
     psWorker->moveToThread(&psThread);
     connect(&psThread, &QThread::finished, psWorker, &QObject::deleteLater);
     connect(this, SIGNAL(serverDataReceived(QByteArray)), psWorker, SLOT(parseYhcServerData(QByteArray)), Qt::QueuedConnection);
-    connect(psWorker, &ParseServerDataWorker::resultReady, this, &Yhcc::dispatchYhcData, Qt::QueuedConnection);
+    connect(psWorker, &ParseServerDataWorker::resultReady, this, &Yhcc::dispatchData, Qt::QueuedConnection);
     psThread.start();
 
     updateWatchsTimer = new QTimer(this);
     connect(updateWatchsTimer, SIGNAL(timeout()), this, SLOT(updateWatchs()));
     updateWatchsTimer->start(5000);
 
-    readYhcDataTimer = new QTimer(this);
-    connect(readYhcDataTimer, SIGNAL(timeout()), this, SLOT(readYhcData()));
-    readYhcDataTimer->start(1000);
+    readDataTimer = new QTimer(this);
+    connect(readDataTimer, SIGNAL(timeout()), this, SLOT(readData()));
+    readDataTimer->start(1000);
 
     hisDlg = new HistoryDlg(this);
 }
@@ -310,7 +310,7 @@ void Yhcc::updateWatchs()
     ui->widget_2->updateUI(rs, prs);*/
 }
 
-void Yhcc::showYhcData(QByteArray data)
+void Yhcc::showData(QByteArray data)
 {
     StreamPack bDevice;
     memcpy(&bDevice,data,sizeof(bDevice));
@@ -333,11 +333,11 @@ void Yhcc::localServerConnected(bool isConnected)
     {
         StreamPack bpack;
         bpack = {sizeof(StreamPack),YHC,0,r_AllCacheData,String,0,0,0,0,0,0};
-        getAllYhcDataTcpClient->sendRequest(bpack);
+        getAllDataTcpClient->sendRequest(bpack);
     }
 }
 
-void Yhcc::dispatchYhcData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
+void Yhcc::dispatchData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
 {
     emit dataUpdate(changedDeviceSet,dataMap);
     qDebug() << "Dispatch server data";
@@ -409,13 +409,13 @@ void Yhcc::dispatchYhcData(QSet<int> changedDeviceSet, QMap<float, QString> data
     }
 }
 
-void Yhcc::updateYhcData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
+void Yhcc::updateData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
 {
     parseYhcData(dataMap);
     parseYhcRunCtrData(dataMap);
 }
 
-void Yhcc::readYhcData()
+void Yhcc::readData()
 {
     getServerConnectStateTcpClient->sendTestConnectRequest();
 }
