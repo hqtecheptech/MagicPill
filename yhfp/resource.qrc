@@ -124,5 +124,6 @@
         <file>pic/green_box.png</file>
         <file>pic/red_box.png</file>
         <file>pic/yellow_box.png</file>
+        <file>pic/blue_bg.png</file>
     </qresource>
 </RCC>

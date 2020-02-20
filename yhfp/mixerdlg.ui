@@ -110,14 +110,14 @@ color: rgb(50, 150, 100);</string>
    <property name="geometry">
     <rect>
      <x>52</x>
-     <y>499</y>
+     <y>450</y>
      <width>610</width>
-     <height>546</height>
+     <height>381</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background: transparent; 
-background-image: url(:/pic/qy_firstlpsb.png);
+background-image: url(:/pic/blue_bg.png);
 border:0px</string>
    </property>
    <property name="frameShape">
@@ -169,8 +169,8 @@ border:0px</string>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>17</y>
+      <x>1155</x>
+      <y>113</y>
       <width>106</width>
       <height>26</height>
      </rect>
@@ -444,375 +444,32 @@ background-image: url(:/pic/subtitle.png);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="label_30">
+   <widget class="QLabel" name="label_77">
     <property name="geometry">
      <rect>
-      <x>21</x>
-      <y>393</y>
-      <width>75</width>
+      <x>255</x>
+      <y>20</y>
+      <width>106</width>
       <height>26</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>9</pointsize>
+      <pointsize>15</pointsize>
      </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
     </property>
     <property name="styleSheet">
      <string notr="true">color: rgb(255, 255, 255);
-background-image: url(:/pic/field_bg.png);</string>
+background-image: url(:/pic/smalltitle.png);</string>
     </property>
     <property name="text">
-     <string>1#滑架压力</string>
+     <string>1#液压站</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_41">
-    <property name="geometry">
-     <rect>
-      <x>21</x>
-      <y>420</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(255, 255, 255);
-background-image: url(:/pic/field_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>2#滑架压力</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="CY_2_PRESSURE_label">
-    <property name="geometry">
-     <rect>
-      <x>96</x>
-      <y>420</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_42">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>467</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(255, 255, 255);
-background-image: url(:/pic/field_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>  1-2#滑
-架速度给定</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="CY_1_PRESSURE_label">
-    <property name="geometry">
-     <rect>
-      <x>96</x>
-      <y>393</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="SLUG_CY_1_RATE_label">
-    <property name="geometry">
-     <rect>
-      <x>95</x>
-      <y>467</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="CY_3_PRESSURE_label">
-    <property name="geometry">
-     <rect>
-      <x>296</x>
-      <y>393</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_57">
-    <property name="geometry">
-     <rect>
-      <x>221</x>
-      <y>393</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(255, 255, 255);
-background-image: url(:/pic/field_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>3#滑架压力</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="SLUG_CY_2_RATE_label">
-    <property name="geometry">
-     <rect>
-      <x>295</x>
-      <y>467</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_58">
-    <property name="geometry">
-     <rect>
-      <x>221</x>
-      <y>420</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(255, 255, 255);
-background-image: url(:/pic/field_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>4#滑架压力</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="CY_4_PRESSURE_label">
-    <property name="geometry">
-     <rect>
-      <x>296</x>
-      <y>420</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_59">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>467</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(255, 255, 255);
-background-image: url(:/pic/field_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>  3-4#滑
-架速度给定</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="CONVEYOR_1_PRESSURE_label">
-    <property name="geometry">
-     <rect>
-      <x>495</x>
-      <y>467</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="FC_PLATE_1_PRESSURE_label">
-    <property name="geometry">
-     <rect>
-      <x>496</x>
-      <y>393</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_60">
-    <property name="geometry">
-     <rect>
-      <x>421</x>
-      <y>420</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(255, 255, 255);
-background-image: url(:/pic/field_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>2#盖板压力</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_61">
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>467</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(255, 255, 255);
-background-image: url(:/pic/field_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>1#刮板压力</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_62">
-    <property name="geometry">
-     <rect>
-      <x>421</x>
-      <y>393</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(255, 255, 255);
-background-image: url(:/pic/field_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>1#盖板压力</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="FC_PLATE_2_PRESSURE_label">
-    <property name="geometry">
-     <rect>
-      <x>496</x>
-      <y>420</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
     </property>
    </widget>
   </widget>
@@ -1086,14 +743,14 @@ border:0px</string>
    <property name="geometry">
     <rect>
      <x>670</x>
-     <y>500</y>
+     <y>450</y>
      <width>511</width>
-     <height>546</height>
+     <height>381</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background: transparent; 
-background-image: url(:/pic/qy_firstlpsb.png);
+background-image: url(:/pic/blue_bg.png);
 border:0px</string>
    </property>
    <property name="frameShape">
@@ -1360,143 +1017,19 @@ background-image: url(:/pic/subtitle.png);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="label_63">
-    <property name="geometry">
-     <rect>
-      <x>21</x>
-      <y>423</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(255, 255, 255);
-background-image: url(:/pic/field_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>返混螺旋压力</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="CONVEYOR_1_PRESSURE_label_2">
-    <property name="geometry">
-     <rect>
-      <x>95</x>
-      <y>470</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="FC_PLATE_1_PRESSURE_label_2">
-    <property name="geometry">
-     <rect>
-      <x>96</x>
-      <y>396</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_64">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>470</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(255, 255, 255);
-background-image: url(:/pic/field_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>辅料螺旋
-速度给定</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
-   <widget class="QLabel" name="FC_PLATE_2_PRESSURE_label_2">
-    <property name="geometry">
-     <rect>
-      <x>96</x>
-      <y>423</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_65">
-    <property name="geometry">
-     <rect>
-      <x>21</x>
-      <y>396</y>
-      <width>75</width>
-      <height>26</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>9</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(255, 255, 255);
-background-image: url(:/pic/field_bg.png);</string>
-    </property>
-    <property name="text">
-     <string>辅料螺旋压力</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-   </widget>
   </widget>
   <widget class="QFrame" name="frame_9">
    <property name="geometry">
     <rect>
      <x>1190</x>
-     <y>500</y>
+     <y>450</y>
      <width>221</width>
-     <height>546</height>
+     <height>381</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background: transparent; 
-background-image: url(:/pic/qy_firstlpsb.png);
+background-image: url(:/pic/blue_bg.png);
 border:0px</string>
    </property>
    <property name="frameShape">
@@ -1623,14 +1156,14 @@ background-image: url(:/pic/subtitle.png);</string>
    <property name="geometry">
     <rect>
      <x>1420</x>
-     <y>500</y>
+     <y>450</y>
      <width>221</width>
-     <height>546</height>
+     <height>381</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background: transparent; 
-background-image: url(:/pic/qy_firstlpsb.png);
+background-image: url(:/pic/blue_bg.png);
 border:0px</string>
    </property>
    <property name="frameShape">
@@ -1752,35 +1285,19 @@ background-image: url(:/pic/subtitle.png);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QLabel" name="label_66">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>380</y>
-      <width>131</width>
-      <height>146</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-image: url(:/pic/graphic_ex.png);</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
   </widget>
   <widget class="QFrame" name="frame_11">
    <property name="geometry">
     <rect>
      <x>1650</x>
-     <y>500</y>
+     <y>450</y>
      <width>241</width>
-     <height>546</height>
+     <height>621</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">background: transparent; 
-background-image: url(:/pic/qy_firstlpsb.png);
+background-image: url(:/pic/blue_bg.png);
 border:0px</string>
    </property>
    <property name="frameShape">
@@ -1821,7 +1338,7 @@ background-image: url(:/pic/smalltitle.png);</string>
     <property name="geometry">
      <rect>
       <x>15</x>
-      <y>86</y>
+      <y>52</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -1846,7 +1363,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>86</y>
+      <y>52</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -1862,7 +1379,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>16</x>
-      <y>137</y>
+      <y>103</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -1887,7 +1404,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>121</x>
-      <y>137</y>
+      <y>103</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -1903,7 +1420,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>17</x>
-      <y>189</y>
+      <y>155</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -1928,7 +1445,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>122</x>
-      <y>189</y>
+      <y>155</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -1944,7 +1461,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>17</x>
-      <y>241</y>
+      <y>207</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -1969,7 +1486,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>122</x>
-      <y>241</y>
+      <y>207</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -1985,7 +1502,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>18</x>
-      <y>294</y>
+      <y>260</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -2010,7 +1527,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>123</x>
-      <y>294</y>
+      <y>260</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -2026,7 +1543,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>19</x>
-      <y>346</y>
+      <y>312</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -2051,7 +1568,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>124</x>
-      <y>346</y>
+      <y>312</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -2067,7 +1584,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>19</x>
-      <y>398</y>
+      <y>364</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -2092,7 +1609,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>124</x>
-      <y>398</y>
+      <y>364</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -2108,7 +1625,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>450</y>
+      <y>416</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -2133,7 +1650,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>125</x>
-      <y>450</y>
+      <y>416</y>
       <width>106</width>
       <height>45</height>
      </rect>
@@ -2143,6 +1660,1016 @@ background-image: url(:/pic/field_bg.png);</string>
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_66">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>470</y>
+      <width>131</width>
+      <height>146</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/graphic_ex.png);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QFrame" name="frame_2">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>840</y>
+     <width>1591</width>
+     <height>231</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background: transparent; 
+background-image: url(:/pic/blue_bg.png);
+border:0px</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="SLUG_CY_2_RATE_label">
+    <property name="geometry">
+     <rect>
+      <x>1135</x>
+      <y>180</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="FC_PLATE_2_PRESSURE_label">
+    <property name="geometry">
+     <rect>
+      <x>1470</x>
+      <y>71</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_58">
+    <property name="geometry">
+     <rect>
+      <x>1061</x>
+      <y>103</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>2#滑架压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_57">
+    <property name="geometry">
+     <rect>
+      <x>1061</x>
+      <y>66</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>1#滑架压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_62">
+    <property name="geometry">
+     <rect>
+      <x>1395</x>
+      <y>34</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>1#盖板压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="CY_4_PRESSURE_label">
+    <property name="geometry">
+     <rect>
+      <x>1136</x>
+      <y>103</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="CY_2_PRESSURE_label">
+    <property name="geometry">
+     <rect>
+      <x>807</x>
+      <y>107</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_30">
+    <property name="geometry">
+     <rect>
+      <x>732</x>
+      <y>69</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>1#滑架压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="CY_1_PRESSURE_label">
+    <property name="geometry">
+     <rect>
+      <x>807</x>
+      <y>69</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="SLUG_CY_1_RATE_label">
+    <property name="geometry">
+     <rect>
+      <x>805</x>
+      <y>182</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="CY_3_PRESSURE_label">
+    <property name="geometry">
+     <rect>
+      <x>1136</x>
+      <y>66</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_59">
+    <property name="geometry">
+     <rect>
+      <x>1060</x>
+      <y>180</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>  滑架速度给定</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_60">
+    <property name="geometry">
+     <rect>
+      <x>1395</x>
+      <y>71</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>2#盖板压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_42">
+    <property name="geometry">
+     <rect>
+      <x>730</x>
+      <y>182</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>  滑架速度给定</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_41">
+    <property name="geometry">
+     <rect>
+      <x>732</x>
+      <y>107</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>2#滑架压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="FC_PLATE_1_PRESSURE_label">
+    <property name="geometry">
+     <rect>
+      <x>1470</x>
+      <y>34</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_64">
+    <property name="geometry">
+     <rect>
+      <x>105</x>
+      <y>189</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>螺旋速度给定</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="ING_SPIRAL_1_RATE_label">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>189</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_76">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>20</y>
+      <width>106</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/smalltitle.png);</string>
+    </property>
+    <property name="text">
+     <string>辅料料仓</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_92">
+    <property name="geometry">
+     <rect>
+      <x>105</x>
+      <y>70</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>当前重量</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="ING_BIN_1_CURRENT_WEIGHT_label">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>70</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="SPIRAL_1_PRESSURE_label">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>110</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_65">
+    <property name="geometry">
+     <rect>
+      <x>105</x>
+      <y>110</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>螺旋压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_78">
+    <property name="geometry">
+     <rect>
+      <x>105</x>
+      <y>150</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>转盘压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="WHEEL_1_PRESSURE_label">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>150</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_79">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>20</y>
+      <width>106</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/smalltitle.png);</string>
+    </property>
+    <property name="text">
+     <string>返混料仓</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="ING_SPIRAL_2_RATE_label">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>189</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_80">
+    <property name="geometry">
+     <rect>
+      <x>405</x>
+      <y>110</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>螺旋压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_81">
+    <property name="geometry">
+     <rect>
+      <x>405</x>
+      <y>189</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>螺旋速度给定</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="WHEEL_2_PRESSURE_label">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>150</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_82">
+    <property name="geometry">
+     <rect>
+      <x>405</x>
+      <y>150</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>转盘压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="SPIRAL_2_PRESSURE_label">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>110</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_93">
+    <property name="geometry">
+     <rect>
+      <x>405</x>
+      <y>70</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>当前重量</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="ING_BIN_2_CURRENT_WEIGHT_label">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>70</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_83">
+    <property name="geometry">
+     <rect>
+      <x>757</x>
+      <y>20</y>
+      <width>106</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/smalltitle.png);</string>
+    </property>
+    <property name="text">
+     <string>1#污泥仓</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="SLUG_SPIRAL_1_RATE_label">
+    <property name="geometry">
+     <rect>
+      <x>805</x>
+      <y>145</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_84">
+    <property name="geometry">
+     <rect>
+      <x>730</x>
+      <y>145</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>螺旋速度给定</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_85">
+    <property name="geometry">
+     <rect>
+      <x>1075</x>
+      <y>20</y>
+      <width>106</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/smalltitle.png);</string>
+    </property>
+    <property name="text">
+     <string>1#污泥仓</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="SLUG_SPIRAL_2_RATE_label">
+    <property name="geometry">
+     <rect>
+      <x>1135</x>
+      <y>140</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_86">
+    <property name="geometry">
+     <rect>
+      <x>1059</x>
+      <y>140</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>螺旋速度给定</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="CONVEYOR_1_PRESSURE_label">
+    <property name="geometry">
+     <rect>
+      <x>1471</x>
+      <y>109</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_106">
+    <property name="geometry">
+     <rect>
+      <x>1396</x>
+      <y>109</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>1#刮板压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="CONVEYOR_3_PRESSURE_label">
+    <property name="geometry">
+     <rect>
+      <x>1471</x>
+      <y>146</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_107">
+    <property name="geometry">
+     <rect>
+      <x>1396</x>
+      <y>146</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>3#刮板压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="CONVEYOR_4_PRESSURE_label">
+    <property name="geometry">
+     <rect>
+      <x>1471</x>
+      <y>181</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_129">
+    <property name="geometry">
+     <rect>
+      <x>1396</x>
+      <y>181</y>
+      <width>75</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>4#刮板压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
