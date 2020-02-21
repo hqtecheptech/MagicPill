@@ -421,7 +421,8 @@ void MixerDlg::dispatchData(QSet<int> changedDeviceSet, QMap<float, QString> dat
 
 void MixerDlg::updateData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
 {
-
+    parseData(dataMap);
+    parseRunCtrData(dataMap);
 }
 
 void MixerDlg::readData()
@@ -650,6 +651,80 @@ void MixerDlg::parseData(QMap<float, QString> dataMap)
 
 void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
 {
+    bool emRun, emFault, coro1, coro2, inve1, inve2, unloading;
+
+    emRun = Global::getMixRunctrValueByName(0, "SLUG_CY_1_EM_RUN", dataMap);
+    emFault = Global::getMixRunctrValueByName(0, "SLUG_CY_1_EM_FAULT", dataMap);
+    coro1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_CY_1_PUSH", dataMap);
+    inve1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_CY_1_PLUG", dataMap);
+    coro2 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_CY_2_PUSH", dataMap);
+    inve2 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_CY_2_PLUG", dataMap);
+    ui->cy_em_1_widget->setStatus(emRun, emFault, coro1, coro2, inve1, inve2);
+
+    emRun = Global::getMixRunctrValueByName(0, "SLUG_CY_2_EM_RUN", dataMap);
+    emFault = Global::getMixRunctrValueByName(0, "SLUG_CY_2_EM_FAULT", dataMap);
+    coro1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_CY_1_PUSH", dataMap);
+    inve1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_CY_1_PLUG", dataMap);
+    coro2 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_CY_2_PUSH", dataMap);
+    inve2 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_CY_2_PLUG", dataMap);
+    ui->cy_em_2_widget->setStatus(emRun, emFault, coro1, coro2, inve1, inve2);
+
+    emRun = Global::getMixRunctrValueByName(0, "SLUG_CP_1_EM_RUN", dataMap);
+    emFault = Global::getMixRunctrValueByName(0, "SLUG_CP_1_EM_FAULT", dataMap);
+    coro1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_CP_OPEN", dataMap);
+    inve1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_CP_CLOSE", dataMap);
+    unloading = Global::getMixRunctrValueByName(0, "FC_PLATE_1_UV", dataMap);
+    unloading = unloading & (coro1 || inve1);
+    ui->cp_1_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
+
+    emRun = Global::getMixRunctrValueByName(0, "SLUG_CP_2_EM_RUN", dataMap);
+    emFault = Global::getMixRunctrValueByName(0, "SLUG_CP_2_EM_FAULT", dataMap);
+    coro1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_CP_OPEN", dataMap);
+    inve1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_CP_CLOSE", dataMap);
+    unloading = Global::getMixRunctrValueByName(0, "FC_PLATE_2_UV", dataMap);
+    unloading = unloading & (coro1 || inve1);
+    ui->cp_1_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
+
+    emRun = Global::getMixRunctrValueByName(0, "ING_SPIRAL_EM_RUN", dataMap);
+    emFault = Global::getMixRunctrValueByName(0, "ING_SPIRAL_EM_FAULT", dataMap);
+    coro1 = Global::getMixRunctrValueByName(0, "ING_SPIRAL_1_CORO", dataMap);
+    inve1 = Global::getMixRunctrValueByName(0, "ING_SPIRAL_1_INVE", dataMap);
+    coro2 = Global::getMixRunctrValueByName(0, "ING_SPIRAL_2_CORO", dataMap);
+    inve2 = Global::getMixRunctrValueByName(0, "ING_SPIRAL_2_INVE", dataMap);
+    ui->spiral_em_widget->setStatus(emRun, emFault, coro1, coro2, inve1, inve2);
+
+    emRun = Global::getMixRunctrValueByName(0, "ING_WHEEL_EM_RUN", dataMap);
+    emFault = Global::getMixRunctrValueByName(0, "ING_WHEEL_EM_FAULT", dataMap);
+    coro1 = Global::getMixRunctrValueByName(0, "ING_WHEEL_1_CORO", dataMap);
+    inve1 = Global::getMixRunctrValueByName(0, "ING_WHEEL_1_INVE", dataMap);
+    coro2 = Global::getMixRunctrValueByName(0, "ING_WHEEL_2_CORO", dataMap);
+    inve2 = Global::getMixRunctrValueByName(0, "ING_WHEEL_2_INVE", dataMap);
+    ui->wheel_em_widget->setStatus(emRun, emFault, coro1, coro2, inve1, inve2);
+
+    emRun = Global::getMixRunctrValueByName(0, "CONVEYER_1_EM_RUN", dataMap);
+    emFault = Global::getMixRunctrValueByName(0, "CONVEYER_1_EM_FAULT", dataMap);
+    coro1 = Global::getMixRunctrValueByName(0, "CONVEYER_1_CORO", dataMap);
+    inve1 = Global::getMixRunctrValueByName(0, "CONVEYER_1_INVE", dataMap);
+    unloading = Global::getMixRunctrValueByName(0, "MIXER_UV", dataMap);
+    unloading = unloading & (coro1 || inve1);
+    ui->cp_1_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
+
+    emRun = Global::getMixRunctrValueByName(0, "CONVEYER_3_4_EM_RUN", dataMap);
+    emFault = Global::getMixRunctrValueByName(0, "CONVEYER_3_4_EM_FAULT", dataMap);
+    coro1 = Global::getMixRunctrValueByName(0, "CONVEYER_3_CORO", dataMap);
+    inve1 = Global::getMixRunctrValueByName(0, "CONVEYER_3_INVE", dataMap);
+    coro2 = Global::getMixRunctrValueByName(0, "CONVEYER_4_CORO", dataMap);
+    inve2 = Global::getMixRunctrValueByName(0, "CONVEYER_4_INVE", dataMap);
+    ui->cp_em_3_4_widget->setStatus(emRun, emFault, coro1, coro2, inve1, inve2);
+
+    emRun = Global::getMixRunctrValueByName(0, "SLUG_SPIRAL_EM_RUN", dataMap);
+    emFault = Global::getMixRunctrValueByName(0, "SLUG_SPIRAL_EM_FAULT", dataMap);
+    coro1 = Global::getMixRunctrValueByName(0, "SLUG_SPIRAL_CORO_VALVE_1", dataMap);
+    inve1 = false;
+    coro2 = Global::getMixRunctrValueByName(0, "SLUG_SPIRAL_CORO_VALVE_2", dataMap);
+    inve2 = false;
+    ui->slug_spiral_em_widget->setStatus(emRun, emFault, coro1, coro2, inve1, inve2);
+
     /*bool value;
 
     wnyxywLow = Global::getMixRunctrValueByName(deviceIndex, "SLUG_BIN_LEVEL_SIG", dataMap);

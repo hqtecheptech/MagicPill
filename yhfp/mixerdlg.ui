@@ -146,7 +146,7 @@ border:0px</string>
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="cp_1_widget" native="true">
+   <widget class="SingleEmForm" name="cp_1_widget" native="true">
     <property name="geometry">
      <rect>
       <x>404</x>
@@ -156,7 +156,7 @@ border:0px</string>
      </rect>
     </property>
    </widget>
-   <widget class="QWidget" name="cp_2_widget_2" native="true">
+   <widget class="SingleEmForm" name="cp_2_widget" native="true">
     <property name="geometry">
      <rect>
       <x>505</x>
@@ -759,7 +759,7 @@ border:0px</string>
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="DoubleCyEmForm" name="spiral_em_widget" native="true">
+   <widget class="DoubleEmForm" name="spiral_em_widget" native="true">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -769,7 +769,7 @@ border:0px</string>
      </rect>
     </property>
    </widget>
-   <widget class="DoubleCyEmForm" name="wheel_em_widget" native="true">
+   <widget class="DoubleEmForm" name="wheel_em_widget" native="true">
     <property name="geometry">
      <rect>
       <x>208</x>
@@ -1038,7 +1038,7 @@ border:0px</string>
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="DoubleCyEmForm" name="spiral_em_widget_2" native="true">
+   <widget class="DoubleEmForm" name="cp_em_3_4_widget" native="true">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -1172,7 +1172,7 @@ border:0px</string>
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="DoubleCyEmForm" name="spiral_em_widget_3" native="true">
+   <widget class="DoubleEmForm" name="slug_spiral_em_widget" native="true">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -2679,6 +2679,18 @@ background-image: url(:/pic/field_bg.png);</string>
    <class>DoubleCyEmForm</class>
    <extends>QWidget</extends>
    <header>doublecyemform.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SingleEmForm</class>
+   <extends>QWidget</extends>
+   <header>singleemform.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DoubleEmForm</class>
+   <extends>QWidget</extends>
+   <header location="global">doubleemform.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
