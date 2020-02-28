@@ -445,6 +445,50 @@ void DataReceiver::sendAllCachedData(StreamPack pack)
 
         ds.sendRequestWithResults(SData);
     }
+    else if(pack.bDeviceId == MIX)
+    {
+        QString strValues = "";
+        QList<float> addressList;
+        foreach(float address, Global::currentMixDataMap.keys())
+        {
+            strValues = strValues + Global::currentMixDataMap[address] + ",";
+            addressList.append(address);
+        }
+        strValues.mid(0, strValues.length() - 1);
+
+        QTextCodec *codec = QTextCodec::codecForLocale();
+        QByteArray strData = codec->fromUnicode(strValues);
+        out << strData;
+
+        foreach(float address, addressList)
+        {
+            out << address;
+        }
+
+        int dataLen = SData.length();
+        int packLen = sizeof(pack) ;
+        pack.bStreamLength = packLen + dataLen + 4;
+        pack.bDataLength = addressList.length();
+        pack.bErrorCode = 1;
+
+        allPackData.append((char*)&pack, sizeof(pack));
+        SData.insert(0, allPackData);
+        dataLen = SData.length();
+
+        uint scrc = ds.StreamLen_CRC32(SData);
+
+        QDataStream out1(&crcData,QIODevice::WriteOnly);
+        out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+        out1.setFloatingPointPrecision(QDataStream::SinglePrecision);
+        //QDataStream::BigEndian或QDataStream::LittleEndian
+        out1.setByteOrder(QDataStream::LittleEndian);
+        out1 << scrc;
+
+        SData.append(crcData);
+        dataLen = SData.length();
+
+        ds.sendRequestWithResults(SData);
+    }
 }
 
 void DataReceiver::clear()

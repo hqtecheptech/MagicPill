@@ -77,7 +77,7 @@ enum DataType
     Dtl
 };
 
-enum TimeType
+enum SettingType
 {
     Day,
     Hour,
