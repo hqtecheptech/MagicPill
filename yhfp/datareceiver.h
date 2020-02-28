@@ -32,7 +32,7 @@ private:
     bool status;
     quint32 StreamLength = 0;
     QByteArray sData;
-    Syscontroller* controller;
+    //Syscontroller* controller;
 
     void clear();
     quint32 StreamLen_CRC32(QByteArray &data);

@@ -77,12 +77,13 @@ enum DataType
     Dtl
 };
 
-enum TimeType
+enum SettingType
 {
     Day,
     Hour,
     Minute,
-    Second
+    Second,
+    Rate
 };
 
 struct StreamPack

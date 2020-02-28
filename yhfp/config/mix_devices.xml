@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <device>
-  <areas devicenumber="1" runctrnumber="60">
-    <area name="MIX_BIN_STATE" datatype="f" start="0" diff="0">
+  <areas devicenumber="1" runctrnumber="128">
+    <area name="MIX_BIN_STATE" datatype="r" start="0" diff="0">
         <node id="5" name="ING_BIN_1_CURRENT_WEIGHT" cname="辅料仓当前重量" length="1" offset="0" diff="0.5"/>
         <node id="5" name="ING_BIN_2_CURRENT_WEIGHT" cname="辅料仓当前重量" length="1" offset="1" diff="0.5"/>
         <node id="5" name="SLUG_BIN_HS_FT" cname="污泥仓液压站油温" length="1" offset="2" diff="0.5"/>
@@ -31,7 +31,7 @@
         <node id="5" name="WHEEL_2_PRESSURE" cname="2#返混转盘压力" length="1" offset="26" diff="0.5"/>
         <node id="5" name="WHEEL_1_PRESSURE" cname="1#返混转盘压力" length="1" offset="27" diff="0.5"/>
     </area>
-    <area name="RATE" datatype="Dw" start="2304" diff="0">
+    <area name="RATE" datatype="dw" start="1792" diff="0">
         <node id="5" name="SPIRAL_PM_1_RATE" cname="1#螺旋编码器转速" length="1" offset="0" diff="0"/>
         <node id="5" name="WHEEL_PM_1_RATE" cname="1#转盘编码器转速" length="1" offset="1" diff="0"/>
         <node id="5" name="SPIRAL_PM_2_RATE" cname="2#螺旋编码器转速" length="1" offset="2" diff="0"/>
@@ -44,7 +44,7 @@
         <node id="5" name="SLUG_SPIRAL_1_RATE" cname="1#污泥螺旋速度给定值" length="1" offset="9" diff="0"/>
         <node id="5" name="SLUG_SPIRAL_2_RATE" cname="2#污泥螺旋速度给定值" length="1" offset="10" diff="0"/>
     </area>
-    <area name="RATE_SETTING" datatype="dw" start="2314" diff="0">
+    <area name="RATE_SETTING" datatype="dw" start="1836" diff="0">
         <node id="5" name="ING_SPIRAL_1_RATE_SETTING" cname="1#辅料螺旋速度设定值" length="1" offset="0" diff="0"/>
         <node id="5" name="ING_SPIRAL_2_RATE_SETTING" cname="2#辅料螺旋速度设定值" length="1" offset="1" diff="0"/>
         <node id="5" name="SLUG_CY_1_RATE_SETTING" cname="1#污泥滑架速度设定值" length="1" offset="2" diff="0"/>

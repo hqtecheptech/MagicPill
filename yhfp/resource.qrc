@@ -125,5 +125,10 @@
         <file>pic/red_box.png</file>
         <file>pic/yellow_box.png</file>
         <file>pic/blue_bg.png</file>
+        <file>pic/KeyBoard/backspace.png</file>
+        <file>pic/KeyBoard/clear.png</file>
+        <file>pic/KeyBoard/enter.png</file>
+        <file>pic/KeyBoard/lower.png</file>
+        <file>pic/KeyBoard/upper.png</file>
     </qresource>
 </RCC>

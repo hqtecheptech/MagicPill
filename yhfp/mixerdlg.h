@@ -8,6 +8,7 @@
 #include "tcpclientsocket.h"
 #include "parseserverdataworker.h"
 #include "identity.h"
+#include "mixsettingdialog.h"
 
 namespace Ui {
 class MixerDlg;
@@ -26,6 +27,8 @@ private slots:
     void getNetState();
 
     void on_exitButton_clicked();
+
+    void on_settingButton_clicked();
 
 signals:
     void checkNetState(QString type);
@@ -64,8 +67,9 @@ private:
     QTimer* switchStateTimer;
     QTimer* updateWatchsTimer;
     QTimer* readDataTimer;
+    MixSettingDialog *mixSettingDlg;
     int uca = 0;
-    Syscontroller* controller;
+    //Syscontroller* controller;
     Plc_Db oldPlcDb;
     int deviceIndex = 0;
     bool started = false;

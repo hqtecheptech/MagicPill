@@ -35,8 +35,8 @@ void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
     //To do
     //if(ctrlBlock.fromPru[1] == 1 && ctrlBlock.fromPru[0] == 1)
     //{
-        ctrlBlock.fromPru[0] = 0;
-        ctrlSh->SetSharedMemory((void *)&ctrlBlock, sizeof(Ctr_Block));
+        //ctrlBlock.fromPru[0] = 0;
+        //ctrlSh->SetSharedMemory((void *)&ctrlBlock, sizeof(Ctr_Block));
 
         dbSh->LockShare();
         dbSh->GetShardMemory((void *)&plcdata, sizeof(Plc_Db));

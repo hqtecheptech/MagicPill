@@ -56,7 +56,10 @@ SOURCES += main.cpp\
     user.cpp \
     doublecyemform.cpp \
     doubleemform.cpp \
-    singleemform.cpp
+    singleemform.cpp \
+    runtimesettingdelegate.cpp \
+    mixsettingdialog.cpp \
+    keyboard.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -101,7 +104,10 @@ HEADERS  += mainwindow.h \
     user.h \
     doublecyemform.h \
     doubleemform.h \
-    singleemform.h
+    singleemform.h \
+    runtimesettingdelegate.h \
+    mixsettingdialog.h \
+    keyboard.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \
@@ -120,7 +126,9 @@ FORMS    += mainwindow.ui \
     mixerdlg.ui \
     doublecyemform.ui \
     doubleemform.ui \
-    singleemform.ui
+    singleemform.ui \
+    mixsettingdialog.ui \
+    keyboard.ui
 
 RESOURCES += \
     resource.qrc

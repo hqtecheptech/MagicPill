@@ -3,6 +3,8 @@
 
 #include <QMap>
 #include <QVector>
+#include <QLabel>
+#include "keyboard.h"
 
 MixerDlg::MixerDlg(QWidget *parent) :
     QDialog(parent),
@@ -49,12 +51,14 @@ MixerDlg::MixerDlg(QWidget *parent) :
     connect(readDataTimer, SIGNAL(timeout()), this, SLOT(readData()));
     readDataTimer->start(1000);
 
-    controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
-    if(controller != Q_NULLPTR)
-    {
-        connect(controller, SIGNAL(resultReady()), this, SLOT(handleControllerResult()));
-        connect(controller, &Syscontroller::plcDbUpdated, this, &MixerDlg::handlePlcDataUpdate);
-    }
+    mixSettingDlg = new MixSettingDialog();
+
+    //controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
+    //if(controller != Q_NULLPTR)
+    //{
+        //connect(controller, SIGNAL(resultReady()), this, SLOT(handleControllerResult()));
+        //connect(controller, &Syscontroller::plcDbUpdated, this, &MixerDlg::handlePlcDataUpdate);
+    //}
 }
 
 MixerDlg::~MixerDlg()
@@ -122,7 +126,7 @@ void MixerDlg::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float, QStri
 
 void MixerDlg::wirteTestData()
 {
-    controller->yhcSpeedUp(deviceIndex, 2);
+    //controller->yhcSpeedUp(deviceIndex, 2);
     //started = !started;
     //controller->yhcStart(deviceIndex, started);
 }
@@ -479,6 +483,132 @@ void MixerDlg::closeEvent(QCloseEvent *)
 
 void MixerDlg::parseData(QMap<float, QString> dataMap)
 {
+    DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getMixNodeInfoByName("ING_BIN_1_CURRENT_WEIGHT");
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->ING_BIN_1_CURRENT_WEIGHT_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("SPIRAL_1_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->SPIRAL_1_PRESSURE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("WHEEL_1_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->WHEEL_1_PRESSURE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("ING_SPIRAL_1_RATE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->ING_SPIRAL_1_RATE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("ING_BIN_2_CURRENT_WEIGHT");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->ING_BIN_2_CURRENT_WEIGHT_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("SPIRAL_2_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->SPIRAL_2_PRESSURE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("WHEEL_2_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->WHEEL_2_PRESSURE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("ING_SPIRAL_2_RATE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->ING_SPIRAL_2_RATE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("CY_1_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->CY_1_PRESSURE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("CY_2_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->CY_2_PRESSURE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("SLUG_SPIRAL_1_RATE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->SLUG_SPIRAL_1_RATE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("SLUG_CY_1_RATE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->SLUG_CY_1_RATE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("CY_3_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->CY_3_PRESSURE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("CY_4_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->CY_4_PRESSURE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("SLUG_SPIRAL_2_RATE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->SLUG_SPIRAL_2_RATE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("SLUG_CY_2_RATE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->SLUG_CY_2_RATE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("FC_PLATE_1_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->FC_PLATE_1_PRESSURE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("FC_PLATE_2_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->FC_PLATE_2_PRESSURE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("CONVEYOR_1_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->CONVEYOR_1_PRESSURE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("CONVEYOR_3_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->CONVEYOR_3_PRESSURE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("CONVEYOR_4_PRESSURE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->CONVEYOR_4_PRESSURE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("ING_BIN_1_CURRENT_WEIGHT");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->ING_WEIGHT_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("ING_BIN_2_CURRENT_WEIGHT");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->BM_ING_WEIGHT_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("BW_FLOW_RATE");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->BW_FLOW_RATE_label->setText(dataMap[address]);
+
+    info = Global::getMixDeviceGroupInfo(deviceIndex);
+    deviceNode = Global::getMixNodeInfoByName("TOTAL_CURRENT");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    ui->TOTAL_CURRENT_label->setText(dataMap[address]);
+
+
     /*DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getMixNodeInfoByName("BM_BIN_CURRENT_WEIGHT");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
@@ -683,7 +813,7 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     inve1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_CP_CLOSE", dataMap);
     unloading = Global::getMixRunctrValueByName(0, "FC_PLATE_2_UV", dataMap);
     unloading = unloading & (coro1 || inve1);
-    ui->cp_1_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
+    ui->cp_2_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
 
     emRun = Global::getMixRunctrValueByName(0, "ING_SPIRAL_EM_RUN", dataMap);
     emFault = Global::getMixRunctrValueByName(0, "ING_SPIRAL_EM_FAULT", dataMap);
@@ -707,7 +837,7 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     inve1 = Global::getMixRunctrValueByName(0, "CONVEYER_1_INVE", dataMap);
     unloading = Global::getMixRunctrValueByName(0, "MIXER_UV", dataMap);
     unloading = unloading & (coro1 || inve1);
-    ui->cp_1_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
+    ui->sp_em_1_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
 
     emRun = Global::getMixRunctrValueByName(0, "CONVEYER_3_4_EM_RUN", dataMap);
     emFault = Global::getMixRunctrValueByName(0, "CONVEYER_3_4_EM_FAULT", dataMap);
@@ -724,6 +854,99 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     coro2 = Global::getMixRunctrValueByName(0, "SLUG_SPIRAL_CORO_VALVE_2", dataMap);
     inve2 = false;
     ui->slug_spiral_em_widget->setStatus(emRun, emFault, coro1, coro2, inve1, inve2);
+
+    emFault = Global::getMixRunctrValueByName(0, "CONVEYER_5_FAULT", dataMap);
+    coro1 = Global::getMixRunctrValueByName(0, "CONVEYER_5_RUN", dataMap);
+    inve1 = Global::getMixRunctrValueByName(0, "CONVEYER_5_COUNTER_RUN", dataMap);
+    if(emFault)
+    {
+        ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/yellow_box.png)}");
+    }
+    else
+    {
+        if(coro1 || inve1)
+        {
+            ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/green_box.png)}");
+        }
+        else if(!inve1 && !coro1)
+        {
+            ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/red_box.png)}");
+        }
+    }
+
+    emRun = Global::getMixRunctrValueByName(0, "BW_RUN", dataMap);
+    emFault = Global::getMixRunctrValueByName(0, "BW_FAULT", dataMap);
+    if(emFault)
+    {
+        ui->BW_STATE_label->setStyleSheet("QLabel#BW_STATE_label{background-image:url(:/pic/yellow_box.png)}");
+    }
+    else
+    {
+        if(emRun)
+        {
+            ui->BW_STATE_label->setStyleSheet("QLabel#BW_STATE_label{background-image:url(:/pic/green_box.png)}");
+        }
+        else
+        {
+            ui->BW_STATE_label->setStyleSheet("QLabel#BW_STATE_label{background-image:url(:/pic/red_box.png)}");
+        }
+    }
+
+    emRun = Global::getMixRunctrValueByName(0, "BM_SPIRAL_CORO", dataMap);
+    emFault = Global::getMixRunctrValueByName(0, "BM_WHEEL_EM_FAULT", dataMap);
+    if(emFault)
+    {
+        ui->BM_STATE_label->setStyleSheet("QLabel#BM_STATE_label{background-image:url(:/pic/yellow_box.png)}");
+    }
+    else
+    {
+        if(emRun)
+        {
+            ui->BM_STATE_label->setStyleSheet("QLabel#BM_STATE_label{background-image:url(:/pic/green_box.png)}");
+        }
+        else
+        {
+            ui->BM_STATE_label->setStyleSheet("QLabel#BM_STATE_label{background-image:url(:/pic/red_box.png)}");
+        }
+    }
+
+    emFault = Global::getMixRunctrValueByName(0, "SLUG_VALVE_1_EM_FAULT", dataMap);
+    coro1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_VALVE_OPEN", dataMap);
+    inve1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_VALVE_CLOSE", dataMap);
+    if(emFault)
+    {
+        ui->SLUG_BIN_1_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_1_VALVE_STATE_label{background-image:url(:/pic/yellow_box.png)}");
+    }
+    else
+    {
+        if(coro1 || !inve1)
+        {
+            ui->SLUG_BIN_1_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_1_VALVE_STATE_label{background-image:url(:/pic/green_box.png)}");
+        }
+        else if(inve1 && !coro1)
+        {
+            ui->SLUG_BIN_1_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_1_VALVE_STATE_label{background-image:url(:/pic/red_box.png)}");
+        }
+    }
+
+    emFault = Global::getMixRunctrValueByName(0, "SLUG_VALVE_2_EM_FAULT", dataMap);
+    coro1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_VALVE_OPEN", dataMap);
+    inve1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_VALVE_CLOSE", dataMap);
+    if(emFault)
+    {
+        ui->SLUG_BIN_2_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_2_VALVE_STATE_label{background-image:url(:/pic/yellow_box.png)}");
+    }
+    else
+    {
+        if(coro1 || !inve1)
+        {
+            ui->SLUG_BIN_2_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_2_VALVE_STATE_label{background-image:url(:/pic/green_box.png)}");
+        }
+        else if(inve1 && !coro1)
+        {
+            ui->SLUG_BIN_2_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_2_VALVE_STATE_label{background-image:url(:/pic/red_box.png)}");
+        }
+    }
 
     /*bool value;
 
@@ -1203,5 +1426,12 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
 
 void MixerDlg::on_exitButton_clicked()
 {
-    close();
+
+}
+
+void MixerDlg::on_settingButton_clicked()
+{
+    mixSettingDlg->close();
+    mixSettingDlg->show();
+    Keyboard::getInstance()->close();
 }

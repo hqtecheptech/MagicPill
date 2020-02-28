@@ -58,11 +58,11 @@ void SingleEmForm::setStatus(bool emRum, bool emFault, bool coro, bool inve, boo
 
     if(isUnLoading)
     {
-        ui->dp_1_label->setStyleSheet("QLabel#inve_1_label{background-image:url(:/pic/wheel_run.png)}");
+        ui->dp_1_label->setStyleSheet("QLabel#dp_1_label{background-image:url(:/pic/wheel_run.png)}");
     }
     else
     {
-        ui->dp_1_label->setStyleSheet("QLabel#inve_1_label{background-image:url(:/pic/wheel_stop.png)}");
+        ui->dp_1_label->setStyleSheet("QLabel#dp_1_label{background-image:url(:/pic/wheel_stop.png)}");
     }
 }
 

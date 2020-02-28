@@ -19,7 +19,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(96, 88, 180);</string>
+   <string notr="true"/>
   </property>
   <widget class="QLabel" name="em_label">
    <property name="geometry">

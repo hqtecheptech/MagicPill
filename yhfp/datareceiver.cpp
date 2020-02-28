@@ -23,9 +23,9 @@ DataReceiver::DataReceiver(QTcpSocket *tcpSocket, QObject *parent)
     connect(_tcpSocket, &QAbstractSocket::disconnected, _tcpSocket, &QObject::deleteLater);
     qDebug() << "New tcpsocket: " << tcpSocket->socketDescriptor();
 
-    controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
-    connect(this, SIGNAL(dataChanged(StreamPack,QSet<int>,QMap<float,QString>)),
-            controller, SLOT(handlePlcControl(StreamPack,QSet<int>,QMap<float,QString>)));
+    //controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
+    //connect(this, SIGNAL(dataChanged(StreamPack,QSet<int>,QMap<float,QString>)),
+            //controller, SLOT(handlePlcControl(StreamPack,QSet<int>,QMap<float,QString>)));
 }
 
 DataReceiver::~DataReceiver()

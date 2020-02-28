@@ -39,9 +39,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->syssButton->setStyleSheet(syssStyleStr);
     ui->exitButton->setStyleSheet(eixtStyleStr);
 
-    yhc = new Yhcc(this);
+    //yhc = new Yhcc(this);
     //fpj = new Fpjc(this);
-    //mixDlg = new MixerDlg(this);
+    mixDlg = new MixerDlg(this);
 
     //taskManager = new TaskManager(8000, this);
     //taskManager->moveToThread(&taskManageThread);
@@ -75,7 +75,7 @@ void MainWindow::showEvent(QShowEvent *event)
         controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
     }*/
 
-    //mixDlg->show();
+    mixDlg->show();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -85,7 +85,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::on_yhccButton_clicked()
 {
-    yhc->show();
+    //yhc->show();
 }
 
 void MainWindow::on_exitButton_clicked()

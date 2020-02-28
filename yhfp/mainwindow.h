@@ -9,6 +9,7 @@
 #include "mixerdlg.h"
 #include "taskmanager.h"
 #include "syscontroller.h"
+#include "keyboard.h"
 
 namespace Ui {
 class MainWindow;
