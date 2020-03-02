@@ -228,6 +228,9 @@ void DataReceiver::dataReceive()
         default:
             break;
         }
+
+        bDevice.bErrorCode = 1;
+        sendReply(bDevice, "");
     }
     else if(bDevice.bCommandType == W_Updata_Config)
     {
