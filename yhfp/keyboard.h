@@ -36,10 +36,8 @@ private:
     void setTextEdit(QTextEdit * );
     ~Keyboard();
     QPushButton *enterButton;
-    QTimer *closeTimer;
 
 protected:
-    void showEvent(QShowEvent *event);
     bool eventFilter(QObject *watched, QEvent *event);
     
 private slots:
@@ -83,7 +81,6 @@ private:
     int total_pages, cur_page;
     QSqlDatabase db;
     EditType et;
-    bool isCloseable = false;
 };
 
 #endif // KEYBOARD_H

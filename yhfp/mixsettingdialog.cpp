@@ -12,6 +12,8 @@ MixSettingDialog::MixSettingDialog(QWidget *parent) :
     //Avoid all windeows closed.
     //setAttribute(Qt::WA_QuitOnClose, false);
 
+    this->installEventFilter(this);
+
     rateSettingModel = new QStandardItemModel(Global::mixDeviceInfo.Rate_Setting_Category,2);
     connect(rateSettingModel,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(updateRateSetting(QStandardItem*)));
     ui->rate_tableView->setModel(rateSettingModel);
@@ -24,8 +26,25 @@ MixSettingDialog::MixSettingDialog(QWidget *parent) :
                             "font: 25 18pt;"
                             "height: 40px;}");
 
+    msgBox = new QMessageBox();
+    msgBox->installEventFilter(this);
+    msgBox->setStyleSheet(
+            "QPushButton {"
+                " background-color:#89AFDE;"
+                " border-style: outset;"
+                " border-width: 2px;"
+                " border-radius: 10px;"
+                " border-color: beige;"
+                " font: bold 24px;"
+                " min-width: 5em;"
+                " min-height: 5em;"
+            "}"
+            "QLabel { min-width: 20em;min-height:10em;font:24px;background-color:#89AFDE;padding:10px;}"
+        );
+
     rateDelegate = new RuntimeSettingDelegate(Rate);
     ui->rate_tableView->setItemDelegateForColumn(1,rateDelegate);
+    connect(rateDelegate, SIGNAL(inputInfo(QString)),this,SLOT(showEditorInfo(QString)));
 
     saveSettingTcpClient = new TcpClientSocket(this);
     connect(saveSettingTcpClient, SIGNAL(updateClients(QByteArray)),this,SLOT(showSaveSetting(QByteArray)));
@@ -36,9 +55,30 @@ MixSettingDialog::~MixSettingDialog()
     delete ui;
 }
 
+void MixSettingDialog::closeMsgBox()
+{
+    msgBox->close();
+}
+
 void MixSettingDialog::showEvent(QShowEvent *event)
 {
     showRateSetting();
+}
+
+void MixSettingDialog::showEditorInfo(QString info)
+{
+    msgBox->setText(info);
+    msgBox->exec();
+}
+
+bool MixSettingDialog::eventFilter(QObject *watched, QEvent *event)
+{
+    if(watched == msgBox && event->type() == QEvent::WindowDeactivate)
+    {
+        msgBox->close();
+    }
+
+    return false;
 }
 
 void MixSettingDialog::showRateSetting()
@@ -84,7 +124,14 @@ void MixSettingDialog::showRateSetting()
 
 void MixSettingDialog::showSaveSetting(QByteArray data)
 {
+    StreamPack bDevice;
+    memcpy(&bDevice,data,sizeof(bDevice));
 
+    if(bDevice.bErrorCode==1)
+    {
+        msgBox->setText(QStringLiteral("设置更新成功！"));
+        msgBox->show();
+    }
 }
 
 void MixSettingDialog::showModelValue(QModelIndex index)
@@ -112,6 +159,55 @@ void MixSettingDialog::on_save_pushButton_clicked()
             rateSettingValues[currentRow] = newValue;
         }
     }
+
+    StreamPack bpack;
+    bpack = {sizeof(StreamPack),5,0,W_Send_Control,UInt,0,0,1,0,0,0};
+    //Length of ushort address and value, plus length of scrc.
+    bpack.bDataLength = rateSettingValues.length();
+    bpack.bStreamLength += (2+Global::getLengthByDataType("dw"))*bpack.bDataLength + 4;
+
+    QList<ushort> addrs;
+    QList<uint> values;
+
+    for(int i=0; i<rateSettingValues.length();i++)
+    {
+        addrs.append(rateSettingAddress[i]);
+        values.append(rateSettingValues[i]);
+    }
+
+    QByteArray allPackData, SData, crcData;
+    QDataStream out(&SData,QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+    out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    //QDataStream::BigEndian或QDataStream::LittleEndian
+    out.setByteOrder(QDataStream::LittleEndian);
+
+    allPackData.append((char*)&bpack, sizeof(bpack));
+
+    foreach(ushort item, addrs)
+    {
+        out << item;
+    }
+
+    foreach(uint item, values)
+    {
+        out << item;
+    }
+
+    SData.insert(0, allPackData);
+
+    uint scrc = saveSettingTcpClient->StreamLen_CRC32(SData);
+
+    QDataStream out1(&crcData,QIODevice::WriteOnly);
+    out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+    out1.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    //QDataStream::BigEndian或QDataStream::LittleEndian
+    out1.setByteOrder(QDataStream::LittleEndian);
+    out1 << scrc;
+
+    SData.append(crcData);
+
+    saveSettingTcpClient->sendRequestWithResults(SData);
 }
 
 void MixSettingDialog::updateRateSetting(QStandardItem *item)

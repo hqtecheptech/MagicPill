@@ -24,7 +24,7 @@ RuntimeSettingDelegate::RuntimeSettingDelegate(SettingType settingType, QObject 
             "QLabel { min-width: 20em;min-height:10em;font:24px;background-color:#89AFDE;padding:10px;}"
         );
 
-        connect(this,SIGNAL(editorCreated(QWidget*,int)),this,SLOT(copyEditor(QWidget*,int)));
+    connect(this,SIGNAL(editorCreated(QWidget*,int)),this,SLOT(copyEditor(QWidget*,int)));
 }
 
 QWidget *RuntimeSettingDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -57,8 +57,9 @@ void RuntimeSettingDelegate::setModelData(QWidget *editor, QAbstractItemModel *m
     uint value = valueStr.toUInt(&ok);
     if(!ok)
     {
-        msgBox->setText(QStringLiteral("数字格式不正确"));
-        msgBox->show();
+        //msgBox->setText(QStringLiteral("数字格式不正确"));
+        //msgBox->show();
+        emit inputInfo(QStringLiteral("数字格式不正确"));
     }
     else
     {
@@ -67,8 +68,9 @@ void RuntimeSettingDelegate::setModelData(QWidget *editor, QAbstractItemModel *m
         case Minute:
             if(value < 2 || value > 59)
             {
-                msgBox->setText(QStringLiteral("值必须大于等于2小于等于59"));
-                msgBox->show();
+                //msgBox->setText(QStringLiteral("值必须大于等于2小于等于59"));
+                //msgBox->show();
+                emit inputInfo(QStringLiteral("值必须大于等于2小于等于59"));
             }
             else
             {
@@ -78,8 +80,9 @@ void RuntimeSettingDelegate::setModelData(QWidget *editor, QAbstractItemModel *m
         case Day:
             if(value < 0 || value > 365)
             {
-                msgBox->setText(QStringLiteral("值必须大于等于0小于等于365"));
-                msgBox->show();
+                //msgBox->setText(QStringLiteral("值必须大于等于0小于等于365"));
+                //msgBox->show();
+                emit inputInfo(QStringLiteral("值必须大于等于0小于等于365"));
             }
             else
             {
@@ -89,8 +92,9 @@ void RuntimeSettingDelegate::setModelData(QWidget *editor, QAbstractItemModel *m
         case Hour:
             if(value < 0 || value > 23)
             {
-                msgBox->setText(QStringLiteral("值必须大于等于0小于等于23"));
-                msgBox->show();
+                //msgBox->setText(QStringLiteral("值必须大于等于0小于等于23"));
+                //msgBox->show();
+                emit inputInfo(QStringLiteral("值必须大于等于0小于等于23"));
             }
             else
             {
@@ -100,8 +104,9 @@ void RuntimeSettingDelegate::setModelData(QWidget *editor, QAbstractItemModel *m
         case Rate:
             if(value < 1000 || value > 5000)
             {
-                msgBox->setText(QStringLiteral("值必须大于等于1000小于等于5000"));
-                msgBox->show();
+                //msgBox->setText(QStringLiteral("值必须大于等于1000小于等于5000"));
+                //msgBox->show();
+                emit inputInfo(QStringLiteral("值必须大于等于1000小于等于5000"));
             }
             else
             {
@@ -156,6 +161,11 @@ int RuntimeSettingDelegate::getCurrentRow() const
 void RuntimeSettingDelegate::setCurrentRow(int value)
 {
     currentRow = value;
+}
+
+void RuntimeSettingDelegate::closeMsgBox()
+{
+    msgBox->close();
 }
 
 QWidget *RuntimeSettingDelegate::getCurrentEditor() const

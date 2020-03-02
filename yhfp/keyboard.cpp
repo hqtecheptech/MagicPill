@@ -157,8 +157,6 @@ Keyboard::Keyboard(QWidget *parent) :
     QSqlDatabase::removeDatabase("SQLITE");
 
      this->installEventFilter(this);
-    //closeTimer = new QTimer(this);
-    //connect(closeTimer, SIGNAL(timeout()), this, SLOT(checkIsVisible()));
 }
 
 QStringList Keyboard::getCandidate(const QString &keys)
@@ -387,11 +385,6 @@ void Keyboard::setTextEdit(QTextEdit * text)
 Keyboard::~Keyboard()
 {
     delete ui;
-}
-
-void Keyboard::showEvent(QShowEvent *event)
-{
-    //closeTimer->start(2000);
 }
 
 bool Keyboard::eventFilter(QObject *watched, QEvent *event)

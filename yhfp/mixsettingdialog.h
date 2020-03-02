@@ -20,6 +20,7 @@ public:
     ~MixSettingDialog();
 
     void setCurrentEditor(QWidget *value);
+    void closeMsgBox();
 
 protected:
     void showEvent(QShowEvent *event);
@@ -33,8 +34,12 @@ private:
     QVector<ushort> rateSettingAddress;
     QVector<uint> rateSettingValues;
     QVector<int> rateRowIndex;
-    QMessageBox msgBox;
+    QMessageBox *msgBox;
     bool rateSettingInitialized = false;
+
+public slots:
+    void showEditorInfo(QString info);
+    bool eventFilter(QObject *, QEvent *);
 
 private slots:
     void showRateSetting();

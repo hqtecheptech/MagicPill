@@ -49,7 +49,7 @@ MixerDlg::MixerDlg(QWidget *parent) :
 
     readDataTimer = new QTimer(this);
     connect(readDataTimer, SIGNAL(timeout()), this, SLOT(readData()));
-    readDataTimer->start(1000);
+    readDataTimer->start(1500);
 
     mixSettingDlg = new MixSettingDialog();
 
@@ -1431,6 +1431,7 @@ void MixerDlg::on_exitButton_clicked()
 
 void MixerDlg::on_settingButton_clicked()
 {
+    mixSettingDlg->closeMsgBox();
     mixSettingDlg->close();
     mixSettingDlg->show();
     Keyboard::getInstance()->close();

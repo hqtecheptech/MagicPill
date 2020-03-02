@@ -25,8 +25,11 @@ public:
     int getCurrentRow() const;
     void setCurrentRow(int value);
 
+    void closeMsgBox();
+
 signals:
     void editorCreated(QWidget *editor, int row) const;
+    void inputInfo(QString info) const;
 
 protected:
     bool eventFilter(QObject *, QEvent *);
