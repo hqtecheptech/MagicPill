@@ -45,7 +45,7 @@ private:
     int w = 0;
     int h = 0;
     FerStep _ferStep;
-    QMessageBox msgBox;
+    QMessageBox *msgBox;
 };
 
 #endif // FERSTEPFORM_H

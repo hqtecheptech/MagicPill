@@ -9,7 +9,8 @@ FerStepForm::FerStepForm(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    msgBox.setStyleSheet(
+    msgBox = new QMessageBox(this);
+    msgBox->setStyleSheet(
         "QPushButton {"
         " background-color: #89AFDE;"
         " border-style: outset;"
@@ -44,6 +45,7 @@ FerStepForm::FerStepForm(QWidget *parent) :
     ui->min_time_text_edit->installEventFilter(this);
     ui->step_tmp_text_edit->installEventFilter(this);
     ui->expect_tmp_text_edit->installEventFilter(this);
+    this->installEventFilter(this);
 
     Keyboard *keyboard = Keyboard::getInstance();
     connect(ui->def_ae_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
@@ -186,6 +188,11 @@ bool FerStepForm::eventFilter(QObject *watched, QEvent *event)
         p.setColor(QPalette::Base,Qt::green);
         ((QWidget *)watched)->setPalette(p);
     }*/
+    if(watched == this && event->type() == QEvent::WindowDeactivate)
+    {
+        msgBox->close();
+    }
+
 
     if(watched == ui->step_tmp_text_edit)
     {
@@ -304,10 +311,11 @@ void FerStepForm::handleTextChanged()
             }
             else
             {
-                msgBox.setText("格式错误，请输入数值类型!");
-                msgBox.show();
+                msgBox->setText("格式错误，请输入数值类型!");
+                msgBox->show();
                 p.setColor(QPalette::Base,Qt::red);
                 te->setPalette(p);
+                te->setText("");
             }
         }
     }
@@ -323,10 +331,11 @@ void FerStepForm::handleTextChanged()
             }
             else
             {
-                msgBox.setText("格式错误，请输入数值类型!");
-                msgBox.show();
+                msgBox->setText("格式错误，请输入数值类型!");
+                msgBox->show();
                 p.setColor(QPalette::Base,Qt::red);
                 te->setPalette(p);
+                te->setText("");
             }
         }
     }
@@ -340,8 +349,8 @@ void FerStepForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox.setText("最长跳步时间必须大于0!");
-                    msgBox.show();
+                    msgBox->setText("最长跳步时间必须大于0!");
+                    msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -352,10 +361,11 @@ void FerStepForm::handleTextChanged()
             }
             else
             {
-                msgBox.setText("输入格式错误，请输入大于0的整数!");
-                msgBox.show();
+                msgBox->setText("输入格式错误，请输入大于0的整数!");
+                msgBox->show();
                 p.setColor(QPalette::Base,Qt::red);
                 te->setPalette(p);
+                te->setText("");
             }
         }
     }
@@ -369,8 +379,8 @@ void FerStepForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox.setText("最短跳步时间必须大于0!");
-                    msgBox.show();
+                    msgBox->setText("最短跳步时间必须大于0!");
+                    msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -381,10 +391,11 @@ void FerStepForm::handleTextChanged()
             }
             else
             {
-                msgBox.setText("输入格式错误，请输入大于0的整数!");
-                msgBox.show();
+                msgBox->setText("输入格式错误，请输入大于0的整数!");
+                msgBox->show();
                 p.setColor(QPalette::Base,Qt::red);
                 te->setPalette(p);
+                te->setText("");
             }
         }
     }
@@ -398,8 +409,8 @@ void FerStepForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox.setText("曝气时长必须大于0!");
-                    msgBox.show();
+                    msgBox->setText("曝气时长必须大于0!");
+                    msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -410,10 +421,11 @@ void FerStepForm::handleTextChanged()
             }
             else
             {
-                msgBox.setText("输入格式错误，请输入大于0的整数!");
-                msgBox.show();
+                msgBox->setText("输入格式错误，请输入大于0的整数!");
+                msgBox->show();
                 p.setColor(QPalette::Base,Qt::red);
                 te->setPalette(p);
+                te->setText("");
             }
         }
     }
@@ -427,8 +439,8 @@ void FerStepForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox.setText("曝气时长必须大于0!");
-                    msgBox.show();
+                    msgBox->setText("曝气时长必须大于0!");
+                    msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -439,10 +451,11 @@ void FerStepForm::handleTextChanged()
             }
             else
             {
-                msgBox.setText("输入格式错误，请输入大于0的整数!");
-                msgBox.show();
+                msgBox->setText("输入格式错误，请输入大于0的整数!");
+                msgBox->show();
                 p.setColor(QPalette::Base,Qt::red);
                 te->setPalette(p);
+                te->setText("");
             }
         }
     }
@@ -456,8 +469,8 @@ void FerStepForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox.setText("频率必须大于0!");
-                    msgBox.show();
+                    msgBox->setText("频率必须大于0!");
+                    msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -468,10 +481,11 @@ void FerStepForm::handleTextChanged()
             }
             else
             {
-                msgBox.setText("输入格式错误，请输入大于0的整数!");
-                msgBox.show();
+                msgBox->setText("输入格式错误，请输入大于0的整数!");
+                msgBox->show();
                 p.setColor(QPalette::Base,Qt::red);
                 te->setPalette(p);
+                te->setText("");
             }
         }
     }

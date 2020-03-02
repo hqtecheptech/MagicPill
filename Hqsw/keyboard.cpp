@@ -154,6 +154,8 @@ Keyboard::Keyboard(QWidget *parent) :
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("py.db");
     QSqlDatabase::removeDatabase("SQLITE");
+
+    this->installEventFilter(this);
 }
 
 QStringList Keyboard::getCandidate(const QString &keys)
@@ -594,4 +596,15 @@ void Keyboard::on_btnEnCh_clicked()
     } else {
         ui->btnEnCh->setText(tr("英"));
     }
+}
+
+bool Keyboard::eventFilter(QObject *watched, QEvent *event)
+{
+
+    if(watched == this && event->type() == QEvent::WindowDeactivate)
+    {
+        close();
+    }
+
+    return QWidget::eventFilter(watched, event);
 }

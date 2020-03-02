@@ -8,7 +8,8 @@ FerCaseForm::FerCaseForm(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    msgBox.setStyleSheet(
+    msgBox = new QMessageBox(this);
+    msgBox->setStyleSheet(
         "QPushButton {"
         " background-color: #89AFDE;"
         " border-style: outset;"
@@ -37,6 +38,7 @@ FerCaseForm::FerCaseForm(QWidget *parent) :
     ui->ae_text_edit->installEventFilter(this);
     ui->sta_text_edit->installEventFilter(this);
     ui->freq_text_edit->installEventFilter(this);
+    this->installEventFilter(this);
 
     Keyboard *keyboard = Keyboard::getInstance();
     connect(ui->low_tmp_text_edit, SIGNAL(selectionChanged()), keyboard, SLOT(run_keyboard_textEdit()));
@@ -95,6 +97,11 @@ bool FerCaseForm::eventFilter(QObject *watched, QEvent *event)
         p.setColor(QPalette::Base,Qt::green);
         ((QWidget *)watched)->setPalette(p);
     }*/
+
+    if(watched == this && event->type() == QEvent::WindowDeactivate)
+    {
+        msgBox->close();
+    }
 
     if(watched == ui->low_tmp_text_edit)
     {
@@ -158,10 +165,11 @@ void FerCaseForm::handleTextChanged()
             }
             else
             {
-                msgBox.setText("格式错误，请输入数值类型!");
-                msgBox.show();
+                msgBox->setText("格式错误，请输入数值类型!");
+                msgBox->show();
                 p.setColor(QPalette::Base,Qt::red);
                 te->setPalette(p);
+                te->setText("");
             }
         }
     }
@@ -177,10 +185,11 @@ void FerCaseForm::handleTextChanged()
             }
             else
             {
-                msgBox.setText("格式错误，请输入数值类型!");
-                msgBox.show();
+                msgBox->setText("格式错误，请输入数值类型!");
+                msgBox->show();
                 p.setColor(QPalette::Base,Qt::red);
                 te->setPalette(p);
+                te->setText("");
             }
         }
     }
@@ -194,8 +203,8 @@ void FerCaseForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox.setText("曝气时长必须大于0!");
-                    msgBox.show();
+                    msgBox->setText("曝气时长必须大于0!");
+                    msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -206,10 +215,11 @@ void FerCaseForm::handleTextChanged()
             }
             else
             {
-                msgBox.setText("输入格式错误，请输入大于0的整数!");
-                msgBox.show();
+                msgBox->setText("输入格式错误，请输入大于0的整数!");
+                msgBox->show();
                 p.setColor(QPalette::Base,Qt::red);
                 te->setPalette(p);
+                te->setText("");
             }
         }
     }
@@ -223,8 +233,8 @@ void FerCaseForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox.setText("间隔时长必须大于0!");
-                    msgBox.show();
+                    msgBox->setText("间隔时长必须大于0!");
+                    msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -235,10 +245,11 @@ void FerCaseForm::handleTextChanged()
             }
             else
             {
-                msgBox.setText("输入格式错误，请输入大于0的整数!");
-                msgBox.show();
+                msgBox->setText("输入格式错误，请输入大于0的整数!");
+                msgBox->show();
                 p.setColor(QPalette::Base,Qt::red);
                 te->setPalette(p);
+                te->setText("");
             }
         }
     }
@@ -252,8 +263,8 @@ void FerCaseForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox.setText("频率必须大于0!");
-                    msgBox.show();
+                    msgBox->setText("频率必须大于0!");
+                    msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -264,10 +275,11 @@ void FerCaseForm::handleTextChanged()
             }
             else
             {
-                msgBox.setText("输入格式错误，请输入大于0的整数!");
-                msgBox.show();
+                msgBox->setText("输入格式错误，请输入大于0的整数!");
+                msgBox->show();
                 p.setColor(QPalette::Base,Qt::red);
                 te->setPalette(p);
+                te->setText("");
             }
         }
     }

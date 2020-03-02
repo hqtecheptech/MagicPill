@@ -130,15 +130,17 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>922</x>
+     <x>902</x>
      <y>30</y>
-     <width>51</width>
-     <height>31</height>
+     <width>80</width>
+     <height>40</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>15</pointsize>
+     <pointsize>25</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
    <property name="text">

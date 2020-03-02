@@ -32,7 +32,7 @@ private slots:
 private:
     Ui::FerCaseForm *ui;
     FerCase _fercase;
-    QMessageBox msgBox;
+    QMessageBox *msgBox;
     int _seq = 0;
 };
 

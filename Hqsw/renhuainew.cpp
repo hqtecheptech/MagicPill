@@ -3,6 +3,7 @@
 #include "identity.h"
 #include "realtimedialog.h"
 #include "global.h"
+#include "keyboard.h"
 
 #include <QDesktopWidget>
 
@@ -56,7 +57,7 @@ RenhuaiNew::RenhuaiNew(QWidget *parent) :
     historyDialog = new HistoryDialog(this);
     reportDialog = new ReportDialog(this);
     //settingDialog = new SettingDialog(this);
-    ferconfigDialog = new FerConfigDialog();
+    ferconfigDialog = new FerConfigDialog(this);
     alertQueryDialog = new AlertQueryDialog(this);
     fercontrolDialog = new FerControlDialog(this);
     connect(this,SIGNAL(ferDataChanged(QSet<int>, QMap<float,QString>)),fercontrolDialog,SLOT(updateFermentationData(QSet<int>, QMap<float,QString>)));
@@ -194,7 +195,9 @@ void RenhuaiNew::on_ferControlButton_clicked()
 void RenhuaiNew::on_SettingButton_clicked()
 {
     //settingDialog->show();
+    ferconfigDialog->close();
     ferconfigDialog->show();
+    Keyboard::getInstance()->close();
     ferconfigDialog->move((1920 - ferconfigDialog->width())/2,(1080 - ferconfigDialog->height())/2);
 }
 

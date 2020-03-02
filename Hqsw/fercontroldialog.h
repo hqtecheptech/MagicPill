@@ -17,6 +17,7 @@
 #include "ufftank.h"
 #include "ferconfig.h"
 #include "ferstep.h"
+#include "keyboard.h"
 
 namespace Ui {
 class FerControlDialog;

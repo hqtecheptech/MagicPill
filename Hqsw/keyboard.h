@@ -35,6 +35,9 @@ private:
     void setTextEdit(QTextEdit * );
     ~Keyboard();
     QPushButton *enterButton;
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
     
 private slots:
     void keyboardHandler();

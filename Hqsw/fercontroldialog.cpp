@@ -178,7 +178,9 @@ void FerControlDialog::on_customFerButton_clicked()
         customFerSettingDialog->setTankLocation(ui->tankIndexComboBox->currentIndex());
         customFerSettingDialog->setRunTime(handRunTime);
         customFerSettingDialog->setSpaceTime(handSpaceTime);
+        customFerSettingDialog->close();
         customFerSettingDialog->show();
+        Keyboard::getInstance()->close();
     }
     else
     {
