@@ -18,7 +18,7 @@ MixSettingDialog::MixSettingDialog(QWidget *parent) :
     connect(rateSettingModel,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(updateRateSetting(QStandardItem*)));
     ui->rate_tableView->setModel(rateSettingModel);
     ui->rate_tableView->setColumnWidth(0, 300);
-    ui->rate_tableView->setColumnWidth(1, 100);
+    ui->rate_tableView->setColumnWidth(1, 150);
     ui->rate_tableView->horizontalHeader()
                         ->setStyleSheet(
                             "QHeaderView::section {"
