@@ -51,6 +51,11 @@
      <height>45</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
   </widget>
   <widget class="QLabel" name="tankIndexLabel">
    <property name="geometry">
