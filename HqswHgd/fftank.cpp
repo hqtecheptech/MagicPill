@@ -14,6 +14,9 @@ FFTank::FFTank(QWidget *parent) :
     ui(new Ui::FFTank)
 {
     ui->setupUi(this);
+
+    msgBox = new QMessageBox(this);
+
     ui->fanButton->setFlat(true);
     fanControlDialog = new FanControlDialog(this);
     connect(this, SIGNAL(dataChanged(QSet<int>, QMap<float,QString>)), fanControlDialog, SLOT(updateFermentationData(QSet<int>, QMap<float,QString>)));
@@ -191,7 +194,7 @@ void FFTank::parseFermentationData(QMap<float,QString> dataMap)
                             * Global::getLengthByDataType(deviceNode.DataType);
     ui->wtValueLabel->setText(dataMap[address]);
 
-    deviceNode = Global::getFermenationNodeInfoByName("TOTAL_CURRENT_R");
+    deviceNode = Global::getFermenationNodeInfoByName("AIR_INPUT");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
     ui->totalCurrentValueLabel->setText(dataMap[address]);
@@ -310,7 +313,7 @@ void FFTank::on_fanButton_clicked()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }

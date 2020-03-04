@@ -16,6 +16,8 @@ FerControlDialog::FerControlDialog(QWidget *parent) :
     //setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     setWindowTitle(QStringLiteral("发酵控制"));
 
+    msgBox = new QMessageBox(this);
+
     icoGreen.load("://image/old/FerLEDG.bmp");
     icoYellow.load("://image/old/FerLEDG.bmp");
     icoRed.load("://image/old/FerLEDY.bmp");
@@ -159,8 +161,8 @@ void FerControlDialog::on_customFerButton_clicked()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 
@@ -211,8 +213,8 @@ void FerControlDialog::on_startFerButton_pressed()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 
@@ -303,8 +305,8 @@ void FerControlDialog::on_endFerButton_pressed()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 
@@ -388,7 +390,7 @@ void FerControlDialog::parseFermentationData(QMap<float,QString> dataMap)
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_H2S_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->co2Label->setText(dataMap[address]);
+    ui->h2sLabel->setText(dataMap[address]);
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_NH3_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
@@ -400,7 +402,7 @@ void FerControlDialog::parseFermentationData(QMap<float,QString> dataMap)
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_CO2_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->vocLabel->setText(dataMap[address]);
+    ui->co2Label->setText(dataMap[address]);
 
     /*deviceNode = Global::getFermenationNodeInfoByName("FER_RO_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
@@ -703,8 +705,8 @@ void FerControlDialog::on_pauseFerButton_clicked()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 

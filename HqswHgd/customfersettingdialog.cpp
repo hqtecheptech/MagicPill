@@ -12,6 +12,8 @@ CustomFerSettingDialog::CustomFerSettingDialog(QWidget *parent) :
 
     setWindowTitle(QStringLiteral("发酵控制"));
 
+    msgBox = new QMessageBox(this);
+
     tcpClient = new TcpClientSocket(this);
     tcpClient1 = new TcpClientSocket(this);
 }
@@ -79,16 +81,16 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
     int aerationTimeValue = ui->aerationTimeLineEdit->text().toInt(&ok);
     if(!ok)
     {
-        msgBox.setText(QStringLiteral("发酵时长格式不正确"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("发酵时长格式不正确"));
+        msgBox->show();
         return;
     }
     else
     {
         if(aerationTimeValue >999 || aerationTimeValue < 1)
         {
-            msgBox.setText(QStringLiteral("发酵时长超出允许范围"));
-            msgBox.show();
+            msgBox->setText(QStringLiteral("发酵时长超出允许范围"));
+            msgBox->show();
             return;
         }
     }
@@ -96,16 +98,16 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
     int aerationSpaceValue = ui->aerationSpaceLineEdit->text().toInt(&ok);
     if(!ok)
     {
-        msgBox.setText(QStringLiteral("发酵间隔时长格式不正确"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("发酵间隔时长格式不正确"));
+        msgBox->show();
         return;
     }
     else
     {
         if(aerationSpaceValue >999 || aerationSpaceValue < 1)
         {
-            msgBox.setText(QStringLiteral("发酵间隔时长超出允许范围"));
-            msgBox.show();
+            msgBox->setText(QStringLiteral("发酵间隔时长超出允许范围"));
+            msgBox->show();
             return;
         }
     }
@@ -113,16 +115,16 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
     int frequency = ui->fanFrequencyLineEdit->text().toInt(&ok);
     if(!ok)
     {
-        msgBox.setText(QStringLiteral("风机频率格式不正确"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("风机频率格式不正确"));
+        msgBox->show();
         return;
     }
     else
     {
         if(frequency >50 || frequency < 1)
         {
-            msgBox.setText(QStringLiteral("风机频率超出允许范围"));
-            msgBox.show();
+            msgBox->setText(QStringLiteral("风机频率超出允许范围"));
+            msgBox->show();
             return;
         }
     }
@@ -212,8 +214,8 @@ void CustomFerSettingDialog::on_customFerButton_pressed()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 

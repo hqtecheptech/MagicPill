@@ -45,7 +45,7 @@ private:
 
     bool spRunState, spFaultState, wpStartState, spStartState, otherDeviceAutoState;
     TcpClientSocket *tcpClient;
-    QMessageBox msgBox;
+    QMessageBox *msgBox;
 
     void parseFermentationData(QMap<float,QString> dataMap);
     void parseFerRunCtrData(QMap<float,QString> dataMap);

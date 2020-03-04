@@ -65,7 +65,7 @@ private:
     QPixmap tankRunFanOpenBgImg;
     QPixmap ferAutoBgImg;
     QPixmap ferCustomBgImg;
-    QMessageBox msgBox;
+    QMessageBox *msgBox;
     //bool isFanRemote = false;
     bool isFanOpen = false;
     //bool isFanAuto = false;

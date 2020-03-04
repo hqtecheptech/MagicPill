@@ -120,8 +120,8 @@ void XinyiFerControlTabWidget::initUI()
     QSet<int> changeSet;
     /*int tankRows = 0;*/
     QHBoxLayout *tankRowLayout = new QHBoxLayout;
-    tankRowLayout->setContentsMargins(50,0,0,0);
-    tankRowLayout->setSpacing(50);
+    tankRowLayout->setContentsMargins(10,10,0,0);
+    tankRowLayout->setSpacing(20);
     int mid = 8;
     /*if((Global::ferDeviceInfo.Device_Number % 2) == 0)
     {
@@ -145,7 +145,7 @@ void XinyiFerControlTabWidget::initUI()
         else
         {*/
             FFTank *tk = new FFTank(this);
-            tk->setMinimumSize(130, 269);
+            tk->setMinimumSize(260, 538);
             connect(this, SIGNAL(dataUpdate(QSet<int>, QMap<float,QString>)),tk,SLOT(updateFermentationData(QSet<int>, QMap<float,QString>)));
         /*}*/
 
@@ -162,8 +162,8 @@ void XinyiFerControlTabWidget::initUI()
     allTankLayout->addLayout(tankRowLayout);
 
     QHBoxLayout *tankRowLayout1 = new QHBoxLayout;
-    tankRowLayout1->setContentsMargins(50,0,0,0);
-    tankRowLayout1->setSpacing(50);
+    tankRowLayout1->setContentsMargins(10,10,0,0);
+    tankRowLayout1->setSpacing(20);
     for(int i=mid; i<Global::ferDeviceInfo.Device_Number; i++)
     {
         changeSet.insert(i);
@@ -177,7 +177,7 @@ void XinyiFerControlTabWidget::initUI()
         else
         {*/
             FFTank *tk = new FFTank;
-            tk->setMinimumSize(130, 269);
+            tk->setMinimumSize(260, 538);
             connect(this, SIGNAL(dataUpdate(QSet<int>, QMap<float,QString>)),tk,SLOT(updateFermentationData(QSet<int>, QMap<float,QString>)));
         /*}*/
 
@@ -195,6 +195,59 @@ void XinyiFerControlTabWidget::initUI()
     allTankFrame->setLayout(allTankLayout);
     // Scroll Area must set widget;
     ui->tankScrollArea->setWidget(allTankFrame);
+
+    ui->tankScrollArea->horizontalScrollBar()
+            ->setStyleSheet("QScrollBar:horizontal"
+                                "{"
+                                "height:50px;"
+                                "background:rgba(0,0,0,0%);"
+                                "margin:0px,0px,0px,0px;"
+                                "padding-left:9px;"
+                                "padding-right:9px;"
+                                "}"
+                                "QScrollBar::handle:horizontal"
+                                "{"
+                                "height:50px;"
+                                "background:rgba(0,0,0,25%);"
+                                " border-radius:4px;"
+                                "min-height:20;"
+                                "}"
+                                "QScrollBar::handle:horizontal:hover"
+                                "{"
+                                "height:50px;"
+                                "background:rgba(0,0,0,50%);"
+                                " border-radius:4px;"
+                                "min-height:20;"
+                                "}"
+                                "QScrollBar::add-line:horizontal"
+                                "{"
+                                "height:50px;width:50px;"
+                                "border-image:url(:/images/a/3.png);"
+                                "subcontrol-position:right;"
+                                "}"
+                                "QScrollBar::sub-line:horizontal"
+                                "{"
+                                "height:50px;width:50px;"
+                                "border-image:url(:/images/a/1.png);"
+                                "subcontrol-position:left;"
+                                "}"
+                                "QScrollBar::add-line:vertical:hover"
+                                "{"
+                                "height:9px;width:8px;"
+                                "border-image:url(:/images/a/4.png);"
+                                "subcontrol-position:bottom;"
+                                "}"
+                                "QScrollBar::sub-line:vertical:hover"
+                                "{"
+                                "height:9px;width:8px;"
+                                "border-image:url(:/images/a/2.png);"
+                                "subcontrol-position:top;"
+                                "}"
+                                "QScrollBar::add-page:horizontal,QScrollBar::sub-page:horizontal"
+                                "{"
+                                "background:rgba(0,0,0,10%);"
+                                "border-radius:4px;"
+                                "}");
 
     if(Global::currentFermenationDataMap.count() > 0)
     {

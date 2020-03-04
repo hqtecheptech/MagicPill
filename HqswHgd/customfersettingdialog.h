@@ -39,7 +39,7 @@ private slots:
 
 private:
     Ui::CustomFerSettingDialog *ui;
-    QMessageBox msgBox;
+    QMessageBox *msgBox;
     TcpClientSocket *tcpClient;
     TcpClientSocket *tcpClient1;
     int tankLocation = 0;

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>623</width>
-    <height>617</height>
+    <height>620</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -869,8 +869,8 @@
   <widget class="QLabel" name="label_26">
    <property name="geometry">
     <rect>
-     <x>450</x>
-     <y>390</y>
+     <x>480</x>
+     <y>670</y>
      <width>71</width>
      <height>16</height>
     </rect>
@@ -882,8 +882,8 @@
   <widget class="QLabel" name="sensorStateLabel">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>410</y>
+     <x>500</x>
+     <y>690</y>
      <width>30</width>
      <height>30</height>
     </rect>
@@ -910,7 +910,7 @@
   <widget class="QPushButton" name="customFerButton">
    <property name="geometry">
     <rect>
-     <x>110</x>
+     <x>130</x>
      <y>570</y>
      <width>90</width>
      <height>23</height>
@@ -1367,12 +1367,12 @@
     <rect>
      <x>180</x>
      <y>399</y>
-     <width>31</width>
+     <width>60</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>%</string>
+    <string>%VOL</string>
    </property>
   </widget>
   <widget class="Line" name="line_20">
@@ -1489,7 +1489,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>0.0</string>
+    <string>0</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_40">
@@ -1502,7 +1502,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>%</string>
+    <string>PPM</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_41">
@@ -1528,7 +1528,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>%</string>
+    <string>PPM</string>
    </property>
   </widget>
   <widget class="Line" name="line_38">
@@ -1606,7 +1606,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>%</string>
+    <string>PPM</string>
    </property>
   </widget>
   <widget class="Line" name="line_39">
@@ -1653,12 +1653,12 @@
     <rect>
      <x>200</x>
      <y>519</y>
-     <width>31</width>
+     <width>60</width>
      <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>%</string>
+    <string>%VOL</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_48">

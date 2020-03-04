@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>130</width>
-    <height>269</height>
+    <width>260</width>
+    <height>474</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,8 +24,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>130</width>
-     <height>195</height>
+     <width>260</width>
+     <height>400</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -467,16 +467,16 @@
    <widget class="QLabel" name="startTimeLabel">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>5</y>
-      <width>81</width>
-      <height>16</height>
+      <x>15</x>
+      <y>10</y>
+      <width>200</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Verdana</family>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
       <kerning>true</kerning>
@@ -493,16 +493,16 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="endTimeLabel">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>38</y>
-      <width>91</width>
-      <height>16</height>
+      <x>15</x>
+      <y>70</y>
+      <width>200</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Verdana</family>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -518,16 +518,16 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="totalTimeLabel">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>70</y>
-      <width>91</width>
-      <height>16</height>
+      <x>15</x>
+      <y>129</y>
+      <width>200</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Verdana</family>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -543,15 +543,15 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="startTimeValueLabel">
     <property name="geometry">
      <rect>
-      <x>7</x>
-      <y>25</y>
-      <width>121</width>
-      <height>16</height>
+      <x>20</x>
+      <y>40</y>
+      <width>200</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -570,15 +570,15 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="endTimeValueLabel">
     <property name="geometry">
      <rect>
-      <x>7</x>
-      <y>58</y>
-      <width>121</width>
-      <height>16</height>
+      <x>20</x>
+      <y>100</y>
+      <width>200</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -597,15 +597,15 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="totalTimeValueLabel">
     <property name="geometry">
      <rect>
-      <x>7</x>
-      <y>90</y>
-      <width>100</width>
-      <height>16</height>
+      <x>20</x>
+      <y>160</y>
+      <width>200</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -624,16 +624,16 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="weightTempture">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>105</y>
-      <width>55</width>
-      <height>16</height>
+      <x>15</x>
+      <y>190</y>
+      <width>100</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Verdana</family>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -649,15 +649,15 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="wtValueLabel">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>105</y>
-      <width>40</width>
-      <height>16</height>
+      <x>120</x>
+      <y>190</y>
+      <width>60</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -673,15 +673,15 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="wtValueLabel_1">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>105</y>
-      <width>16</width>
-      <height>16</height>
+      <x>182</x>
+      <y>190</y>
+      <width>32</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>8</pointsize>
+      <pointsize>13</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -697,15 +697,15 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="tankIndexLabel">
     <property name="geometry">
      <rect>
-      <x>90</x>
-      <y>160</y>
-      <width>30</width>
-      <height>30</height>
+      <x>180</x>
+      <y>320</y>
+      <width>60</width>
+      <height>60</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>15</pointsize>
+      <pointsize>30</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -724,16 +724,16 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="SpaceTimeLabel">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>135</y>
-      <width>55</width>
-      <height>16</height>
+      <x>15</x>
+      <y>257</y>
+      <width>100</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Verdana</family>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -749,15 +749,15 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="wtValueLabel_4">
     <property name="geometry">
      <rect>
-      <x>105</x>
-      <y>135</y>
-      <width>16</width>
-      <height>16</height>
+      <x>190</x>
+      <y>257</y>
+      <width>30</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -773,15 +773,15 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="spacTimeValueLabel">
     <property name="geometry">
      <rect>
-      <x>65</x>
-      <y>135</y>
-      <width>40</width>
-      <height>16</height>
+      <x>120</x>
+      <y>257</y>
+      <width>60</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -797,15 +797,15 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="runTimeValueLabel">
     <property name="geometry">
      <rect>
-      <x>65</x>
-      <y>120</y>
-      <width>40</width>
-      <height>16</height>
+      <x>120</x>
+      <y>224</y>
+      <width>60</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -821,16 +821,16 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="runTimeLabel">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>120</y>
-      <width>55</width>
-      <height>16</height>
+      <x>15</x>
+      <y>224</y>
+      <width>100</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Verdana</family>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -846,15 +846,15 @@ color: rgba(250, 250, 250, 250);</string>
    <widget class="QLabel" name="wtValueLabel_5">
     <property name="geometry">
      <rect>
-      <x>105</x>
-      <y>120</y>
-      <width>16</width>
-      <height>16</height>
+      <x>190</x>
+      <y>224</y>
+      <width>32</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>8</pointsize>
+      <pointsize>15</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -871,8 +871,8 @@ color: rgba(250, 250, 250, 250);</string>
   <widget class="QPushButton" name="fanButton">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>193</y>
+     <x>100</x>
+     <y>399</y>
      <width>48</width>
      <height>76</height>
     </rect>
@@ -1336,15 +1336,15 @@ color: rgba(250, 250, 250, 250);</string>
    </property>
    <property name="geometry">
     <rect>
-     <x>65</x>
-     <y>150</y>
-     <width>40</width>
-     <height>16</height>
+     <x>120</x>
+     <y>291</y>
+     <width>60</width>
+     <height>32</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>8</pointsize>
+     <pointsize>15</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -1363,15 +1363,15 @@ color: rgba(250, 250, 250, 250);</string>
    </property>
    <property name="geometry">
     <rect>
-     <x>105</x>
-     <y>150</y>
-     <width>16</width>
-     <height>16</height>
+     <x>179</x>
+     <y>291</y>
+     <width>60</width>
+     <height>32</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>8</pointsize>
+     <pointsize>15</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -1381,7 +1381,7 @@ color: rgba(250, 250, 250, 250);</string>
 color: rgba(250, 250, 250, 250);</string>
    </property>
    <property name="text">
-    <string>A</string>
+    <string>m³/h</string>
    </property>
   </widget>
   <widget class="QLabel" name="totalCurrentLabel">
@@ -1390,16 +1390,16 @@ color: rgba(250, 250, 250, 250);</string>
    </property>
    <property name="geometry">
     <rect>
-     <x>5</x>
-     <y>150</y>
-     <width>55</width>
-     <height>16</height>
+     <x>15</x>
+     <y>291</y>
+     <width>100</width>
+     <height>32</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Verdana</family>
-     <pointsize>8</pointsize>
+     <pointsize>15</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -1409,7 +1409,7 @@ color: rgba(250, 250, 250, 250);</string>
 color: rgba(250, 250, 250, 250);</string>
    </property>
    <property name="text">
-    <string>总电流：</string>
+    <string>风机流量：</string>
    </property>
   </widget>
  </widget>

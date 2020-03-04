@@ -53,6 +53,14 @@ private slots:
 
     void on_ValveClosePushButton_2_clicked();
 
+    void on_ValveOpenPushButton_clicked();
+
+    void on_ValveClosePushButton_clicked();
+
+    void on_modifyOpenTimeButton_clicked();
+
+    void on_modifyCloseTimeButton_clicked();
+
 private:
     Ui::FanControlDialog *ui;
 
@@ -66,16 +74,19 @@ private:
     bool isFault = false;
     bool isSwitchFault = false;
     bool isValveOpened = false;
+    bool isSettig = false;
     RequestWorkThread *work;
     TcpClientSocket *tcpClient;
-    TcpClientSocket *freqTcpClient;
+    TcpClientSocket *actionTcpClient;
     QPalette p;
     QPixmap icoGreen;
     QPixmap icoYellow;
     QPixmap icoRed;
     QPixmap fanAutoControlBg;
     QPixmap fanManualControlBg;
-    QMessageBox msgBox;
+    QMessageBox *msgBox;
+    QString oldValveOpen = "";
+    QString oldValveClose = "";
 
     void parseFermentationData(QMap<float,QString> dataMap);
     void parseFerRunTimeData(QMap<float,QString> dataMap);

@@ -44,7 +44,7 @@ protected:
 private:
     Ui::FerControlDialog *ui;
 
-    QMessageBox msgBox;
+    QMessageBox *msgBox;
     MyTimerThread *myTimerThread;
     ushort currentStep = 1;
     ushort newStep = 1;

@@ -16,6 +16,8 @@ FanControlDialog::FanControlDialog(QWidget *parent) :
     //setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
     setWindowTitle(QStringLiteral("风机控制"));
 
+    msgBox = new QMessageBox(this);
+
     icoGreen.load("://image/old/FerLEDG.bmp");
     icoYellow.load("://image/old/FerLEDG.bmp");
     icoRed.load("://image/old/FerLEDY.bmp");
@@ -29,7 +31,7 @@ FanControlDialog::FanControlDialog(QWidget *parent) :
     connect(ui->fanIndexComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(fanIndexChanged(int)));
 
     tcpClient = new TcpClientSocket(this);
-    freqTcpClient = new TcpClientSocket(this);
+    actionTcpClient = new TcpClientSocket(this);
 }
 
 FanControlDialog::~FanControlDialog()
@@ -89,8 +91,8 @@ void FanControlDialog::on_fanOpenPushButton_clicked()
 
         if(frequency == 0 && frequencySetting == 0)
         {
-            msgBox.setText(QStringLiteral("当前风机频率为0，请先设置频率！"));
-            msgBox.show();
+            msgBox->setText(QStringLiteral("当前风机频率为0，请先设置频率！"));
+            msgBox->show();
             return;
         }
 
@@ -132,7 +134,7 @@ void FanControlDialog::on_fanOpenPushButton_clicked()
 
             SData.insert(0, allPackData);
 
-            uint scrc = freqTcpClient->StreamLen_CRC32(SData);
+            uint scrc = actionTcpClient->StreamLen_CRC32(SData);
 
             QDataStream out1(&crcData,QIODevice::WriteOnly);
             out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
@@ -144,7 +146,7 @@ void FanControlDialog::on_fanOpenPushButton_clicked()
             SData.append(crcData);
 
             // Send frequency firstly.
-            freqTcpClient->sendRequestWithResults(SData);
+            actionTcpClient->sendRequestWithResults(SData);
         }
 
 
@@ -168,8 +170,8 @@ void FanControlDialog::on_fanOpenPushButton_clicked()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 
@@ -212,8 +214,8 @@ void FanControlDialog::on_fanStopPushButton_clicked()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 
@@ -246,8 +248,8 @@ void FanControlDialog::on_switchFanModePushButton_clicked()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 
@@ -336,12 +338,20 @@ void FanControlDialog::parseFermentationData(QMap<float,QString> dataMap)
     deviceNode = Global::getFermenationNodeInfoByName("VALVE_OPEN_TIME");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->valveOpenTimeLabel->setText(dataMap[address]);
+    if(oldValveOpen != dataMap[address])
+    {
+        oldValveOpen = dataMap[address];
+        ui->valveOpenTimeLabel->setText(dataMap[address]);
+    }
 
     deviceNode = Global::getFermenationNodeInfoByName("VALVE_CLOSE_TIME");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->valveOpenTimeLabel->setText(dataMap[address]);
+    if(oldValveClose != dataMap[address])
+    {
+        oldValveClose = dataMap[address];
+        ui->valveCloseTimeLabel->setText(dataMap[address]);
+    }
 
     /*deviceNode = Global::getFermenationNodeInfoByName("FER_OV_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
@@ -500,4 +510,209 @@ void FanControlDialog::on_fanIndexComboBox_currentIndexChanged(int index)
 void FanControlDialog::on_ValveClosePushButton_2_clicked()
 {
     close();
+}
+
+void FanControlDialog::on_ValveOpenPushButton_clicked()
+{
+    User *user = Identity::getInstance()->getUser();
+    if(user != Q_NULLPTR)
+    {
+        QDateTime currentdt = QDateTime::currentDateTime();
+        uint stime =currentdt.toTime_t();
+        uint etime =currentdt.toTime_t();
+
+        ushort offset = Global::getFermenationNodeInfoByName("AIR_VALVE_OPEN").Offset / 8;
+        ushort index = Global::getFermenationNodeInfoByName("AIR_VALVE_OPEN").Offset % 8;
+
+        DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
+        ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
+        ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
+
+        StreamPack bpack;
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack.bStartTime =stime;
+        bpack.bEndTime =etime;
+        bool data = true;
+        QVariant var_data = QVariant(data);
+
+        tcpClient->abort();
+        disconnect(tcpClient,0,0,0);
+        tcpClient->sendRequestWithResult(bpack,var_data,1);
+    }
+    else
+    {
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
+    }
+}
+
+void FanControlDialog::on_ValveClosePushButton_clicked()
+{
+    User *user = Identity::getInstance()->getUser();
+    if(user != Q_NULLPTR)
+    {
+        QDateTime currentdt = QDateTime::currentDateTime();
+        uint stime =currentdt.toTime_t();
+        uint etime =currentdt.toTime_t();
+
+        ushort offset = Global::getFermenationNodeInfoByName("AIR_VALVE_OPEN").Offset / 8;
+        ushort index = Global::getFermenationNodeInfoByName("AIR_VALVE_OPEN").Offset % 8;
+
+        DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
+        ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
+        ushort address = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankIndex - info.startIndex) * runctrlByteSize + offset;
+
+        StreamPack bpack;
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack.bStartTime =stime;
+        bpack.bEndTime =etime;
+        bool data = false;
+        QVariant var_data = QVariant(data);
+
+        tcpClient->abort();
+        disconnect(tcpClient,0,0,0);
+        tcpClient->sendRequestWithResult(bpack,var_data,1);
+    }
+    else
+    {
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
+    }
+}
+
+void FanControlDialog::on_modifyOpenTimeButton_clicked()
+{
+    User *user = Identity::getInstance()->getUser();
+    if(user != Q_NULLPTR)
+    {
+        QDateTime currentdt = QDateTime::currentDateTime();
+        uint stime =currentdt.toTime_t();
+        uint etime =currentdt.toTime_t();
+
+        DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
+        StreamPack bpack;
+
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Int,0,0,1,0,0,0};
+        //Length of ushort address and value, plus length of scrc.
+        bpack.bStartTime =stime;
+        bpack.bEndTime =etime;
+        bpack.bDataLength = 1;
+        bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
+
+        QList<ushort> addrs;
+        QList<int> values;
+        DeviceNode deviceNode = Global::getFermenationNodeInfoByName("VALVE_OPEN_TIME");
+        ushort addr = deviceNode.Offset + (info.offset + tankIndex - info.startIndex)
+                * Global::getLengthByDataType(deviceNode.DataType);
+        addrs.append(addr);
+        values.append(ui->valveOpenTimeLabel->text().toInt());
+
+        QByteArray allPackData, SData, crcData;
+        QDataStream out(&SData,QIODevice::WriteOnly);
+        out.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+        out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+        //QDataStream::BigEndian或QDataStream::LittleEndian
+        out.setByteOrder(QDataStream::LittleEndian);
+
+        allPackData.append((char*)&bpack, sizeof(bpack));
+
+        foreach(ushort item, addrs)
+        {
+            out << item;
+        }
+
+        foreach(int item, values)
+        {
+            out << item;
+        }
+
+        SData.insert(0, allPackData);
+
+        uint scrc = actionTcpClient->StreamLen_CRC32(SData);
+
+        QDataStream out1(&crcData,QIODevice::WriteOnly);
+        out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+        out1.setFloatingPointPrecision(QDataStream::SinglePrecision);
+        //QDataStream::BigEndian或QDataStream::LittleEndian
+        out1.setByteOrder(QDataStream::LittleEndian);
+        out1 << scrc;
+
+        SData.append(crcData);
+
+        // Send frequency firstly.
+        actionTcpClient->sendRequestWithResults(SData);
+    }
+    else
+    {
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
+    }
+}
+
+void FanControlDialog::on_modifyCloseTimeButton_clicked()
+{
+    User *user = Identity::getInstance()->getUser();
+    if(user != Q_NULLPTR)
+    {
+        QDateTime currentdt = QDateTime::currentDateTime();
+        uint stime =currentdt.toTime_t();
+        uint etime =currentdt.toTime_t();
+
+        DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
+        StreamPack bpack;
+
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Int,0,0,1,0,0,0};
+        //Length of ushort address and value, plus length of scrc.
+        bpack.bStartTime =stime;
+        bpack.bEndTime =etime;
+        bpack.bDataLength = 1;
+        bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
+
+        QList<ushort> addrs;
+        QList<int> values;
+        DeviceNode deviceNode = Global::getFermenationNodeInfoByName("VALVE_CLOSE_TIME");
+        ushort addr = deviceNode.Offset;
+        addrs.append(addr);
+        values.append(ui->valveCloseTimeLabel->text().toInt());
+
+        QByteArray allPackData, SData, crcData;
+        QDataStream out(&SData,QIODevice::WriteOnly);
+        out.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+        out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+        //QDataStream::BigEndian或QDataStream::LittleEndian
+        out.setByteOrder(QDataStream::LittleEndian);
+
+        allPackData.append((char*)&bpack, sizeof(bpack));
+
+        foreach(ushort item, addrs)
+        {
+            out << item;
+        }
+
+        foreach(int item, values)
+        {
+            out << item;
+        }
+
+        SData.insert(0, allPackData);
+
+        uint scrc = actionTcpClient->StreamLen_CRC32(SData);
+
+        QDataStream out1(&crcData,QIODevice::WriteOnly);
+        out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+        out1.setFloatingPointPrecision(QDataStream::SinglePrecision);
+        //QDataStream::BigEndian或QDataStream::LittleEndian
+        out1.setByteOrder(QDataStream::LittleEndian);
+        out1 << scrc;
+
+        SData.append(crcData);
+
+        // Send frequency firstly.
+        actionTcpClient->sendRequestWithResults(SData);
+    }
+    else
+    {
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
+    }
 }

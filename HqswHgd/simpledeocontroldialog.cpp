@@ -11,6 +11,8 @@ SimpleDeoControlDialog::SimpleDeoControlDialog(QWidget *parent) :
     ui->setupUi(this);
     setWindowTitle(QStringLiteral("设备管理"));
 
+    msgBox = new QMessageBox(this);
+
     tcpClient = new TcpClientSocket(this);
 }
 
@@ -210,8 +212,8 @@ void SimpleDeoControlDialog::on_startWaterValveButton_clicked()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 
@@ -279,8 +281,8 @@ void SimpleDeoControlDialog::on_stopWaterValveButton_clicked()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 
@@ -348,8 +350,8 @@ void SimpleDeoControlDialog::on_startSparyValveButton_clicked()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 
@@ -417,8 +419,8 @@ void SimpleDeoControlDialog::on_stopSparyValveButton_clicked()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 
@@ -486,8 +488,8 @@ void SimpleDeoControlDialog::on_otherDeviceAutoButton_clicked()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 
@@ -555,8 +557,8 @@ void SimpleDeoControlDialog::on_otherDeviceManualButton_clicked()
     }
     else
     {
-        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
-        msgBox.show();
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
     }
 }
 
