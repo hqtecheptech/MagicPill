@@ -1055,6 +1055,7 @@ QVector<DeviceNode> readDeviceNodes(QString filename)
             node.StartAddress = element.attribute("start").toInt();
             node.Length = child_list.item(j).toElement().attribute("length").toInt();
             node.Diff = child_list.item(j).toElement().attribute("diff").toFloat();
+            node.Priority = child_list.item(j).toElement().attribute("priority").toInt();
             if(node.DataType == "x0")
             {
                 node.Offset = j;
@@ -1255,6 +1256,23 @@ DeviceNode Global::getMixNodeInfoByCname(QString cname)
     for(int i=0; i<mixDeviceNodes.length();i++)
     {
         if(mixDeviceNodes.at(i).Cname==cname)
+        {
+            return mixDeviceNodes.at(i);
+        }
+    }
+}
+
+DeviceNode Global::getMixNodeInfoByRunctrAddress(float address)
+{
+    uint blockSize = mixDeviceInfo.RunCtr_Block_Size  / 8;
+
+    int temp = (int)floor(address);
+    int blockOffset = (temp - mixDeviceInfo.Runctr_Address) % blockSize;
+    int offset = blockOffset * 8 + (int)(address * 10.0 - temp * 10.0 + 0.5);
+
+    for(int i=0; i<mixDeviceNodes.length();i++)
+    {
+        if(mixDeviceNodes.at(i).DataType == "x0" && mixDeviceNodes.at(i).Offset == offset)
         {
             return mixDeviceNodes.at(i);
         }
@@ -1599,7 +1617,7 @@ bool Global::getYhcRunctrValueByName(int deviceIndex, QString name, QMap<float, 
 
 bool Global::getMixRunctrValueByName(int deviceIndex, QString name, QMap<float, QString> dataMap)
 {
-    DeviceGroupInfo groupInfo = getYhcDeviceGroupInfo(deviceIndex);
+    DeviceGroupInfo groupInfo = getMixDeviceGroupInfo(deviceIndex);
     int startAddrss = mixDeviceInfo.Runctr_Address +
             mixDeviceInfo.RunCtr_Block_Size / 8 * (deviceIndex - groupInfo.startIndex);
 

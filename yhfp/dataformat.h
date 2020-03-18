@@ -245,6 +245,7 @@ struct DeviceNode
     QString DataType = "NULL";
     QString Alert0 = "NULL";
     QString Alert1 = "NULL";
+    int Priority = 0;
 };
 
 struct DeviceGroupInfo

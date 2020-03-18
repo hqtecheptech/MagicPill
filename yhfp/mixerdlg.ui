@@ -473,22 +473,6 @@ background-image: url(:/pic/smalltitle.png);</string>
     </property>
    </widget>
   </widget>
-  <widget class="QPushButton" name="exitButton">
-   <property name="geometry">
-    <rect>
-     <x>1723</x>
-     <y>17</y>
-     <width>130</width>
-     <height>62</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="flat">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
@@ -1364,15 +1348,23 @@ background-image: url(:/pic/field_bg.png);</string>
      <rect>
       <x>120</x>
       <y>52</y>
-      <width>106</width>
+      <width>96</width>
       <height>45</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-image: url(:/pic/red_box.png);</string>
     </property>
     <property name="text">
-     <string/>
+     <string>wz</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_69">
@@ -1405,7 +1397,7 @@ background-image: url(:/pic/field_bg.png);</string>
      <rect>
       <x>121</x>
       <y>103</y>
-      <width>106</width>
+      <width>96</width>
       <height>45</height>
      </rect>
     </property>
@@ -1414,6 +1406,9 @@ background-image: url(:/pic/field_bg.png);</string>
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_70">
@@ -1446,7 +1441,7 @@ background-image: url(:/pic/field_bg.png);</string>
      <rect>
       <x>122</x>
       <y>155</y>
-      <width>106</width>
+      <width>96</width>
       <height>45</height>
      </rect>
     </property>
@@ -1487,15 +1482,23 @@ background-image: url(:/pic/field_bg.png);</string>
      <rect>
       <x>122</x>
       <y>207</y>
-      <width>106</width>
+      <width>96</width>
       <height>45</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-image: url(:/pic/red_box.png);</string>
     </property>
     <property name="text">
-     <string/>
+     <string>wz</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_72">
@@ -1528,15 +1531,23 @@ background-image: url(:/pic/field_bg.png);</string>
      <rect>
       <x>123</x>
       <y>260</y>
-      <width>106</width>
+      <width>96</width>
       <height>45</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-image: url(:/pic/red_box.png);</string>
     </property>
     <property name="text">
-     <string/>
+     <string>wz</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_73">
@@ -1569,7 +1580,7 @@ background-image: url(:/pic/field_bg.png);</string>
      <rect>
       <x>124</x>
       <y>312</y>
-      <width>106</width>
+      <width>96</width>
       <height>45</height>
      </rect>
     </property>
@@ -1618,7 +1629,7 @@ background-image: url(:/pic/field_bg.png);</string>
      <rect>
       <x>124</x>
       <y>364</y>
-      <width>106</width>
+      <width>96</width>
       <height>45</height>
      </rect>
     </property>
@@ -1667,7 +1678,7 @@ background-image: url(:/pic/field_bg.png);</string>
      <rect>
       <x>125</x>
       <y>416</y>
-      <width>106</width>
+      <width>96</width>
       <height>45</height>
      </rect>
     </property>
@@ -2892,6 +2903,35 @@ background-image: url(:/pic/field_bg.png);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="faultHisButton">
+   <property name="geometry">
+    <rect>
+     <x>1749</x>
+     <y>10</y>
+     <width>121</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>15</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);
+border:0px</string>
+   </property>
+   <property name="text">
+    <string>故障历史</string>
+   </property>
+   <property name="autoDefault">
+    <bool>true</bool>
+   </property>
+   <property name="default">
+    <bool>false</bool>
+   </property>
   </widget>
  </widget>
  <customwidgets>

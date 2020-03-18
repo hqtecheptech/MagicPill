@@ -21,7 +21,7 @@ MixerDlg::MixerDlg(QWidget *parent) :
     QString eixtStyleStr="QPushButton#exitButton{background: transparent; background-image: url(:/pic/退出.png);}"
                          "QPushButton#exitButton:hover{background: transparent; background-image: url(:/pic/退出.png);}"
                          "QPushButton#exitButton:pressed{background: transparent; background-image: url(:/pic/退出.png);}";
-    ui->exitButton->setStyleSheet(eixtStyleStr);
+    //ui->exitButton->setStyleSheet(eixtStyleStr);
 
     getServerConnectStateTcpClient = new TcpClientSocket(this);
     connect(getServerConnectStateTcpClient, SIGNAL(updateConnectState(bool)), this, SLOT(localServerConnected(bool)));
@@ -52,6 +52,7 @@ MixerDlg::MixerDlg(QWidget *parent) :
     readDataTimer->start(1500);
 
     mixSettingDlg = new MixSettingDialog();
+    alertHisDlg = new AlertHistoryDialog(this);
 
     //controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
     //if(controller != Q_NULLPTR)
@@ -374,10 +375,11 @@ void MixerDlg::dispatchData(QSet<int> changedDeviceSet, QMap<float, QString> dat
         }
         else
         {
-            if(Global::currentMixDataMap[dictAddress] != dataMap[dictAddress])
+            if(Global::currentMixDataMap[dictAddress] != dataMap[dictAddress]
+                    && Global::getMixNodeInfoByRunctrAddress(dictAddress).Priority == 1)
             {
                 uint tankIndex = i / Global::mixDeviceInfo.RunCtr_Block_Size;
-                DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(tankIndex);
+                DeviceGroupInfo info = Global::getMixDeviceGroupInfo(tankIndex);
 
                 QList<QStandardItem *> newItemList;
                 QList<QStandardItem *> newSimpleItemList;
@@ -415,7 +417,16 @@ void MixerDlg::dispatchData(QSet<int> changedDeviceSet, QMap<float, QString> dat
                     newItemList.append(new QStandardItem(""));
                 }
 
+                if(UiGlobal::simpleAlertsModel->rowCount() > 200)
+                {
+                   UiGlobal::simpleAlertsModel->removeRow(UiGlobal::simpleAlertsModel->rowCount() - 1);
+                }
                 UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
+
+                if(UiGlobal::alertsModel->rowCount() > 200)
+                {
+                   UiGlobal::alertsModel->removeRow(UiGlobal::alertsModel->rowCount() - 1);
+                }
                 UiGlobal::alertsModel->insertRow(0, newItemList);
                 Global::currentMixDataMap[dictAddress] = dataMap[dictAddress];
             }
@@ -781,7 +792,7 @@ void MixerDlg::parseData(QMap<float, QString> dataMap)
 
 void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
 {
-    bool emRun, emFault, coro1, coro2, inve1, inve2, unloading;
+    bool emRun, emFault, coro1, coro2, inve1, inve2, unloading, opened, closed;
 
     emRun = Global::getMixRunctrValueByName(0, "SLUG_CY_1_EM_RUN", dataMap);
     emFault = Global::getMixRunctrValueByName(0, "SLUG_CY_1_EM_FAULT", dataMap);
@@ -789,7 +800,7 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     inve1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_CY_1_PLUG", dataMap);
     coro2 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_CY_2_PUSH", dataMap);
     inve2 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_CY_2_PLUG", dataMap);
-    ui->cy_em_1_widget->setStatus(emRun, emFault, coro1, coro2, inve1, inve2);
+    ui->cy_em_1_widget->setStatus(emRun, emFault, coro1, inve1,coro2, inve2);
 
     emRun = Global::getMixRunctrValueByName(0, "SLUG_CY_2_EM_RUN", dataMap);
     emFault = Global::getMixRunctrValueByName(0, "SLUG_CY_2_EM_FAULT", dataMap);
@@ -797,14 +808,14 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     inve1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_CY_1_PLUG", dataMap);
     coro2 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_CY_2_PUSH", dataMap);
     inve2 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_CY_2_PLUG", dataMap);
-    ui->cy_em_2_widget->setStatus(emRun, emFault, coro1, coro2, inve1, inve2);
+    ui->cy_em_2_widget->setStatus(emRun, emFault, coro1, inve1, coro2, inve2);
 
     emRun = Global::getMixRunctrValueByName(0, "SLUG_CP_1_EM_RUN", dataMap);
     emFault = Global::getMixRunctrValueByName(0, "SLUG_CP_1_EM_FAULT", dataMap);
     coro1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_CP_OPEN", dataMap);
     inve1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_CP_CLOSE", dataMap);
     unloading = Global::getMixRunctrValueByName(0, "FC_PLATE_1_UV", dataMap);
-    unloading = unloading & (coro1 || inve1);
+    unloading = unloading & (coro1 || inve1) & emRun;
     ui->cp_1_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
 
     emRun = Global::getMixRunctrValueByName(0, "SLUG_CP_2_EM_RUN", dataMap);
@@ -812,7 +823,7 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     coro1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_CP_OPEN", dataMap);
     inve1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_CP_CLOSE", dataMap);
     unloading = Global::getMixRunctrValueByName(0, "FC_PLATE_2_UV", dataMap);
-    unloading = unloading & (coro1 || inve1);
+    unloading = unloading & (coro1 || inve1) & emRun;
     ui->cp_2_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
 
     emRun = Global::getMixRunctrValueByName(0, "ING_SPIRAL_EM_RUN", dataMap);
@@ -821,7 +832,7 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     inve1 = Global::getMixRunctrValueByName(0, "ING_SPIRAL_1_INVE", dataMap);
     coro2 = Global::getMixRunctrValueByName(0, "ING_SPIRAL_2_CORO", dataMap);
     inve2 = Global::getMixRunctrValueByName(0, "ING_SPIRAL_2_INVE", dataMap);
-    ui->spiral_em_widget->setStatus(emRun, emFault, coro1, coro2, inve1, inve2);
+    ui->spiral_em_widget->setStatus(emRun, emFault, coro1, inve1, coro2, inve2);
 
     emRun = Global::getMixRunctrValueByName(0, "ING_WHEEL_EM_RUN", dataMap);
     emFault = Global::getMixRunctrValueByName(0, "ING_WHEEL_EM_FAULT", dataMap);
@@ -829,14 +840,14 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     inve1 = Global::getMixRunctrValueByName(0, "ING_WHEEL_1_INVE", dataMap);
     coro2 = Global::getMixRunctrValueByName(0, "ING_WHEEL_2_CORO", dataMap);
     inve2 = Global::getMixRunctrValueByName(0, "ING_WHEEL_2_INVE", dataMap);
-    ui->wheel_em_widget->setStatus(emRun, emFault, coro1, coro2, inve1, inve2);
+    ui->wheel_em_widget->setStatus(emRun, emFault, coro1, inve1, coro2, inve2);
 
     emRun = Global::getMixRunctrValueByName(0, "CONVEYER_1_EM_RUN", dataMap);
     emFault = Global::getMixRunctrValueByName(0, "CONVEYER_1_EM_FAULT", dataMap);
     coro1 = Global::getMixRunctrValueByName(0, "CONVEYER_1_CORO", dataMap);
     inve1 = Global::getMixRunctrValueByName(0, "CONVEYER_1_INVE", dataMap);
     unloading = Global::getMixRunctrValueByName(0, "MIXER_UV", dataMap);
-    unloading = unloading & (coro1 || inve1);
+    unloading = unloading & (coro1 || inve1)  & emRun;
     ui->sp_em_1_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
 
     emRun = Global::getMixRunctrValueByName(0, "CONVEYER_3_4_EM_RUN", dataMap);
@@ -845,7 +856,7 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     inve1 = Global::getMixRunctrValueByName(0, "CONVEYER_3_INVE", dataMap);
     coro2 = Global::getMixRunctrValueByName(0, "CONVEYER_4_CORO", dataMap);
     inve2 = Global::getMixRunctrValueByName(0, "CONVEYER_4_INVE", dataMap);
-    ui->cp_em_3_4_widget->setStatus(emRun, emFault, coro1, coro2, inve1, inve2);
+    ui->cp_em_3_4_widget->setStatus(emRun, emFault, coro1, inve1, coro2, inve2);
 
     emRun = Global::getMixRunctrValueByName(0, "SLUG_SPIRAL_EM_RUN", dataMap);
     emFault = Global::getMixRunctrValueByName(0, "SLUG_SPIRAL_EM_FAULT", dataMap);
@@ -853,24 +864,34 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     inve1 = false;
     coro2 = Global::getMixRunctrValueByName(0, "SLUG_SPIRAL_CORO_VALVE_2", dataMap);
     inve2 = false;
-    ui->slug_spiral_em_widget->setStatus(emRun, emFault, coro1, coro2, inve1, inve2);
+    ui->slug_spiral_em_widget->setStatus(emRun, emFault, coro1, inve1, coro2, inve2);
 
     emFault = Global::getMixRunctrValueByName(0, "CONVEYER_5_FAULT", dataMap);
     coro1 = Global::getMixRunctrValueByName(0, "CONVEYER_5_RUN", dataMap);
     inve1 = Global::getMixRunctrValueByName(0, "CONVEYER_5_COUNTER_RUN", dataMap);
+
+    if(!inve1 && !coro1)
+    {
+        ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/red_box.png);color: rgb(255, 255, 255)}");
+        ui->CONVEYER_5_STATE_label->setText("");
+    }
+
     if(emFault)
     {
-        ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/yellow_box.png)}");
+        ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/yellow_box.png);color: rgb(255, 255, 255)}");
+        ui->CONVEYER_5_STATE_label->setText("");
     }
     else
     {
-        if(coro1 || inve1)
+        if(inve1)
         {
-            ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/green_box.png)}");
+            ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/inve_state.png);color: rgb(255, 255, 255)}");
+            ui->CONVEYER_5_STATE_label->setText("反转");
         }
-        else if(!inve1 && !coro1)
+        else if(coro1)
         {
-            ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/red_box.png)}");
+            ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/green_box.png);color: rgb(255, 255, 255)}");
+            ui->CONVEYER_5_STATE_label->setText("正转");
         }
     }
 
@@ -913,38 +934,78 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     emFault = Global::getMixRunctrValueByName(0, "SLUG_VALVE_1_EM_FAULT", dataMap);
     coro1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_VALVE_OPEN", dataMap);
     inve1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_VALVE_CLOSE", dataMap);
+    opened = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_VALVE_OPEN_IN_PLACE", dataMap);
+    closed = Global::getMixRunctrValueByName(0, "SLUG_BIN_1_VALVE_CLOSE_IN_PLACE", dataMap);
     if(emFault)
     {
-        ui->SLUG_BIN_1_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_1_VALVE_STATE_label{background-image:url(:/pic/yellow_box.png)}");
+        ui->SLUG_BIN_1_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_1_VALVE_STATE_label{background-image:url(:/pic/yellow_box.png);color: rgb(255, 255, 255)};");
+        ui->SLUG_BIN_1_VALVE_STATE_label->setText("");
     }
     else
     {
-        if(coro1 || !inve1)
+        if(coro1)
         {
-            ui->SLUG_BIN_1_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_1_VALVE_STATE_label{background-image:url(:/pic/green_box.png)}");
+            ui->SLUG_BIN_1_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_1_VALVE_STATE_label{background-image:url(:/pic/green_box.png);color: rgb(255, 255, 255)}");
+            ui->SLUG_BIN_1_VALVE_STATE_label->setText("正转");
         }
-        else if(inve1 && !coro1)
+        if(inve1)
         {
-            ui->SLUG_BIN_1_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_1_VALVE_STATE_label{background-image:url(:/pic/red_box.png)}");
+            ui->SLUG_BIN_1_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_1_VALVE_STATE_label{background-image:url(:/pic/inve_state.png);color: rgb(255, 255, 255)}");
+            ui->SLUG_BIN_1_VALVE_STATE_label->setText("反转");
+        }
+        if(opened)
+        {
+            ui->SLUG_BIN_1_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_1_VALVE_STATE_label{background-image:url(:/pic/open_in_pos.png);color: rgb(255, 255, 255)}");
+            ui->SLUG_BIN_1_VALVE_STATE_label->setText("开到位");
+        }
+        if(closed)
+        {
+            ui->SLUG_BIN_1_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_1_VALVE_STATE_label{background-image:url(:/pic/close_in_pos.png);color: rgb(255, 255, 255)}");
+            ui->SLUG_BIN_1_VALVE_STATE_label->setText("关到位");
+        }
+        if(!coro1 && !inve1 && !opened && !closed)
+        {
+            ui->SLUG_BIN_1_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_1_VALVE_STATE_label{background-image:url(:/pic/middle_state.png);color: rgb(255, 255, 255)}");
+            ui->SLUG_BIN_1_VALVE_STATE_label->setText("中间位");
         }
     }
 
     emFault = Global::getMixRunctrValueByName(0, "SLUG_VALVE_2_EM_FAULT", dataMap);
     coro1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_VALVE_OPEN", dataMap);
     inve1 = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_VALVE_CLOSE", dataMap);
+    opened = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_VALVE_OPEN_IN_PLACE", dataMap);
+    closed = Global::getMixRunctrValueByName(0, "SLUG_BIN_2_VALVE_CLOSE_IN_PLACE", dataMap);
     if(emFault)
     {
-        ui->SLUG_BIN_2_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_2_VALVE_STATE_label{background-image:url(:/pic/yellow_box.png)}");
+        ui->SLUG_BIN_2_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_2_VALVE_STATE_label{background-image:url(:/pic/yellow_box.png);color: rgb(255, 255, 255)}");
+        ui->SLUG_BIN_2_VALVE_STATE_label->setText("");
     }
     else
     {
-        if(coro1 || !inve1)
+        if(coro1)
         {
-            ui->SLUG_BIN_2_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_2_VALVE_STATE_label{background-image:url(:/pic/green_box.png)}");
+            ui->SLUG_BIN_2_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_2_VALVE_STATE_label{background-image:url(:/pic/green_box.png);color: rgb(255, 255, 255)}");
+            ui->SLUG_BIN_2_VALVE_STATE_label->setText("正转");
         }
-        else if(inve1 && !coro1)
+        else if(inve1)
         {
-            ui->SLUG_BIN_2_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_2_VALVE_STATE_label{background-image:url(:/pic/red_box.png)}");
+            ui->SLUG_BIN_2_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_2_VALVE_STATE_label{background-image:url(:/pic/inve_state.png);color: rgb(255, 255, 255)}");
+            ui->SLUG_BIN_2_VALVE_STATE_label->setText("反转");
+        }
+        else if(opened)
+        {
+            ui->SLUG_BIN_2_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_2_VALVE_STATE_label{background-image:url(:/pic/open_in_pos.png);color: rgb(255, 255, 255)}");
+            ui->SLUG_BIN_2_VALVE_STATE_label->setText("开到位");
+        }
+        else if(closed)
+        {
+            ui->SLUG_BIN_2_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_2_VALVE_STATE_label{background-image:url(:/pic/close_in_pos.png);color: rgb(255, 255, 255)}");
+            ui->SLUG_BIN_2_VALVE_STATE_label->setText("关到位");
+        }
+        else
+        {
+            ui->SLUG_BIN_2_VALVE_STATE_label->setStyleSheet("QLabel#SLUG_BIN_2_VALVE_STATE_label{background-image:url(:/pic/middle_state.png);color: rgb(255, 255, 255)}");
+            ui->SLUG_BIN_2_VALVE_STATE_label->setText("中间位");
         }
     }
 
@@ -1424,15 +1485,15 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
 
 }
 
-void MixerDlg::on_exitButton_clicked()
-{
-
-}
-
 void MixerDlg::on_settingButton_clicked()
 {
     mixSettingDlg->closeMsgBox();
     mixSettingDlg->close();
     mixSettingDlg->show();
     Keyboard::getInstance()->close();
+}
+
+void MixerDlg::on_faultHisButton_clicked()
+{
+    alertHisDlg->show();
 }

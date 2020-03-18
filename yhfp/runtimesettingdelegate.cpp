@@ -102,11 +102,11 @@ void RuntimeSettingDelegate::setModelData(QWidget *editor, QAbstractItemModel *m
             }
             break;
         case Rate:
-            if(value < 1000 || value > 5000)
+            if(value <= 100 || value >= 30)
             {
-                //msgBox->setText(QStringLiteral("值必须大于等于1000小于等于5000"));
+                //msgBox->setText(QStringLiteral("值必须大于等于30小于等于100"));
                 //msgBox->show();
-                emit inputInfo(QStringLiteral("值必须大于等于1000小于等于5000"));
+                emit inputInfo(QStringLiteral("值必须大于等于30小于等于100"));
             }
             else
             {

@@ -25,13 +25,13 @@ private:
     Ui::DoubleCyEmForm *ui;
 
     QTimer *ssTimer;
-    bool emRunStatus;
-    bool emFaultStatus;
-    bool isCoro1;
-    bool isInve1;
-    bool isCoro2;
-    bool isInve2;
-    bool stateFlag;
+    bool emRunStatus = false;
+    bool emFaultStatus = false;
+    bool isCoro1 = false;
+    bool isInve1 = false;
+    bool isCoro2 = false;
+    bool isInve2 = false;
+    bool stateFlag = false;
 };
 
 #endif // DOUBLECYEMFORM_H

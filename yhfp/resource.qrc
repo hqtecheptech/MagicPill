@@ -130,5 +130,10 @@
         <file>pic/KeyBoard/enter.png</file>
         <file>pic/KeyBoard/lower.png</file>
         <file>pic/KeyBoard/upper.png</file>
+        <file>pic/inve_state.png</file>
+        <file>pic/open_state.png</file>
+        <file>pic/close_in_pos.png</file>
+        <file>pic/open_in_pos.png</file>
+        <file>pic/middle_state.png</file>
     </qresource>
 </RCC>

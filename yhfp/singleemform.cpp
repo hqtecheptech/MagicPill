@@ -10,7 +10,7 @@ SingleEmForm::SingleEmForm(QWidget *parent) :
     ssTimer = new QTimer();
     connect(ssTimer, SIGNAL(timeout()), this, SLOT(switchStatus()));
 
-    ssTimer->start(2000);
+    ssTimer->start(1000);
 }
 
 SingleEmForm::~SingleEmForm()
@@ -47,7 +47,7 @@ void SingleEmForm::setStatus(bool emRum, bool emFault, bool coro, bool inve, boo
         ui->coro_1_label->setStyleSheet("QLabel#coro_1_label{background-image:url(:/pic/inve.png)}");
     }
 
-    if(isInve)
+    if(!isInve)
     {
         ui->inve_1_label->setStyleSheet("QLabel#inve_1_label{background-image:url(:/pic/inve.png)}");
     }

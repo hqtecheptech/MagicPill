@@ -25,12 +25,12 @@ private:
     Ui::SingleEmForm *ui;
 
     QTimer *ssTimer;
-    bool emRunStatus;
-    bool emFaultStatus;
-    bool isCoro;
-    bool isInve;
-    bool isUnLoading;
-    bool stateFlag;
+    bool emRunStatus = false;
+    bool emFaultStatus = false;
+    bool isCoro = false;
+    bool isInve = false;
+    bool isUnLoading = false;
+    bool stateFlag = false;
 };
 
 #endif // SINGLEEMFORM_H

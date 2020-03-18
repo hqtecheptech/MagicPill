@@ -10,7 +10,7 @@ DoubleCyEmForm::DoubleCyEmForm(QWidget *parent) :
     ssTimer = new QTimer();
     connect(ssTimer, SIGNAL(timeout()), this, SLOT(switchStatus()));
 
-    ssTimer->start(2000);
+    ssTimer->start(1000);
 }
 
 DoubleCyEmForm::~DoubleCyEmForm()
@@ -57,7 +57,7 @@ void DoubleCyEmForm::setStatus(bool emRum, bool emFault, bool coro1, bool inve1,
         ui->coro_2_label->setStyleSheet("QLabel#coro_2_label{background-image:url(:/pic/inve.png)}");
     }
 
-    if(isInve1)
+    if(!isInve1)
     {
         ui->inve_1_label->setStyleSheet("QLabel#inve_1_label{background-image:url(:/pic/inve.png)}");
     }
@@ -66,7 +66,7 @@ void DoubleCyEmForm::setStatus(bool emRum, bool emFault, bool coro1, bool inve1,
         ui->inve_1_label->setStyleSheet("QLabel#inve_1_label{background-image:url(:/pic/coro.png)}");
     }
 
-    if(isInve2)
+    if(!isInve2)
     {
         ui->inve_2_label->setStyleSheet("QLabel#inve_2_label{background-image:url(:/pic/inve.png)}");
     }

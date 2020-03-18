@@ -9,6 +9,7 @@
 #include "parseserverdataworker.h"
 #include "identity.h"
 #include "mixsettingdialog.h"
+#include "alerthistorydialog.h"
 
 namespace Ui {
 class MixerDlg;
@@ -26,9 +27,9 @@ private slots:
     void netStatChecked(QString type, bool state);
     void getNetState();
 
-    void on_exitButton_clicked();
-
     void on_settingButton_clicked();
+
+    void on_faultHisButton_clicked();
 
 signals:
     void checkNetState(QString type);
@@ -68,6 +69,7 @@ private:
     QTimer* updateWatchsTimer;
     QTimer* readDataTimer;
     MixSettingDialog *mixSettingDlg;
+    AlertHistoryDialog *alertHisDlg;
     int uca = 0;
     //Syscontroller* controller;
     Plc_Db oldPlcDb;
