@@ -364,6 +364,7 @@ void FerControlDialog::parseFermentationData(QMap<float,QString> dataMap)
     deviceNode = Global::getFermenationNodeInfoByName("FER_HT_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             *  Global::getLengthByDataType(deviceNode.DataType);
+    QString temp = dataMap[address];
     ui->highTemptureLabel->setText(dataMap[address]);
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_MT_R");

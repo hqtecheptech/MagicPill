@@ -344,8 +344,9 @@ void FanControlDialog::parseFermentationData(QMap<float,QString> dataMap)
         ui->valveOpenTimeLabel->setText(dataMap[address]);
     }
 
+    //Here only have one value for all devices, so set deviceIndex to const 0.
     deviceNode = Global::getFermenationNodeInfoByName("VALVE_CLOSE_TIME");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+    address = deviceNode.Offset + (info.offset + 0 - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
     if(oldValveClose != dataMap[address])
     {

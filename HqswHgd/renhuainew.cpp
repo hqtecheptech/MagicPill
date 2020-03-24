@@ -94,7 +94,6 @@ void RenhuaiNew::updateFerData(QSet<int> changedDeviceSet, QMap<float,QString> d
     }
 
     QString strValue = "T:" + QString::number(envParamsArray.at(0)->getTemperature(), 'f', 2) + "  ";
-            //strValue.append("W:" + QString::number(envParamsArray.at(0)->getHumidity(), 'f', 2) + " %  ");
             strValue.append("I:" + QString::number(envParamsArray.at(0)->getHumidity(), 'f', 2) + " A  ");
             strValue.append("NH3:" + QString::number(envParamsArray.at(0)->getNh3(), 'f', 2) + " ppm  ");
             strValue.append("H2S:" + QString::number(envParamsArray.at(0)->getH2s(), 'f', 2) + " ppm");

@@ -12,10 +12,11 @@ void ParseServerDataWorker::parseFerServerData(QByteArray data)
     StreamPack bDevice;
     memcpy(&bDevice,data,sizeof(bDevice));
 
-    QByteArray byteValues = data.mid(sizeof(bDevice), data.length() - sizeof(bDevice) - 4 * bDevice.bDataLength);
+    QByteArray byteValues = data.mid(sizeof(bDevice), data.length() - sizeof(bDevice) - 4 * bDevice.bDataLength);    
     QTextCodec *codec = QTextCodec::codecForLocale();
     QString strValues = codec->toUnicode(byteValues);
-    QStringList strValueList = strValues.split(",");
+    QString realStrValues = strValues.mid(4);
+    QStringList strValueList = realStrValues.split(",");
     QVector<QString> strArray = strValueList.toVector();
 
     byteValues = data.mid(data.length() - 4 * bDevice.bDataLength, 4 * bDevice.bDataLength);
