@@ -28,6 +28,8 @@ public:
     explicit ZsylChart(QWidget *parent = 0);
     ~ZsylChart();
 
+    void setRange(int r1, int r2);
+
 protected:
     void showEvent(QShowEvent *);
     void closeEvent(QCloseEvent *);
@@ -54,6 +56,8 @@ private:
     // History one page values
     int rsValues[CP];
     int prsValues[CP];
+
+    int range1, range2;
 };
 
 #endif // ZSYLCHART_H

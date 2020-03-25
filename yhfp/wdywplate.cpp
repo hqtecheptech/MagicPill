@@ -7,8 +7,8 @@ WdywPlate::WdywPlate(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->frame->setLeftRange(-30, 120);
-    ui->frame->setRightRange(0, 1500);
+    ui->frame->setLeftRange(0, 150);
+    ui->frame->setRightRange(0, 150);
     ui->frame->setValue(0, 0);
 }
 

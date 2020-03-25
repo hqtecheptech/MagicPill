@@ -53,7 +53,9 @@ SOURCES += main.cpp\
     runtimesettingdelegate.cpp \
     mixsettingdialog.cpp \
     keyboard.cpp \
-    alerthistorydialog.cpp
+    alerthistorydialog.cpp \
+    alerthistoryform.cpp \
+    yhcrunstatusdialog.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -94,7 +96,9 @@ HEADERS  += mainwindow.h \
     runtimesettingdelegate.h \
     mixsettingdialog.h \
     keyboard.h \
-    alerthistorydialog.h
+    alerthistorydialog.h \
+    alerthistoryform.h \
+    yhcrunstatusdialog.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \
@@ -116,7 +120,9 @@ FORMS    += mainwindow.ui \
     singleemform.ui \
     mixsettingdialog.ui \
     keyboard.ui \
-    alerthistorydialog.ui
+    alerthistorydialog.ui \
+    alerthistoryform.ui \
+    yhcrunstatusdialog.ui
 
 RESOURCES += \
     resource.qrc

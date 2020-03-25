@@ -6,19 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>705</width>
     <height>350</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="ControlHistory" name="hisWidget" native="true">
+  <property name="styleSheet">
+   <string notr="true">background-image: url(:/pic/blue_bg.png);</string>
+  </property>
+  <widget class="AlertHistoryForm" name="hisWidget" native="true">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>695</width>
+     <x>11</x>
+     <y>11</y>
+     <width>605</width>
      <height>325</height>
     </rect>
    </property>
@@ -26,7 +29,7 @@
   <widget class="QPushButton" name="closePushButton">
    <property name="geometry">
     <rect>
-     <x>720</x>
+     <x>630</x>
      <y>20</y>
      <width>60</width>
      <height>60</height>
@@ -52,9 +55,9 @@ border:0px</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ControlHistory</class>
+   <class>AlertHistoryForm</class>
    <extends>QWidget</extends>
-   <header location="global">controlhistory.h</header>
+   <header location="global">alerthistoryform.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

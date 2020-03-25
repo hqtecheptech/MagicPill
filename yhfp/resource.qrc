@@ -135,5 +135,6 @@
         <file>pic/close_in_pos.png</file>
         <file>pic/open_in_pos.png</file>
         <file>pic/middle_state.png</file>
+        <file>pic/hq_logo.png</file>
     </qresource>
 </RCC>

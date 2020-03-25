@@ -19,7 +19,7 @@
   <property name="styleSheet">
    <string notr="true">background-image: url(:/pic/翻抛系统背景_3.jpg);</string>
   </property>
-  <widget class="FpjWatchs" name="yhcWatchsWidget" native="true">
+  <widget class="FpjWatchs" name="fpjWatchsWidget" native="true">
    <property name="geometry">
     <rect>
      <x>691</x>
@@ -35,7 +35,7 @@
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>1697</x>
+     <x>1810</x>
      <y>418</y>
      <width>31</width>
      <height>17</height>
@@ -73,7 +73,7 @@
   <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
-     <x>1698</x>
+     <x>1810</x>
      <y>148</y>
      <width>31</width>
      <height>17</height>
@@ -115,7 +115,7 @@ background-image: url(:/pic/报警信息-拷贝.png);</string>
   <widget class="QLabel" name="label_8">
    <property name="geometry">
     <rect>
-     <x>1669</x>
+     <x>1781</x>
      <y>152</y>
      <width>21</width>
      <height>11</height>
@@ -128,7 +128,7 @@ background-image: url(:/pic/报警信息-拷贝.png);</string>
     <string/>
    </property>
   </widget>
-  <widget class="ZsylChart" name="widget_2" native="true">
+  <widget class="ZsylChart" name="leftCurveWidget" native="true">
    <property name="geometry">
     <rect>
      <x>1427</x>
@@ -144,7 +144,7 @@ background-image: url(:/pic/报警信息-拷贝.png);</string>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>1548</x>
+     <x>1690</x>
      <y>422</y>
      <width>21</width>
      <height>11</height>
@@ -197,7 +197,7 @@ background-image: url(:/pic/报警信息-拷贝.png);</string>
   <widget class="QLabel" name="label_10">
    <property name="geometry">
     <rect>
-     <x>1579</x>
+     <x>1720</x>
      <y>148</y>
      <width>31</width>
      <height>17</height>
@@ -219,7 +219,7 @@ background-image: url(:/pic/报警信息-拷贝.png);</string>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>1668</x>
+     <x>1781</x>
      <y>422</y>
      <width>21</width>
      <height>11</height>
@@ -379,7 +379,7 @@ background-image: url(:/pic/历史记录-拷贝.png);</string>
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="ZsylChart" name="widget_3" native="true">
+  <widget class="ZsylChart" name="rightCurveWidget" native="true">
    <property name="geometry">
     <rect>
      <x>1427</x>
@@ -395,7 +395,7 @@ background-image: url(:/pic/历史记录-拷贝.png);</string>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
     <rect>
-     <x>1549</x>
+     <x>1690</x>
      <y>152</y>
      <width>21</width>
      <height>11</height>
@@ -427,7 +427,7 @@ background-image: url(:/pic/历史记录-拷贝.png);</string>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>1578</x>
+     <x>1720</x>
      <y>418</y>
      <width>31</width>
      <height>17</height>
@@ -570,6 +570,115 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
    </property>
    <property name="styleSheet">
     <string notr="true">background: transparent; </string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="leftFpButton">
+   <property name="geometry">
+    <rect>
+     <x>1430</x>
+     <y>135</y>
+     <width>100</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/pic/左翻抛.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="leftLdButton">
+   <property name="geometry">
+    <rect>
+     <x>1529</x>
+     <y>135</y>
+     <width>100</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/pic/左履带.png) 0 0 0 100;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="rightFpButton">
+   <property name="geometry">
+    <rect>
+     <x>1430</x>
+     <y>405</y>
+     <width>100</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/pic/右翻抛.png);</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="rightLdButton">
+   <property name="geometry">
+    <rect>
+     <x>1529</x>
+     <y>405</y>
+     <width>100</width>
+     <height>42</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/pic/右履带.png) 0 0 0 100;</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="flat">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="test_label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>0</y>
+     <width>141</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(50, 100, 200);
+background: transparent;</string>
+   </property>
+   <property name="text">
+    <string>合清环保</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>

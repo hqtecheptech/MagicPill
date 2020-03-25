@@ -28,19 +28,95 @@ void HistoryDlg::on_oneButton_clicked()
 {
     QString db = "hq_yhfp_data.db";
     QString table = "curve_hist";
-    QString strSql = "select value from curve_hist where name='Ampere1' order by histId desc;";
+
+    QString name = "";
+    if(ui->comboBox->currentText() == "压力")
+    {
+        name = "Yhc_Pressure";
+        ui->widget->setRange(300, 100);
+        flag = 0;
+    }
+    else if(ui->comboBox->currentText() == "转速")
+    {
+        name = "Yhc_Speed";
+        ui->widget->setRange(300, 100);
+        flag = 1;
+    }
+    else if(ui->comboBox->currentText() == "电流")
+    {
+        name = "Yhc_Total_Ampere";
+        ui->widget->setRange(500, 450);
+        flag = 1;
+    }
+    else if(ui->comboBox->currentText() == "电压")
+    {
+        name = "Yhc_Total_Voltage";
+        ui->widget->setRange(500, 450);
+        flag = 0;
+    }
+    else if(ui->comboBox->currentText() == "左翻抛压力")
+    {
+        name = "Fpj_Left_Roller_Pressure";
+        ui->widget->setRange(300, 180);
+        flag = 0;
+    }
+    else if(ui->comboBox->currentText() == "左翻抛转速")
+    {
+        name = "Fpj_Left_Roller_Speed";
+        ui->widget->setRange(300, 180);
+        flag = 1;
+    }
+    else if(ui->comboBox->currentText() == "左履带压力")
+    {
+        name = "Fpj_Left_Walking_Pressure";
+        ui->widget->setRange(300, 25000);
+        flag = 0;
+    }
+    else if(ui->comboBox->currentText() == "左履带转速")
+    {
+        name = "Fpj_Left_Servo_Pulse";
+        ui->widget->setRange(300, 25000);
+        flag = 1;
+    }
+    else if(ui->comboBox->currentText() == "右翻抛压力")
+    {
+        name = "Fpj_Right_Roller_Pressure";
+        ui->widget->setRange(300, 180);
+        flag = 0;
+    }
+    else if(ui->comboBox->currentText() == "右翻抛转速")
+    {
+        name = "Fpj_Right_Roller_Speed";
+        ui->widget->setRange(300, 180);
+        flag = 1;
+    }
+    else if(ui->comboBox->currentText() == "右履带压力")
+    {
+        name = "Fpj_Right_Walking_Pressure";
+        ui->widget->setRange(300, 25000);
+        flag = 0;
+    }
+    else if(ui->comboBox->currentText() == "右履带转速")
+    {
+        name = "Fpj_Right_Servo_Pulse";
+        ui->widget->setRange(300, 25000);
+        flag = 1;
+    }
+
+    QString strSql = "select value from curve_hist where name='" + name + "' order by histId desc;";
+
     SQLiteHelper::Results.clear();
     dbHelper.select(db, table, strSql);
 
-    ampere1Values = SQLiteHelper::Results;
-    //qDebug() << "Ampere1 values counts: " << ampere1Values.length();
+    reslutValues = SQLiteHelper::Results;
+    qDebug() << "Result values counts: " << reslutValues.length();
 
     ui->preButton->setEnabled(false);
     ui->nextButton->setEnabled(false);
 
-    if(ampere1Values.length() > CP)
+    if(reslutValues.length() > CP)
     {
-        pages = (int)floor((float)ampere1Values.length() / (float)CP);
+        pages = (int)floor((float)reslutValues.length() / (float)CP);
         currentPage = 0;
 
         if(currentPage < pages)
@@ -55,7 +131,14 @@ void HistoryDlg::on_oneButton_clicked()
 
         for(int i=CP-1; i >= 0; i--)
         {
-            ui->widget->updateUI(0, ampere1Values.at(i).toInt());
+            if(flag == 0)
+            {
+                ui->widget->updateUI(reslutValues.at(i).toInt(), 0);
+            }
+            else
+            {
+                ui->widget->updateUI(0, reslutValues.at(i).toInt());
+            }
         }
     }
 }
@@ -67,7 +150,14 @@ void HistoryDlg::on_preButton_clicked()
 
     for(int i=CP-1; i >= 0; i--)
     {
-        ui->widget->updateUI(0, ampere1Values.at(currentPage*CP + i).toInt());
+        if(flag == 1)
+        {
+            ui->widget->updateUI(0, reslutValues.at(currentPage*CP + i).toInt());
+        }
+        else
+        {
+            ui->widget->updateUI(reslutValues.at(currentPage*CP + i).toInt(), 0);
+        }
     }
 
     if(currentPage == 0)
@@ -88,13 +178,27 @@ void HistoryDlg::on_nextButton_clicked()
 
     for(int i=CP-1; i >= 0; i--)
     {
-        if((currentPage*CP + i) < ampere1Values.length())
+        if((currentPage*CP + i) < reslutValues.length())
         {
-            ui->widget->updateUI(0, ampere1Values.at(currentPage*CP + i).toInt());
+            if(flag == 1)
+            {
+                ui->widget->updateUI(0, reslutValues.at(currentPage*CP + i).toInt());
+            }
+            else
+            {
+                ui->widget->updateUI(reslutValues.at(currentPage*CP + i).toInt(), 0);
+            }
         }
         else
         {
-            ui->widget->updateUI(0, CV);
+            if(flag == 1)
+            {
+                ui->widget->updateUI(0, CV);
+            }
+            else
+            {
+                ui->widget->updateUI(CV, 0);
+            }
         }
     }
 
@@ -112,4 +216,10 @@ void HistoryDlg::on_nextButton_clicked()
 void HistoryDlg::on_closeButton_clicked()
 {
     close();
+}
+
+void HistoryDlg::setQueryItems(QStringList items)
+{
+    ui->comboBox->clear();
+    ui->comboBox->addItems(items);
 }

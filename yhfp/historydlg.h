@@ -27,14 +27,18 @@ private slots:
 
     void on_closeButton_clicked();
 
+public slots:
+    void setQueryItems(QStringList items);
+
 private:
     Ui::HistoryDlg *ui;
 
     SQLiteHelper dbHelper;
-    QVector<QString> ampere1Values;
+    QVector<QString> reslutValues;
     // History page values
     int ampere1ChartValues[CP];
     int pages, currentPage;
+    int flag = 0;
 };
 
 #endif // HISTORYDLG_H

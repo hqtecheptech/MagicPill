@@ -15,7 +15,7 @@ ControlHistory::ControlHistory(QWidget *parent) :
     ui->hisTableView->setShowGrid(false);
     ui->hisTableView->setColumnWidth(0, 685);
 
-    ui->hisTableView->verticalScrollBar()
+    /*ui->hisTableView->verticalScrollBar()
             ->setStyleSheet("QScrollBar:vertical"
                                 "{"
                                 "width:50px;"
@@ -66,7 +66,7 @@ ControlHistory::ControlHistory(QWidget *parent) :
                                 "{"
                                 "background:rgba(0,0,0,10%);"
                                 "border-radius:4px;"
-                                "}");
+                                "}");*/
 }
 
 ControlHistory::~ControlHistory()

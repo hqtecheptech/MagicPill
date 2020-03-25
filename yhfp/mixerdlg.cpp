@@ -49,7 +49,7 @@ MixerDlg::MixerDlg(QWidget *parent) :
 
     readDataTimer = new QTimer(this);
     connect(readDataTimer, SIGNAL(timeout()), this, SLOT(readData()));
-    readDataTimer->start(1500);
+    readDataTimer->start(1000);
 
     mixSettingDlg = new MixSettingDialog();
     alertHisDlg = new AlertHistoryDialog(this);
@@ -107,7 +107,7 @@ void MixerDlg::netStatChecked(QString type, bool state)
 
 void MixerDlg::getNetState()
 {
-    emit checkNetState("wlan");
+    //emit checkNetState("wlan");
     emit checkNetState("eth");
 }
 
@@ -386,58 +386,69 @@ void MixerDlg::dispatchData(QSet<int> changedDeviceSet, QMap<float, QString> dat
                 Global::alertIndex += 1;
                 QString simpleAlert;
 
-                newItemList.append(new QStandardItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")));
-                newItemList.append(new QStandardItem(QString::number((tankIndex + info.startIndex)+1)));
-                if(tempValue.toBool())
+                try
                 {
-                    newItemList.append(new QStandardItem(Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert1));
-                    simpleAlert = QString::number(Global::alertIndex) + ": " +
-                            QString::number(tankIndex+1) + "#" +
-                            Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert1 + " " +
-                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-                }
-                else
-                {
-                    newItemList.append(new QStandardItem(Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert0));
-                    simpleAlert = QString::number(Global::alertIndex) + ": " +
-                            QString::number(tankIndex+1) + "#" +
-                            Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert0 + " " +
-                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+                    qDebug() << "QDateTime::currentDateTime()" << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+                    newItemList.append(new QStandardItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")));
+                    newItemList.append(new QStandardItem(QString::number((tankIndex + info.startIndex)+1)));
+                    if(tempValue.toBool())
+                    {
+                        newItemList.append(new QStandardItem(Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert1));
+                        simpleAlert = QString::number(Global::alertIndex) + ": " +
+                                QString::number(tankIndex+1) + "#" +
+                                Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert1 + " " +
+                                QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+                    }
+                    else
+                    {
+                        newItemList.append(new QStandardItem(Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert0));
+                        simpleAlert = QString::number(Global::alertIndex) + ": " +
+                                QString::number(tankIndex+1) + "#" +
+                                Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert0 + " " +
+                                QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
-                }
-                QStandardItem *simpleAlertItem = new QStandardItem(simpleAlert);
-                newSimpleItemList.append(simpleAlertItem);
+                    }
+                    QStandardItem *simpleAlertItem = new QStandardItem(simpleAlert);
+                    newSimpleItemList.append(simpleAlertItem);
 
-                if(Identity::getInstance()->getUser() != Q_NULLPTR)
-                {
-                    newItemList.append(new QStandardItem(Identity::getInstance()->getUser()->getUsername()));
-                }
-                else
-                {
-                    newItemList.append(new QStandardItem(""));
-                }
+                    if(Identity::getInstance()->getUser() != Q_NULLPTR)
+                    {
+                        newItemList.append(new QStandardItem(Identity::getInstance()->getUser()->getUsername()));
+                    }
+                    else
+                    {
+                        newItemList.append(new QStandardItem(""));
+                    }
 
-                if(UiGlobal::simpleAlertsModel->rowCount() > 200)
-                {
-                   UiGlobal::simpleAlertsModel->removeRow(UiGlobal::simpleAlertsModel->rowCount() - 1);
-                }
-                UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
+                    if(UiGlobal::simpleAlertsModel->rowCount() > 200)
+                    {
+                       UiGlobal::simpleAlertsModel->removeRow(UiGlobal::simpleAlertsModel->rowCount() - 1);
+                    }
+                    UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
 
-                if(UiGlobal::alertsModel->rowCount() > 200)
-                {
-                   UiGlobal::alertsModel->removeRow(UiGlobal::alertsModel->rowCount() - 1);
+                    if(UiGlobal::alertsModel->rowCount() > 200)
+                    {
+                       UiGlobal::alertsModel->removeRow(UiGlobal::alertsModel->rowCount() - 1);
+                    }
+                    UiGlobal::alertsModel->insertRow(0, newItemList);
                 }
-                UiGlobal::alertsModel->insertRow(0, newItemList);
-                Global::currentMixDataMap[dictAddress] = dataMap[dictAddress];
+                catch(exception ex)
+                {
+                    qDebug() << "ex.what" << ex.what();
+                }
             }
+            Global::currentMixDataMap[dictAddress] = dataMap[dictAddress];
         }
     }
 }
 
 void MixerDlg::updateData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
 {
-    parseData(dataMap);
-    parseRunCtrData(dataMap);
+    if(changedDeviceSet.count() > 0)
+    {
+        parseData(dataMap);
+        parseRunCtrData(dataMap);
+    }
 }
 
 void MixerDlg::readData()
@@ -870,12 +881,6 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     coro1 = Global::getMixRunctrValueByName(0, "CONVEYER_5_RUN", dataMap);
     inve1 = Global::getMixRunctrValueByName(0, "CONVEYER_5_COUNTER_RUN", dataMap);
 
-    if(!inve1 && !coro1)
-    {
-        ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/red_box.png);color: rgb(255, 255, 255)}");
-        ui->CONVEYER_5_STATE_label->setText("");
-    }
-
     if(emFault)
     {
         ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/yellow_box.png);color: rgb(255, 255, 255)}");
@@ -883,15 +888,24 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     }
     else
     {
-        if(inve1)
+        if(!inve1 && !coro1)
         {
-            ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/inve_state.png);color: rgb(255, 255, 255)}");
-            ui->CONVEYER_5_STATE_label->setText("反转");
+            ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/red_box.png);color: rgb(255, 255, 255)}");
+            ui->CONVEYER_5_STATE_label->setText("");
         }
-        else if(coro1)
+        else
         {
-            ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/green_box.png);color: rgb(255, 255, 255)}");
-            ui->CONVEYER_5_STATE_label->setText("正转");
+            if(inve1)
+            {
+                ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/inve_state.png);color: rgb(255, 255, 255)}");
+                ui->CONVEYER_5_STATE_label->setText("反转");
+            }
+
+            if(coro1)
+            {
+                ui->CONVEYER_5_STATE_label->setStyleSheet("QLabel#CONVEYER_5_STATE_label{background-image:url(:/pic/green_box.png);color: rgb(255, 255, 255)}");
+                ui->CONVEYER_5_STATE_label->setText("正转");
+            }
         }
     }
 

@@ -16,6 +16,8 @@
 #include "global.h"
 #include "uiglobal.h"
 #include "identity.h"
+#include "alerthistorydialog.h"
+#include "yhcrunstatusdialog.h"
 
 namespace Ui {
 class Yhcc;
@@ -58,6 +60,12 @@ private slots:
 
     void on_historyButton_clicked();
 
+    void updateCharts();
+
+    void on_alertButton_clicked();
+
+    void on_assistButton_clicked();
+
 protected:
     void showEvent(QShowEvent *);
     void closeEvent(QCloseEvent *);
@@ -75,7 +83,7 @@ public slots:
     void handleControllerResult();
     void handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
     void wirteTestData();
-    void updateWatchs();
+    void updateWatchs(QMap<float,QString> dataMap);
     void showData(QByteArray);
     void localServerConnected(bool);
     void dispatchData(QSet<int>, QMap<float,QString>);
@@ -85,6 +93,7 @@ public slots:
 private:
     Ui::Yhcc *ui;
 
+    YhcRunStatusDialog *runStatusDlg;
     HistoryDlg *hisDlg;
     QThread netManageThread;
     NetStateManageWorker* nsmWorker;
@@ -94,14 +103,14 @@ private:
     ParseServerDataWorker *psWorker;
     QTimer* checkNetStateTimer;
     QTimer* testTimer;
-    QTimer* updateWatchsTimer;
+    QTimer* updateChartsTimer;
     QTimer* readDataTimer;
     QTime st;
     int uca = 0;
-    //Syscontroller* controller;
     Plc_Db oldPlcDb;
     int deviceIndex = 0;
-    bool started = false;
+
+    AlertHistoryDialog *alertHisDlg;
 
     TcpClientSocket* getServerConnectStateTcpClient;
     TcpClientSocket* getAllDataTcpClient;

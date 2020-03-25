@@ -218,7 +218,7 @@
     <string notr="true">background: transparent; </string>
    </property>
   </widget>
-  <widget class="ZsylChart" name="widget_2" native="true">
+  <widget class="ZsylChart" name="ylzsChartWidget" native="true">
    <property name="geometry">
     <rect>
      <x>1420</x>
@@ -231,7 +231,7 @@
     <string notr="true">background: transparent; </string>
    </property>
   </widget>
-  <widget class="ZsylChart" name="widget_3" native="true">
+  <widget class="ZsylChart" name="dydlChartWidget" native="true">
    <property name="geometry">
     <rect>
      <x>1420</x>
@@ -371,7 +371,7 @@
     <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
-    <string>电流</string>
+    <string>压力</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_10">
@@ -549,10 +549,10 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
   <widget class="QLabel" name="test_label">
    <property name="geometry">
     <rect>
-     <x>110</x>
-     <y>30</y>
-     <width>141</width>
-     <height>41</height>
+     <x>60</x>
+     <y>4</y>
+     <width>200</width>
+     <height>62</height>
     </rect>
    </property>
    <property name="font">
@@ -563,79 +563,14 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(242, 79, 79);</string>
+    <string notr="true">border-image: url(:/pic/hq_logo.png);
+background: transparent;</string>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
-  </widget>
-  <widget class="QLabel" name="test_label_2">
-   <property name="geometry">
-    <rect>
-     <x>270</x>
-     <y>30</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>20</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(242, 79, 79);</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="test_label_3">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>30</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>20</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(242, 79, 79);</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="test_label_4">
-   <property name="geometry">
-    <rect>
-     <x>590</x>
-     <y>30</y>
-     <width>141</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>20</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color: rgb(242, 79, 79);</string>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="ControlHistory" name="hisWidget" native="true">
@@ -712,7 +647,7 @@ background-image: url(:/pic/no_cellphone_signal.png);</string>
   <customwidget>
    <class>ControlHistory</class>
    <extends>QWidget</extends>
-   <header location="global">controlhistory.h</header>
+   <header>controlhistory.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

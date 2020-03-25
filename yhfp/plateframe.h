@@ -18,6 +18,8 @@ public:
     void setLeftRange(int min, int max);
     void setRightRange(int min, int max);
     void setPlateStyle(QSizeF size, int startAngel, int radius, int arcInnerHeight, int arcOuterHeight, WatchDirection direction);
+    void setLeftRangePosAngel(int leftRangePosAngel);
+    void setRightRangePosAngel(int rightRangePosAngel);
 
 protected:
     void paintEvent(QPaintEvent *event);

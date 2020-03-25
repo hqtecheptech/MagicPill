@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include "global.h"
+
 class NetStateManageWorker : public QObject
 {
     Q_OBJECT

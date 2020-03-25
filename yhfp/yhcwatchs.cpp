@@ -22,3 +22,8 @@ void yhcWatchs::updateWdyw(int leftValue, int rightValue)
 {
     ui->wdywplateWidget->updatePlates(leftValue, rightValue);
 }
+
+void yhcWatchs::updateYlzs(int leftValue, int rightValue)
+{
+    ui->ylzsplateWidget->updatePlates(leftValue, rightValue);
+}

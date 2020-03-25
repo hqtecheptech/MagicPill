@@ -1262,6 +1262,23 @@ DeviceNode Global::getMixNodeInfoByCname(QString cname)
     }
 }
 
+DeviceNode Global::getYhcNodeInfoByRunctrAddress(float address)
+{
+    uint blockSize = yhcDeviceInfo.RunCtr_Block_Size  / 8;
+
+    int temp = (int)floor(address);
+    int blockOffset = (temp - yhcDeviceInfo.Runctr_Address) % blockSize;
+    int offset = blockOffset * 8 + (int)(address * 10.0 - temp * 10.0 + 0.5);
+
+    for(int i=0; i<yhcDeviceNodes.length();i++)
+    {
+        if(yhcDeviceNodes.at(i).DataType == "x0" && yhcDeviceNodes.at(i).Offset == offset)
+        {
+            return yhcDeviceNodes.at(i);
+        }
+    }
+}
+
 DeviceNode Global::getMixNodeInfoByRunctrAddress(float address)
 {
     uint blockSize = mixDeviceInfo.RunCtr_Block_Size  / 8;

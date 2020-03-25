@@ -6,6 +6,7 @@ AlertHistoryDialog::AlertHistoryDialog(QWidget *parent) :
     ui(new Ui::AlertHistoryDialog)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
 }
 
 AlertHistoryDialog::~AlertHistoryDialog()

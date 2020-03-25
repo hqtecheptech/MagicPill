@@ -78,15 +78,23 @@ Yhcc::Yhcc(QWidget *parent) :
     connect(psWorker, &ParseServerDataWorker::resultReady, this, &Yhcc::dispatchData, Qt::QueuedConnection);
     psThread.start();
 
-    updateWatchsTimer = new QTimer(this);
-    connect(updateWatchsTimer, SIGNAL(timeout()), this, SLOT(updateWatchs()));
-    updateWatchsTimer->start(5000);
+    updateChartsTimer = new QTimer(this);
+    connect(updateChartsTimer, SIGNAL(timeout()), this, SLOT(updateCharts()));
+    updateChartsTimer->start(10000);
 
     readDataTimer = new QTimer(this);
     connect(readDataTimer, SIGNAL(timeout()), this, SLOT(readData()));
     readDataTimer->start(1000);
 
     hisDlg = new HistoryDlg(this);
+    alertHisDlg = new AlertHistoryDialog(this);
+    runStatusDlg = new YhcRunStatusDialog(this);
+
+    QStringList hisItems = {"压力", "转速", "电流", "电压"};
+    hisDlg->setQueryItems(hisItems);
+
+    ui->ylzsChartWidget->setRange(300, 100);
+    ui->dydlChartWidget->setRange(500, 450);
 }
 
 Yhcc::~Yhcc()
@@ -179,7 +187,7 @@ void Yhcc::netStatChecked(QString type, bool state)
 
 void Yhcc::getNetState()
 {
-    emit checkNetState("wlan");
+    //emit checkNetState("wlan");
     emit checkNetState("eth");
 }
 
@@ -245,69 +253,44 @@ void Yhcc::wirteTestData()
     //controller->yhcStart(deviceIndex, !started);
 }
 
-void Yhcc::updateWatchs()
+void Yhcc::updateWatchs(QMap<float,QString> dataMap)
 {
-    int leftValue = qrand() % 400 + 100;
-    int rightValue = qrand() % 400 + 100;
-    ui->yhcWatchsWidget->updateDydl(leftValue, rightValue);
-
-    leftValue = qrand() % 120 - 30;
-    rightValue = qrand() % 1000 + 300;
-    ui->yhcWatchsWidget->updateWdyw(leftValue, rightValue);
-
-    QDateTime currentdt = QDateTime::currentDateTime();
-    uint stime =currentdt.toTime_t();
-    HistData data;
-
-    /*DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
-    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Total_Voltage");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    int index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    qDebug() << "Yhc_Total_Voltage value: " << dataMap[address];
+    float totalVoltage = dataMap[address].toFloat();
 
-    data.address = address;
-    strcpy(data.dataType, deviceNode.Name.toLatin1().data());
-    data.deviceGroup = info.groupId;
-    data.deviceId = deviceNode.Id;
-    data.deviceIndex = index;
-    data.index = 10;
-    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
-    strcpy(data.name, QString("Speed").toLatin1().data());
-    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
-    emit histDataReady(data);
-
-    deviceNode = Global::getYhcNodeInfoByName("RevolvingSpeed");
+    deviceNode = Global::getYhcNodeInfoByName("Yhc_Total_Ampere");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    int rs = Global::currentYhcDataMap.value(address).toFloat();
+    qDebug() << "Yhc_Total_Ampere value: " << dataMap[address];
+    float totalAmpere = dataMap[address].toFloat();
 
-    data.address = address;
-    strcpy(data.dataType, deviceNode.Name.toLatin1().data());
-    data.deviceGroup = info.groupId;
-    data.deviceId = deviceNode.Id;
-    data.deviceIndex = index;
-    data.index = 10;
-    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
-    strcpy(data.name, QString("RevolvingSpeed").toLatin1().data());
-    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
-    emit histDataReady(data);
+    ui->yhcWatchsWidget->updateDydl(totalVoltage, totalAmpere);
 
-    deviceNode = Global::getYhcNodeInfoByName("Ampere1");
+    deviceNode = Global::getYhcNodeInfoByName("Yhc_Hs_Tempture");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    int prs = Global::currentYhcDataMap.value(address).toFloat();
+    qDebug() << "Yhc_Hs_Tempture value: " << dataMap[address];
+    float hsTempture = dataMap[address].toFloat();
 
-    data.address = address;
-    strcpy(data.dataType, deviceNode.Name.toLatin1().data());
-    data.deviceGroup = info.groupId;
-    data.deviceId = deviceNode.Id;
-    data.deviceIndex = index;
-    data.index = 10;
-    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
-    strcpy(data.name, QString("Ampere1").toLatin1().data());
-    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
-    emit histDataReady(data);
+    deviceNode = Global::getYhcNodeInfoByName("Yhc_Hs_Oil_Level");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Yhc_Hs_Oil_Level value: " << dataMap[address];
+    float oilLevel = dataMap[address].toFloat();
 
-    ui->widget_2->updateUI(rs, prs);*/
+    ui->yhcWatchsWidget->updateWdyw(hsTempture, oilLevel);
+
+    deviceNode = Global::getYhcNodeInfoByName("Yhc_Pressure");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Yhc_Pressure value: " << dataMap[address];
+    float yhcPress = dataMap[address].toFloat();
+
+    deviceNode = Global::getYhcNodeInfoByName("Yhc_Speed");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Yhc_Speed value: " << dataMap[address];
+    float yhcSpeed = dataMap[address].toFloat();
+
+    ui->yhcWatchsWidget->updateYlzs(yhcPress, yhcSpeed);
 }
 
 void Yhcc::showData(QByteArray data)
@@ -365,44 +348,67 @@ void Yhcc::dispatchData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap
                 uint tankIndex = i / Global::yhcDeviceInfo.RunCtr_Block_Size;
                 DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(tankIndex);
 
-                QList<QStandardItem *> newItemList;
-                QList<QStandardItem *> newSimpleItemList;
-                Global::alertIndex += 1;
-                QString simpleAlert;
-
-                newItemList.append(new QStandardItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")));
-                newItemList.append(new QStandardItem(QString::number((tankIndex + info.startIndex)+1)));
-                if(tempValue.toBool())
+                try
                 {
-                    newItemList.append(new QStandardItem(Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert1));
-                    simpleAlert = QString::number(Global::alertIndex) + ": " +
-                            QString::number(tankIndex+1) + "#" +
-                            Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert1 + " " +
-                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-                }
-                else
-                {
-                    newItemList.append(new QStandardItem(Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert0));
-                    simpleAlert = QString::number(Global::alertIndex) + ": " +
-                            QString::number(tankIndex+1) + "#" +
-                            Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert0 + " " +
-                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+                    QList<QStandardItem *> newItemList;
+                    QList<QStandardItem *> newSimpleItemList;
+                    Global::alertIndex += 1;
+                    QString simpleAlert;
 
-                }
-                QStandardItem *simpleAlertItem = new QStandardItem(simpleAlert);
-                newSimpleItemList.append(simpleAlertItem);
+                    qDebug() << "QDateTime::currentDateTime()" << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+                    newItemList.append(new QStandardItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")));
+                    newItemList.append(new QStandardItem(QString::number((tankIndex + info.startIndex)+1)));
+                    if(tempValue.toBool())
+                    {
+                        newItemList.append(new QStandardItem(Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert1));
+                        simpleAlert = QString::number(Global::alertIndex) + ": " +
+                                QString::number(tankIndex+1) + "#" +
+                                Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert1 + " " +
+                                QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+                    }
+                    else
+                    {
+                        newItemList.append(new QStandardItem(Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert0));
+                        simpleAlert = QString::number(Global::alertIndex) + ": " +
+                                QString::number(tankIndex+1) + "#" +
+                                Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert0 + " " +
+                                QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
-                if(Identity::getInstance()->getUser() != Q_NULLPTR)
-                {
-                    newItemList.append(new QStandardItem(Identity::getInstance()->getUser()->getUsername()));
+                    }
+                    QStandardItem *simpleAlertItem = new QStandardItem(simpleAlert);
+                    newSimpleItemList.append(simpleAlertItem);
+
+                    if(Identity::getInstance()->getUser() != Q_NULLPTR)
+                    {
+                        newItemList.append(new QStandardItem(Identity::getInstance()->getUser()->getUsername()));
+                    }
+                    else
+                    {
+                        newItemList.append(new QStandardItem(""));
+                    }
+
+
+                    if(UiGlobal::simpleAlertsModel->rowCount() > 200)
+                    {
+                       UiGlobal::simpleAlertsModel->removeRow(UiGlobal::simpleAlertsModel->rowCount() - 1);
+                    }
+                    UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
+
+
+                    if(Global::getYhcNodeInfoByRunctrAddress(dictAddress).Priority == 1)
+                    {
+                        if(UiGlobal::alertsModel->rowCount() > 200)
+                        {
+                           UiGlobal::alertsModel->removeRow(UiGlobal::alertsModel->rowCount() - 1);
+                        }
+                        UiGlobal::alertsModel->insertRow(0, newItemList);
+                    }
                 }
-                else
+                catch(exception ex)
                 {
-                    newItemList.append(new QStandardItem(""));
+                    qDebug() << "ex.what" << ex.what();
                 }
 
-                UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
-                UiGlobal::alertsModel->insertRow(0, newItemList);
                 Global::currentYhcDataMap[dictAddress] = dataMap[dictAddress];
             }
         }
@@ -422,75 +428,38 @@ void Yhcc::readData()
 
 void Yhcc::parseYhcData(QMap<float, QString> dataMap)
 {
-    /*DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
-    DeviceNode deviceNode = Global::getMixNodeInfoByName("ING_SPIRAL_RATE_SETTING");
-    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    int index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->test_label->setText(Global::currentMixDataMap[address]);
-    ui->speedLabel->setText(dataMap[address]);*/
-
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
-    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Walking_Speed");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Speed value: " << dataMap[address];
+    qDebug() << "Yhc_Walking_Speed value: " << dataMap[address];
     currentSpeed = dataMap[address].toFloat();
     ui->speedLabel->setText(dataMap[address]);
 
-    /*deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_RunTime");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    //qDebug() << "FER_Hand_RunTime: " << Global::currentFermenationDataMap[address];
-    ui->test_label->setText(Global::currentFermenationDataMap[address]);*/
-
-    /*deviceNode = Global::getFermenationNodeInfoByName("FER_STEPCTR_UI_CTRL");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    //qDebug() << "FER_STEPCTR_UI: " << Global::currentFermenationDataMap[address];
-    ui->test_label->setText(Global::currentFermenationDataMap[address]);*/
+    updateWatchs(dataMap);
 }
 
 void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
 {
-    bool value = Global::getFerRunctrValueByName(deviceIndex, "FER_Auto_BOOL", dataMap);
-    ui->test_label_2->setText(QString::number(value));
-    value = Global::getFerRunctrValueByName(deviceIndex + 1, "FER_Auto_BOOL", dataMap);
-    ui->test_label_3->setText(QString::number(value));
-    //value = Global::getMixRunctrValueByName(deviceIndex, "SLUG_SPIRAL_EM_FAULT", dataMap);
-    //ui->test_label_4->setText(QString::number(value));
-    // to do: just for test temporay.
-    if(value == 0)
-    {
-        started = true;
-    }
-    else
-    {
-        started = false;
-    }
+
 }
 
 void Yhcc::on_speedDownButton_clicked()
 {
-    //controller->yhcSpeedUp(deviceIndex, -1);
-
-}
-
-void Yhcc::on_speedUpButton_clicked()
-{
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
 
     StreamPack bpack;
-    bpack = {sizeof(StreamPack),6,0,W_Send_Control,Float,0,0,1,0,0,0};
+    bpack = {sizeof(StreamPack),6,0,W_Send_Control,UShort,0,0,1,0,0,0};
     //Length of ushort address and value, plus length of scrc.
     bpack.bDataLength = 1;
-    bpack.bStreamLength += (2+4)*1 + 4;
+    bpack.bStreamLength += (2+2)*1 + 4;
 
     QList<ushort> addrs;
-    QList<float> values;
-    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Speed");
+    QList<ushort> values;
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Walking_Speed_Setting");
     ushort addr = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
     addrs.append(addr);
-    float data = currentSpeed + 1;
+    ushort data = currentSpeed - 1;
     values.append(data);
 
     QByteArray allPackData, SData, crcData;
@@ -507,7 +476,61 @@ void Yhcc::on_speedUpButton_clicked()
         out << item;
     }
 
-    foreach(float item, values)
+    foreach(ushort item, values)
+    {
+        out << item;
+    }
+
+    SData.insert(0, allPackData);
+
+    uint scrc = actionTcpClient->StreamLen_CRC32(SData);
+
+    QDataStream out1(&crcData,QIODevice::WriteOnly);
+    out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+    out1.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    //QDataStream::BigEndian或QDataStream::LittleEndian
+    out1.setByteOrder(QDataStream::LittleEndian);
+    out1 << scrc;
+
+    SData.append(crcData);
+
+    actionTcpClient->sendRequestWithResults(SData);
+}
+
+void Yhcc::on_speedUpButton_clicked()
+{
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+
+    StreamPack bpack;
+    bpack = {sizeof(StreamPack),6,0,W_Send_Control,UShort,0,0,1,0,0,0};
+    //Length of ushort address and value, plus length of scrc.
+    bpack.bDataLength = 1;
+    bpack.bStreamLength += (2+2)*1 + 4;
+
+    QList<ushort> addrs;
+    QList<ushort> values;
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Walking_Speed_Setting");
+    ushort addr = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            * Global::getLengthByDataType(deviceNode.DataType);
+    addrs.append(addr);
+    ushort data = currentSpeed + 1;
+    values.append(data);
+
+    QByteArray allPackData, SData, crcData;
+    QDataStream out(&SData,QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+    out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    //QDataStream::BigEndian或QDataStream::LittleEndian
+    out.setByteOrder(QDataStream::LittleEndian);
+
+    allPackData.append((char*)&bpack, sizeof(bpack));
+
+    foreach(ushort item, addrs)
+    {
+        out << item;
+    }
+
+    foreach(ushort item, values)
     {
         out << item;
     }
@@ -531,4 +554,94 @@ void Yhcc::on_speedUpButton_clicked()
 void Yhcc::on_historyButton_clicked()
 {
     hisDlg->show();
+}
+
+void Yhcc::updateCharts()
+{
+    QDateTime currentdt = QDateTime::currentDateTime();
+    uint stime =currentdt.toTime_t();
+    HistData data;
+
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Pressure");
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    int index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    float yhcPress = Global::currentYhcDataMap[address].toFloat();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.deviceIndex = index;
+    data.address = address;
+    data.index = 0;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("Yhc_Pressure").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
+    emit histDataReady(data);
+
+    deviceNode = Global::getYhcNodeInfoByName("Yhc_Speed");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    float yhcSpeed = Global::currentYhcDataMap[address].toFloat();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.address = address;
+    data.deviceIndex = index;
+    data.index = 0;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("Yhc_Speed").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
+    emit histDataReady(data);
+
+    ui->ylzsChartWidget->updateUI(yhcPress, yhcSpeed);
+
+    deviceNode = Global::getYhcNodeInfoByName("Yhc_Total_Voltage");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    float totalVotage = Global::currentYhcDataMap[address].toFloat();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.address = address;
+    data.deviceIndex = index;
+    data.index = 0;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("Yhc_Total_Voltage").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
+    emit histDataReady(data);
+
+    deviceNode = Global::getYhcNodeInfoByName("Yhc_Total_Ampere");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    float totalAmpre = Global::currentYhcDataMap[address].toFloat();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.address = address;
+    data.deviceIndex = index;
+    data.index = 0;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("Yhc_Total_Ampere").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
+    emit histDataReady(data);
+
+    ui->dydlChartWidget->updateUI(totalVotage, totalAmpre);
+}
+
+void Yhcc::on_alertButton_clicked()
+{
+    alertHisDlg->show();
+}
+
+void Yhcc::on_assistButton_clicked()
+{
+    runStatusDlg->show();
 }

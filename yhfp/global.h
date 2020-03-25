@@ -67,6 +67,8 @@ public:
     static DeviceNode getFanNodeInfoByCname(QString cname);
     static DeviceNode getYhcNodeInfoByCname(QString cname);
     static DeviceNode getMixNodeInfoByCname(QString cname);
+
+    static DeviceNode getYhcNodeInfoByRunctrAddress(float address);
     static DeviceNode getMixNodeInfoByRunctrAddress(float address);
 
     static DeviceGroupInfo getDeoDeviceGroupInfo(int index);

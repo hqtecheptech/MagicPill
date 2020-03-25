@@ -7,7 +7,7 @@ DydlPlate::DydlPlate(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->frame->setLeftRange(0, 500);
+    ui->frame->setLeftRange(0, 450);
     ui->frame->setRightRange(0, 500);
     ui->frame->setValue(0, 0);
 }

@@ -18,6 +18,7 @@ public:
 public slots:
     void updateDydl(int leftValue, int rightValue);
     void updateWdyw(int leftValue, int rightValue);
+    void updateYlzs(int leftValue, int rightValue);
 
 private:
     Ui::yhcWatchs *ui;

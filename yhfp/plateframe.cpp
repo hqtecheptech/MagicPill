@@ -35,13 +35,14 @@ void PlateFrame::setLeftRange(int min, int max)
     {
         _leftStartAngel = 0;
         _leftRangeNegAngel = 0;
-        _leftRangePosAngel = 100;
+        //_leftRangePosAngel = 100;
     }
     else if(min < 0)
     {
-        _leftStartAngel = qRound(((qreal)min / (qreal)(min - max)) * (qreal)100);
+        _leftStartAngel = qRound(((qreal)min / (qreal)(min - max)) * (qreal)_leftRangePosAngel);
         _leftRangeNegAngel = -_leftStartAngel;
-        _leftRangePosAngel = 100 - _leftStartAngel;
+        //_leftRangePosAngel = 100 - _leftStartAngel;
+        _leftRangePosAngel -= _leftStartAngel;
     }
 }
 
@@ -53,13 +54,14 @@ void PlateFrame::setRightRange(int min, int max)
     {
         _rightStartAngel = 0;
         _rightRangeNegAngel = 0;
-        _rightRangePosAngel = 100;
+        //_rightRangePosAngel = 100;
     }
     else if(min < 0)
     {
-        _rightStartAngel = qRound(((qreal)min / (qreal)(min - max)) * (qreal)100);
+        _rightStartAngel = qRound(((qreal)min / (qreal)(min - max)) * (qreal)_rightRangePosAngel);
         _rightRangeNegAngel = -_rightStartAngel;
-        _rightRangePosAngel = 100 - _rightStartAngel;
+        //_rightRangePosAngel = 100 - _rightStartAngel;
+        _rightRangePosAngel -= _rightStartAngel;
     }
 }
 
@@ -170,7 +172,7 @@ int PlateFrame::calcLeftAngelLength()
     }
     else
     {
-        len = qRound(((qreal)_leftValue / (qreal)_leftMax) * (qreal)100);
+        len = qRound(((qreal)_leftValue / (qreal)_leftMax) * (qreal)_leftRangePosAngel);
     }
 
     return len;
@@ -192,8 +194,18 @@ int PlateFrame::calcRightAngelLength()
     }
     else
     {
-        len = qRound(((qreal)_rightValue / (qreal)_rightMax) * (qreal)100);
+        len = qRound(((qreal)_rightValue / (qreal)_rightMax) * (qreal)_rightRangePosAngel);
     }
 
     return len;
+}
+
+void PlateFrame::setRightRangePosAngel(int rightRangePosAngel)
+{
+    _rightRangePosAngel = rightRangePosAngel;
+}
+
+void PlateFrame::setLeftRangePosAngel(int leftRangePosAngel)
+{
+    _leftRangePosAngel = leftRangePosAngel;
 }

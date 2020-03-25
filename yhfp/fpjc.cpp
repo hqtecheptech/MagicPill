@@ -17,6 +17,7 @@ Fpjc::Fpjc(QWidget *parent) :
     st.start();
 
     qRegisterMetaType<Plc_Db>("Plc_Db");
+    qRegisterMetaType<HistData>("HistData");
 
     QString eixtStyleStr="QPushButton#exitButton{background: transparent; background-image: url(:/pic/退出.png);}"
                          "QPushButton#exitButton:hover{background: transparent; background-image: url(:/pic/退出.png);}"
@@ -36,6 +37,51 @@ Fpjc::Fpjc(QWidget *parent) :
                                  "color:white;";
     ui->speedLabel->setStyleSheet(speedLabelStyleStr);
     ui->yhChoiseLabel->setStyleSheet(speedLabelStyleStr);
+
+    ui->fpjWatchsWidget->setLeftTopPlateRange(0, 300, 0, 180);
+    ui->fpjWatchsWidget->setRightTopPlateRange(0, 300, 0, 180);
+    ui->fpjWatchsWidget->setLeftBottomPlateRange(0, 300, 0, 25000);
+    ui->fpjWatchsWidget->setRightBottomPlateRange(0, 300, 0, 25000);
+    ui->fpjWatchsWidget->setLeftCenterPlateRange(0, 150, 0, 150);
+    ui->fpjWatchsWidget->setRightCenterPlateRange(0, 150, 0, 150);
+
+    ui->leftFpButton->setEnabled(false);
+    ui->rightFpButton->setEnabled(false);
+
+    for(int i=0; i < CP; i++)
+    {
+        lrpArr.append(0);
+        lrsArr.append(0);
+        lwpArr.append(0);
+        lspArr.append(0);
+        rrpArr.append(0);
+        rrsArr.append(0);
+        rwpArr.append(0);
+        rspArr.append(0);
+    }
+    ui->leftCurveWidget->setRange(300, 180);
+    ui->rightCurveWidget->setRange(300, 180);
+
+    updateWatchTimer = new QTimer(this);
+    connect(updateWatchTimer, SIGNAL(timeout()), this, SLOT(updateWatch()));
+    updateWatchTimer->start(5000);
+
+    updateChartTimer = new QTimer(this);
+    connect(updateChartTimer, SIGNAL(timeout()), this, SLOT(updateChart()));
+    updateChartTimer->start(3000);
+
+    alertHisDlg = new AlertHistoryDialog(this);
+    hisDlg = new HistoryDlg(this);
+
+    QStringList hisItems = {"左翻抛压力", "左翻抛转速", "左履带压力", "左履带转速"
+                           ,"右翻抛压力", "右翻抛转速", "右履带压力", "右履带转速"};
+    hisDlg->setQueryItems(hisItems);
+
+    dbWorker = new DatabaseWorker;
+    dbWorker->moveToThread(&dbThread);
+    connect(&dbThread, &QThread::finished, dbWorker, &QObject::deleteLater);
+    connect(this, SIGNAL(histDataReady(HistData)), dbWorker, SLOT(saveHistData(HistData)));
+    dbThread.start();
 }
 
 Fpjc::~Fpjc()
@@ -43,7 +89,409 @@ Fpjc::~Fpjc()
     delete ui;
 }
 
+void Fpjc::showEvent(QShowEvent *)
+{
+
+}
+
 void Fpjc::on_exitButton_clicked()
 {
     close();
+}
+
+void Fpjc::updateWatch()
+{
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Roller_Pressure");
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Left_Roller_Pressure value: " << Global::currentYhcDataMap[address];
+    float lrp = Global::currentYhcDataMap[address].toFloat();
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Roller_Speed");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Left_Roller_Speed value: " << Global::currentYhcDataMap[address];
+    ushort lrs = Global::currentYhcDataMap[address].toUShort();
+
+    ui->fpjWatchsWidget->updateLeftTopPlate(lrp, lrs);
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Roller_Pressure");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Right_Roller_Pressure value: " << Global::currentYhcDataMap[address];
+    float rrp = Global::currentYhcDataMap[address].toFloat();
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Roller_Speed");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Right_Roller_Speed value: " << Global::currentYhcDataMap[address];
+    ushort rrs = Global::currentYhcDataMap[address].toUShort();
+
+    ui->fpjWatchsWidget->updateRightTopPlate(rrp, rrs);
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Walking_Pressure");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Left_Walking_Pressure value: " << Global::currentYhcDataMap[address];
+    float lwp = Global::currentYhcDataMap[address].toFloat();
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Servo_Pulse");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Left_Servo_Pulse value: " << Global::currentYhcDataMap[address];
+    uint lsp = Global::currentYhcDataMap[address].toUInt();
+
+    ui->fpjWatchsWidget->updateLeftBottomPlate(lwp, lsp);
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Walking_Pressure");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Right_Walking_Pressure value: " << Global::currentYhcDataMap[address];
+    float rwp = Global::currentYhcDataMap[address].toFloat();
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Servo_Pulse");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Right_Servo_Pulse value: " << Global::currentYhcDataMap[address];
+    uint rsp = Global::currentYhcDataMap[address].toUInt();
+
+    ui->fpjWatchsWidget->updateRightBottomPlate(rwp, rsp);
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Hs_1_Tempture");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Hs_1_Tempture value: " << Global::currentYhcDataMap[address];
+    float ht1 = Global::currentYhcDataMap[address].toFloat();
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Hs_1_Oil_Level");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Hs_1_Oil_Level value: " << Global::currentYhcDataMap[address];
+    float hl1 = Global::currentYhcDataMap[address].toUShort();
+
+    ui->fpjWatchsWidget->updateLeftCenterPlate(ht1, hl1);
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Hs_2_Tempture");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Hs_2_Tempture value: " << Global::currentYhcDataMap[address];
+    float ht2 = Global::currentYhcDataMap[address].toFloat();
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Hs_2_Oil_Level");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Hs_2_Oil_Level value: " << Global::currentYhcDataMap[address];
+    float hl2 = Global::currentYhcDataMap[address].toUShort();
+
+    ui->fpjWatchsWidget->updateRightCenterPlate(ht2, hl2);
+}
+
+void Fpjc::updateChart()
+{
+    QDateTime currentdt = QDateTime::currentDateTime();
+    uint stime =currentdt.toTime_t();
+    HistData data;
+
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Roller_Pressure");
+    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Left_Roller_Pressure value: " << Global::currentYhcDataMap[address];
+    int index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    float lrp = Global::currentYhcDataMap[address].toFloat();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.deviceIndex = index;
+    data.address = address;
+    data.index = 0;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("Fpj_Left_Roller_Pressure").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
+    emit histDataReady(data);
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Roller_Speed");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Left_Roller_Speed value: " << Global::currentYhcDataMap[address];
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    ushort lrs = Global::currentYhcDataMap[address].toUShort();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.deviceIndex = index;
+    data.address = address;
+    data.index = 0;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("Fpj_Left_Roller_Speed").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
+    emit histDataReady(data);
+
+    if(lrpArr.count() == CP)
+    {
+        lrpArr.append(lrp);
+        lrpArr.removeFirst();
+    }
+    else
+    {
+        lrpArr.append(lrp);
+    }
+    if(lrsArr.count() == CP)
+    {
+        lrsArr.append(lrs);
+        lrsArr.removeFirst();
+    }
+    else
+    {
+        lrsArr.append(lrs);
+    }
+
+    if(!leftChartType)
+    {
+        ui->leftCurveWidget->updateUI(lrp, lrs);
+    }
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Roller_Pressure");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Right_Roller_Pressure value: " << Global::currentYhcDataMap[address];
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    float rrp = Global::currentYhcDataMap[address].toFloat();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.deviceIndex = index;
+    data.address = address;
+    data.index = 0;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("Fpj_Right_Roller_Pressure").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
+    emit histDataReady(data);
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Roller_Speed");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Right_Roller_Speed value: " << Global::currentYhcDataMap[address];
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    ushort rrs = Global::currentYhcDataMap[address].toUShort();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.deviceIndex = index;
+    data.address = address;
+    data.index = 0;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("Fpj_Right_Roller_Speed").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
+    emit histDataReady(data);
+
+    if(rrpArr.count() == CP)
+    {
+        rrpArr.append(rrp);
+        rrpArr.removeFirst();
+    }
+    else
+    {
+        rrpArr.append(rrp);
+    }
+    if(rrsArr.count() == CP)
+    {
+        rrsArr.append(rrs);
+        rrsArr.removeFirst();
+    }
+    else
+    {
+        rrsArr.append(rrs);
+    }
+
+    if(!rightChartType)
+    {
+        ui->rightCurveWidget->updateUI(rrp, rrs);
+    }
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Walking_Pressure");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Left_Walking_Pressure value: " << Global::currentYhcDataMap[address];
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    float lwp = Global::currentYhcDataMap[address].toFloat();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.deviceIndex = index;
+    data.address = address;
+    data.index = 0;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("Fpj_Left_Walking_Pressure").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
+    emit histDataReady(data);
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Servo_Pulse");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Left_Servo_Pulse value: " << Global::currentYhcDataMap[address];
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    uint lsp = Global::currentYhcDataMap[address].toUInt();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.deviceIndex = index;
+    data.address = address;
+    data.index = 0;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("Fpj_Left_Servo_Pulse").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
+    emit histDataReady(data);
+
+    if(lwpArr.count() == CP)
+    {
+        lwpArr.append(lwp);
+        lwpArr.removeFirst();
+    }
+    else
+    {
+        lwpArr.append(lwp);
+    }
+    if(lspArr.count() == CP)
+    {
+        lspArr.append(lsp);
+        lspArr.removeFirst();
+    }
+    else
+    {
+        lspArr.append(lsp);
+    }
+    if(leftChartType)
+    {
+        ui->leftCurveWidget->updateUI(lwp, lsp);
+    }
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Walking_Pressure");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Right_Walking_Pressure value: " << Global::currentYhcDataMap[address];
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    float rwp = Global::currentYhcDataMap[address].toFloat();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.deviceIndex = index;
+    data.address = address;
+    data.index = 0;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("Fpj_Right_Walking_Pressure").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
+    emit histDataReady(data);
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Servo_Pulse");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_Right_Servo_Pulse value: " << Global::currentYhcDataMap[address];
+    index = Global::convertAddressToIndex(address, deviceNode.DataType);
+    uint rsp = Global::currentYhcDataMap[address].toUInt();
+
+    data.address = address;
+    strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
+    data.deviceGroup = info.groupId;
+    data.deviceId = deviceNode.Id;
+    data.deviceIndex = index;
+    data.address = address;
+    data.index = 0;
+    strcpy(data.insertTime, QString::number(stime).toLatin1().data());
+    strcpy(data.name, QString("Fpj_Right_Servo_Pulse").toLatin1().data());
+    strcpy(data.value, Global::currentYhcDataMap.value(address).toLatin1().data());
+    emit histDataReady(data);
+
+    if(rwpArr.count() == CP)
+    {
+        rwpArr.append(rwp);
+        rwpArr.removeFirst();
+    }
+    else
+    {
+        rwpArr.append(rwp);
+    }
+    if(rspArr.count() == CP)
+    {
+        rspArr.append(lsp);
+        rspArr.removeFirst();
+    }
+    else
+    {
+        rspArr.append(rsp);
+    }
+
+    if(rightChartType)
+    {
+        ui->rightCurveWidget->updateUI(rwp, rsp);
+    }
+}
+
+void Fpjc::on_leftFpButton_clicked()
+{
+    ui->leftFpButton->setEnabled(false);
+    ui->leftFpButton->setStyleSheet("border-image: url(:/pic/左翻抛.png) 0 0 0 0;");
+
+    leftChartType = false;
+    ui->leftCurveWidget->setRange(300, 180);
+    for(int i=0; i<lrpArr.count(); i++)
+    {
+        ui->leftCurveWidget->updateUI(lrpArr.at(i), lrsArr.at(i));
+    }
+
+    ui->leftLdButton->setEnabled(true);
+    ui->leftLdButton->setStyleSheet("border-image: url(:/pic/左履带.png) 0 0 0 100;");
+}
+
+void Fpjc::on_leftLdButton_clicked()
+{
+    ui->leftLdButton->setEnabled(false);
+    ui->leftLdButton->setStyleSheet("border-image: url(:/pic/左履带-拷贝.png) 0 0 0 0;");
+
+    leftChartType = true;
+    ui->leftCurveWidget->setRange(300, 25000);
+    for(int i=0; i<lwpArr.count(); i++)
+    {
+        ui->leftCurveWidget->updateUI(lwpArr.at(i), lspArr.at(i));
+    }
+
+    ui->leftFpButton->setEnabled(true);
+    ui->leftFpButton->setStyleSheet("border-image: url(:/pic/左翻抛-拷贝.png) 0 100 0 0;");
+}
+
+void Fpjc::on_rightFpButton_clicked()
+{
+    ui->rightFpButton->setEnabled(false);
+    ui->rightFpButton->setStyleSheet("border-image: url(:/pic/右翻抛.png) 0 0 0 0;");
+
+    rightChartType = false;
+    ui->rightCurveWidget->setRange(300, 180);
+    for(int i=0; i<rrpArr.count(); i++)
+    {
+        ui->rightCurveWidget->updateUI(rrpArr.at(i), rrsArr.at(i));
+    }
+
+    ui->rightLdButton->setEnabled(true);
+    ui->rightLdButton->setStyleSheet("border-image: url(:/pic/右履带.png) 0 0 0 100;");
+}
+
+void Fpjc::on_rightLdButton_clicked()
+{
+    ui->rightLdButton->setEnabled(false);
+    ui->rightLdButton->setStyleSheet("border-image: url(:/pic/右履带-拷贝.png) 0 0 0 0;");
+
+    rightChartType = true;
+    ui->rightCurveWidget->setRange(300, 25000);
+    for(int i=0; i<rwpArr.count(); i++)
+    {
+        ui->rightCurveWidget->updateUI(rwpArr.at(i), rspArr.at(i));
+    }
+
+    ui->rightFpButton->setEnabled(true);
+    ui->rightFpButton->setStyleSheet("border-image: url(:/pic/右翻抛-拷贝.png) 0 100 0 0;");
+}
+
+void Fpjc::on_alertButton_clicked()
+{
+    alertHisDlg->show();
+}
+
+void Fpjc::on_historyButton_clicked()
+{
+    hisDlg->show();
 }

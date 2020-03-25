@@ -29,6 +29,12 @@ ZsylChart::~ZsylChart()
     delete ui;
 }
 
+void ZsylChart::setRange(int r1, int r2)
+{
+    range1 = r1;
+    range2 = r2;
+}
+
 void ZsylChart::showEvent(QShowEvent *event)
 {
 
@@ -111,6 +117,9 @@ void ZsylChart::resetChart()
 
 void ZsylChart::updateUI(int rsValue, int prsValue)
 {
+    rsValue = rsValue * ((float)30 / (float)range1);
+    prsValue = prsValue * ((float)30 / (float)range2);
+
     serieValuesCount++;
 
     if(serieValuesCount < CP)

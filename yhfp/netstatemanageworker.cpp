@@ -17,7 +17,7 @@ void NetStateManageWorker::checkNetState(QString type)
     }
     else if(type == "eth")
     {
-        strArg = "ping -s 1 -c 1 192.168.0.50";
+        strArg = "ping -s 1 -c 1 " + Global::systemConfig.IP;
     }
     /*#ifdef _TTY_ARMV4_
     QString strArg = "ping -s 1 -c 1 " + "192.168.0.200";        //linux平台下的格式

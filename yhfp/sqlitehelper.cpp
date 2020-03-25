@@ -136,7 +136,7 @@ bool SQLiteHelper::insert(QString dbName, QString tableName, QString strQuery)
             if(Counts > 2500)
             {
                 sql = "delete from " + bb + " where histId NOT IN (select t.histId from (select histId from "
-                        + bb + " ORDER BY insertTime DESC limit 2000)as t)";
+                        + bb + " ORDER BY histId DESC limit 2000)as t)";
                 rc = sqlite3_exec(db, sql, 0, 0, &zErrMsg);
                 if(rc != SQLITE_OK)
                 {

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>512</width>
-    <height>360</height>
+    <height>407</height>
    </rect>
   </property>
   <property name="font">
@@ -29,7 +29,7 @@
      <x>0</x>
      <y>0</y>
      <width>512</width>
-     <height>360</height>
+     <height>411</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -45,7 +45,7 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>30</y>
+      <y>90</y>
       <width>440</width>
       <height>200</height>
      </rect>
@@ -55,7 +55,7 @@
     <property name="geometry">
      <rect>
       <x>400</x>
-      <y>246</y>
+      <y>310</y>
       <width>79</width>
       <height>79</height>
      </rect>
@@ -79,7 +79,7 @@
     <property name="geometry">
      <rect>
       <x>300</x>
-      <y>246</y>
+      <y>310</y>
       <width>79</width>
       <height>79</height>
      </rect>
@@ -103,7 +103,7 @@
     <property name="geometry">
      <rect>
       <x>50</x>
-      <y>250</y>
+      <y>314</y>
       <width>90</width>
       <height>71</height>
      </rect>
@@ -126,7 +126,7 @@
     <property name="geometry">
      <rect>
       <x>170</x>
-      <y>250</y>
+      <y>314</y>
       <width>90</width>
       <height>71</height>
      </rect>
@@ -144,6 +144,56 @@
     <property name="text">
      <string>关 闭</string>
     </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>10</y>
+      <width>185</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/button_bg.png);
+color: rgb(0, 0, 0);</string>
+    </property>
+    <property name="duplicatesEnabled">
+     <bool>false</bool>
+    </property>
+    <property name="frame">
+     <bool>false</bool>
+    </property>
+    <property name="modelColumn">
+     <number>0</number>
+    </property>
+    <item>
+     <property name="text">
+      <string>转速</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>压力</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>电流</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>电压</string>
+     </property>
+    </item>
    </widget>
   </widget>
  </widget>
