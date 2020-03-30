@@ -12,7 +12,7 @@ Yhcc::Yhcc(QWidget *parent) :
 
     setWindowFlags(Qt::FramelessWindowHint);
 
-    deviceIndex = 0;
+    _deviceIndex = 0;
 
     st.start();
 
@@ -255,38 +255,38 @@ void Yhcc::wirteTestData()
 
 void Yhcc::updateWatchs(QMap<float,QString> dataMap)
 {
-    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(_deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Total_Voltage");
-    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    float address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     qDebug() << "Yhc_Total_Voltage value: " << dataMap[address];
     float totalVoltage = dataMap[address].toFloat();
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Total_Ampere");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     qDebug() << "Yhc_Total_Ampere value: " << dataMap[address];
     float totalAmpere = dataMap[address].toFloat();
 
     ui->yhcWatchsWidget->updateDydl(totalVoltage, totalAmpere);
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Hs_Tempture");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     qDebug() << "Yhc_Hs_Tempture value: " << dataMap[address];
     float hsTempture = dataMap[address].toFloat();
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Hs_Oil_Level");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     qDebug() << "Yhc_Hs_Oil_Level value: " << dataMap[address];
     float oilLevel = dataMap[address].toFloat();
 
     ui->yhcWatchsWidget->updateWdyw(hsTempture, oilLevel);
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Pressure");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     qDebug() << "Yhc_Pressure value: " << dataMap[address];
     float yhcPress = dataMap[address].toFloat();
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Speed");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     qDebug() << "Yhc_Speed value: " << dataMap[address];
     float yhcSpeed = dataMap[address].toFloat();
 
@@ -417,8 +417,11 @@ void Yhcc::dispatchData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap
 
 void Yhcc::updateData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
 {
-    parseYhcData(dataMap);
-    parseYhcRunCtrData(dataMap);
+    if(changedDeviceSet.count() > 0)
+    {
+        parseYhcData(dataMap);
+        parseYhcRunCtrData(dataMap);
+    }
 }
 
 void Yhcc::readData()
@@ -428,9 +431,9 @@ void Yhcc::readData()
 
 void Yhcc::parseYhcData(QMap<float, QString> dataMap)
 {
-    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(_deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Walking_Speed");
-    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    float address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     qDebug() << "Yhc_Walking_Speed value: " << dataMap[address];
     currentSpeed = dataMap[address].toFloat();
     ui->speedLabel->setText(dataMap[address]);
@@ -441,11 +444,26 @@ void Yhcc::parseYhcData(QMap<float, QString> dataMap)
 void Yhcc::parseYhcRunCtrData(QMap<float, QString> dataMap)
 {
 
+    bool wifiConnected = Global::getYhcRunctrValueByName(_deviceIndex, "SIGNAL_STATE", Global::currentYhcDataMap);
+    if(!wifiConnected)
+    {
+        ui->wlanLabel->setStyleSheet("QLabel#wlanLabel{background: transparent;"
+                                     "background-position:center;"
+                                     "background-repeat:no-repeat;"
+                                     "background-image: url(:/pic/no_wifi.png);}");
+    }
+    else
+    {
+        ui->wlanLabel->setStyleSheet("QLabel#wlanLabel{background: transparent;"
+                                     "background-position:center;"
+                                     "background-repeat:no-repeat;"
+                                     "background-image: url(:/pic/信号4.png);}");
+    }
 }
 
 void Yhcc::on_speedDownButton_clicked()
 {
-    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(_deviceIndex);
 
     StreamPack bpack;
     bpack = {sizeof(StreamPack),6,0,W_Send_Control,UShort,0,0,1,0,0,0};
@@ -456,7 +474,7 @@ void Yhcc::on_speedDownButton_clicked()
     QList<ushort> addrs;
     QList<ushort> values;
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Walking_Speed_Setting");
-    ushort addr = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+    ushort addr = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
     addrs.append(addr);
     ushort data = currentSpeed - 1;
@@ -499,7 +517,7 @@ void Yhcc::on_speedDownButton_clicked()
 
 void Yhcc::on_speedUpButton_clicked()
 {
-    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(_deviceIndex);
 
     StreamPack bpack;
     bpack = {sizeof(StreamPack),6,0,W_Send_Control,UShort,0,0,1,0,0,0};
@@ -510,7 +528,7 @@ void Yhcc::on_speedUpButton_clicked()
     QList<ushort> addrs;
     QList<ushort> values;
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Walking_Speed_Setting");
-    ushort addr = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+    ushort addr = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
     addrs.append(addr);
     ushort data = currentSpeed + 1;
@@ -562,9 +580,9 @@ void Yhcc::updateCharts()
     uint stime =currentdt.toTime_t();
     HistData data;
 
-    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
+    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(_deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Pressure");
-    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    float address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertAddressToIndex(address, deviceNode.DataType);
     float yhcPress = Global::currentYhcDataMap[address].toFloat();
 
@@ -581,7 +599,7 @@ void Yhcc::updateCharts()
     emit histDataReady(data);
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Speed");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
     float yhcSpeed = Global::currentYhcDataMap[address].toFloat();
 
@@ -600,7 +618,7 @@ void Yhcc::updateCharts()
     ui->ylzsChartWidget->updateUI(yhcPress, yhcSpeed);
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Total_Voltage");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
     float totalVotage = Global::currentYhcDataMap[address].toFloat();
 
@@ -617,7 +635,7 @@ void Yhcc::updateCharts()
     emit histDataReady(data);
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Total_Ampere");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
     float totalAmpre = Global::currentYhcDataMap[address].toFloat();
 

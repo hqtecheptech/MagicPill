@@ -4,6 +4,7 @@
 #include "dataformat.h"
 #include <QMap>
 #include <QVector>
+#include <QDebug>
 
 class Global
 {
@@ -115,6 +116,8 @@ public:
 
     static int alertIndex;
     static bool isPrint;
+    static int ferGroupShow;
+    static QStringList ferConfigStrContent;
 
 private:
     static FermenationDeviceInfo readFermenationDeviceInfo();
@@ -126,6 +129,7 @@ private:
 
     static ServerInfo readServerInfo();
     static SystemConfig readSystemConfig();
+    static int readFerGroupShowing();
 };
 
 #endif // GLOBAL_H

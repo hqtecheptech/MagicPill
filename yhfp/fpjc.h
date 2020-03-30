@@ -13,6 +13,7 @@
 #include "alerthistorydialog.h"
 #include "historydlg.h"
 #include "databaseworker.h"
+#include "fpjrunstatusdialog.h"
 
 #include "data.h"
 #include "global.h"
@@ -34,12 +35,14 @@ signals:
 
 protected:
     void showEvent(QShowEvent *);
+    void closeEvent(QCloseEvent *);
 
 private slots:
 
     void on_exitButton_clicked();
     void updateWatch();
     void updateChart();
+    void checkWifiConnection();
 
     void on_leftFpButton_clicked();
 
@@ -52,6 +55,8 @@ private slots:
     void on_alertButton_clicked();
 
     void on_historyButton_clicked();
+
+    void on_assistButton_clicked();
 
 private:
     Ui::fpjc *ui;
@@ -81,6 +86,9 @@ private:
     bool rightChartType = false;
     AlertHistoryDialog *alertHisDlg;
     HistoryDlg *hisDlg;
+    FpjRunStatusDialog *runStatusDlg;
+
+    int _deviceIndex = 0;
 };
 
 #endif // FPJC_H

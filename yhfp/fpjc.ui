@@ -657,10 +657,10 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
   <widget class="QLabel" name="test_label">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>70</x>
      <y>0</y>
-     <width>141</width>
-     <height>41</height>
+     <width>200</width>
+     <height>62</height>
     </rect>
    </property>
    <property name="font">
@@ -671,11 +671,11 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: rgb(50, 100, 200);
+    <string notr="true">border-image: url(:/pic/hq_logo.png);
 background: transparent;</string>
    </property>
    <property name="text">
-    <string>合清环保</string>
+    <string/>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>

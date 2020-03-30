@@ -34,8 +34,8 @@
         <node id="6" name="Yhc_Encoder_Speed" cname="移行车编码器速度" length="1" offset="1" diff="0.5" priority="1"/>
         <node id="6" name="Fpj_Left_Roller_Speed" cname="翻抛机左滚筒转速" length="1" offset="2" diff="0.5" priority="1"/>
         <node id="6" name="Fpj_Right_Roller_Speed" cname="翻抛机右滚筒转速" length="1" offset="3" diff="0.5" priority="1"/>
-        <node id="6" name="Fpj_Left_Roller_Encoder_Cycle_Num" cname="翻抛机左滚筒编码器圈数" length="1" offset="4" diff="0.5" priority="1"/>
-        <node id="6" name="Fpj_Right_Roller_Encoder_Cycle_Num" cname="翻抛机右滚筒编码器圈数" length="1" offset="5" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Left_Track_Encoder_Cycle_Num" cname="翻抛机左履带编码器圈数" length="1" offset="4" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Right_Track_Encoder_Cycle_Num" cname="翻抛机右履带编码器圈数" length="1" offset="5" diff="0.5" priority="1"/>
         <node id="6" name="Yhc_Walking_Speed_Setting" cname="移行车行走速度设定值" length="1" offset="6" diff="0.5" priority="1"/>
         <node id="6" name="Yhc_Walking_Speed" cname="移行车行走速度设定值读取" length="1" offset="7" diff="0.5" priority="1"/>
         <node id="6" name="Yhc_Position" cname="移行车对应槽号" length="1" offset="8" diff="0.5" priority="1"/>
@@ -43,7 +43,7 @@
     <area name="RUNCTR" datatype="x0" start="2320" diff="0">
         <node id="6" name="SIGNAL_STATE" cname="设备通讯状态2.4G" length="64" offset="0" diff="0" alert0="设备通讯异常" alert1="设备通讯异常正常" priority="0"/>
         <node id="6" name="CONTROL_MODE" cname="控制方式" length="64" offset="1" diff="0" alert0="遥控器控制" alert1="面板控制" priority="0"/>
-        <node id="6" name="FAN_VALVE_Remote" cname="设备选择" length="64" offset="2" diff="0" alert0="移行车" alert1="翻抛机" priority="0"/>
+        <node id="6" name="CURRENT_DEVICE" cname="设备选择" length="64" offset="2" diff="0" alert0="移行车" alert1="翻抛机" priority="0"/>
         <node id="6" name="EM_FAULT" cname="电机故障" length="64" offset="3" diff="0" alert0="电机运行正常" alert1="电机运行故障" priority="1"/>
         <node id="6" name="EM_RUN" cname="电机运行" length="64" offset="4" diff="0" alert0="电机停止" alert1="电机运行" priority="0"/>
         <node id="6" name="WALKING_CV_STATE" cname="行走正向阀工作" length="64" offset="5" diff="0" alert0="行走正向阀停止" alert1="行走正向阀运行" priority="0"/>
@@ -73,8 +73,8 @@
         <node id="6" name="FPJ_SWEEPING" cname="翻抛机清扫运行" length="64" offset="29" diff="0" alert0="翻抛机清扫停止" alert1="翻抛机清扫运行" priority="0"/>
         <node id="6" name="FPJ_ROLLER_R" cname="翻抛机滚筒上升运行" length="64" offset="30" diff="0" alert0="翻抛机滚筒上升停止" alert1="翻抛机滚筒上升运行" priority="0"/>
         <node id="6" name="FPJ_ROLLER_D" cname="翻抛机滚筒下降" length="64" offset="31" diff="0" alert0="翻抛机滚筒下降停止" alert1="翻抛机滚筒下降运行" priority="0"/>
-        <node id="6" name="FPJ_HEATER_1_RUN" cname="翻抛机1#散热器运行" length="64" offset="32" diff="0" alert0="翻抛机1#散热器停止" alert1="翻抛机1#散热器运行" priority="0"/>
-        <node id="6" name="FPJ_HEATER_2_RUN" cname="翻抛机1#散热器运行" length="64" offset="33" diff="0" alert0="翻抛机2#散热器停止" alert1="翻抛机2#散热器运行" priority="0"/>
+        <node id="6" name="FPJ_COOLER_1_RUN" cname="翻抛机1#散热器运行" length="64" offset="32" diff="0" alert0="翻抛机1#散热器停止" alert1="翻抛机1#散热器运行" priority="0"/>
+        <node id="6" name="FPJ_COOLER_2_RUN" cname="翻抛机1#散热器运行" length="64" offset="33" diff="0" alert0="翻抛机2#散热器停止" alert1="翻抛机2#散热器运行" priority="0"/>
         <node id="6" name="FPJ_ROLLER_CORO_RUN" cname="翻抛机滚筒正转运行" length="64" offset="34" diff="0" alert0="翻抛机滚筒正转停止" alert1="翻抛机滚筒正转运行" priority="0"/>
         <node id="6" name="FPJ_ROLLER_INVE_RUN" cname="翻抛机滚筒反转运行" length="64" offset="35" diff="0" alert0="翻抛机滚筒反转停止" alert1="翻抛机滚筒反转运行" priority="0"/>
         <node id="6" name="FPJ_SERVO_1_FAULT" cname="翻抛机1#伺服器故障" length="64" offset="36" diff="0" alert0="翻抛机1#伺服器正常" alert1="翻抛机1#伺服器故障" priority="1"/>

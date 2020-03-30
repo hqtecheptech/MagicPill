@@ -55,7 +55,8 @@ SOURCES += main.cpp\
     keyboard.cpp \
     alerthistorydialog.cpp \
     alerthistoryform.cpp \
-    yhcrunstatusdialog.cpp
+    yhcrunstatusdialog.cpp \
+    fpjrunstatusdialog.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -98,7 +99,8 @@ HEADERS  += mainwindow.h \
     keyboard.h \
     alerthistorydialog.h \
     alerthistoryform.h \
-    yhcrunstatusdialog.h
+    yhcrunstatusdialog.h \
+    fpjrunstatusdialog.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \
@@ -122,7 +124,8 @@ FORMS    += mainwindow.ui \
     keyboard.ui \
     alerthistorydialog.ui \
     alerthistoryform.ui \
-    yhcrunstatusdialog.ui
+    yhcrunstatusdialog.ui \
+    fpjrunstatusdialog.ui
 
 RESOURCES += \
     resource.qrc

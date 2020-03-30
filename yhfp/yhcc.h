@@ -108,7 +108,7 @@ private:
     QTime st;
     int uca = 0;
     Plc_Db oldPlcDb;
-    int deviceIndex = 0;
+    int _deviceIndex = 0;
 
     AlertHistoryDialog *alertHisDlg;
 

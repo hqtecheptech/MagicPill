@@ -550,7 +550,7 @@ background-image: url(:/pic/辅助设备-拷贝.png);</string>
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>4</y>
+     <y>0</y>
      <width>200</width>
      <height>62</height>
     </rect>

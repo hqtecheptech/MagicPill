@@ -62,16 +62,19 @@ Fpjc::Fpjc(QWidget *parent) :
     ui->leftCurveWidget->setRange(300, 180);
     ui->rightCurveWidget->setRange(300, 180);
 
+    checkNetStateTimer = new QTimer(this);
+    connect(checkNetStateTimer, SIGNAL(timeout()), this, SLOT(checkWifiConnection()));
+
     updateWatchTimer = new QTimer(this);
     connect(updateWatchTimer, SIGNAL(timeout()), this, SLOT(updateWatch()));
-    updateWatchTimer->start(5000);
 
     updateChartTimer = new QTimer(this);
     connect(updateChartTimer, SIGNAL(timeout()), this, SLOT(updateChart()));
-    updateChartTimer->start(3000);
+    updateChartTimer->start(20000);
 
     alertHisDlg = new AlertHistoryDialog(this);
-    hisDlg = new HistoryDlg(this);
+    hisDlg = new HistoryDlg(this);   
+    runStatusDlg = new FpjRunStatusDialog(this);
 
     QStringList hisItems = {"左翻抛压力", "左翻抛转速", "左履带压力", "左履带转速"
                            ,"右翻抛压力", "右翻抛转速", "右履带压力", "右履带转速"};
@@ -91,7 +94,28 @@ Fpjc::~Fpjc()
 
 void Fpjc::showEvent(QShowEvent *)
 {
+    if(!updateWatchTimer->isActive())
+    {
+        updateWatchTimer->start(5000);
+    }
 
+    if(!checkNetStateTimer->isActive())
+    {
+        checkNetStateTimer->start(10000);
+    }
+}
+
+void Fpjc::closeEvent(QCloseEvent *)
+{
+    if(checkNetStateTimer->isActive())
+    {
+        checkNetStateTimer->stop();
+    }
+
+    if(updateWatchTimer->isActive())
+    {
+        updateWatchTimer->stop();
+    }
 }
 
 void Fpjc::on_exitButton_clicked()
@@ -422,6 +446,25 @@ void Fpjc::updateChart()
     }
 }
 
+void Fpjc::checkWifiConnection()
+{
+    bool wifiConnected = Global::getYhcRunctrValueByName(_deviceIndex, "SIGNAL_STATE", Global::currentYhcDataMap);
+    if(!wifiConnected)
+    {
+        ui->wlanLabel->setStyleSheet("QLabel#wlanLabel{background: transparent;"
+                                     "background-position:center;"
+                                     "background-repeat:no-repeat;"
+                                     "background-image: url(:/pic/no_wifi.png);}");
+    }
+    else
+    {
+        ui->wlanLabel->setStyleSheet("QLabel#wlanLabel{background: transparent;"
+                                     "background-position:center;"
+                                     "background-repeat:no-repeat;"
+                                     "background-image: url(:/pic/信号4.png);}");
+    }
+}
+
 void Fpjc::on_leftFpButton_clicked()
 {
     ui->leftFpButton->setEnabled(false);
@@ -494,4 +537,9 @@ void Fpjc::on_alertButton_clicked()
 void Fpjc::on_historyButton_clicked()
 {
     hisDlg->show();
+}
+
+void Fpjc::on_assistButton_clicked()
+{
+    runStatusDlg->show();
 }

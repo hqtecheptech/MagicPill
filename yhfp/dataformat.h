@@ -1,9 +1,9 @@
 #ifndef DATAFORMAT_H
 #define DATAFORMAT_H
 
-#include <QWidget>
 #include <QtNetwork>
 #include <QMetaType>
+#include <QString>
 
 #define BCT_R_REALDATA      0x01    //读实时数据
 #define BCT_R_HISDATA       0x02    //读历史数据
@@ -59,7 +59,8 @@ enum CommandType
     w_AddUser,    //写登录信息
     W_Update_PlcData, //更新PLC数据
     W_Send_Control,  //发送控制命令
-    W_Updata_Config  //更新配置
+    W_Updata_Config,  //更新配置
+    W_Heart_Beat      //发送心跳包
 };
 
 enum DataType

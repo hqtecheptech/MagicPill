@@ -29,12 +29,19 @@ protected:
 
 private slots:
     void showStatus();
+    void swithState();
+    void on_closePushButton1_clicked();
+
+    void on_closePushButton2_clicked();
 
 private:
     Ui::YhcRunStatusDialog *ui;
 
     QTimer *timer;
+    QTimer *switchStateTimer;
     int _deviceIndex = 0;
+    bool em_fault, heater_fault, hs_level, filter_blocking;
+    bool stateFlag = false;
 };
 
 #endif // YHCRUNSTATUSDIALOG_H
