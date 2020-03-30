@@ -787,6 +787,11 @@
      <height>55</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
   </widget>
   <widget class="QPushButton" name="changeStepButton">
    <property name="geometry">

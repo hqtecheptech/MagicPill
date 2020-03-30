@@ -10,7 +10,7 @@ class RuntimeSettingDelegate : public QItemDelegate
 {
     Q_OBJECT
 public:
-    RuntimeSettingDelegate(TimeType timeType, QObject *parent = 0);
+    RuntimeSettingDelegate(SettingType timeType, QObject *parent = 0);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void setEditorData(QWidget *editor, const QModelIndex &index) const;
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
@@ -18,7 +18,7 @@ public:
     void drawCheck(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, Qt::CheckState state) const;
 
 private:
-    TimeType _timeType;
+    SettingType _timeType;
     QMessageBox *msgBox;
 };
 

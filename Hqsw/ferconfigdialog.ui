@@ -18,7 +18,7 @@
     <rect>
      <x>30</x>
      <y>20</y>
-     <width>200</width>
+     <width>331</width>
      <height>60</height>
     </rect>
    </property>
@@ -130,15 +130,15 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>902</x>
-     <y>30</y>
-     <width>80</width>
-     <height>40</height>
+     <x>900</x>
+     <y>20</y>
+     <width>90</width>
+     <height>50</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>25</pointsize>
+     <pointsize>30</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
@@ -161,13 +161,13 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>50</pointsize>
+     <pointsize>20</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
    <property name="text">
-    <string>R</string>
+    <string>刷新</string>
    </property>
   </widget>
   <widget class="QPushButton" name="save_push_button">
@@ -181,13 +181,13 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>50</pointsize>
+     <pointsize>20</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
    <property name="text">
-    <string>S</string>
+    <string>保存</string>
    </property>
   </widget>
   <widget class="QPushButton" name="exitButton">
@@ -201,13 +201,13 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>50</pointsize>
+     <pointsize>20</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
    <property name="text">
-    <string>X</string>
+    <string>关闭</string>
    </property>
   </widget>
   <widget class="Line" name="line">

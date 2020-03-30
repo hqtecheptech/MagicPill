@@ -4,7 +4,7 @@
 #include <QComboBox>
 #include <QMessageBox>
 
-RuntimeSettingDelegate::RuntimeSettingDelegate(TimeType timeType, QObject *parent) :
+RuntimeSettingDelegate::RuntimeSettingDelegate(SettingType timeType, QObject *parent) :
     QItemDelegate(parent)
 {
     _timeType = timeType;
