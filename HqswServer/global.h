@@ -4,6 +4,7 @@
 #include "dataformat.h"
 #include <QMap>
 #include <QVector>
+#include <QDebug>
 
 class Global
 {
@@ -68,6 +69,9 @@ public:
     static DeviceNode getYhcNodeInfoByCname(QString cname);
     static DeviceNode getMixNodeInfoByCname(QString cname);
 
+    static DeviceNode getYhcNodeInfoByRunctrAddress(float address);
+    static DeviceNode getMixNodeInfoByRunctrAddress(float address);
+
     static DeviceGroupInfo getDeoDeviceGroupInfo(int index);
     static DeviceGroupInfo getFanValveDeviceGroupInfo(int index);
     static DeviceGroupInfo getFanDeviceGroupInfo(int index);
@@ -112,6 +116,8 @@ public:
 
     static int alertIndex;
     static bool isPrint;
+    static int ferGroupShow;
+    static QStringList ferConfigStrContent;
 
 private:
     static FermenationDeviceInfo readFermenationDeviceInfo();
@@ -123,6 +129,7 @@ private:
 
     static ServerInfo readServerInfo();
     static SystemConfig readSystemConfig();
+    static int readFerGroupShowing();
 };
 
 #endif // GLOBAL_H

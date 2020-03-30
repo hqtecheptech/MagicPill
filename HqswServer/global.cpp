@@ -66,6 +66,53 @@ ServerInfo Global::readServerInfo()
     return retValue;
 }
 
+int Global::readFerGroupShowing()
+{
+    QFile file("sysconfig.xml");
+    int retValue = -1;
+    QDomDocument document;
+    QString error;
+    int row = 0, column = 0;
+    if(!document.setContent(&file, false, &error, &row, &column))
+    {
+        return -1;
+    }
+    if(document.isNull())
+    {
+        return -1;
+    }
+
+    QDomElement root = document.documentElement();
+    if(root.isNull())
+    {
+        return -1;
+    }
+
+    QDomNode node = root.firstChild();
+    while(!node.isNull())
+    {
+        if(node.toElement().tagName()=="fer")
+        {
+            qDebug() << node.toElement().tagName();
+            QDomNode childNode = node.firstChild();
+            while(!childNode.isNull())
+            {
+                qDebug() << childNode.toElement().tagName();
+                if(childNode.toElement().tagName()=="group")
+                {
+                    QDomNode leafNode = childNode.firstChild();
+                    retValue = leafNode.toText().data().toInt();
+                    qDebug() << leafNode.toText().data();
+                }
+                childNode = childNode.nextSibling();
+            }
+            break;
+        }
+        node = node.nextSibling();
+    }
+    return retValue;
+}
+
 SystemConfig Global::readSystemConfig()
 {
     //qDebug() << "Reading readSystemConfig ...!";
@@ -988,6 +1035,7 @@ QVector<DeviceNode> readRunctrDeviceNodes(QString filename)
                 //node.Offset = child_list.item(j).toElement().attribute("offset").toUShort();
                 node.Alert0 = child_list.item(j).toElement().attribute("alert0");
                 node.Alert1 = child_list.item(j).toElement().attribute("alert1");
+                node.Priority = child_list.item(j).toElement().attribute("priority").toInt();
                 nodes[j] = node;
             }
             return nodes;
@@ -1055,6 +1103,9 @@ QVector<DeviceNode> readDeviceNodes(QString filename)
             node.StartAddress = element.attribute("start").toInt();
             node.Length = child_list.item(j).toElement().attribute("length").toInt();
             node.Diff = child_list.item(j).toElement().attribute("diff").toFloat();
+            node.Alert0 = child_list.item(j).toElement().attribute("alert0");
+            node.Alert1 = child_list.item(j).toElement().attribute("alert1");
+            node.Priority = child_list.item(j).toElement().attribute("priority").toInt();
             if(node.DataType == "x0")
             {
                 node.Offset = j;
@@ -1255,6 +1306,40 @@ DeviceNode Global::getMixNodeInfoByCname(QString cname)
     for(int i=0; i<mixDeviceNodes.length();i++)
     {
         if(mixDeviceNodes.at(i).Cname==cname)
+        {
+            return mixDeviceNodes.at(i);
+        }
+    }
+}
+
+DeviceNode Global::getYhcNodeInfoByRunctrAddress(float address)
+{
+    uint blockSize = yhcDeviceInfo.RunCtr_Block_Size  / 8;
+
+    int temp = (int)floor(address);
+    int blockOffset = (temp - yhcDeviceInfo.Runctr_Address) % blockSize;
+    int offset = blockOffset * 8 + (int)(address * 10.0 - temp * 10.0 + 0.5);
+
+    for(int i=0; i<yhcDeviceNodes.length();i++)
+    {
+        if(yhcDeviceNodes.at(i).DataType == "x0" && yhcDeviceNodes.at(i).Offset == offset)
+        {
+            return yhcDeviceNodes.at(i);
+        }
+    }
+}
+
+DeviceNode Global::getMixNodeInfoByRunctrAddress(float address)
+{
+    uint blockSize = mixDeviceInfo.RunCtr_Block_Size  / 8;
+
+    int temp = (int)floor(address);
+    int blockOffset = (temp - mixDeviceInfo.Runctr_Address) % blockSize;
+    int offset = blockOffset * 8 + (int)(address * 10.0 - temp * 10.0 + 0.5);
+
+    for(int i=0; i<mixDeviceNodes.length();i++)
+    {
+        if(mixDeviceNodes.at(i).DataType == "x0" && mixDeviceNodes.at(i).Offset == offset)
         {
             return mixDeviceNodes.at(i);
         }
@@ -1599,7 +1684,7 @@ bool Global::getYhcRunctrValueByName(int deviceIndex, QString name, QMap<float, 
 
 bool Global::getMixRunctrValueByName(int deviceIndex, QString name, QMap<float, QString> dataMap)
 {
-    DeviceGroupInfo groupInfo = getYhcDeviceGroupInfo(deviceIndex);
+    DeviceGroupInfo groupInfo = getMixDeviceGroupInfo(deviceIndex);
     int startAddrss = mixDeviceInfo.Runctr_Address +
             mixDeviceInfo.RunCtr_Block_Size / 8 * (deviceIndex - groupInfo.startIndex);
 
@@ -1840,6 +1925,8 @@ ServerInfo Global::serverInfo = readServerInfo();
 
 SystemConfig Global::systemConfig = readSystemConfig();
 
+int Global::ferGroupShow = readFerGroupShowing();
+
 FermenationDeviceInfo Global::ferDeviceInfo = readFermenationDeviceInfo();
 
 DeodorationDeviceInfo Global::deoDeviceInfo = readDeodorationDeviceInfo();
@@ -1902,3 +1989,4 @@ QMap<float,QString> Global::currentMixDataMap;
 
 int Global::alertIndex = 0;
 bool Global::isPrint = false;
+QStringList Global::ferConfigStrContent;

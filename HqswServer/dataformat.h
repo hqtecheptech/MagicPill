@@ -1,6 +1,7 @@
 #ifndef DATAFORMAT_H
 #define DATAFORMAT_H
 
+#include <QtNetwork>
 #include <QMetaType>
 #include <QString>
 
@@ -82,7 +83,8 @@ enum SettingType
     Day,
     Hour,
     Minute,
-    Second
+    Second,
+    Rate
 };
 
 struct StreamPack
@@ -244,6 +246,7 @@ struct DeviceNode
     QString DataType = "NULL";
     QString Alert0 = "NULL";
     QString Alert1 = "NULL";
+    int Priority = 0;
 };
 
 struct DeviceGroupInfo
