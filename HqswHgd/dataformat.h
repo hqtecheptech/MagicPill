@@ -1,8 +1,9 @@
 #ifndef DATAFORMAT_H
 #define DATAFORMAT_H
 
-#include <QWidget>
 #include <QtNetwork>
+#include <QMetaType>
+#include <QString>
 
 #define BCT_R_REALDATA      0x01    //读实时数据
 #define BCT_R_HISDATA       0x02    //读历史数据
@@ -58,7 +59,8 @@ enum CommandType
     w_AddUser,    //写登录信息
     W_Update_PlcData, //更新PLC数据
     W_Send_Control,  //发送控制命令
-    W_Updata_Config  //更新配置
+    W_Updata_Config,  //更新配置
+    W_Heart_Beat      //发送心跳包
 };
 
 enum DataType
@@ -76,12 +78,13 @@ enum DataType
     Dtl
 };
 
-enum TimeType
+enum SettingType
 {
     Day,
     Hour,
     Minute,
-    Second
+    Second,
+    Rate
 };
 
 struct StreamPack
@@ -112,6 +115,21 @@ struct YhcDeviceInfo
     quint32 Yhc_Setting_Display_Num;        //发酵设定界面显示个数
     quint32 Yhc_Setting_Category;           //发酵设定变量种类
     QString Yhc_Setting_Type;               //发酵设定数据类型
+    quint32 Runctr_Address;                 //使能变量起始地址
+    quint32 Runctr_Num;                     //使能变量个数
+    quint32 Runctr_Category;                //使能变量种类
+    QString Runctr_Type;                    //使能变量数据类型
+};
+
+struct MixDeviceInfo
+{
+    quint32 Device_Number;                  //设备总数
+    quint32 RunCtr_Block_Size;              //使能参数总数
+    quint32 Rate_Setting_Address;            //设定起始地址
+    quint32 Rate_Setting_Num;                //设定变量个数
+    quint32 Rate_Setting_Display_Num;        //设定界面显示个数
+    quint32 Rate_Setting_Category;           //设定变量种类
+    QString Rate_Setting_Type;               //设定数据类型
     quint32 Runctr_Address;                 //使能变量起始地址
     quint32 Runctr_Num;                     //使能变量个数
     quint32 Runctr_Category;                //使能变量种类
@@ -228,6 +246,7 @@ struct DeviceNode
     QString DataType = "NULL";
     QString Alert0 = "NULL";
     QString Alert1 = "NULL";
+    int Priority = 0;
 };
 
 struct DeviceGroupInfo

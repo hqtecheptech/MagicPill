@@ -154,7 +154,8 @@ HEADERS  += mainwindow.h \
     ferconfigdialog.h \
     ferconfig.h \
     simpledeocontroldialog.h \
-    uiglobal.h
+    uiglobal.h \
+    data.h
 
 FORMS    += mainwindow.ui \
     fftank.ui \
