@@ -80,7 +80,7 @@ Yhcc::Yhcc(QWidget *parent) :
 
     updateChartsTimer = new QTimer(this);
     connect(updateChartsTimer, SIGNAL(timeout()), this, SLOT(updateCharts()));
-    updateChartsTimer->start(10000);
+    updateChartsTimer->start(60000);
 
     readDataTimer = new QTimer(this);
     connect(readDataTimer, SIGNAL(timeout()), this, SLOT(readData()));

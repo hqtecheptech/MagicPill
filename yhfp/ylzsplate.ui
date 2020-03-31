@@ -23,9 +23,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image: url(:/pic/表1.png);
-background-position:center;
-background-repeat:no-repeat;</string>
+    <string notr="true">background-image: url(:/pic/表1.png);</string>
    </property>
    <property name="frameShape">
     <enum>QFrame::StyledPanel</enum>
@@ -36,13 +34,61 @@ background-repeat:no-repeat;</string>
    <property name="lineWidth">
     <number>0</number>
    </property>
+   <widget class="QLabel" name="l_label">
+    <property name="geometry">
+     <rect>
+      <x>72</x>
+      <y>106</y>
+      <width>50</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>100</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="r_label">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>105</y>
+      <width>50</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>100</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
   </widget>
  </widget>
  <customwidgets>
   <customwidget>
    <class>PlateFrame</class>
    <extends>QFrame</extends>
-   <header location="global">plateframe.h</header>
+   <header>plateframe.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

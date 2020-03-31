@@ -34,13 +34,61 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
+   <widget class="QLabel" name="r_label">
+    <property name="geometry">
+     <rect>
+      <x>143</x>
+      <y>107</y>
+      <width>50</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>100</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="l_label">
+    <property name="geometry">
+     <rect>
+      <x>75</x>
+      <y>108</y>
+      <width>50</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>100</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
   </widget>
  </widget>
  <customwidgets>
   <customwidget>
    <class>PlateFrame</class>
    <extends>QFrame</extends>
-   <header location="global">plateframe.h</header>
+   <header>plateframe.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

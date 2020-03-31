@@ -70,7 +70,7 @@ Fpjc::Fpjc(QWidget *parent) :
 
     updateChartTimer = new QTimer(this);
     connect(updateChartTimer, SIGNAL(timeout()), this, SLOT(updateChart()));
-    updateChartTimer->start(20000);
+    updateChartTimer->start(60000);
 
     alertHisDlg = new AlertHistoryDialog(this);
     hisDlg = new HistoryDlg(this);   
@@ -136,6 +136,8 @@ void Fpjc::updateWatch()
     qDebug() << "Fpj_Left_Roller_Speed value: " << Global::currentYhcDataMap[address];
     ushort lrs = Global::currentYhcDataMap[address].toUShort();
 
+    ui->Fpj_Left_Roller_Speed_label->setText(Global::currentYhcDataMap[address]);
+
     ui->fpjWatchsWidget->updateLeftTopPlate(lrp, lrs);
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Roller_Pressure");
@@ -147,6 +149,8 @@ void Fpjc::updateWatch()
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     qDebug() << "Fpj_Right_Roller_Speed value: " << Global::currentYhcDataMap[address];
     ushort rrs = Global::currentYhcDataMap[address].toUShort();
+
+    ui->Fpj_Right_Roller_Speed_label->setText(Global::currentYhcDataMap[address]);
 
     ui->fpjWatchsWidget->updateRightTopPlate(rrp, rrs);
 
@@ -197,6 +201,26 @@ void Fpjc::updateWatch()
     float hl2 = Global::currentYhcDataMap[address].toUShort();
 
     ui->fpjWatchsWidget->updateRightCenterPlate(ht2, hl2);
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_LeftFront");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_LeftFront value: " << Global::currentYhcDataMap[address];
+    ui->Fpj_LeftFront_label->setText(Global::currentYhcDataMap[address]);
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_RightFront");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_RightFront value: " << Global::currentYhcDataMap[address];
+    ui->Fpj_RightFront_label->setText(Global::currentYhcDataMap[address]);
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_LeftBehind");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_LeftBehind value: " << Global::currentYhcDataMap[address];
+    ui->Fpj_LeftBehind_label->setText(Global::currentYhcDataMap[address]);
+
+    deviceNode = Global::getYhcNodeInfoByName("Fpj_RightBehind");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
+    qDebug() << "Fpj_RightBehind value: " << Global::currentYhcDataMap[address];
+    ui->Fpj_RightBehind_label->setText(Global::currentYhcDataMap[address]);
 }
 
 void Fpjc::updateChart()
