@@ -82,6 +82,7 @@ public:
     static DeviceGroupInfo getFerDeviceGroupInfoByGroupId(int groupId);
     static DeviceGroupInfo getYhcDeviceGroupInfoByGroupId(int groupId);
     static DeviceGroupInfo getMixDeviceGroupInfoByGroupId(int groupId);
+    static DeviceGroupInfo getDeoDeviceGroupInfoByGroupId(int groupId);
 
     static QMap<float,QString> currentFermenationDataMap;
     static QMap<float,QString> currentDeodorationDataMap;

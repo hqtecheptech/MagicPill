@@ -57,6 +57,10 @@ void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
                 groupInfo = Global::getMixDeviceGroupInfoByGroupId(groupId);
                 parseMixServerData(groupInfo, plcdata);
                 break;
+            case DEO:
+                groupInfo = Global::getDeoDeviceGroupInfoByGroupId(groupId);
+                parseDeoServerData(groupInfo, plcdata);
+                break;
             default:
                 break;
         }
@@ -495,6 +499,151 @@ void PlcDataManageWorker::parseMixServerData(DeviceGroupInfo groupInfo, const Pl
             else
             {
                 changedDeviceSet.insert(startIndex + Global::getMixDeviceIndexByRunctrAddress(ca));
+            }
+        }
+
+        emit plcDbUpdated(changedDeviceSet, dataMap);
+    }
+}
+
+void PlcDataManageWorker::parseDeoServerData(DeviceGroupInfo groupInfo, const Plc_Db dbData)
+{
+    Plc_Db newPlcDb = dbData;
+
+    bool diff = false;
+    QMap<float,QString> dataMap;
+    QVector<float> changedAddressArray;
+    float address = 0;
+
+    for(int i=0; i < DB_FLOAT_LEN; i++)
+    {
+        address = Global::convertIndexToAddress(i, "r");
+        dataMap.insert(address,QString::number(newPlcDb.f_data[i]));
+        if(!Global::currentDeodorationDataMap.contains(address))
+        {
+            diff = true;
+            Global::currentDeodorationDataMap.insert(address,QString::number(newPlcDb.f_data[i]));
+            changedAddressArray.append(address);
+        }
+        else
+        {
+            if(Global::currentDeodorationDataMap[address] != QString::number(newPlcDb.f_data[i]))
+            {
+                diff = true;
+                changedAddressArray.append(address);
+                Global::currentDeodorationDataMap[address] = QString::number(newPlcDb.f_data[i]);
+            }
+        }
+    }
+
+    for(int i=0; i < DB_INT_LEN; i++)
+    {
+        address = Global::convertIndexToAddress(i, "di");
+        dataMap.insert(address,QString::number(newPlcDb.i_data[i]));
+        if(!Global::currentDeodorationDataMap.contains(address))
+        {
+            diff = true;
+            Global::currentDeodorationDataMap.insert(address,QString::number(newPlcDb.i_data[i]));
+            changedAddressArray.append(address);
+        }
+        else
+        {
+            if(Global::currentDeodorationDataMap[address] != QString::number(newPlcDb.i_data[i]))
+            {
+                diff = true;
+                changedAddressArray.append(address);
+                Global::currentDeodorationDataMap[address] = QString::number(newPlcDb.i_data[i]);
+            }
+        }
+    }
+
+    for(int i=0; i < DB_UINT32_LEN; i++)
+    {
+        address = Global::convertIndexToAddress(i, "dw");
+        dataMap.insert(address,QString::number(newPlcDb.dw_data[i]));
+        if(!Global::currentDeodorationDataMap.contains(address))
+        {
+            diff = true;
+            Global::currentDeodorationDataMap.insert(address,QString::number(newPlcDb.dw_data[i]));
+            changedAddressArray.append(address);
+        }
+        else
+        {
+            if(Global::currentDeodorationDataMap[address] != QString::number(newPlcDb.dw_data[i]))
+            {
+                diff = true;
+                changedAddressArray.append(address);
+                Global::currentDeodorationDataMap[address] = QString::number(newPlcDb.dw_data[i]);
+            }
+        }
+    }
+
+    for(int i=0; i < DB_UINT16_LEN; i++)
+    {
+        address = Global::convertIndexToAddress(i, "w");
+        dataMap.insert(address,QString::number(newPlcDb.w_data[i]));
+        if(!Global::currentDeodorationDataMap.contains(address))
+        {
+            diff = true;
+            Global::currentDeodorationDataMap.insert(address,QString::number(newPlcDb.w_data[i]));
+            changedAddressArray.append(address);
+        }
+        else
+        {
+            if(Global::currentDeodorationDataMap[address] != QString::number(newPlcDb.w_data[i]))
+            {
+                diff = true;
+                changedAddressArray.append(address);
+                Global::currentDeodorationDataMap[address] = QString::number(newPlcDb.w_data[i]);
+            }
+        }
+    }
+
+    for(int i=0; i < DB_BOOL_LEN; i++)
+    {
+        QString strValue = "false";
+        if(newPlcDb.b_data[i] == 1)
+        {
+            strValue = "true";
+        }
+
+        address = Global::getRunctrAddressByIndex(i);
+
+        dataMap.insert(address,strValue);
+        if(!Global::currentDeodorationDataMap.contains(address))
+        {
+            diff = true;
+            Global::currentDeodorationDataMap.insert(address,strValue);
+            changedAddressArray.append(address);
+        }
+        else
+        {
+            if(Global::currentDeodorationDataMap.value(address) != strValue)
+            {
+                diff = true;
+                changedAddressArray.append(address);
+                Global::currentDeodorationDataMap[address] = strValue;
+            }
+        }
+    }
+
+    int startIndex = groupInfo.startIndex;
+
+    //qDebug() << "startIndex = " << startIndex;
+    //qDebug() << "diff = " << diff;
+
+    if(startIndex >=0 && diff)
+    {
+        QSet<int> changedDeviceSet;
+        foreach(float ca, changedAddressArray)
+        {
+            if(ca < Global::deoDeviceInfo.Runctr_Address)
+            {
+                changedDeviceSet.insert(startIndex + Global::getDeoDeviceIndexByAddress(ca));
+            }
+            else
+            {
+                changedDeviceSet.insert(startIndex + Global::getDeoDeviceIndexByRunctrAddress(ca));
             }
         }
 

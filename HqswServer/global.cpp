@@ -1634,6 +1634,17 @@ DeviceGroupInfo Global::getMixDeviceGroupInfoByGroupId(int groupId)
     }
 }
 
+DeviceGroupInfo Global::getDeoDeviceGroupInfoByGroupId(int groupId)
+{
+    foreach(DeviceGroupInfo info, deoDeviceGroupInfos)
+    {
+        if(groupId == info.groupId)
+        {
+            return info;
+        }
+    }
+}
+
 bool Global::getFerRunctrValueByName(int deviceIndex, QString name, QMap<float, QString> dataMap)
 {
     DeviceGroupInfo groupInfo = getFerDeviceGroupInfo(deviceIndex);

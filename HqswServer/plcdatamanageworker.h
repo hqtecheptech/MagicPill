@@ -36,6 +36,7 @@ private:
     void parseYhcServerData(DeviceGroupInfo groupInfo, const Plc_Db dbData);
     void parseFerServerData(DeviceGroupInfo groupInfo, const Plc_Db dbData);
     void parseMixServerData(DeviceGroupInfo groupInfo, const Plc_Db dbData);
+    void parseDeoServerData(DeviceGroupInfo groupInfo, const Plc_Db dbData);
 };
 
 #endif // PLCDATAMANAGEWORKER_H
