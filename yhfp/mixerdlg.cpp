@@ -49,7 +49,7 @@ MixerDlg::MixerDlg(QWidget *parent) :
 
     readDataTimer = new QTimer(this);
     connect(readDataTimer, SIGNAL(timeout()), this, SLOT(readData()));
-    readDataTimer->start(1000);
+    readDataTimer->start(500);
 
     mixSettingDlg = new MixSettingDialog();
     alertHisDlg = new AlertHistoryDialog(this);
@@ -474,14 +474,14 @@ void MixerDlg::showEvent(QShowEvent *)
         checkNetStateTimer->start(10000);
     }
 
-    if(!testTimer->isActive())
+    /*if(!testTimer->isActive())
     {
         testTimer->start(5000);
-    }
+    }*/
 
     if(!switchStateTimer->isActive())
     {
-        switchStateTimer->start(500);
+        switchStateTimer->start(200);
     }
 }
 
@@ -492,10 +492,10 @@ void MixerDlg::closeEvent(QCloseEvent *)
         checkNetStateTimer->stop();
     }
 
-    if(testTimer->isActive())
+    /*if(testTimer->isActive())
     {
         testTimer->stop();
-    }
+    }*/
 
     if(switchStateTimer->isActive())
     {
@@ -505,20 +505,24 @@ void MixerDlg::closeEvent(QCloseEvent *)
 
 void MixerDlg::parseData(QMap<float, QString> dataMap)
 {
+    float value = 0.0;
     DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getMixNodeInfoByName("ING_BIN_1_CURRENT_WEIGHT");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->ING_BIN_1_CURRENT_WEIGHT_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->ING_BIN_1_CURRENT_WEIGHT_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("SPIRAL_1_PRESSURE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->SPIRAL_1_PRESSURE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->SPIRAL_1_PRESSURE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("WHEEL_1_PRESSURE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->WHEEL_1_PRESSURE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->WHEEL_1_PRESSURE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("ING_SPIRAL_1_RATE");
@@ -528,17 +532,20 @@ void MixerDlg::parseData(QMap<float, QString> dataMap)
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("ING_BIN_2_CURRENT_WEIGHT");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->ING_BIN_2_CURRENT_WEIGHT_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->ING_BIN_2_CURRENT_WEIGHT_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("SPIRAL_2_PRESSURE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->SPIRAL_2_PRESSURE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->SPIRAL_2_PRESSURE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("WHEEL_2_PRESSURE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->WHEEL_2_PRESSURE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->WHEEL_2_PRESSURE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("ING_SPIRAL_2_RATE");
@@ -548,12 +555,14 @@ void MixerDlg::parseData(QMap<float, QString> dataMap)
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("CY_1_PRESSURE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->CY_1_PRESSURE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->CY_1_PRESSURE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("CY_2_PRESSURE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->CY_2_PRESSURE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->CY_2_PRESSURE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("SLUG_SPIRAL_1_RATE");
@@ -568,12 +577,14 @@ void MixerDlg::parseData(QMap<float, QString> dataMap)
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("CY_3_PRESSURE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->CY_3_PRESSURE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->CY_3_PRESSURE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("CY_4_PRESSURE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->CY_4_PRESSURE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->CY_4_PRESSURE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("SLUG_SPIRAL_2_RATE");
@@ -588,217 +599,56 @@ void MixerDlg::parseData(QMap<float, QString> dataMap)
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("FC_PLATE_1_PRESSURE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->FC_PLATE_1_PRESSURE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->FC_PLATE_1_PRESSURE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("FC_PLATE_2_PRESSURE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->FC_PLATE_2_PRESSURE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->FC_PLATE_2_PRESSURE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("CONVEYOR_1_PRESSURE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->CONVEYOR_1_PRESSURE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->CONVEYOR_1_PRESSURE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("CONVEYOR_3_PRESSURE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->CONVEYOR_3_PRESSURE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->CONVEYOR_3_PRESSURE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("CONVEYOR_4_PRESSURE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->CONVEYOR_4_PRESSURE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->CONVEYOR_4_PRESSURE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("ING_BIN_1_CURRENT_WEIGHT");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->ING_WEIGHT_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->ING_WEIGHT_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("ING_BIN_2_CURRENT_WEIGHT");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->BM_ING_WEIGHT_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->BM_ING_WEIGHT_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("BW_FLOW_RATE");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->BW_FLOW_RATE_label->setText(dataMap[address]);
+    value = dataMap[address].toFloat();
+    ui->BW_FLOW_RATE_label->setText(QString::number(value, 'f', 3));
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("TOTAL_CURRENT");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->TOTAL_CURRENT_label->setText(dataMap[address]);
-
-
-    /*DeviceGroupInfo info = Global::getMixDeviceGroupInfo(deviceIndex);
-    DeviceNode deviceNode = Global::getMixNodeInfoByName("BM_BIN_CURRENT_WEIGHT");
-    float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    int index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->BM_BIN_CURRENT_WEIGHT_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("BM_BIN_OUTPUT_QUANTITY");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->BM_BIN_OUTPUT_QUANTITY_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("BM_BIN_OUTPUT_RATE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->BM_BIN_OUTPUT_RATE_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("BM_SPIRAL_PRESSURE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->BM_SPIRAL_PRESSURE_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("BM_SPIRAL_RATE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->BM_SPIRAL_RATE_label->setText(QString::number(Global::currentMixDataMap[address].toUShort()));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("BM_WHEEL_PRESSURE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->BM_WHEEL_PRESSURE_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("BM_WHEEL_RATE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->BM_WHEEL_RATE_label->setText(QString::number(Global::currentMixDataMap[address].toShort()));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("BM_SPIRAL_RATE_SETTING");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->BM_SPIRAL_RATE_SETTING_label->setText(QString::number(Global::currentMixDataMap[address].toUShort()));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("SLUG_BIN_CURRENT_WEIGHT");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->SLUG_BIN_CURRENT_WEIGHT_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("SLUG_BIN_OUTPUT_QUANTITY");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->SLUG_BIN_OUTPUT_QUANTITY_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("SLUG_BIN_OUTPUT_RATE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->SLUG_BIN_OUTPUT_RATE_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("SLUG_SPIRAL_PRESSURE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->SLUG_SPIRAL_PRESSURE_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("CY_1_PRESSURE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->CY_1_PRESSURE_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("CY_2_PRESSURE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->CY_2_PRESSURE_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("SLUG_WHEEL_PRESSURE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->SLUG_WHEEL_PRESSURE_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("SLUG_CARG_RATE_SETTING");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->SLUG_CARG_RATE_SETTING_label->setText(QString::number(Global::currentMixDataMap[address].toUShort()));
-
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("ING_BIN_CURRENT_WEIGHT");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->ING_BIN_CURRENT_WEIGHT_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("ING_BIN_OUTPUT_QUANTITY");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->ING_BIN_OUTPUT_QUANTITY_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("ING_BIN_OUTPUT_RATE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->ING_BIN_OUTPUT_RATE_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("ING_SPIRAL_PRESSURE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->ING_SPIRAL_PRESSURE_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("ING_SPIRAL_RATE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->ING_SPIRAL_RATE_label->setText(QString::number(Global::currentMixDataMap[address].toUShort()));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("ING_WHEEL_PRESSURE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->ING_WHEEL_PRESSURE_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("ING_WHEEL_RATE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->ING_WHEEL_RATE_label->setText(QString::number(Global::currentMixDataMap[address].toUShort()));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("ING_SPIRAL_RATE_SETTING");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->ING_SPIRAL_RATE_SETTING_label->setText(QString::number(Global::currentMixDataMap[address].toUShort()));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("SLUG_BIN_FT_TEMPTURE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->SLUG_BIN_FT_TEMPTURE_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("ING_BIN_FT_TEMPTURE");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->ING_BIN_FT_TEMPTURE_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("TOTAL_CURRENT");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->TOTAL_CURRENT_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));
-
-    info = Global::getMixDeviceGroupInfo(deviceIndex);
-    deviceNode = Global::getMixNodeInfoByName("MIXER_CURRENT");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ui->MIXER_CURRENT_label->setText(QString::number((float) Global::currentMixDataMap[address].toUInt() / 100.0));*/
+    value = dataMap[address].toFloat();
+    ui->TOTAL_CURRENT_label->setText(QString::number(value, 'f', 3));
 }
 
 void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
