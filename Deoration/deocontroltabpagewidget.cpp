@@ -31,6 +31,12 @@ DeoControlTabPageWidget::DeoControlTabPageWidget(QWidget *parent) :
     ui->frame_4->setVisible(false);
     ui->frame_control_mode->setVisible(false);
 
+    mixAirValve = new TankAirValve(this);
+    mixAirValve->setDeviceIndex(0);
+    mixAirValve->setTextIndexValue("-1");
+    mixAirValve->setName(QStringLiteral("混料区管道阀"));
+    ui->verticalLayout_mv->addWidget(mixAirValve);
+
     tankAirValve1 = new TankAirValve(this);
     tankAirValve2 = new TankAirValve(this);
     tankAirValve3 = new TankAirValve(this);
@@ -137,11 +143,13 @@ DeoControlTabPageWidget::DeoControlTabPageWidget(QWidget *parent) :
     }
 
     deoSettingDialog = new DeoSettingDialog(this);
+    deoManualSettingDlg = new DeoManualSettingDialog(this);
+    connect(this,SIGNAL(dataUpdate(QSet<int>,QMap<float,QString>)),deoManualSettingDlg,SLOT(updateFermentationData(QSet<int>, QMap<float,QString>)));
 
     blowTimer = new QTimer(this);
     connect(blowTimer, SIGNAL(timeout()), this, SLOT(switchBlowingImg()));
 
-    myTimerThread = new MyTimerThread(2, this);
+    myTimerThread = new MyTimerThread(1, this);
     connect(myTimerThread, SIGNAL(timeout()), this, SLOT(updateDeviceState()));
 
     getServerConnectStateTcpClient = new TcpClientSocket(this);
@@ -176,12 +184,7 @@ void DeoControlTabPageWidget::switchBlowingImg()
 {
     if(blowing)
     {
-        ui->airValveLabel_1->setPixmap(greenArrowImg);
-        ui->airValveLabel_2->setPixmap(greenArrowImg);
-        ui->airValveLabel_4->setPixmap(greenArrowImg);
-        ui->airValveLabel_6->setPixmap(greenArrowImg);
-        ui->airValveLabel_10->setPixmap(greenArrowImg);
-        /*if(tankAirValve1->getDeviceOpenedState())
+        if(tankAirValve1->getDeviceOpenedState())
         {
             ui->airValveLabel_1->setPixmap(greenArrowImg);
         }
@@ -289,32 +292,14 @@ void DeoControlTabPageWidget::switchBlowingImg()
             ui->airValveLabel_12->setPixmap(brownArrowImg);
         }
 
-        if(tankAirValve13->getDeviceOpenedState())
+        if(mixAirValve->getDeviceOpenedState())
         {
-            ui->airValveLabel_13->setPixmap(greenArrowImg);
+            ui->airValveLabel_mix->setPixmap(greenArrowImg);
         }
         else
         {
-            ui->airValveLabel_13->setPixmap(brownArrowImg);
+            ui->airValveLabel_mix->setPixmap(brownArrowImg);
         }
-
-        if(tankAirValve14->getDeviceOpenedState())
-        {
-            ui->airValveLabel_14->setPixmap(greenArrowImg);
-        }
-        else
-        {
-            ui->airValveLabel_14->setPixmap(brownArrowImg);
-        }
-
-        if(tankAirValve15->getDeviceOpenedState())
-        {
-            ui->airValveLabel_15->setPixmap(greenArrowImg);
-        }
-        else
-        {
-            ui->airValveLabel_15->setPixmap(brownArrowImg);
-        }*/
     }
     else
     {
@@ -425,6 +410,15 @@ void DeoControlTabPageWidget::switchBlowingImg()
         {
             ui->airValveLabel_12->setPixmap(brownArrowImg);
         }
+
+        if(mixAirValve->getDeviceOpenedState())
+        {
+            ui->airValveLabel_mix->setPixmap(blankImg);
+        }
+        else
+        {
+            ui->airValveLabel_mix->setPixmap(brownArrowImg);
+        }
     }
 
     blowing = !blowing;
@@ -432,6 +426,25 @@ void DeoControlTabPageWidget::switchBlowingImg()
 
 void DeoControlTabPageWidget::showEvent(QShowEvent *)
 {
+    if(Global::ferGroupShow == 0)
+    {
+        ui->env_data_frame->setVisible(false);
+        ui->mix_label_1->setVisible(false);
+        ui->mix_label_2->setVisible(false);
+        ui->mix_label_3->setVisible(false);
+        ui->mix_valve_frame->setVisible(false);
+        ui->airValveLabel_mix->setVisible(false);
+    }
+    else
+    {
+        ui->env_data_frame->setVisible(true);
+        ui->mix_label_1->setVisible(true);
+        ui->mix_label_2->setVisible(true);
+        ui->mix_label_3->setVisible(true);
+        ui->mix_valve_frame->setVisible(true);
+        ui->airValveLabel_mix->setVisible(true);
+    }
+
     if(!workerThread.isRunning())
     {
         workerThread.start();
@@ -575,16 +588,23 @@ void DeoControlTabPageWidget::parseDeodorationData(QMap<float,QString> dataMap)
 {
     int deviceIndex = ui->deviceIndexComboBox->currentIndex();
     DeviceGroupInfo info = Global::getDeoDeviceGroupInfo(deviceIndex);
-    DeviceNode deviceNode = Global::getDeodorationNodeInfoByName("Level_Switch_Read");
+    DeviceNode deviceNode = Global::getDeodorationNodeInfoByName("FER_H2S");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->waterLeverValueLabel->setText(dataMap[address]);
-    deviceNode = Global::getDeodorationNodeInfoByName("Temp_Read");
+    ui->h2sLabel->setText(dataMap[address]);
+    deviceNode = Global::getDeodorationNodeInfoByName("FER_NH3");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->waterTemptureLabel->setText(dataMap[address]);
+    ui->nh3Label->setText(dataMap[address]);
+    deviceNode = Global::getDeodorationNodeInfoByName("FER_TEMP");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    ui->tempLabel->setText(dataMap[address]);
 }
 
 void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
 {
+    mixAirValve->setDeviceOpenedState(Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Mix_ValveGD_1_Opened_Signal",dataMap));
+    mixAirValve->setDeviceClosedState(Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Mix_ValveGD_1_Closed_Signal",dataMap));
+    mixAirValve->setDeviceFaultState(Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Mix_ValveGD_1_fault_Signal",dataMap));
+
     foreach (BasePartWidget * part, allGdValveParts) {
         part->setDeviceOpenedState(Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),part->getOpendSignalName(),dataMap));
         part->setDeviceClosedState(Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),part->getClosedSignalName(),dataMap));
@@ -673,6 +693,7 @@ void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
 
     bool isRan = false;
     bool isFault = false;
+    bool isAuto = false;
 
     /*isRan = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_1_Run_Signal",dataMap);
     isFault = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_1_False_Signal",dataMap);
@@ -725,8 +746,9 @@ void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
         }
     }*/
 
-    isRan = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_PL_Run_Signal",dataMap);
-    isFault = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_PL_False_Signal",dataMap);
+    isRan = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_PL_1_Run_Signal",dataMap);
+    isFault = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_PL_1_False_Signal",dataMap);
+    isAuto = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_PL_1_Auto",dataMap);
     if(isFault)
     {
         ui->sparyPumpLabel_1->setPixmap(filterPumpFaultBgImg);
@@ -742,8 +764,144 @@ void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
             ui->sparyPumpLabel_1->setPixmap(filterPumpClosedBgImg);
         }
     }
+    if(isAuto)
+    {
+        ui->Pump_PL_1_Auto_label->setText("自动");
+    }
+    else
+    {
+        ui->Pump_PL_1_Auto_label->setText("手动");
+    }
 
-    isRan = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Heater_Run_Signal",dataMap);
+    isRan = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_PL_2_Run_Signal",dataMap);
+    isFault = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_PL_2_False_Signal",dataMap);
+    isAuto = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_PL_2_Auto",dataMap);
+    if(isFault)
+    {
+        ui->sparyPumpLabel_2->setPixmap(filterPumpFaultBgImg);
+    }
+    else
+    {
+        if(isRan)
+        {
+            ui->sparyPumpLabel_2->setPixmap(filterPumpOpenedBgImg);
+        }
+        else
+        {
+            ui->sparyPumpLabel_1->setPixmap(filterPumpClosedBgImg);
+        }
+    }
+    if(isAuto)
+    {
+        ui->Pump_PL_2_Auto_label->setText("自动");
+    }
+    else
+    {
+        ui->Pump_PL_2_Auto_label->setText("手动");
+    }
+
+    isRan = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_1_Run_Signal",dataMap);
+    isFault = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_1_False_Signal",dataMap);
+    isAuto = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_1_Auto",dataMap);
+    ui->washPumpLabel_2->setObjectName("washPumpLabel_1");
+    if(isFault)
+    {
+        ui->washPumpLabel_1->setStyleSheet("QLabel#washPumpLabel_1{border-image:url(:/image/new/vertical_filter_pump_fault.png)}");
+    }
+    else
+    {
+        if(isRan)
+        {
+            ui->washPumpLabel_1->setStyleSheet("QLabel#washPumpLabel_1{border-image:url(:/image/new/vertical_filter_pump_opened.png)}");
+        }
+        else
+        {
+            ui->washPumpLabel_1->setStyleSheet("QLabel#washPumpLabel_1{border-image:url(:/image/new/vertical_filter_pump_closed.png)}");
+        }
+    }
+    if(isAuto)
+    {
+        ui->Pump_1_Auto_label->setText("自动");
+    }
+    else
+    {
+        ui->Pump_1_Auto_label->setText("手动");
+    }
+
+    isRan = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_2_Run_Signal",dataMap);
+    isFault = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_2_False_Signal",dataMap);
+    isAuto = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Pump_2_Auto",dataMap);
+    ui->washPumpLabel_2->setObjectName("washPumpLabel_2");
+    if(isFault)
+    {
+        ui->washPumpLabel_2->setStyleSheet("QLabel#washPumpLabel_2{border-image:url(:/image/new/vertical_filter_pump_fault.png)}");
+    }
+    else
+    {
+        if(isRan)
+        {
+            ui->washPumpLabel_2->setStyleSheet("QLabel#washPumpLabel_2{border-image:url(:/image/new/vertical_filter_pump_opened.png)}");
+        }
+        else
+        {
+            ui->washPumpLabel_2->setStyleSheet("QLabel#washPumpLabel_2{border-image:url(:/image/new/vertical_filter_pump_closed.png)}");
+        }
+    }
+    if(isAuto)
+    {
+        ui->Pump_2_Auto_label->setText("自动");
+    }
+    else
+    {
+        ui->Pump_2_Auto_label->setText("手动");
+    }
+
+    isRan = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"ValveBW_1_Run_Signal",dataMap);
+    isFault = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"ValveBW_1_False_Signal",dataMap);
+    isAuto = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"ValveBW_1_Auto",dataMap);
+    ui->ValveBW_1_label->setObjectName("ValveBW_1_label");
+    if(isRan)
+    {
+        ui->ValveBW_1_label->setStyleSheet("QLabel#ValveBW_1_label{border-image:url(:/image/new/water_valve_opened.png)}");
+    }
+    else
+    {
+        ui->ValveBW_1_label->setStyleSheet("QLabel#ValveBW_1_label{border-image:url(:/image/new/water_valve_closed.png)}");
+    }
+    if(isFault)
+    {
+        ui->ValveBW_1_label->setStyleSheet("QLabel#ValveBW_1_label{border-image:url(:/image/new/water_valve_fault.png)}");
+    }
+    if(isAuto)
+    {
+        ui->ValveBW_1_Auto_label->setText("自动");
+    }
+    else
+    {
+        ui->ValveBW_1_Auto_label->setText("手动");
+    }
+
+    isAuto = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Fan_1_Auto",dataMap);
+    if(isAuto)
+    {
+        ui->Fan_1_Auto_label->setText("自动");
+    }
+    else
+    {
+        ui->Fan_1_Auto_label->setText("手动");
+    }
+
+    isAuto = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Fan_2_Auto",dataMap);
+    if(isAuto)
+    {
+        ui->Fan_2_Auto_label->setText("自动");
+    }
+    else
+    {
+        ui->Fan_2_Auto_label->setText("手动");
+    }
+
+    /*isRan = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Heater_Run_Signal",dataMap);
     isFault = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Heater_False_Signal",dataMap);
     if(isFault)
     {
@@ -778,22 +936,6 @@ void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
         ui->waterLevelStateLabel->setStyleSheet("background-color: rgb(0, 170, 0)");
     }
 
-    isRan = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Water_Valve_Opened_Signal",dataMap);
-    isFault = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Water_Valve_Fault_Signal",dataMap);
-    ui->water_valve_state_label->setObjectName("watervalvelabel");
-    if(isRan)
-    {
-        ui->water_valve_state_label->setStyleSheet("QLabel#watervalvelabel{border-image:url(:/image/new/water_valve_opened.png)}");
-    }
-    else
-    {
-        ui->water_valve_state_label->setStyleSheet("QLabel#watervalvelabel{border-image:url(:/image/new/water_valve_closed.png)}");
-    }
-    if(isFault)
-    {
-        ui->water_valve_state_label->setStyleSheet("QLabel#watervalvelabel{border-image:url(:/image/new/water_valve_fault.png)}");
-    }
-
     bool isTimeControl = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"TimeControl_Chosed",dataMap);
 
     fan1Choosed = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Fan_1_Choose",dataMap);
@@ -815,7 +957,7 @@ void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
     else
     {
         ui->choseFanTwoButton->setText(QStringLiteral("未选中"));
-    }
+    }*/
 }
 
 void DeoControlTabPageWidget::updateDeviceState()
@@ -830,7 +972,6 @@ void DeoControlTabPageWidget::localServerConnected(bool isConnected)
 
     if(isConnected)
     {
-       StreamPack bpack;
        int deviceIndex = ui->deviceIndexComboBox->currentIndex();
        if(deviceIndex >= 0)
        {
@@ -1294,4 +1435,9 @@ void DeoControlTabPageWidget::on_choseFanTwoButton_clicked()
         msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
         msgBox.show();
     }
+}
+
+void DeoControlTabPageWidget::on_manualRunButton_clicked()
+{
+    deoManualSettingDlg->show();
 }

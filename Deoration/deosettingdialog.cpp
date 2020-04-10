@@ -13,12 +13,12 @@ DeoSettingDialog::DeoSettingDialog(QWidget *parent) :
     //setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
 
     cbxDelegate = new CheckBoxDelegate(this);
-    deoRtSettingModel = new QStandardItemModel(Global::deoDeviceInfo.Deo_Setting_Display_Num,3);
+    deoRtSettingModel = new QStandardItemModel(Global::deoDeviceInfo.Deo_Setting_Display_Num,2);
     connect(deoRtSettingModel,SIGNAL(itemChanged(QStandardItem*)),this,SLOT(updateDeoRtSetting(QStandardItem*)));
     ui->deoSettingTableView->setModel(deoRtSettingModel);
     ui->deoSettingTableView->setColumnWidth(0, 200);
 
-    ui->deoSettingTableView->setItemDelegateForColumn(2,cbxDelegate);
+    //ui->deoSettingTableView->setItemDelegateForColumn(2,cbxDelegate);
 
     getDeoSettingTcpClient = new TcpClientSocket(this);
     connect(getDeoSettingTcpClient, SIGNAL(updateClients(QByteArray)),this,SLOT(showDeoRtSetting(QByteArray)));
@@ -78,7 +78,7 @@ void DeoSettingDialog::getDeoRtSetting()
         QVector<DeviceNode> nodes = Global::deoDeviceNodes;
         deoRtSettingAddress.clear();
         foreach (DeviceNode node, nodes) {
-            if(node.DataType == "di" && node.Category.toLower() == "deodoration_setting")
+            if(node.DataType == Global::deoDeviceInfo.Deo_Setting_Type && node.Category.toLower() == "deodoration_setting")
             {
                 out << (ushort)(node.Offset + 4 * ui->deviceIndexComboBox->currentIndex());
                 deoRtSettingAddress.append((ushort)(node.Offset + 4 * ui->deviceIndexComboBox->currentIndex()));
@@ -122,7 +122,7 @@ void DeoSettingDialog::showDeoRtSetting(QByteArray data)
 
         deoRtSettingModel->setHeaderData(0,Qt::Horizontal,QStringLiteral("参数名称"));
         deoRtSettingModel->setHeaderData(1,Qt::Horizontal,QStringLiteral("值"));
-        deoRtSettingModel->setHeaderData(2,Qt::Horizontal,QStringLiteral("启动"));
+        //deoRtSettingModel->setHeaderData(2,Qt::Horizontal,QStringLiteral("启动"));
         deoRtSettingModel->removeRows(0,deoRtSettingModel->rowCount(QModelIndex()),QModelIndex());
 
         uint row = 0;
@@ -131,17 +131,19 @@ void DeoSettingDialog::showDeoRtSetting(QByteArray data)
 
         QVector<DeviceNode> nodes = Global::deoDeviceNodes;
         foreach (DeviceNode node, nodes) {
+            //if(node.DataType == "di" && node.Name.contains("set",Qt::CaseInsensitive)
+                    //&& node.Name.contains("hmi_",Qt::CaseInsensitive) && !node.Name.contains("check", Qt::CaseInsensitive))
             if(node.DataType == "di" && node.Name.contains("set",Qt::CaseInsensitive)
-                    && node.Name.contains("hmi_",Qt::CaseInsensitive) && !node.Name.contains("check", Qt::CaseInsensitive))
+                    && node.Name.contains("hmi_",Qt::CaseInsensitive))
             {
                 index = (node.Offset - node.StartAddress)
                         / (Global::getLengthByDataType(node.DataType) * Global::deoDeviceInfo.Device_Number);
                 rowIndex.append(index);
                 deoRtSettingModel->insertRows(row,1,QModelIndex());
                 deoRtSettingModel->setData(deoRtSettingModel->index(row,0,QModelIndex()),node.Cname);
-                deoRtSettingModel->setData(deoRtSettingModel->index(row,1,QModelIndex()),deoRtSettingValues[index]);
+                //deoRtSettingModel->setData(deoRtSettingModel->index(row,1,QModelIndex()),deoRtSettingValues[index]);
 
-                DeviceNode checkNode = Global::getDeodorationNodeInfoByName(node.Name + "_Check");
+                /*DeviceNode checkNode = Global::getDeodorationNodeInfoByName(node.Name + "_Check");
                 uint state = 0;
                 if(checkNode.Name == "NULL")
                 {
@@ -164,7 +166,7 @@ void DeoSettingDialog::showDeoRtSetting(QByteArray data)
                    deoRtSettingModel->setData(deoRtSettingModel->index(row,2,QModelIndex()),true, Qt::UserRole);
                    deoRtSettingModel->item(row, 2)->setFlags(Qt::ItemIsEnabled|Qt::ItemIsUserCheckable);
                    deoRtSettingModel->item(row, 2)->setCheckState(Qt::Checked);
-                }
+                }*/
 
                 row++;
             }
@@ -199,7 +201,7 @@ void DeoSettingDialog::updateDeoRtSetting(QStandardItem *item)
             uint newValue = item->data(Qt::EditRole).toUInt();
             deoRtSettingValues[rowIndex[item->row()]] = newValue;
         }
-        else if(item->column() == 2)
+        /*else if(item->column() == 2)
         {
             qDebug() << "item row = " << item->row();
             bool newValue = item->data(Qt::UserRole).toBool();
@@ -228,7 +230,7 @@ void DeoSettingDialog::updateDeoRtSetting(QStandardItem *item)
             {
 
             }
-        }
+        }*/
     }
 }
 
@@ -314,8 +316,10 @@ void DeoSettingDialog::on_copySettingButton_clicked()
     deoRtSettingModel->removeRows(0,deoRtSettingModel->rowCount(QModelIndex()),QModelIndex());
 
     foreach (DeviceNode node, nodes) {
+        //if(node.DataType == "di" && node.Name.contains("set",Qt::CaseInsensitive)
+                //&& node.Name.contains("hmi_",Qt::CaseInsensitive) && !node.Name.contains("check",Qt::CaseInsensitive))
         if(node.DataType == "di" && node.Name.contains("set",Qt::CaseInsensitive)
-                && node.Name.contains("hmi_",Qt::CaseInsensitive) && !node.Name.contains("check",Qt::CaseInsensitive))
+                && node.Name.contains("hmi_",Qt::CaseInsensitive))
         {
             index = (node.Offset - node.StartAddress)
                     / Global::getLengthByDataType(node.DataType) * Global::deoDeviceInfo.Device_Number;
@@ -324,7 +328,7 @@ void DeoSettingDialog::on_copySettingButton_clicked()
             deoRtSettingModel->setData(deoRtSettingModel->index(row,0,QModelIndex()),node.Cname);
             deoRtSettingModel->setData(deoRtSettingModel->index(row,1,QModelIndex()),latestDeoRtSettingValues[index]);
 
-            DeviceNode checkNode = Global::getDeodorationNodeInfoByName(node.Name + "_Check");
+            /*DeviceNode checkNode = Global::getDeodorationNodeInfoByName(node.Name + "_Check");
             uint state = 0;
             if(checkNode.Name == "NULL")
             {
@@ -347,7 +351,7 @@ void DeoSettingDialog::on_copySettingButton_clicked()
                 deoRtSettingModel->setData(deoRtSettingModel->index(row,2,QModelIndex()),true, Qt::UserRole);
                 deoRtSettingModel->item(row, 2)->setFlags(Qt::ItemIsEnabled|Qt::ItemIsUserCheckable);
                 deoRtSettingModel->item(row, 2)->setCheckState(Qt::Checked);
-            }
+            }*/
 
             row++;
         }

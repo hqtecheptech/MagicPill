@@ -77,7 +77,14 @@ QString TankAirValve::getName()
 void TankAirValve::setName(const QString &name)
 {
     valveName = name;
-    ui->nameLabel->setText(name);
+    if(textIndexValue.toInt() >= 0)
+    {
+        ui->nameLabel->setText(textIndexValue + "#" + name);
+    }
+    else
+    {
+        ui->nameLabel->setText(name);
+    }
 }
 
 bool TankAirValve::getDeviceClosedState() const
@@ -148,13 +155,11 @@ QString TankAirValve::getTextIndexValue() const
 void TankAirValve::setTextIndexValue(const QString &value)
 {
     textIndexValue = value;
-    ui->valveIndexLabel->setText(textIndexValue);
 }
 
 void TankAirValve::updateValveState()
 {
-    ui->valvePushButton->setStyleSheet("QPushButton#valvepushbutton{border-image:url(:/image/new/thin_horizontal_pipe_opened.png)}");
-    /*if(isValveOpen)
+    if(isValveOpen)
     {
         ui->valvePushButton->setStyleSheet("QPushButton#valvepushbutton{border-image:url(:/image/new/thin_horizontal_pipe_opened.png)}");
     }
@@ -170,7 +175,7 @@ void TankAirValve::updateValveState()
     if(isValveFault)
     {
         ui->valvePushButton->setStyleSheet("QPushButton#valvepushbutton{border-image:url(:/image/new/thin_horizontal_pipe_fault.png)}");
-    }*/
+    }
 
     switchFlag = !switchFlag;
 }

@@ -98,7 +98,8 @@ void ParseServerDataWorker::parseDeoServerData(QByteArray data)
     memcpy(&bDevice,data,sizeof(bDevice));
 
     QByteArray byteValues = data.mid(sizeof(bDevice), data.length() - sizeof(bDevice) - 4 * bDevice.bDataLength);
-    QString strValues(byteValues);
+    QTextCodec *codec = QTextCodec::codecForLocale();
+    QString strValues = codec->toUnicode(byteValues);
     QString realStrValues = strValues.mid(4);
     QStringList strValueList = realStrValues.split(",");
     QVector<QString> strArray = strValueList.toVector();

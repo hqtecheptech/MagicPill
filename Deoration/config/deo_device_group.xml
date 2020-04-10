@@ -3,4 +3,7 @@
     <group id="0" devicenumber="1">
         <device deviceid="2" index="0" offset="0"></device>
     </group>
+    <group id="1" devicenumber="1">
+        <device deviceid="2" index="0" offset="0"></device>
+    </group>
 </groups>

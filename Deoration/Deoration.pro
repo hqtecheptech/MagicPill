@@ -89,7 +89,9 @@ SOURCES += main.cpp\
     ferconfigdialog.cpp \
     ferconfig.cpp \
     uiglobal.cpp \
-    keyboard.cpp
+    keyboard.cpp \
+    deomanualsettingdialog.cpp \
+    deoautorunsettingdialog.cpp
 
 HEADERS  += mainwindow.h \
     ufftank.h \
@@ -154,7 +156,9 @@ HEADERS  += mainwindow.h \
     ferconfigdialog.h \
     ferconfig.h \
     uiglobal.h \
-    keyboard.h
+    keyboard.h \
+    deomanualsettingdialog.h \
+    deoautorunsettingdialog.h
 
 FORMS    += mainwindow.ui \
     fftank.ui \
@@ -200,7 +204,9 @@ FORMS    += mainwindow.ui \
     fercaseform.ui \
     ferstepform.ui \
     ferconfigdialog.ui \
-    keyboard.ui
+    keyboard.ui \
+    deomanualsettingdialog.ui \
+    deoautorunsettingdialog.ui
 
 RESOURCES += \
     src.qrc

@@ -27,6 +27,8 @@ RenhuaiNew::RenhuaiNew(QWidget *parent) :
     ui->HistoryQueryButton->setVisible(false);
     ui->realTimeChartButton->setVisible(false);
     ui->ReportButton->setVisible(false);
+    ui->fanControlButton->setVisible(false);
+    ui->ferControlButton->setVisible(false);
 
     ui->title_frame->setObjectName("titleframe");
     ui->title_frame->setStyleSheet("QFrame#titleframe{border-image:url(:/image/new/title_banner.jpg)}");
@@ -53,6 +55,7 @@ RenhuaiNew::RenhuaiNew(QWidget *parent) :
     connect(this,SIGNAL(ferDataChanged(QSet<int>, QMap<float,QString>)),fanControlDialog,SLOT(updateFermentationData(QSet<int>, QMap<float,QString>)));
     //sensorControlDialog = new SensorControlDialog(this);
     //connect(this,SIGNAL(ferDataChanged(QSet<int>, QMap<float,QString>)),sensorControlDialog,SLOT(updateFermentationData(QSet<int>, QMap<float,QString>)));
+    deoAutoRunSettingDlg = new DeoAutoRunSettingDialog();
 
     historyDialog = new HistoryDialog(this);
     reportDialog = new ReportDialog(this);
@@ -79,7 +82,7 @@ void RenhuaiNew::updateFerData(QSet<int> changedDeviceSet, QMap<float,QString> d
 {
     emit ferDataChanged(changedDeviceSet, dataMap);
 
-    for(int i=0; i<2; i++)
+    /*for(int i=0; i<2; i++)
     {
         DeviceNode node = Global::getFermenationNodeInfoByName("TOTAL_CURRENT_R");
         uint address = node.Offset + i * 4;
@@ -104,7 +107,7 @@ void RenhuaiNew::updateFerData(QSet<int> changedDeviceSet, QMap<float,QString> d
             strValue1.append("NH3:" + QString::number(envParamsArray.at(1)->getNh3(), 'f', 2) + " ppm  ");
             strValue1.append("H2S:" + QString::number(envParamsArray.at(1)->getH2s(), 'f', 2) + " ppm");
 
-    ui->tab_banner_label->setText(strValue + strSpan + strValue1);
+    ui->tab_banner_label->setText(strValue + strSpan + strValue1);*/
 }
 
 void RenhuaiNew::updateDeoData(QSet<int> changedDeviceSet, QMap<float,QString> dataMap)
@@ -195,10 +198,16 @@ void RenhuaiNew::on_ferControlButton_clicked()
 void RenhuaiNew::on_SettingButton_clicked()
 {
     //settingDialog->show();
-    ferconfigDialog->close();
-    ferconfigDialog->show();
+    //ferconfigDialog->close();
+    //ferconfigDialog->show();
+    //Keyboard::getInstance()->close();
+    //ferconfigDialog->move((1920 - ferconfigDialog->width())/2,(1080 - ferconfigDialog->height())/2);
+
+    deoAutoRunSettingDlg->closeMsgBox();
+    deoAutoRunSettingDlg->close();
+    deoAutoRunSettingDlg->show();
     Keyboard::getInstance()->close();
-    ferconfigDialog->move((1920 - ferconfigDialog->width())/2,(1080 - ferconfigDialog->height())/2);
+    deoAutoRunSettingDlg->show();
 }
 
 void RenhuaiNew::on_logoutPushButton_clicked()

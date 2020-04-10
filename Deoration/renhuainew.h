@@ -14,6 +14,7 @@
 #include "fancontroldialog.h"
 #include "sensorcontroldialog.h"
 #include "ferconfigdialog.h"
+#include "deoautorunsettingdialog.h"
 
 #include <QWidget>
 #include <QTimer>
@@ -83,6 +84,7 @@ private:
     AlertQueryDialog *alertQueryDialog;
     FanControlDialog *fanControlDialog;
     SensorControlDialog *sensorControlDialog;
+    DeoAutoRunSettingDialog *deoAutoRunSettingDlg;
 
     QVector<EnvironmentParams *> envParamsArray;
     QTimer *touchTimer;

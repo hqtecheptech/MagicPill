@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <device>
   <areas devicenumber="1" runctrnumber="192">
-    <area name="DEODORATION" datatype="di" start="0" diff="0.5">
+    <area name="DEODORATION" datatype="r" start="0" diff="0.5">
         <node id="2" name="Temp_Read" length="1" offset="4" diff="0.5" priority="1"/>
         <node id="2" name="PH_Read" length="1" offset="8" diff="0.5" priority="1"/>
         <node id="2" name="Level_Switch_Read" length="1" offset="0" diff="0.5" priority="1"/>
@@ -10,7 +10,7 @@
         <node id="2" name="FER_NH3" length="1" offset="8" diff="0.5" priority="1"/>
         <node id="2" name="FER_NH3" length="1" offset="8" diff="0.5" priority="1"/>
     </area>
-    <area name="DEODORATION_SETTING" datatype="di" start="12" diff="0.5">
+    <area name="DEODORATION_SETTING" datatype="dw" start="1792" diff="0.5">
         <node id="2" name="HMI_TimeStartSet_Hour_First" cname="一号风机时钟第一次启动时间设定-时" category="Deodoration_Setting" length="1" offset="12" diff="0.5" priority="1"/>
         <node id="2" name="HMI_TimeStartSet_Min_First" cname="一号风机始钟第一次启动时间设定-分" category="Deodoration_Setting" length="1" offset="16" diff="0.5" priority="1"/>
         <node id="2" name="HMI_TimeStopSet_Hour_First" cname="一号风机时钟第一次停止时间设定-时" category="Deodoration_Setting" length="1" offset="28" diff="0.5" priority="1"/>
@@ -54,7 +54,7 @@
         <node id="2" name="HMI_TeMP_Low_Set" cname="水箱加热器启动温度" category="Deodoration_Setting" length="1" offset="68" diff="0.5" priority="1"/>
         <node id="2" name="HMI_TeMP_High_Set" cname="水箱加热器停止温度" category="Deodoration_Setting" length="1" offset="72" diff="0.5" priority="1"/>
     </area>
-    <area name="RUNCTR" datatype="x0" start="500" diff="0">
+    <area name="RUNCTR" datatype="x0" start="2320" diff="0">
         <node id="2" name="Fan_1_Run_Signal" cname="1#引风机运行信号" length="192" offset="0" diff="0" alert0="1#引风机结束运行" alert1="1#引风机开始运行" priority="0"/>
         <node id="2" name="Fan_1_False_Signal" cname="1#引风机故障信号" length="192" offset="1" diff="0" alert0="1#引风机无故障" alert1="1#引风机故障" priority="1"/>
         <node id="2" name="Fan_2_Run_Signal" cname="2#引风机运行信号" length="192" offset="2" diff="0" alert0="2#引风机结束运行" alert1="2#引风机开始运行" priority="0"/>
@@ -166,6 +166,7 @@
         <node id="2" name="Pump_PL_1_Auto" cname="1#喷淋水泵自动运行反馈" length="192" offset="11" diff="0" alert0="1#喷淋水泵手动运行" alert1="1#喷淋水泵自动运行" priority="1"/>
         <node id="2" name="Pump_PL_2_Auto" cname="2#喷淋水泵自动运行反馈" length="192" offset="11" diff="0" alert0="2#喷淋水泵手动运行" alert1="2#喷淋水泵自动运行" priority="1"/>
         <node id="2" name="Pump_1_Auto" cname="1#水泵自动运行反馈" length="192" offset="8" diff="0" alert0="1#水泵手动运行" alert1="1#水泵自动运行" priority="0"/>
+        <node id="2" name="Pump_2_Auto" cname="2#水泵自动运行反馈" length="192" offset="8" diff="0" alert0="2#水泵手动运行" alert1="2#水泵自动运行" priority="0"/>
         <node id="2" name="Heater_1_Auto" cname="加热器自动运行反馈" length="192" offset="13" diff="0" alert0="加热器手动运行反馈" alert1="加热器自动运行反馈" priority="0"/>
         <node id="2" name="ValveBW_1_Auto" cname="1#补水阀自动运行反馈" length="192" offset="4" diff="0" alert0="1#补水电磁阀结束运行" alert1="1#补水电磁阀开始运行" priority="0"/>
         <node id="2" name="Fan_Remote_Auto_Switch" cname="风机远程切换自动" length="192" offset="115" diff="0" alert0="风机远程切换手动" alert1="风机远程切换自动" priority="0"/>

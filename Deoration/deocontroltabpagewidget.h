@@ -18,6 +18,7 @@
 #include "parseserverdataworker.h"
 #include "singledeodorationfan.h"
 #include "uiglobal.h"
+#include "deomanualsettingdialog.h"
 
 namespace Ui {
 class DeoControlTabPageWidget;
@@ -69,6 +70,8 @@ private slots:
 
     void on_choseFanTwoButton_clicked();
 
+    void on_manualRunButton_clicked();
+
 private:
     Ui::DeoControlTabPageWidget *ui;
 
@@ -78,6 +81,8 @@ private:
     QVector<BasePartWidget *> allGdValveParts;
     QVector<BasePartWidget *> allFjValveParts;
     QVector<SingleDeodorationFan *> allFans;
+
+    TankAirValve *mixAirValve;
 
     TankAirValve *tankAirValve1;
     TankAirValve *tankAirValve2;
@@ -100,6 +105,7 @@ private:
     SingleDeodorationFan *fan1;
     SingleDeodorationFan *fan2;
 
+    DeoManualSettingDialog *deoManualSettingDlg;
     DeoSettingDialog *deoSettingDialog;
     MyTimerThread *myTimerThread;
     TcpClientSocket *getAllDataTcpclient;

@@ -84,7 +84,8 @@ enum SettingType
     Hour,
     Minute,
     Second,
-    Rate
+    Rate,
+    Others
 };
 
 struct StreamPack
