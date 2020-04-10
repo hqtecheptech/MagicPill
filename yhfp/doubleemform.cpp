@@ -18,9 +18,9 @@ DoubleEmForm::~DoubleEmForm()
     delete ui;
 }
 
-void DoubleEmForm::setStatus(bool emRum, bool emFault, bool coro1, bool inve1, bool coro2, bool inve2)
+void DoubleEmForm::setStatus(bool emRun, bool emFault, bool coro1, bool inve1, bool coro2, bool inve2)
 {
-    emRunStatus = emRum;
+    emRunStatus = emRun;
     emFaultStatus = emFault;
     isCoro1 = coro1;
     isInve1 = inve1;
@@ -73,6 +73,26 @@ void DoubleEmForm::setStatus(bool emRum, bool emFault, bool coro1, bool inve1, b
     else
     {
         ui->inve_2_label->setStyleSheet("QLabel#inve_2_label{background-image:url(:/pic/coro.png)}");
+    }
+
+    bool unloading = emRun & (coro1 || inve1);
+    if(unloading)
+    {
+        ui->dp_1_label->setStyleSheet("QLabel#dp_1_label{background-image:url(:/pic/wheel_run.png)}");
+    }
+    else
+    {
+        ui->dp_1_label->setStyleSheet("QLabel#dp_1_label{background-image:url(:/pic/wheel_stop.png)}");
+    }
+
+    unloading = emRun & (coro2 || inve2);
+    if(unloading)
+    {
+        ui->dp_2_label->setStyleSheet("QLabel#dp_2_label{background-image:url(:/pic/wheel_run.png)}");
+    }
+    else
+    {
+        ui->dp_2_label->setStyleSheet("QLabel#dp_2_label{background-image:url(:/pic/wheel_stop.png)}");
     }
 }
 

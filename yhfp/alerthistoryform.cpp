@@ -14,6 +14,9 @@ AlertHistoryForm::AlertHistoryForm(QWidget *parent) :
     ui->hisTableView->verticalHeader()->setVisible(false);
     ui->hisTableView->setShowGrid(false);
     ui->hisTableView->setColumnWidth(0, 200);
+    ui->hisTableView->setColumnWidth(1, 100);
+    ui->hisTableView->setColumnWidth(2, 300);
+    ui->hisTableView->setColumnWidth(3, 100);
 }
 
 AlertHistoryForm::~AlertHistoryForm()
