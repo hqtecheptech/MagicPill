@@ -104,14 +104,17 @@ void FFTank::updateDeviceState()
 void FFTank::switchState()
 {
     ui->tankFrame->setObjectName("tankframe");
-    extraRuntimeAddition++;
+
     if(isFerStart)
     {
-        ui->totalTimeValueLabel->setText(formatLongDateString(latestFerRunTime + extraRuntimeAddition));
+        ui->totalTimeValueLabel->setText(formatLongDateString(latestFerRunTime + extraTotalRuntimeAddition));
 
         if(isFanOpen)
         {
-            ui->runTimeValueLabel->setText(QString::number(latestFerAeTime + extraRuntimeAddition));
+            if(latestFerAeTime >= extraAetimeAddition)
+            {
+                ui->runTimeValueLabel->setText(QString::number(latestFerAeTime - extraAetimeAddition));
+            }
 
             if(switchFlag)
             {
@@ -124,7 +127,10 @@ void FFTank::switchState()
         }
         else
         {
-            ui->spacTimeValueLabel->setText(QString::number(latestFerStaTime + extraRuntimeAddition));
+            if(latestFerStaTime >= extraStaRuntimeAddition)
+            {
+                ui->spacTimeValueLabel->setText(QString::number(latestFerStaTime - extraStaRuntimeAddition));
+            }
         }
     }
     else
@@ -132,6 +138,9 @@ void FFTank::switchState()
         ui->runTimeValueLabel->setText(QString::number(0));
         ui->spacTimeValueLabel->setText(QString::number(0));
     }
+    extraTotalRuntimeAddition++;
+    extraAetimeAddition++;
+    extraStaRuntimeAddition++;
 
     if(isFanFault)
     {
@@ -216,7 +225,7 @@ void FFTank::parseFerStartEndTime(QMap<float,QString> dataMap)
 
 void FFTank::parseFerRunTimeData(QMap<float,QString> dataMap)
 {
-    extraRuntimeAddition = 0;
+    extraTotalRuntimeAddition = 0;
 
     int deviceIndex = tankIndex;
     DeviceGroupInfo info = Global::getFerDeviceGroupInfo(deviceIndex);
@@ -224,21 +233,34 @@ void FFTank::parseFerRunTimeData(QMap<float,QString> dataMap)
     DeviceNode deviceNode;
     float address;
     deviceNode = Global::getFermenationNodeInfoByName("FER_TOT_UDI");
-    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    latestFerRunTime = dataMap[address].toUInt();
-    ui->totalTimeValueLabel->setText(formatLongDateString(latestFerRunTime));
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            * Global::getLengthByDataType(deviceNode.DataType);
+    if(latestFerRunTime != dataMap[address].toUInt())
+    {
+        latestFerRunTime = dataMap[address].toUInt();
+        ui->totalTimeValueLabel->setText(formatLongDateString(latestFerRunTime));
+        extraTotalRuntimeAddition = 0;
+    }
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_AE_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    latestFerAeTime = dataMap[address].toUInt();
-    ui->runTimeValueLabel->setText(QString::number(latestFerAeTime));
+    if(latestFerAeTime != dataMap[address].toUInt())
+    {
+        latestFerAeTime = dataMap[address].toUInt();
+        ui->runTimeValueLabel->setText(QString::number(latestFerAeTime));
+        extraAetimeAddition = 0;
+    }
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_STA_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    latestFerStaTime = dataMap[address].toUInt();
-    ui->spacTimeValueLabel->setText(QString::number(latestFerStaTime));
+    if(latestFerStaTime != dataMap[address].toUInt())
+    {
+        latestFerStaTime = dataMap[address].toUInt();
+        ui->spacTimeValueLabel->setText(QString::number(latestFerStaTime));
+        extraStaRuntimeAddition = 0;
+    }
 }
 
 void FFTank::parseFerStepData(QMap<float,QString> dataMap)

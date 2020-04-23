@@ -89,7 +89,9 @@ private:
     void parseFerRunCtrData(QMap<float,QString> dataMap);
     void parseFerStartEndTime(QMap<float,QString> dataMap);
 
-    uint extraRuntimeAddition = 0;
+    uint extraTotalRuntimeAddition = 0;
+    uint extraAetimeAddition = 0;
+    uint extraStaRuntimeAddition = 0;
 };
 
 #endif // FFTANK_H
