@@ -426,7 +426,7 @@ void DeoControlTabPageWidget::switchBlowingImg()
 
 void DeoControlTabPageWidget::showEvent(QShowEvent *)
 {
-    if(Global::ferGroupShow == 0)
+    if(Global::ferGroupShow == 1)
     {
         ui->env_data_frame->setVisible(false);
         ui->mix_label_1->setVisible(false);
@@ -597,6 +597,20 @@ void DeoControlTabPageWidget::parseDeodorationData(QMap<float,QString> dataMap)
     deviceNode = Global::getDeodorationNodeInfoByName("FER_TEMP");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
     ui->tempLabel->setText(dataMap[address]);
+
+    deviceNode = Global::getDeodorationNodeInfoByName("Temp_Read");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    ui->waterTemptureLabel->setText(dataMap[address]);
+    deviceNode = Global::getDeodorationNodeInfoByName("PH_Read");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    ui->waterPhLabel->setText(dataMap[address]);
+    deviceNode = Global::getDeodorationNodeInfoByName("Level_Switch_Read");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    ui->waterLevelValueLabel->setText(dataMap[address]);
+
+    deviceNode = Global::getDeodorationNodeInfoByName("Total_Current");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
+    ui->aivLabel->setText(dataMap[address]);
 }
 
 void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
@@ -675,7 +689,7 @@ void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
         ui->stopFanTwoButton->setEnabled(false);
     }
 
-    bool checked = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"TimeControl_Chosed",dataMap);
+    /*bool checked = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"TimeControl_Chosed",dataMap);
     if(checked)
     {
         ui->timeControlRadioButton->setChecked(true);
@@ -689,7 +703,7 @@ void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
     if(checked)
     {
         ui->ammoControlRadioButton->setChecked(true);
-    }
+    }*/
 
     bool isRan = false;
     bool isFault = false;
@@ -788,7 +802,7 @@ void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
         }
         else
         {
-            ui->sparyPumpLabel_1->setPixmap(filterPumpClosedBgImg);
+            ui->sparyPumpLabel_2->setPixmap(filterPumpClosedBgImg);
         }
     }
     if(isAuto)
@@ -901,24 +915,45 @@ void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
         ui->Fan_2_Auto_label->setText("手动");
     }
 
-    /*isRan = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Heater_Run_Signal",dataMap);
-    isFault = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Heater_False_Signal",dataMap);
+    isRan = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Heater_1_Run_Signal",dataMap);
+    isFault = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Heater_1_False_Signal",dataMap);
     if(isFault)
     {
-        ui->heater_state_label->setText(QStringLiteral("故障"));
-        ui->heater_state_label->setStyleSheet("background-color: rgb(255, 255, 0)");
+        ui->heater_1_state_label->setText(QStringLiteral("故障"));
+        ui->heater_1_state_label->setStyleSheet("background-color: rgb(255, 255, 0)");
     }
     else
     {
         if(isRan)
         {
-            ui->heater_state_label->setText(QStringLiteral("运行中"));
-            ui->heater_state_label->setStyleSheet("background-color: rgb(0, 170, 0)");
+            ui->heater_1_state_label->setText(QStringLiteral("运行中"));
+            ui->heater_1_state_label->setStyleSheet("background-color: rgb(0, 170, 0)");
         }
         else
         {
-            ui->heater_state_label->setText(QStringLiteral("停止"));
-            ui->heater_state_label->setStyleSheet("background-color: rgb(0, 170, 255)");
+            ui->heater_1_state_label->setText(QStringLiteral("停止"));
+            ui->heater_1_state_label->setStyleSheet("background-color: rgb(0, 170, 255)");
+        }
+    }
+
+    isRan = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Heater_2_Run_Signal",dataMap);
+    isFault = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Heater_2_False_Signal",dataMap);
+    if(isFault)
+    {
+        ui->heater_2_state_label->setText(QStringLiteral("故障"));
+        ui->heater_2_state_label->setStyleSheet("background-color: rgb(255, 255, 0)");
+    }
+    else
+    {
+        if(isRan)
+        {
+            ui->heater_2_state_label->setText(QStringLiteral("运行中"));
+            ui->heater_2_state_label->setStyleSheet("background-color: rgb(0, 170, 0)");
+        }
+        else
+        {
+            ui->heater_2_state_label->setText(QStringLiteral("停止"));
+            ui->heater_2_state_label->setStyleSheet("background-color: rgb(0, 170, 255)");
         }
     }
 
@@ -929,14 +964,30 @@ void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
         ui->water_level_state_label->setPixmap(waterLevelLowBgImg);
         ui->waterLevelStateLabel->setStyleSheet("background-color: rgb(255, 255, 0)");
     }
-    else
+
+    isLevelLow = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Level_Switch_Middle_Signal",dataMap);
+    if(isLevelLow)
+    {
+        ui->waterLevelStateLabel->setText(QStringLiteral("液位中"));
+        ui->water_level_state_label->setPixmap(waterLevelNormalBgImg);
+        ui->waterLevelStateLabel->setStyleSheet("background-color: rgb(0, 170, 0)");
+    }
+
+    isLevelLow = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Level_Switch_High_Signal",dataMap);
+    if(isLevelLow)
+    {
+        ui->waterLevelStateLabel->setText(QStringLiteral("液位高"));
+        ui->water_level_state_label->setPixmap(waterLevelNormalBgImg);
+        ui->waterLevelStateLabel->setStyleSheet("background-color: rgb(0, 170, 0)");
+    }
+    /*else
     {
         ui->water_level_state_label->setPixmap(waterLevelNormalBgImg);
         ui->waterLevelStateLabel->setText(QStringLiteral("液位正常"));
         ui->waterLevelStateLabel->setStyleSheet("background-color: rgb(0, 170, 0)");
-    }
+    }*/
 
-    bool isTimeControl = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"TimeControl_Chosed",dataMap);
+    /*bool isTimeControl = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"TimeControl_Chosed",dataMap);
 
     fan1Choosed = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Fan_1_Choose",dataMap);
     fan2Choosed = Global::getDeoRunctrValueByName(ui->deviceIndexComboBox->currentIndex(),"Fan_2_Choose",dataMap);

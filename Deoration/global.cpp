@@ -1126,7 +1126,7 @@ QVector<DeviceNode> readDeviceNodes(QString filename)
 QVector<DeviceGroupInfo> readDeviceGroupInfo(QString filename)
 {
     QString cp = QDir::currentPath();
-    //qDebug()<<cp;
+    qDebug()<<cp;
 
     QVector<DeviceGroupInfo> nodes;
 

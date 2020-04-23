@@ -10,6 +10,9 @@ DeoManualSettingDialog::DeoManualSettingDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    fanAutoControlBg.load("://image/old/Auto.bmp");
+    fanManualControlBg.load("://image/old/Mause.bmp");
+
     msgBox = new QMessageBox(this);
     msgBox->setStyleSheet(
         "QPushButton {"
@@ -45,7 +48,7 @@ DeoManualSettingDialog::~DeoManualSettingDialog()
 
 void DeoManualSettingDialog::updateFermentationData(QSet<int> changedDataSet, QMap<float, QString> dataMap)
 {
-    if(changedDataSet.contains(0))
+    if(changedDataSet.contains(deviceIndex))
     {
         parseDeoData(dataMap);
         parseDeoRunCtrData(dataMap);
@@ -69,7 +72,7 @@ void DeoManualSettingDialog::on_startFirstFanButton_clicked()
         ushort address = Global::deoDeviceInfo.Runctr_Address + (info.offset + deviceIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),(quint16)info.deviceId,(quint16)info.groupId,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = !fan_1_started;
@@ -94,6 +97,26 @@ void DeoManualSettingDialog::parseDeoData(QMap<float, QString> dataMap)
 
 void DeoManualSettingDialog::parseDeoRunCtrData(QMap<float, QString> dataMap)
 {
+    fanMode = Global::getDeoRunctrValueByName(deviceIndex,"Fan_Remote_Auto_Switch",dataMap);
+    if(!fanMode)
+    {
+        ui->switchFanModePushButton->setIcon(QIcon(fanAutoControlBg));
+    }
+    else
+    {
+        ui->switchFanModePushButton->setIcon(QIcon(fanManualControlBg));
+    }
+
+    wtMode = Global::getDeoRunctrValueByName(deviceIndex,"Water_Tank_Remote_Auto_Switch",dataMap);
+    if(!wtMode)
+    {
+        ui->switchWaterTankModePushButton->setIcon(QIcon(fanAutoControlBg));
+    }
+    else
+    {
+        ui->switchWaterTankModePushButton->setIcon(QIcon(fanManualControlBg));
+    }
+
     fan_1_started = Global::getDeoRunctrValueByName(deviceIndex,"Fan_1_Start_Write",dataMap);
     if(fan_1_started)
     {
@@ -202,7 +225,7 @@ void DeoManualSettingDialog::on_startSecondFanButton_clicked()
         ushort address = Global::deoDeviceInfo.Runctr_Address + (info.offset + deviceIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),(quint16)info.deviceId,(quint16)info.groupId,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = !fan_2_started;
@@ -237,7 +260,7 @@ void DeoManualSettingDialog::on_startFirstPumpButton_clicked()
         ushort address = Global::deoDeviceInfo.Runctr_Address + (info.offset + deviceIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),(quint16)info.deviceId,(quint16)info.groupId,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = !pump_1_started;
@@ -272,7 +295,7 @@ void DeoManualSettingDialog::on_startSecondPumpButton_clicked()
         ushort address = Global::deoDeviceInfo.Runctr_Address + (info.offset + deviceIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),(quint16)info.deviceId,(quint16)info.groupId,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = !pump_2_started;
@@ -307,7 +330,7 @@ void DeoManualSettingDialog::on_startFirstPlPumpButton_clicked()
         ushort address = Global::deoDeviceInfo.Runctr_Address + (info.offset + deviceIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),(quint16)info.deviceId,(quint16)info.groupId,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = !pump_pl_1_started;
@@ -342,7 +365,7 @@ void DeoManualSettingDialog::on_startSecondPlPumpButton_clicked()
         ushort address = Global::deoDeviceInfo.Runctr_Address + (info.offset + deviceIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),(quint16)info.deviceId,(quint16)info.groupId,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = !pump_pl_2_started;
@@ -377,7 +400,7 @@ void DeoManualSettingDialog::on_startFirstHeaterButton_clicked()
         ushort address = Global::deoDeviceInfo.Runctr_Address + (info.offset + deviceIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),(quint16)info.deviceId,(quint16)info.groupId,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = !heater_1_started;
@@ -412,7 +435,7 @@ void DeoManualSettingDialog::on_startSecondHeaterButton_clicked()
         ushort address = Global::deoDeviceInfo.Runctr_Address + (info.offset + deviceIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),(quint16)info.deviceId,(quint16)info.groupId,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = !heater_2_started;
@@ -447,7 +470,7 @@ void DeoManualSettingDialog::on_startBwValveButton_clicked()
         ushort address = Global::deoDeviceInfo.Runctr_Address + (info.offset + deviceIndex - info.startIndex) * runctrlByteSize + offset;
 
         StreamPack bpack;
-        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack = {sizeof(StreamPack),(quint16)info.deviceId,(quint16)info.groupId,W_Send_Control,Bool,address,index,1,0,stime,etime};
         bpack.bStartTime =stime;
         bpack.bEndTime =etime;
         bool data = !valve_bw_started;
@@ -468,4 +491,72 @@ void DeoManualSettingDialog::on_startBwValveButton_clicked()
 void DeoManualSettingDialog::on_startBwValveButton_2_clicked()
 {
     close();
+}
+
+void DeoManualSettingDialog::on_switchFanModePushButton_clicked()
+{
+    User *user = Identity::getInstance()->getUser();
+    if(user != Q_NULLPTR)
+    {
+        QDateTime currentdt = QDateTime::currentDateTime();
+        uint stime =currentdt.toTime_t();
+        uint etime =currentdt.toTime_t();
+
+        ushort offset = Global::getDeodorationNodeInfoByName("Fan_Remote_Auto_Switch").Offset / 8;
+        ushort index = Global::getDeodorationNodeInfoByName("Fan_Remote_Auto_Switch").Offset % 8;
+
+        DeviceGroupInfo info = Global::getDeoDeviceGroupInfo(deviceIndex);
+        ushort runctrlByteSize = Global::deoDeviceInfo.RunCtr_Block_Size / 8;
+        ushort address = Global::deoDeviceInfo.Runctr_Address + (info.offset + deviceIndex - info.startIndex) * runctrlByteSize + offset;
+
+        StreamPack bpack;
+        bpack = {sizeof(StreamPack),(quint16)info.deviceId,(quint16)info.groupId,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack.bStartTime =stime;
+        bpack.bEndTime =etime;
+        bool data = !fanMode;
+        QVariant var_data = QVariant(data);
+
+        tcpClient->abort();
+        disconnect(tcpClient,0,0,0);
+        tcpClient->sendRequestWithResult(bpack,var_data,1);
+    }
+    else
+    {
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
+    }
+}
+
+void DeoManualSettingDialog::on_switchWaterTankModePushButton_clicked()
+{
+    User *user = Identity::getInstance()->getUser();
+    if(user != Q_NULLPTR)
+    {
+        QDateTime currentdt = QDateTime::currentDateTime();
+        uint stime =currentdt.toTime_t();
+        uint etime =currentdt.toTime_t();
+
+        ushort offset = Global::getDeodorationNodeInfoByName("Water_Tank_Remote_Auto_Switch").Offset / 8;
+        ushort index = Global::getDeodorationNodeInfoByName("Water_Tank_Remote_Auto_Switch").Offset % 8;
+
+        DeviceGroupInfo info = Global::getDeoDeviceGroupInfo(deviceIndex);
+        ushort runctrlByteSize = Global::deoDeviceInfo.RunCtr_Block_Size / 8;
+        ushort address = Global::deoDeviceInfo.Runctr_Address + (info.offset + deviceIndex - info.startIndex) * runctrlByteSize + offset;
+
+        StreamPack bpack;
+        bpack = {sizeof(StreamPack),(quint16)info.deviceId,(quint16)info.groupId,W_Send_Control,Bool,address,index,1,0,stime,etime};
+        bpack.bStartTime =stime;
+        bpack.bEndTime =etime;
+        bool data = !wtMode;
+        QVariant var_data = QVariant(data);
+
+        tcpClient->abort();
+        disconnect(tcpClient,0,0,0);
+        tcpClient->sendRequestWithResult(bpack,var_data,1);
+    }
+    else
+    {
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
+    }
 }
