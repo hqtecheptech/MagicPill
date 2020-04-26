@@ -225,12 +225,32 @@ void DataReceiver::dataReceive()
                 emit dataChanged(bDevice, changedDeviceSet, dataMap);
             }
             break;
+        case DEO:
+            startIndex = Global::getDeoDeviceStartIndex(bDevice.bDeviceId, bDevice.bDeviceGroup);
+            if(startIndex >=0)
+            {
+                QSet<int> changedDeviceSet;
+                foreach(float address, dataMap.keys())
+                {
+                    if(address < Global::getDataStartByType("x0"))
+                    {
+                        changedDeviceSet.insert(startIndex + Global::getDeoDeviceIndexByAddress(address));
+                    }
+                    else
+                    {
+                        changedDeviceSet.insert(startIndex + Global::getDeoDeviceIndexByRunctrAddress(address));
+                    }
+                }
+
+                emit dataChanged(bDevice, changedDeviceSet, dataMap);
+            }
+            break;
         default:
             break;
         }
 
         bDevice.bErrorCode = 1;
-        sendReply(bDevice, "");
+        sendReply(bDevice, "OK");
     }
     else if(bDevice.bCommandType == W_Updata_Config)
     {
