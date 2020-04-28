@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
                 float index = float(temp) / 10;
                 address = index + startAddress + step;
             }
-            startIndex = Global::convertAddressToIndex(address, node.DataType);
+            startIndex = Global::convertAddressToIndex(startAddress, node.DataType);
             qDebug() << "type:" << node.DataType;
             qDebug() << "start address:" << startAddress;
             qDebug() << "index:" << startIndex;
