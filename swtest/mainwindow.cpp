@@ -131,25 +131,25 @@ void MainWindow::autoUpdateValue()
            db.b_data[32] = 1;
         }
 
-        /*if(db.b_data[13]==1)
+        if(db.b_data[0]==1)
         {
-           db.b_data[13] = 0;
+           db.b_data[0] = 0;
         }
         else
         {
-           db.b_data[13] = 1;
+           db.b_data[0] = 1;
         }
 
-        if(db.b_data[17]==1)
+        if(db.b_data[3]==1)
         {
-           db.b_data[17] = 0;
+           db.b_data[3] = 0;
         }
         else
         {
-           db.b_data[17] = 1;
+           db.b_data[3] = 1;
         }
 
-        if(db.b_data[37]==1)
+        /*if(db.b_data[37]==1)
         {
            db.b_data[37] = 0;
         }
@@ -166,6 +166,24 @@ void MainWindow::autoUpdateValue()
         {
            db.b_data[114] = 1;
         }*/
+
+        if(db.b_data[19]==1)
+        {
+           db.b_data[19] = 0;
+        }
+        else
+        {
+           db.b_data[19] = 1;
+        }
+
+        if(db.b_data[43]==1)
+        {
+           db.b_data[43] = 0;
+        }
+        else
+        {
+           db.b_data[43] = 1;
+        }
 
         db.b_data[8] = 1;
         db.b_data[11] = 1;
