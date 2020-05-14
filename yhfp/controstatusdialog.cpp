@@ -16,8 +16,8 @@ ControStatusDialog::ControStatusDialog(QWidget *parent) :
     controlStatusModel->setHeaderData(2,Qt::Horizontal,QStringLiteral("当前值"));
     ui->tableView->setModel(controlStatusModel);
     ui->tableView->setColumnWidth(0, 50);
-    ui->tableView->setColumnWidth(1, 200);
-    ui->tableView->setColumnWidth(2, 50);
+    ui->tableView->setColumnWidth(1, 450);
+    ui->tableView->setColumnWidth(2, 100);
 
     ui->tableView->horizontalHeader()
                             ->setStyleSheet(
@@ -121,7 +121,20 @@ void ControStatusDialog::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<fl
             }
             controlStatusModel->setData(controlStatusModel->index(row,2,QModelIndex()),iValue);
 
+            controlStatusModel->item(row,0)->setTextAlignment(Qt::AlignCenter);
+            controlStatusModel->item(row,1)->setTextAlignment(Qt::AlignCenter);
+            controlStatusModel->item(row,2)->setTextAlignment(Qt::AlignCenter);
+            controlStatusModel->item(row,0)->setFont(QFont("Timers" , 20 ,  QFont::Normal));
+            controlStatusModel->item(row,1)->setFont(QFont("Timers" , 20 ,  QFont::Normal));
+            controlStatusModel->item(row,2)->setFont(QFont("Timers" , 20 ,  QFont::Bold));
+            ui->tableView->setRowHeight(row, 50);
+
             row++;
         }
     }
+}
+
+void ControStatusDialog::on_exit_pushButton_clicked()
+{
+    hide();
 }

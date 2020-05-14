@@ -1825,13 +1825,13 @@ border:0px</string>
     <rect>
      <x>1710</x>
      <y>979</y>
-     <width>91</width>
-     <height>27</height>
+     <width>90</width>
+     <height>50</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>12</pointsize>
+     <pointsize>13</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>

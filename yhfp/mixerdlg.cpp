@@ -37,7 +37,7 @@ MixerDlg::MixerDlg(QWidget *parent) :
         connect(controller, &Syscontroller::plcDbUpdated, this, &MixerDlg::handlePlcDataUpdate);
     }
 
-    csDlg = new ControStatusDialog(this);
+    csDlg = new ControStatusDialog();
     connect(this, SIGNAL(dispatchPlcdataUpdate(QSet<int>,QMap<float,QString>)), csDlg, SLOT(handlePlcDataUpdate(QSet<int>,QMap<float,QString>)));
 }
 
@@ -1011,5 +1011,6 @@ void MixerDlg::on_exitButton_clicked()
 
 void MixerDlg::on_control_status_pushButton_clicked()
 {
+    csDlg->close();
     csDlg->show();
 }

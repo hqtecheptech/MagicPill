@@ -23,6 +23,9 @@ protected:
 public slots:
     void handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
 
+private slots:
+    void on_exit_pushButton_clicked();
+
 private:
     Ui::ControStatusDialog *ui;
 
