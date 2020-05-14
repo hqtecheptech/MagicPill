@@ -357,7 +357,7 @@ color: rgb(50, 150, 100);</string>
 background-image: url(:/pic/otherdevices.png);</string>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string/>
    </property>
   </widget>
   <widget class="QFrame" name="frame_5">
@@ -1818,6 +1818,29 @@ border:0px</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="control_status_pushButton">
+   <property name="geometry">
+    <rect>
+     <x>1710</x>
+     <y>979</y>
+     <width>91</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>控制状态</string>
    </property>
   </widget>
  </widget>

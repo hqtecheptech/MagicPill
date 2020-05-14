@@ -48,7 +48,8 @@ SOURCES += main.cpp\
     databaseworker.cpp \
     historydlg.cpp \
     controlhistory.cpp \
-    mixerdlg.cpp
+    mixerdlg.cpp \
+    controstatusdialog.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -85,7 +86,8 @@ HEADERS  += mainwindow.h \
     databaseworker.h \
     historydlg.h \
     controlhistory.h \
-    mixerdlg.h
+    mixerdlg.h \
+    controstatusdialog.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \
@@ -101,7 +103,8 @@ FORMS    += mainwindow.ui \
     fpjwatchs.ui \
     historydlg.ui \
     controlhistory.ui \
-    mixerdlg.ui
+    mixerdlg.ui \
+    controstatusdialog.ui
 
 RESOURCES += \
     resource.qrc

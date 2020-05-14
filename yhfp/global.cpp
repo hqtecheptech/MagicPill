@@ -1600,7 +1600,7 @@ bool Global::getYhcRunctrValueByName(int deviceIndex, QString name, QMap<float, 
 
 bool Global::getMixRunctrValueByName(int deviceIndex, QString name, QMap<float, QString> dataMap)
 {
-    DeviceGroupInfo groupInfo = getYhcDeviceGroupInfo(deviceIndex);
+    DeviceGroupInfo groupInfo = getMixDeviceGroupInfo(deviceIndex);
     int startAddrss = mixDeviceInfo.Runctr_Address +
             mixDeviceInfo.RunCtr_Block_Size / 8 * (deviceIndex - groupInfo.startIndex);
 

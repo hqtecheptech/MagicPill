@@ -38,7 +38,7 @@ Syscontroller::Syscontroller(DeviceType dataType, int groupId, QObject *parent) 
 
     updateStatusTimer = new QTimer(this);
     connect( updateStatusTimer, SIGNAL(timeout()), this, SLOT(updateSysStatus()) );
-    updateStatusTimer->start(1000);
+    updateStatusTimer->start(500);
 }
 
 Syscontroller *Syscontroller::getInstance(DeviceType dataType, int groupId)

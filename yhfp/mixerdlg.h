@@ -5,6 +5,7 @@
 #include "netstatemanageworker.h"
 #include "syscontroller.h"
 #include "data.h"
+#include "controstatusdialog.h"
 
 namespace Ui {
 class MixerDlg;
@@ -24,10 +25,13 @@ private slots:
 
     void on_exitButton_clicked();
 
+    void on_control_status_pushButton_clicked();
+
 signals:
     void checkNetState(QString type);
     void pollingDatas();
     void histDataReady(HistData data);
+    void dispatchPlcdataUpdate(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
 
 public slots:
     void handleControllerResult();
@@ -42,6 +46,7 @@ protected:
 private:
     Ui::MixerDlg *ui;
 
+    ControStatusDialog *csDlg;
     QThread netManageThread;
     NetStateManageWorker* nsmWorker;
     QThread dbThread;

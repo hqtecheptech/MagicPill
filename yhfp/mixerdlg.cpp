@@ -36,6 +36,9 @@ MixerDlg::MixerDlg(QWidget *parent) :
         connect(controller, SIGNAL(resultReady()), this, SLOT(handleControllerResult()));
         connect(controller, &Syscontroller::plcDbUpdated, this, &MixerDlg::handlePlcDataUpdate);
     }
+
+    csDlg = new ControStatusDialog(this);
+    connect(this, SIGNAL(dispatchPlcdataUpdate(QSet<int>,QMap<float,QString>)), csDlg, SLOT(handlePlcDataUpdate(QSet<int>,QMap<float,QString>)));
 }
 
 MixerDlg::~MixerDlg()
@@ -94,6 +97,8 @@ void MixerDlg::handleControllerResult()
 
 void MixerDlg::handlePlcDataUpdate(QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
 {
+    emit dispatchPlcdataUpdate(changedDeviceSet, dataMap);
+
     if(changedDeviceSet.count() > 0)
     {
         parseData(dataMap);
@@ -1002,4 +1007,9 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
 void MixerDlg::on_exitButton_clicked()
 {
     close();
+}
+
+void MixerDlg::on_control_status_pushButton_clicked()
+{
+    csDlg->show();
 }
