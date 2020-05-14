@@ -2,6 +2,7 @@
 #include "ui_controstatusdialog.h"
 
 #include "global.h"
+#include <QScrollBar>
 
 ControStatusDialog::ControStatusDialog(QWidget *parent) :
     QDialog(parent),
@@ -17,6 +18,66 @@ ControStatusDialog::ControStatusDialog(QWidget *parent) :
     ui->tableView->setColumnWidth(0, 50);
     ui->tableView->setColumnWidth(1, 200);
     ui->tableView->setColumnWidth(2, 50);
+
+    ui->tableView->horizontalHeader()
+                            ->setStyleSheet(
+                                "QHeaderView::section {"
+                                "color: black;padding-left: 0px;border: 1px solid #6c6c6c;"
+                                "font: 25 18pt;"
+                                "height: 40px;}");
+
+    ui->tableView->verticalScrollBar()
+                ->setStyleSheet("QScrollBar:vertical"
+                                    "{"
+                                    "width:50px;"
+                                    "background:rgba(255,255,255,80%);"
+                                    "margin:0px,0px,0px,0px;"
+                                    "padding-top:9px;"
+                                    "padding-bottom:9px;"
+                                    "}"
+                                    "QScrollBar::handle:vertical"
+                                    "{"
+                                    "width:50px;"
+                                    "background:rgba(0,0,0,25%);"
+                                    " border-radius:4px;"
+                                    "min-height:20;"
+                                    "}"
+                                    "QScrollBar::handle:vertical:hover"
+                                    "{"
+                                    "width:50px;"
+                                    "background:rgba(0,0,0,50%);"
+                                    " border-radius:4px;"
+                                    "min-height:20;"
+                                    "}"
+                                    "QScrollBar::add-line:vertical"
+                                    "{"
+                                    "height:9px;width:8px;"
+                                    "border-image:url(:/images/a/3.png);"
+                                    "subcontrol-position:bottom;"
+                                    "}"
+                                    "QScrollBar::sub-line:vertical"
+                                    "{"
+                                    "height:9px;width:8px;"
+                                    "border-image:url(:/images/a/1.png);"
+                                    "subcontrol-position:top;"
+                                    "}"
+                                    "QScrollBar::add-line:vertical:hover"
+                                    "{"
+                                    "height:9px;width:8px;"
+                                    "border-image:url(:/images/a/4.png);"
+                                    "subcontrol-position:bottom;"
+                                    "}"
+                                    "QScrollBar::sub-line:vertical:hover"
+                                    "{"
+                                    "height:9px;width:8px;"
+                                    "border-image:url(:/images/a/2.png);"
+                                    "subcontrol-position:top;"
+                                    "}"
+                                    "QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical"
+                                    "{"
+                                    "background:rgba(0,0,0,10%);"
+                                    "border-radius:4px;"
+                                    "}");
 }
 
 ControStatusDialog::~ControStatusDialog()
