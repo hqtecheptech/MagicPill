@@ -203,8 +203,8 @@ void FerCaseForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox->setText("曝气时长必须大于0!");
-                    msgBox->show();
+                    //msgBox->setText("曝气时长必须大于0!");
+                    //msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -233,8 +233,8 @@ void FerCaseForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox->setText("间隔时长必须大于0!");
-                    msgBox->show();
+                    //msgBox->setText("间隔时长必须大于0!");
+                    //msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -263,8 +263,8 @@ void FerCaseForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox->setText("频率必须大于0!");
-                    msgBox->show();
+                    //msgBox->setText("频率必须大于0!");
+                    //msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }

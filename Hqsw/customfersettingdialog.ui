@@ -77,14 +77,14 @@
   <widget class="QPushButton" name="customFerButton">
    <property name="geometry">
     <rect>
-     <x>50</x>
+     <x>30</x>
      <y>190</y>
-     <width>90</width>
+     <width>110</width>
      <height>65</height>
     </rect>
    </property>
    <property name="text">
-    <string>开始发酵</string>
+    <string>开始定时曝气</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -206,6 +206,19 @@
    </property>
    <property name="orientation">
     <enum>Qt::Vertical</enum>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="endCustomFerButton">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>190</y>
+     <width>110</width>
+     <height>65</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>结束定时曝气</string>
    </property>
   </widget>
  </widget>

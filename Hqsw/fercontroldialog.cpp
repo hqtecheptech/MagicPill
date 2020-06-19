@@ -58,6 +58,8 @@ FerControlDialog::FerControlDialog(QWidget *parent) :
     connect(ui->runStepComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(stepIndexChanged(int)));
 
     customFerSettingDialog = new CustomFerSettingDialog();
+    connect(this, SIGNAL(ferDataChanged(QSet<int>,QMap<float,QString>))
+            , customFerSettingDialog, SLOT(updateFermentationData(QSet<int>,QMap<float,QString>)));
 
     tcpClient = new TcpClientSocket(this);
     tcpClient1 = new TcpClientSocket(this);
@@ -364,6 +366,8 @@ void FerControlDialog::on_endFerButton_released()
 
 void FerControlDialog::updateFermentationData(QSet<int> changedDeviceSet, QMap<float,QString> dataMap)
 {
+    emit ferDataChanged(changedDeviceSet, dataMap);
+
     if(changedDeviceSet.contains(tankIndex))
     {
         parseFermentationData(dataMap);

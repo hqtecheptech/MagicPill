@@ -188,6 +188,7 @@ bool FerStepForm::eventFilter(QObject *watched, QEvent *event)
         p.setColor(QPalette::Base,Qt::green);
         ((QWidget *)watched)->setPalette(p);
     }*/
+
     if(watched == this && event->type() == QEvent::WindowDeactivate)
     {
         msgBox->close();
@@ -278,6 +279,7 @@ void FerStepForm::on_reduce_case_push_button_clicked()
     }
 }
 
+
 void FerStepForm::on_add_case_push_button_clicked()
 {
     addNewCase();
@@ -349,8 +351,8 @@ void FerStepForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox->setText("最长跳步时间必须大于0!");
-                    msgBox->show();
+                    //msgBox->setText("最长跳步时间必须大于0!");
+                    //msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -379,8 +381,8 @@ void FerStepForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox->setText("最短跳步时间必须大于0!");
-                    msgBox->show();
+                    //msgBox->setText("最短跳步时间必须大于0!");
+                    //msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -409,8 +411,8 @@ void FerStepForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox->setText("曝气时长必须大于0!");
-                    msgBox->show();
+                    //msgBox->setText("曝气时长必须大于0!");
+                    //msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -439,8 +441,8 @@ void FerStepForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox->setText("曝气时长必须大于0!");
-                    msgBox->show();
+                    //msgBox->setText("曝气时长必须大于0!");
+                    //msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }
@@ -469,8 +471,8 @@ void FerStepForm::handleTextChanged()
             {
                 if(value <= 0)
                 {
-                    msgBox->setText("频率必须大于0!");
-                    msgBox->show();
+                    //msgBox->setText("频率必须大于0!");
+                    //msgBox->show();
                     p.setColor(QPalette::Base,Qt::red);
                     te->setPalette(p);
                 }

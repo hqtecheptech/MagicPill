@@ -89,6 +89,9 @@ private:
     QString formatLongDateString(uint value);
     void setFerRunSteps();
 
+signals:
+    void ferDataChanged(QSet<int>, QMap<float,QString>);
+
 public slots:
     void updateFermentationData(QSet<int>, QMap<float,QString> dataMap);
 

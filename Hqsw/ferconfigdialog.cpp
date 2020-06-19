@@ -7,6 +7,7 @@ FerConfigDialog::FerConfigDialog(QWidget *parent) :
     ui(new Ui::FerConfigDialog)
 {
     ui->setupUi(this);
+    setWindowTitle(QStringLiteral("发酵设置"));
 
     for(int i=0; i < Global::ferDeviceInfo.Device_Number;i++)
     {

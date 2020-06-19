@@ -111,10 +111,10 @@ void FFTank::switchState()
 
         if(isFanOpen)
         {
-            if(latestFerAeTime >= extraAetimeAddition)
+            /*if(latestFerAeTime >= extraAetimeAddition)
             {
                 ui->runTimeValueLabel->setText(QString::number(latestFerAeTime - extraAetimeAddition));
-            }
+            }*/
 
             if(switchFlag)
             {
@@ -127,16 +127,16 @@ void FFTank::switchState()
         }
         else
         {
-            if(latestFerStaTime >= extraStaRuntimeAddition)
+            /*if(latestFerStaTime >= extraStaRuntimeAddition)
             {
                 ui->spacTimeValueLabel->setText(QString::number(latestFerStaTime - extraStaRuntimeAddition));
-            }
+            }*/
         }
     }
     else
     {
-        ui->runTimeValueLabel->setText(QString::number(0));
-        ui->spacTimeValueLabel->setText(QString::number(0));
+        //ui->runTimeValueLabel->setText(QString::number(0));
+        //ui->spacTimeValueLabel->setText(QString::number(0));
     }
     extraTotalRuntimeAddition++;
     extraAetimeAddition++;

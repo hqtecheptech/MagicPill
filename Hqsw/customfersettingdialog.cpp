@@ -303,3 +303,46 @@ void CustomFerSettingDialog::on_customFerButton_2_clicked()
 {
     close();
 }
+
+void CustomFerSettingDialog::updateFermentationData(QSet<int>, QMap<float, QString> dataMap)
+{
+    bool isAerationStart = Global::getFerRunctrValueByName(tankLocation,"Aeration_Start",dataMap);
+    if(isAerationStart)
+    {
+        ui->customFerButton->setEnabled(false);
+        ui->endCustomFerButton->setEnabled(true);
+    }
+    else
+    {
+        ui->customFerButton->setEnabled(true);
+        ui->endCustomFerButton->setEnabled(false);
+    }
+}
+
+void CustomFerSettingDialog::on_endCustomFerButton_pressed()
+{
+    User *user = Identity::getInstance()->getUser();
+    if(user != Q_NULLPTR)
+    {
+        DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankLocation);
+        ushort offset = Global::getFermenationNodeInfoByName("Aeration_Start").Offset / 8;
+        ushort index = Global::getFermenationNodeInfoByName("Aeration_Start").Offset % 8;
+
+        ushort runctrlByteSize = Global::ferDeviceInfo.RunCtr_Block_Size / 8;
+        ushort addr = Global::ferDeviceInfo.Runctr_Address + (info.offset + tankLocation - info.startIndex) * runctrlByteSize + offset;
+
+        StreamPack bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Bool,addr,index,1,0,0,0};
+        bool data = false;
+        QVariant var_data = QVariant(data);
+
+        tcpClient1->abort();
+        disconnect(tcpClient1,0,0,0);
+        connect(tcpClient1, SIGNAL(updateClients(QByteArray)),this,SLOT(showFerStart(QByteArray)));
+        tcpClient1->sendRequestWithResult(bpack,var_data,1);
+    }
+    else
+    {
+        msgBox.setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox.show();
+    }
+}

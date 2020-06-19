@@ -38,6 +38,11 @@ private slots:
 
     void on_customFerButton_2_clicked();
 
+    void on_endCustomFerButton_pressed();
+
+public slots:
+    void updateFermentationData(QSet<int>, QMap<float,QString> dataMap);
+
 private:
     Ui::CustomFerSettingDialog *ui;
     QMessageBox msgBox;
