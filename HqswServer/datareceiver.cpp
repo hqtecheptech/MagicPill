@@ -261,6 +261,8 @@ void DataReceiver::dataReceive()
             QByteArray byteValues = sDataWithoutCRC.mid(sizeof(bDevice), sDataWithoutCRC.length() - sizeof(bDevice));
             QString strConfig = byteValues;
             qDebug() << strConfig;
+            QString filePath = Global::systemConfig.ferconfigPath + Global::systemConfig.ferconfigPrefix + QString::number(bDevice.bIndex+1);
+            qDebug() << filePath;
             QFile file(Global::systemConfig.ferconfigPath + Global::systemConfig.ferconfigPrefix + QString::number(bDevice.bIndex+1));
             if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
             {
@@ -386,7 +388,7 @@ void DataReceiver::sendAllCachedData(StreamPack pack)
         QList<float> addressList;
         foreach(float address, Global::currentFermenationDataMap.keys())
         {
-            strValues = strValues + Global::currentFermenationDataMap[address] + ",";
+            strValues = strValues + Global::currentFermenationDataMap.value(address) + ",";
             addressList.append(address);
         }
         strValues.mid(0, strValues.length() - 1);
@@ -430,7 +432,7 @@ void DataReceiver::sendAllCachedData(StreamPack pack)
         QList<float> addressList;
         foreach(float address, Global::currentYhcDataMap.keys())
         {
-            strValues = strValues + Global::currentYhcDataMap[address] + ",";
+            strValues = strValues + Global::currentYhcDataMap.value(address) + ",";
             addressList.append(address);
         }
         strValues.mid(0, strValues.length() - 1);
@@ -474,7 +476,7 @@ void DataReceiver::sendAllCachedData(StreamPack pack)
         QList<float> addressList;
         foreach(float address, Global::currentMixDataMap.keys())
         {
-            strValues = strValues + Global::currentMixDataMap[address] + ",";
+            strValues = strValues + Global::currentMixDataMap.value(address) + ",";
             addressList.append(address);
         }
         strValues.mid(0, strValues.length() - 1);
@@ -518,7 +520,7 @@ void DataReceiver::sendAllCachedData(StreamPack pack)
         QList<float> addressList;
         foreach(float address, Global::currentDeodorationDataMap.keys())
         {
-            strValues = strValues + Global::currentDeodorationDataMap[address] + ",";
+            strValues = strValues + Global::currentDeodorationDataMap.value(address) + ",";
             addressList.append(address);
         }
         strValues.mid(0, strValues.length() - 1);

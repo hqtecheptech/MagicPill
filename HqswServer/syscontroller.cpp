@@ -38,7 +38,7 @@ Syscontroller::Syscontroller(DeviceType dataType, int groupId, QObject *parent) 
 
     updateStatusTimer = new QTimer(this);
     connect( updateStatusTimer, SIGNAL(timeout()), this, SLOT(updateSysStatus()) );
-    updateStatusTimer->start(1000);
+    updateStatusTimer->start(200);
 }
 
 Syscontroller *Syscontroller::getInstance(DeviceType dataType, int groupId)
@@ -226,7 +226,7 @@ void Syscontroller::resetDataShare(int dataType, QMap<float, QString> controlDat
         foreach(float address, controlData.keys())
         {
             int index = Global::convertAddressToIndex(address, "x0");
-            qDebug() << "controlData.value(" << address << "): " << controlData[address];
+            qDebug() << "controlData.value(" << address << "): " << controlData.value(address);
             if(controlData[address] == "true")
             {
                controlDb->b_data[index] = 1;
