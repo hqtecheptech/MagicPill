@@ -14,6 +14,9 @@ public:
     static ServerInfo serverInfo;
     static SystemConfig systemConfig;
 
+    static bool modifyMixNodeValueRange();
+    static void testMv();
+
     static DeviceNode getFermenationNodeInfoByName(QString name);
     static DeviceNode getDeodorationNodeInfoByName(QString name);
     static DeviceNode getFanValveNodeInfoByName(QString name);

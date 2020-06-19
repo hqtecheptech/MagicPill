@@ -258,37 +258,37 @@ void Yhcc::updateWatchs(QMap<float,QString> dataMap)
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(_deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Total_Voltage");
     float address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Yhc_Total_Voltage value: " << dataMap[address];
-    float totalVoltage = dataMap[address].toFloat();
+    qDebug() << "Yhc_Total_Voltage value: " << dataMap.value(address);
+    float totalVoltage = dataMap.value(address).toFloat();
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Total_Ampere");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Yhc_Total_Ampere value: " << dataMap[address];
-    float totalAmpere = dataMap[address].toFloat();
+    qDebug() << "Yhc_Total_Ampere value: " << dataMap.value(address);
+    float totalAmpere = dataMap.value(address).toFloat();
 
     ui->yhcWatchsWidget->updateDydl(totalVoltage, totalAmpere);
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Hs_Tempture");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Yhc_Hs_Tempture value: " << dataMap[address];
-    float hsTempture = dataMap[address].toFloat();
+    qDebug() << "Yhc_Hs_Tempture value: " << dataMap.value(address);
+    float hsTempture = dataMap.value(address).toFloat();
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Hs_Oil_Level");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Yhc_Hs_Oil_Level value: " << dataMap[address];
-    float oilLevel = dataMap[address].toFloat();
+    qDebug() << "Yhc_Hs_Oil_Level value: " << dataMap.value(address);
+    float oilLevel = dataMap.value(address).toFloat();
 
     ui->yhcWatchsWidget->updateWdyw(hsTempture, oilLevel);
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Pressure");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Yhc_Pressure value: " << dataMap[address];
-    float yhcPress = dataMap[address].toFloat();
+    qDebug() << "Yhc_Pressure value: " << dataMap.value(address);
+    float yhcPress = dataMap.value(address).toFloat();
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Speed");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Yhc_Speed value: " << dataMap[address];
-    float yhcSpeed = dataMap[address].toFloat();
+    qDebug() << "Yhc_Speed value: " << dataMap.value(address);
+    float yhcSpeed = dataMap.value(address).toFloat();
 
     ui->yhcWatchsWidget->updateYlzs(yhcPress, yhcSpeed);
 }
@@ -434,9 +434,9 @@ void Yhcc::parseYhcData(QMap<float, QString> dataMap)
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(_deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Walking_Speed");
     float address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Yhc_Walking_Speed value: " << dataMap[address];
-    currentSpeed = dataMap[address].toFloat();
-    ui->speedLabel->setText(dataMap[address]);
+    qDebug() << "Yhc_Walking_Speed value: " << dataMap.value(address);
+    currentSpeed = dataMap.value(address).toFloat();
+    ui->speedLabel->setText(dataMap.value(address));
 
     updateWatchs(dataMap);
 }
@@ -584,7 +584,7 @@ void Yhcc::updateCharts()
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Pressure");
     float address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     int index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    float yhcPress = Global::currentYhcDataMap[address].toFloat();
+    float yhcPress = Global::currentYhcDataMap.value(address).toFloat();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
@@ -601,7 +601,7 @@ void Yhcc::updateCharts()
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Speed");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    float yhcSpeed = Global::currentYhcDataMap[address].toFloat();
+    float yhcSpeed = Global::currentYhcDataMap.value(address).toFloat();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
@@ -620,7 +620,7 @@ void Yhcc::updateCharts()
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Total_Voltage");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    float totalVotage = Global::currentYhcDataMap[address].toFloat();
+    float totalVotage = Global::currentYhcDataMap.value(address).toFloat();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
@@ -637,7 +637,7 @@ void Yhcc::updateCharts()
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Total_Ampere");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    float totalAmpre = Global::currentYhcDataMap[address].toFloat();
+    float totalAmpre = Global::currentYhcDataMap.value(address).toFloat();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.DataType.toLatin1().data());

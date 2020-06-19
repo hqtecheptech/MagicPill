@@ -39,11 +39,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->syssButton->setStyleSheet(syssStyleStr);
     ui->exitButton->setStyleSheet(eixtStyleStr);
 
-    yhc = new Yhcc(this);
-    fpj = new Fpjc(this);
-    yhc->close();
-    fpj->close();
-    //mixDlg = new MixerDlg(this);
+    //yhc = new Yhcc(this);
+    //fpj = new Fpjc(this);
+    //yhc->close();
+    //fpj->close();
+    mixDlg = new MixerDlg(this);
 
     //taskManager = new TaskManager(8000, this);
     //taskManager->moveToThread(&taskManageThread);
@@ -77,7 +77,7 @@ void MainWindow::showEvent(QShowEvent *event)
         controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
     }*/
 
-    //mixDlg->show();
+    mixDlg->show();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -87,8 +87,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::on_yhccButton_clicked()
 {
-    fpj->close();
-    yhc->show();
+    //fpj->close();
+    //yhc->show();
 }
 
 void MainWindow::on_exitButton_clicked()
@@ -143,6 +143,6 @@ void MainWindow::checkPruState()
 
 void MainWindow::on_fpjcButton_clicked()
 {
-    yhc->close();
-    fpj->show();
+    //yhc->close();
+    //fpj->show();
 }

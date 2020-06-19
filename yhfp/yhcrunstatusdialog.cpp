@@ -25,11 +25,11 @@ void YhcRunStatusDialog::showStatus()
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(_deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Encoder_Cycle_Num");
     float address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Yhc_Encoder_Cycle_Num_label->setText(Global::currentYhcDataMap[address]);
+    ui->Yhc_Encoder_Cycle_Num_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Yhc_Encoder_Speed");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Yhc_Encoder_Speed_label->setText(Global::currentYhcDataMap[address]);
+    ui->Yhc_Encoder_Speed_label->setText(Global::currentYhcDataMap.value(address));
 
     bool run, coro, inve, uploading;
 

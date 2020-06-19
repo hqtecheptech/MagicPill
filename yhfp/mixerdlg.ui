@@ -1717,7 +1717,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>160</x>
-      <y>500</y>
+      <y>470</y>
       <width>70</width>
       <height>70</height>
      </rect>
@@ -1733,6 +1733,34 @@ background-image: url(:/pic/field_bg.png);</string>
     </property>
     <property name="text">
      <string>设置</string>
+    </property>
+    <property name="autoDefault">
+     <bool>true</bool>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="debugButton">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>544</y>
+      <width>70</width>
+      <height>70</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>调试</string>
     </property>
     <property name="autoDefault">
      <bool>true</bool>
@@ -2931,6 +2959,19 @@ border:0px</string>
    </property>
    <property name="default">
     <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="update_xml_pushButton">
+   <property name="geometry">
+    <rect>
+     <x>1608</x>
+     <y>6</y>
+     <width>121</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>updatexml</string>
    </property>
   </widget>
  </widget>

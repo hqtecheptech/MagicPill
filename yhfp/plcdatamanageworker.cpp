@@ -88,7 +88,7 @@ void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Pl
         }
         else
         {
-            if(Global::currentYhcDataMap[address] != QString::number(newPlcDb.f_data[i]))
+            if(Global::currentYhcDataMap.value(address) != QString::number(newPlcDb.f_data[i]))
             {
                 diff = true;
                 changedAddressArray.append(address);
@@ -109,7 +109,7 @@ void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Pl
         }
         else
         {
-            if(Global::currentYhcDataMap[address] != QString::number(newPlcDb.i_data[i]))
+            if(Global::currentYhcDataMap.value(address) != QString::number(newPlcDb.i_data[i]))
             {
                 diff = true;
                 changedAddressArray.append(address);
@@ -130,7 +130,7 @@ void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Pl
         }
         else
         {
-            if(Global::currentYhcDataMap[address] != QString::number(newPlcDb.dw_data[i]))
+            if(Global::currentYhcDataMap.value(address) != QString::number(newPlcDb.dw_data[i]))
             {
                 diff = true;
                 changedAddressArray.append(address);
@@ -151,7 +151,7 @@ void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Pl
         }
         else
         {
-            if(Global::currentYhcDataMap[address] != QString::number(newPlcDb.w_data[i]))
+            if(Global::currentYhcDataMap.value(address) != QString::number(newPlcDb.w_data[i]))
             {
                 diff = true;
                 changedAddressArray.append(address);
@@ -280,7 +280,7 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
         }
         else
         {
-            if(Global::currentFermenationDataMap[address] != QString::number(newPlcDb.f_data[i]))
+            if(Global::currentFermenationDataMap.value(address) != QString::number(newPlcDb.f_data[i]))
             {
                 diff = true;
                 changedAddressArray.append(address);
@@ -301,7 +301,7 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
         }
         else
         {
-            if(Global::currentFermenationDataMap[address] != QString::number(newPlcDb.i_data[i]))
+            if(Global::currentFermenationDataMap.value(address) != QString::number(newPlcDb.i_data[i]))
             {
                 diff = true;
                 changedAddressArray.append(address);
@@ -322,7 +322,7 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
         }
         else
         {
-            if(Global::currentFermenationDataMap[address] != QString::number(newPlcDb.dw_data[i]))
+            if(Global::currentFermenationDataMap.value(address) != QString::number(newPlcDb.dw_data[i]))
             {
                 diff = true;
                 changedAddressArray.append(address);
@@ -343,7 +343,7 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
         }
         else
         {
-            if(Global::currentFermenationDataMap[address] != QString::number(newPlcDb.w_data[i]))
+            if(Global::currentFermenationDataMap.value(address) != QString::number(newPlcDb.w_data[i]))
             {
                 diff = true;
                 changedAddressArray.append(address);
@@ -472,7 +472,7 @@ void PlcDataManageWorker::parseMixServerData(DeviceGroupInfo groupInfo, const Pl
         }
         else
         {
-            if(Global::currentMixDataMap[address] != QString::number(newPlcDb.f_data[i]))
+            if(Global::currentMixDataMap.value(address)!= QString::number(newPlcDb.f_data[i]))
             {
                 diff = true;
                 changedAddressArray.append(address);
@@ -493,7 +493,7 @@ void PlcDataManageWorker::parseMixServerData(DeviceGroupInfo groupInfo, const Pl
         }
         else
         {
-            if(Global::currentMixDataMap[address] != QString::number(newPlcDb.i_data[i]))
+            if(Global::currentMixDataMap.value(address) != QString::number(newPlcDb.i_data[i]))
             {
                 diff = true;
                 changedAddressArray.append(address);
@@ -514,7 +514,7 @@ void PlcDataManageWorker::parseMixServerData(DeviceGroupInfo groupInfo, const Pl
         }
         else
         {
-            if(Global::currentMixDataMap[address] != QString::number(newPlcDb.dw_data[i]))
+            if(Global::currentMixDataMap.value(address)!= QString::number(newPlcDb.dw_data[i]))
             {
                 diff = true;
                 changedAddressArray.append(address);
@@ -535,7 +535,7 @@ void PlcDataManageWorker::parseMixServerData(DeviceGroupInfo groupInfo, const Pl
         }
         else
         {
-            if(Global::currentMixDataMap[address] != QString::number(newPlcDb.w_data[i]))
+            if(Global::currentMixDataMap.value(address) != QString::number(newPlcDb.w_data[i]))
             {
                 diff = true;
                 changedAddressArray.append(address);

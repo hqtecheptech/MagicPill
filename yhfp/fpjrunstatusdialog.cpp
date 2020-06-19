@@ -50,51 +50,51 @@ void FpjRunStatusDialog::showStatus()
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(_deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Track_Encoder_Cycle_Num");
     float address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Fpj_Left_Track_Encoder_Cycle_Num_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_Left_Track_Encoder_Cycle_Num_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Track_Encoder_Cycle_Num");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Fpj_Right_Track_Encoder_Cycle_Num_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_Right_Track_Encoder_Cycle_Num_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Servo_Pulse");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Fpj_Left_Servo_Pulse_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_Left_Servo_Pulse_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Servo_Pulse");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Fpj_Right_Servo_Pulse_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_Right_Servo_Pulse_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Total_Voltage");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Fpj_Total_Voltage_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_Total_Voltage_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Total_Ampere");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Fpj_Total_Ampere_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_Total_Ampere_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_LeftFront");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Fpj_LeftFront_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_LeftFront_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_RightFront");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Fpj_RightFront_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_RightFront_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_LeftBehind");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Fpj_LeftBehind_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_LeftBehind_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_RightBehind");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Fpj_RightBehind_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_RightBehind_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Lifting_Oc_Pressure");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Fpj_Lifting_Oc_Pressure_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_Lifting_Oc_Pressure_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Sweeping_Motor_Pressure");
     address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    ui->Fpj_Sweeping_Motor_Pressure_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_Sweeping_Motor_Pressure_label->setText(Global::currentYhcDataMap.value(address));
 
     bool run;
 

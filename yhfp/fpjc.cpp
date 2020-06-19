@@ -128,99 +128,99 @@ void Fpjc::updateWatch()
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Roller_Pressure");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Left_Roller_Pressure value: " << Global::currentYhcDataMap[address];
-    float lrp = Global::currentYhcDataMap[address].toFloat();
+    qDebug() << "Fpj_Left_Roller_Pressure value: " << Global::currentYhcDataMap.value(address);
+    float lrp = Global::currentYhcDataMap.value(address).toFloat();
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Roller_Speed");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Left_Roller_Speed value: " << Global::currentYhcDataMap[address];
-    ushort lrs = Global::currentYhcDataMap[address].toUShort();
+    qDebug() << "Fpj_Left_Roller_Speed value: " << Global::currentYhcDataMap.value(address);
+    ushort lrs = Global::currentYhcDataMap.value(address).toUShort();
 
-    ui->Fpj_Left_Roller_Speed_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_Left_Roller_Speed_label->setText(Global::currentYhcDataMap.value(address));
 
     ui->fpjWatchsWidget->updateLeftTopPlate(lrp, lrs);
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Roller_Pressure");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Right_Roller_Pressure value: " << Global::currentYhcDataMap[address];
-    float rrp = Global::currentYhcDataMap[address].toFloat();
+    qDebug() << "Fpj_Right_Roller_Pressure value: " << Global::currentYhcDataMap.value(address);
+    float rrp = Global::currentYhcDataMap.value(address).toFloat();
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Roller_Speed");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Right_Roller_Speed value: " << Global::currentYhcDataMap[address];
-    ushort rrs = Global::currentYhcDataMap[address].toUShort();
+    qDebug() << "Fpj_Right_Roller_Speed value: " << Global::currentYhcDataMap.value(address);
+    ushort rrs = Global::currentYhcDataMap.value(address).toUShort();
 
-    ui->Fpj_Right_Roller_Speed_label->setText(Global::currentYhcDataMap[address]);
+    ui->Fpj_Right_Roller_Speed_label->setText(Global::currentYhcDataMap.value(address));
 
     ui->fpjWatchsWidget->updateRightTopPlate(rrp, rrs);
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Walking_Pressure");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Left_Walking_Pressure value: " << Global::currentYhcDataMap[address];
-    float lwp = Global::currentYhcDataMap[address].toFloat();
+    qDebug() << "Fpj_Left_Walking_Pressure value: " << Global::currentYhcDataMap.value(address);
+    float lwp = Global::currentYhcDataMap.value(address).toFloat();
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Servo_Pulse");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Left_Servo_Pulse value: " << Global::currentYhcDataMap[address];
-    uint lsp = Global::currentYhcDataMap[address].toUInt();
+    qDebug() << "Fpj_Left_Servo_Pulse value: " << Global::currentYhcDataMap.value(address);
+    uint lsp = Global::currentYhcDataMap.value(address).toUInt();
 
     ui->fpjWatchsWidget->updateLeftBottomPlate(lwp, lsp);
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Walking_Pressure");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Right_Walking_Pressure value: " << Global::currentYhcDataMap[address];
-    float rwp = Global::currentYhcDataMap[address].toFloat();
+    qDebug() << "Fpj_Right_Walking_Pressure value: " << Global::currentYhcDataMap.value(address);
+    float rwp = Global::currentYhcDataMap.value(address).toFloat();
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Servo_Pulse");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Right_Servo_Pulse value: " << Global::currentYhcDataMap[address];
-    uint rsp = Global::currentYhcDataMap[address].toUInt();
+    qDebug() << "Fpj_Right_Servo_Pulse value: " << Global::currentYhcDataMap.value(address);
+    uint rsp = Global::currentYhcDataMap.value(address).toUInt();
 
     ui->fpjWatchsWidget->updateRightBottomPlate(rwp, rsp);
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Hs_1_Tempture");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Hs_1_Tempture value: " << Global::currentYhcDataMap[address];
-    float ht1 = Global::currentYhcDataMap[address].toFloat();
+    qDebug() << "Fpj_Hs_1_Tempture value: " << Global::currentYhcDataMap.value(address);
+    float ht1 = Global::currentYhcDataMap.value(address).toFloat();
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Hs_1_Oil_Level");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Hs_1_Oil_Level value: " << Global::currentYhcDataMap[address];
-    float hl1 = Global::currentYhcDataMap[address].toUShort();
+    qDebug() << "Fpj_Hs_1_Oil_Level value: " << Global::currentYhcDataMap.value(address);
+    float hl1 = Global::currentYhcDataMap.value(address).toUShort();
 
     ui->fpjWatchsWidget->updateLeftCenterPlate(ht1, hl1);
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Hs_2_Tempture");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Hs_2_Tempture value: " << Global::currentYhcDataMap[address];
-    float ht2 = Global::currentYhcDataMap[address].toFloat();
+    qDebug() << "Fpj_Hs_2_Tempture value: " << Global::currentYhcDataMap.value(address);
+    float ht2 = Global::currentYhcDataMap.value(address).toFloat();
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Hs_2_Oil_Level");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Hs_2_Oil_Level value: " << Global::currentYhcDataMap[address];
-    float hl2 = Global::currentYhcDataMap[address].toUShort();
+    qDebug() << "Fpj_Hs_2_Oil_Level value: " << Global::currentYhcDataMap.value(address);
+    float hl2 = Global::currentYhcDataMap.value(address).toUShort();
 
     ui->fpjWatchsWidget->updateRightCenterPlate(ht2, hl2);
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_LeftFront");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_LeftFront value: " << Global::currentYhcDataMap[address];
-    ui->Fpj_LeftFront_label->setText(Global::currentYhcDataMap[address]);
+    qDebug() << "Fpj_LeftFront value: " << Global::currentYhcDataMap.value(address);
+    ui->Fpj_LeftFront_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_RightFront");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_RightFront value: " << Global::currentYhcDataMap[address];
-    ui->Fpj_RightFront_label->setText(Global::currentYhcDataMap[address]);
+    qDebug() << "Fpj_RightFront value: " << Global::currentYhcDataMap.value(address);
+    ui->Fpj_RightFront_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_LeftBehind");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_LeftBehind value: " << Global::currentYhcDataMap[address];
-    ui->Fpj_LeftBehind_label->setText(Global::currentYhcDataMap[address]);
+    qDebug() << "Fpj_LeftBehind value: " << Global::currentYhcDataMap.value(address);
+    ui->Fpj_LeftBehind_label->setText(Global::currentYhcDataMap.value(address));
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_RightBehind");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_RightBehind value: " << Global::currentYhcDataMap[address];
-    ui->Fpj_RightBehind_label->setText(Global::currentYhcDataMap[address]);
+    qDebug() << "Fpj_RightBehind value: " << Global::currentYhcDataMap.value(address);
+    ui->Fpj_RightBehind_label->setText(Global::currentYhcDataMap.value(address));
 }
 
 void Fpjc::updateChart()
@@ -232,9 +232,9 @@ void Fpjc::updateChart()
     DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Roller_Pressure");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Left_Roller_Pressure value: " << Global::currentYhcDataMap[address];
+    qDebug() << "Fpj_Left_Roller_Pressure value: " << Global::currentYhcDataMap.value(address);
     int index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    float lrp = Global::currentYhcDataMap[address].toFloat();
+    float lrp = Global::currentYhcDataMap.value(address).toFloat();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
@@ -250,9 +250,9 @@ void Fpjc::updateChart()
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Roller_Speed");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Left_Roller_Speed value: " << Global::currentYhcDataMap[address];
+    qDebug() << "Fpj_Left_Roller_Speed value: " << Global::currentYhcDataMap.value(address);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ushort lrs = Global::currentYhcDataMap[address].toUShort();
+    ushort lrs = Global::currentYhcDataMap.value(address).toUShort();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
@@ -292,9 +292,9 @@ void Fpjc::updateChart()
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Roller_Pressure");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Right_Roller_Pressure value: " << Global::currentYhcDataMap[address];
+    qDebug() << "Fpj_Right_Roller_Pressure value: " << Global::currentYhcDataMap.value(address);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    float rrp = Global::currentYhcDataMap[address].toFloat();
+    float rrp = Global::currentYhcDataMap.value(address).toFloat();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
@@ -310,9 +310,9 @@ void Fpjc::updateChart()
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Roller_Speed");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Right_Roller_Speed value: " << Global::currentYhcDataMap[address];
+    qDebug() << "Fpj_Right_Roller_Speed value: " << Global::currentYhcDataMap.value(address);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    ushort rrs = Global::currentYhcDataMap[address].toUShort();
+    ushort rrs = Global::currentYhcDataMap.value(address).toUShort();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
@@ -352,9 +352,9 @@ void Fpjc::updateChart()
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Walking_Pressure");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Left_Walking_Pressure value: " << Global::currentYhcDataMap[address];
+    qDebug() << "Fpj_Left_Walking_Pressure value: " << Global::currentYhcDataMap.value(address);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    float lwp = Global::currentYhcDataMap[address].toFloat();
+    float lwp = Global::currentYhcDataMap.value(address).toFloat();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
@@ -370,9 +370,9 @@ void Fpjc::updateChart()
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Left_Servo_Pulse");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Left_Servo_Pulse value: " << Global::currentYhcDataMap[address];
+    qDebug() << "Fpj_Left_Servo_Pulse value: " << Global::currentYhcDataMap.value(address);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    uint lsp = Global::currentYhcDataMap[address].toUInt();
+    uint lsp = Global::currentYhcDataMap.value(address).toUInt();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
@@ -411,9 +411,9 @@ void Fpjc::updateChart()
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Walking_Pressure");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Right_Walking_Pressure value: " << Global::currentYhcDataMap[address];
+    qDebug() << "Fpj_Right_Walking_Pressure value: " << Global::currentYhcDataMap.value(address);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    float rwp = Global::currentYhcDataMap[address].toFloat();
+    float rwp = Global::currentYhcDataMap.value(address).toFloat();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.DataType.toLatin1().data());
@@ -429,9 +429,9 @@ void Fpjc::updateChart()
 
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Right_Servo_Pulse");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    qDebug() << "Fpj_Right_Servo_Pulse value: " << Global::currentYhcDataMap[address];
+    qDebug() << "Fpj_Right_Servo_Pulse value: " << Global::currentYhcDataMap.value(address);
     index = Global::convertAddressToIndex(address, deviceNode.DataType);
-    uint rsp = Global::currentYhcDataMap[address].toUInt();
+    uint rsp = Global::currentYhcDataMap.value(address).toUInt();
 
     data.address = address;
     strcpy(data.dataType, deviceNode.DataType.toLatin1().data());

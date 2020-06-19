@@ -368,7 +368,7 @@ void DataReceiver::sendAllCachedData(StreamPack pack)
         QList<float> addressList;
         foreach(float address, Global::currentFermenationDataMap.keys())
         {
-            strValues = strValues + Global::currentFermenationDataMap[address] + ",";
+            strValues = strValues + Global::currentFermenationDataMap.value(address) + ",";
             addressList.append(address);
         }
         strValues.mid(0, strValues.length() - 1);

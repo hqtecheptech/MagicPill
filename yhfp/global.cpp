@@ -13,6 +13,77 @@ Global::Global()
 
 }
 
+bool Global::modifyMixNodeValueRange()
+{
+    QFile file("mix_devices.xml");
+    if(!file.open(QFile::ReadOnly | QFile::Text))
+    {
+        return false;
+    }
+
+    QDomDocument document;
+    QString error;
+    int row = 0, column = 0;
+    if(!document.setContent(&file, false, &error, &row, &column))
+    {
+        file.close();
+        return true;
+    }
+
+    file.close();
+
+    if(document.isNull())
+    {
+        return true;
+    }
+
+    QDomElement root = document.documentElement();
+    if(root.isNull())
+    {
+        return true;
+    }
+
+    QDomElement areaSection = root.firstChildElement();
+    if(areaSection.isNull())
+    {
+        return true;
+    }
+
+    if(mixDeviceNodes.length() > 0)
+    {
+        int i = 0;
+        QDomNodeList nodeList = areaSection.elementsByTagName("node");
+        for(int j = 0; j < nodeList.length(); j++)
+        {
+            QDomNode node = nodeList.at(j);
+            QDomElement e = node.toElement();
+            if(e.attribute("name")==mixDeviceNodes.at(i).Name)
+            {
+                e.setAttribute("lr", mixDeviceNodes.at(i).leftRange);
+                e.setAttribute("rr", mixDeviceNodes.at(i).rightRange);
+                i++;
+            }
+        }
+    }
+
+    if (!file.open(QIODevice::WriteOnly | QFile::Truncate))
+    {
+        return false;
+    }
+    QTextStream xmlWrite(&file);
+    document.save(xmlWrite,4);
+    file.close();
+    return true;
+}
+
+void Global::testMv()
+{
+    DeviceNode* head = Global::mixDeviceNodes.data();
+    head = head + 5;
+    head->leftRange = 3;
+    head->rightRange = 4;
+}
+
 ServerInfo Global::readServerInfo()
 {
     QFile file("sysconfig.xml");
@@ -451,6 +522,8 @@ YhcDeviceInfo Global::readYhcDeviceInfo()
     }
     retValue.Device_Number = areaSection.attribute("devicenumber").toInt();
     retValue.RunCtr_Block_Size = areaSection.attribute("runctrnumber").toInt();
+
+    areaSection.firstChildElement("dfdfd");
 
     QDomNodeList areaList = areaSection.elementsByTagName("area");
     int count = areaList.count();
@@ -1106,6 +1179,8 @@ QVector<DeviceNode> readDeviceNodes(QString filename)
             node.Alert0 = child_list.item(j).toElement().attribute("alert0");
             node.Alert1 = child_list.item(j).toElement().attribute("alert1");
             node.Priority = child_list.item(j).toElement().attribute("priority").toInt();
+            node.leftRange = child_list.item(j).toElement().attribute("lr").toFloat();
+            node.rightRange = child_list.item(j).toElement().attribute("rr").toFloat();
             if(node.DataType == "x0")
             {
                 node.Offset = j;

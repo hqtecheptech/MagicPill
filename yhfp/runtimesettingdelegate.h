@@ -30,6 +30,7 @@ public:
 signals:
     void editorCreated(QWidget *editor, int row) const;
     void inputInfo(QString info) const;
+    void dataChanged(float value, int row) const;
 
 protected:
     bool eventFilter(QObject *, QEvent *);

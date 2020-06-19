@@ -54,7 +54,7 @@ void RuntimeSettingDelegate::setModelData(QWidget *editor, QAbstractItemModel *m
     QLineEdit *edit = static_cast<QLineEdit*>(editor);
     QString valueStr = edit->text();
     bool ok;
-    uint value = valueStr.toUInt(&ok);
+    float value = valueStr.toFloat(&ok);
     if(!ok)
     {
         //msgBox->setText(QStringLiteral("数字格式不正确"));
@@ -113,10 +113,16 @@ void RuntimeSettingDelegate::setModelData(QWidget *editor, QAbstractItemModel *m
                 model->setData(index,valueStr);
             }
             break;
+        case Range:
+            model->setData(index,valueStr);
+            emit dataChanged(value, index.row());
+            break;
         default:
             break;
         }
     }
+
+    emit editorCreated(NULL,-1);
 }
 
 void RuntimeSettingDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const

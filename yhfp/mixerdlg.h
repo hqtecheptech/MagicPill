@@ -10,6 +10,8 @@
 #include "identity.h"
 #include "mixsettingdialog.h"
 #include "alerthistorydialog.h"
+#include "controstatusdialog.h"
+#include "mixdatarangesetdialog.h"
 
 namespace Ui {
 class MixerDlg;
@@ -30,6 +32,10 @@ private slots:
     void on_settingButton_clicked();
 
     void on_faultHisButton_clicked();
+
+    void on_debugButton_clicked();
+
+    void on_update_xml_pushButton_clicked();
 
 signals:
     void checkNetState(QString type);
@@ -58,6 +64,7 @@ protected:
 private:
     Ui::MixerDlg *ui;
 
+    ControStatusDialog *csDlg;
     QThread netManageThread;
     NetStateManageWorker* nsmWorker;
     QThread dbThread;
@@ -70,6 +77,7 @@ private:
     QTimer* readDataTimer;
     MixSettingDialog *mixSettingDlg;
     AlertHistoryDialog *alertHisDlg;
+    MixDataRangeSetDialog *mixRangeSetDlg;
     int uca = 0;
     //Syscontroller* controller;
     Plc_Db oldPlcDb;

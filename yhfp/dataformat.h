@@ -84,7 +84,8 @@ enum SettingType
     Hour,
     Minute,
     Second,
-    Rate
+    Rate,
+    Range
 };
 
 struct StreamPack
@@ -247,6 +248,8 @@ struct DeviceNode
     QString Alert0 = "NULL";
     QString Alert1 = "NULL";
     int Priority = 0;
+    float leftRange = 0.0;
+    float rightRange = 0.0;
 };
 
 struct DeviceGroupInfo

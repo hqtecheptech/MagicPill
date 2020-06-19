@@ -56,7 +56,9 @@ SOURCES += main.cpp\
     alerthistorydialog.cpp \
     alerthistoryform.cpp \
     yhcrunstatusdialog.cpp \
-    fpjrunstatusdialog.cpp
+    fpjrunstatusdialog.cpp \
+    controstatusdialog.cpp \
+    mixdatarangesetdialog.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -100,7 +102,9 @@ HEADERS  += mainwindow.h \
     alerthistorydialog.h \
     alerthistoryform.h \
     yhcrunstatusdialog.h \
-    fpjrunstatusdialog.h
+    fpjrunstatusdialog.h \
+    controstatusdialog.h \
+    mixdatarangesetdialog.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \
@@ -125,7 +129,9 @@ FORMS    += mainwindow.ui \
     alerthistorydialog.ui \
     alerthistoryform.ui \
     yhcrunstatusdialog.ui \
-    fpjrunstatusdialog.ui
+    fpjrunstatusdialog.ui \
+    controstatusdialog.ui \
+    mixdatarangesetdialog.ui
 
 RESOURCES += \
     resource.qrc
