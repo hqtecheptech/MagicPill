@@ -184,15 +184,15 @@ void DeoControlDialog::parseDeodorationData(QMap<float,QString> dataMap)
     for(uint i=0; i < valueNumber; i++)
     {
         float address = float(startAddrss + 4 * i);
-        values.append(dataMap[address].toFloat());
+        values.append(dataMap.value(address).toFloat());
 
         if(!Global::currentDeodorationDataMap.contains(address))
         {
-            Global::currentDeodorationDataMap.insert(address,dataMap[address]);
+            Global::currentDeodorationDataMap.insert(address,dataMap.value(address));
         }
         else
         {
-            Global::currentDeodorationDataMap[address] = dataMap[address];
+            Global::currentDeodorationDataMap[address] = dataMap.value(address);
         }
     }
 
@@ -200,10 +200,10 @@ void DeoControlDialog::parseDeodorationData(QMap<float,QString> dataMap)
     DeviceGroupInfo info = Global::getDeoDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getDeodorationNodeInfoByName("Level_Switch_Read");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->waterLeverValueLabel->setText(dataMap[address]);
+    ui->waterLeverValueLabel->setText(dataMap.value(address));
     deviceNode = Global::getDeodorationNodeInfoByName("Temp_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->waterTemptureLabel->setText(dataMap[address]);
+    ui->waterTemptureLabel->setText(dataMap.value(address));
 }
 
 void DeoControlDialog::parseRunCtrData(QMap<float,QString> dataMap)

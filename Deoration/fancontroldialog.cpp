@@ -284,23 +284,23 @@ void FanControlDialog::parseFermentationData(QMap<float,QString> dataMap)
 
     DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_RF_R");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->runFreqLabel->setText(dataMap[address]);
+    ui->runFreqLabel->setText(dataMap.value(address));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_OV_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->ovLabel->setText(dataMap[address]);
+    ui->ovLabel->setText(dataMap.value(address));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_OI_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->ocLabel->setText(dataMap[address]);
+    ui->ocLabel->setText(dataMap.value(address));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_OP_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->opLabel->setText(dataMap[address]);
+    ui->opLabel->setText(dataMap.value(address));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_OF_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->outputFreqLabel->setText(dataMap[address]);*/
+    ui->outputFreqLabel->setText(dataMap.value(address));*/
 }
 
 void FanControlDialog::parseFerRunTimeData(QMap<float,QString> dataMap)

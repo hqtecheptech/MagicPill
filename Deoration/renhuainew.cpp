@@ -60,7 +60,7 @@ RenhuaiNew::RenhuaiNew(QWidget *parent) :
     historyDialog = new HistoryDialog(this);
     reportDialog = new ReportDialog(this);
     //settingDialog = new SettingDialog(this);
-    ferconfigDialog = new FerConfigDialog(this);
+    //ferconfigDialog = new FerConfigDialog(this);
     alertQueryDialog = new AlertQueryDialog(this);
     fercontrolDialog = new FerControlDialog(this);
     connect(this,SIGNAL(ferDataChanged(QSet<int>, QMap<float,QString>)),fercontrolDialog,SLOT(updateFermentationData(QSet<int>, QMap<float,QString>)));
@@ -86,15 +86,15 @@ void RenhuaiNew::updateFerData(QSet<int> changedDeviceSet, QMap<float,QString> d
     {
         DeviceNode node = Global::getFermenationNodeInfoByName("TOTAL_CURRENT_R");
         uint address = node.Offset + i * 4;
-        envParamsArray[i]->setCurrA(dataMap[address].toFloat());
+        envParamsArray[i]->setCurrA(dataMap.value(address).toFloat());
 
         node = Global::getFermenationNodeInfoByName("ES_H2S_R");
         address = node.Offset + i * 4;
-        envParamsArray[i]->setH2s(dataMap[address].toFloat());
+        envParamsArray[i]->setH2s(dataMap.value(address).toFloat());
 
         node = Global::getFermenationNodeInfoByName("ES_NH3_R");
         address = node.Offset + i * 4;
-        envParamsArray[i]->setNh3(dataMap[address].toFloat());
+        envParamsArray[i]->setNh3(dataMap.value(address).toFloat());
     }
 
     QString strValue = "TI:" + QString::number(envParamsArray.at(0)->getCurrA(), 'f', 2) + "A  ";
@@ -276,7 +276,7 @@ void RenhuaiNew::on_exitButton_clicked()
     sfcontrolDialog->close();
     fanControlDialog->close();
     //settingDialog->close();
-    ferconfigDialog->close();
+    //ferconfigDialog->close();
     fercontrolDialog->close();
 
     QApplication::quit();

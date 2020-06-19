@@ -80,7 +80,7 @@ private:
     HistoryDialog *historyDialog;
     ReportDialog *reportDialog;
     //SettingDialog *settingDialog;
-    FerConfigDialog *ferconfigDialog;
+    //FerConfigDialog *ferconfigDialog;
     AlertQueryDialog *alertQueryDialog;
     FanControlDialog *fanControlDialog;
     SensorControlDialog *sensorControlDialog;

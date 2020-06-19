@@ -382,38 +382,38 @@ void FerControlDialog::parseFermentationData(QMap<float,QString> dataMap)
     DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_WT_R");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->weightTemptureLabel->setText(dataMap[address]);
+    ui->weightTemptureLabel->setText(dataMap.value(address));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_HT_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             *  Global::getLengthByDataType(deviceNode.DataType);
-    ui->highTemptureLabel->setText(dataMap[address]);
+    ui->highTemptureLabel->setText(dataMap.value(address));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_MT_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->midTemptureLabel->setText(dataMap[address]);
+    ui->midTemptureLabel->setText(dataMap.value(address));
 
     //deviceNode = Global::getFermenationNodeInfoByName("FER_LT_R");
     //address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    //ui->lowTemptureLabel->setText(dataMap[address]);
+    //ui->lowTemptureLabel->setText(dataMap.value(address));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_ET_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->envTemptureLabel->setText(dataMap[address]);
+    ui->envTemptureLabel->setText(dataMap.value(address));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_HM_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             *  Global::getLengthByDataType(deviceNode.DataType);
-    ui->envhumidityLabel->setText(dataMap[address]);
+    ui->envhumidityLabel->setText(dataMap.value(address));
 
     /*deviceNode = Global::getFermenationNodeInfoByName("FER_CO_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->aerobicRateLabel->setText(dataMap[address]);
+    ui->aerobicRateLabel->setText(dataMap.value(address));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_RO_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->coRateLabel->setText(dataMap[address]);*/
+    ui->coRateLabel->setText(dataMap.value(address));*/
 }
 
 void FerControlDialog::parseFerRunTimeData(QMap<float,QString> dataMap)
@@ -428,68 +428,68 @@ void FerControlDialog::parseFerRunTimeData(QMap<float,QString> dataMap)
     deviceNode = Global::getFermenationNodeInfoByName("FER_TOT_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    runtime = dataMap[address].toUInt();
+    runtime = dataMap.value(address).toUInt();
     ui->ferTotalTimeLabel->setText(formatLongDateString(runtime));
     ui->ferTotalRunTimeProgressBar->setValue(runtime);
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_CURRENT_STEP_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    runtime = dataMap[address].toUInt();
+    runtime = dataMap.value(address).toUInt();
     ui->currentStepTimeLabel->setText(formatLongDateString(runtime));
 
     /*deviceNode = Global::getFermenationNodeInfoByName("FER_STEP1_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    runtime = dataMap[address].toUInt();
+    runtime = dataMap.value(address).toUInt();
     ui->firstStepTimeLabel->setText(formatLongDateString(runtime));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_STEP2_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    runtime = dataMap[address].toUInt();
+    runtime = dataMap.value(address).toUInt();
     ui->SecondStepTimeLabel->setText(formatLongDateString(runtime));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_STEP3_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    runtime = dataMap[address].toUInt();
+    runtime = dataMap.value(address).toUInt();
     ui->thirdStepTimeLabel->setText(formatLongDateString(runtime));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_STEP4_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    runtime = dataMap[address].toUInt();
+    runtime = dataMap.value(address).toUInt();
     ui->fouthStepTimeLabel->setText(formatLongDateString(runtime));*/
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_AE_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    runtime = dataMap[address].toUInt();
+    runtime = dataMap.value(address).toUInt();
     ui->aerationTotalTimeLabel->setText(formatLongDateString(runtime));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_STA_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    runtime = dataMap[address].toUInt();
+    runtime = dataMap.value(address).toUInt();
     ui->stillTotalTimeLabel->setText(formatLongDateString(runtime));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_RunTime");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    handRunTime = dataMap[address].toUShort() / 60;
+    handRunTime = dataMap.value(address).toUShort() / 60;
     ui->handRunTimeValueLabel->setText(QString::number(handRunTime));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_Hand_SpaceTime");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    handSpaceTime = dataMap[address].toUShort() / 60;
+    handSpaceTime = dataMap.value(address).toUShort() / 60;
     ui->handSpaceTimeValeLabel->setText(QString::number(handSpaceTime));
 
 
     /*deviceNode = Global::getFermenationNodeInfoByName("FER_START_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    runtime = dataMap[address].toUInt();
+    runtime = dataMap.value(address).toUInt();
     QDateTime dt = QDateTime::fromTime_t(runtime);
     ui->ferStartTimeLabel->setText(dt.toString("yyyy-MM-dd hh:mm:ss"));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_END_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    runtime = dataMap[address].toUInt();
+    runtime = dataMap.value(address).toUInt();
     qDebug() << "ff tank endtime = " << runtime;
     dt = QDateTime::fromTime_t(runtime);
     ui->ferEndTimeLabel->setText(dt.toString("yyyy-MM-dd hh:mm:ss"));*/
@@ -502,7 +502,7 @@ void FerControlDialog::parseFerStepData(QMap<float,QString> dataMap)
     DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_STEPCTR_UI");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    int step = dataMap[address].toUInt();
+    int step = dataMap.value(address).toUInt();
     ui->runStateStepLabel->setText(QString::number(step));
 }
 
@@ -514,14 +514,14 @@ void FerControlDialog::parseFerStartEndTime(QMap<float,QString> dataMap)
     DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_START_UDI");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) *
             Global::getLengthByDataType(deviceNode.DataType);
-    uint runtime = dataMap[address].toUInt();
+    uint runtime = dataMap.value(address).toUInt();
     QDateTime dt = QDateTime::fromTime_t(runtime);
     ui->ferStartTimeLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_END_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) *
             Global::getLengthByDataType(deviceNode.DataType);
-    runtime = dataMap[address].toUInt();
+    runtime = dataMap.value(address).toUInt();
     dt = QDateTime::fromTime_t(runtime);
     ui->ferEndTimeLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
 }

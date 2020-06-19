@@ -159,15 +159,15 @@ void RenHuai_CenterWidget::parseFermentationData(QMap<float,QString> dataMap)
     for(uint i=0; i < valueNumber; i++)
     {
         float address = float(startAddrss + 4 * i);
-        realValues.append(dataMap[address].toFloat());
+        realValues.append(dataMap.value(address).toFloat());
 
         if(!Global::currentFermenationDataMap.contains(address))
         {
-            Global::currentFermenationDataMap.insert(address,dataMap[address]);
+            Global::currentFermenationDataMap.insert(address,dataMap.value(address));
         }
         else
         {
-            Global::currentFermenationDataMap[address] = dataMap[address];
+            Global::currentFermenationDataMap[address] = dataMap.value(address);
         }
     }
     //qDebug() << "high point tempture: " << realValues[0];
@@ -185,15 +185,15 @@ void RenHuai_CenterWidget::parseRunTimeData(QMap<float,QString> dataMap)
     for(uint i=0; i < valueNumber; i++)
     {
         float address = float(startAddrss + 4 * i);
-        uintValues.append(dataMap[address].toUInt());
+        uintValues.append(dataMap.value(address).toUInt());
 
         if(!Global::currentFermenationDataMap.contains(address))
         {
-            Global::currentFermenationDataMap.insert(address,dataMap[address]);
+            Global::currentFermenationDataMap.insert(address,dataMap.value(address));
         }
         else
         {
-            Global::currentFermenationDataMap[address] = dataMap[address];
+            Global::currentFermenationDataMap[address] = dataMap.value(address);
         }
     }
     for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
@@ -210,15 +210,15 @@ void RenHuai_CenterWidget::parseStepData(QMap<float,QString> dataMap)
     for(uint i=0; i < valueNumber; i++)
     {
         float address = float(startAddrss + 2 * i);
-        ushortValues.append(dataMap[address].toUShort());
+        ushortValues.append(dataMap.value(address).toUShort());
 
         if(!Global::currentFermenationDataMap.contains(address))
         {
-            Global::currentFermenationDataMap.insert(address,dataMap[address]);
+            Global::currentFermenationDataMap.insert(address,dataMap.value(address));
         }
         else
         {
-            Global::currentFermenationDataMap[address] = dataMap[address];
+            Global::currentFermenationDataMap[address] = dataMap.value(address);
         }
     }
     for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)

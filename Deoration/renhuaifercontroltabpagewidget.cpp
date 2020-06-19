@@ -174,15 +174,15 @@ void RenhuaiFerControlTabPageWidget::parseFermentationData(QMap<float,QString> d
     for(uint i=0; i < valueNumber; i++)
     {
         float address = float(startAddrss + 4 * i);
-        realValues.append(dataMap[address].toFloat());
+        realValues.append(dataMap.value(address).toFloat());
 
         if(!Global::currentFermenationDataMap.contains(address))
         {
-            Global::currentFermenationDataMap.insert(address,dataMap[address]);
+            Global::currentFermenationDataMap.insert(address,dataMap.value(address));
         }
         else
         {
-            Global::currentFermenationDataMap[address] = dataMap[address];
+            Global::currentFermenationDataMap[address] = dataMap.value(address);
         }
     }
 
@@ -200,15 +200,15 @@ void RenhuaiFerControlTabPageWidget::parseFerRunTimeData(QMap<float,QString> dat
     for(uint i=0; i < valueNumber; i++)
     {
         float address = float(startAddrss + 4 * i);
-        uintValues.append(dataMap[address].toUInt());
+        uintValues.append(dataMap.value(address).toUInt());
 
         if(!Global::currentFermenationDataMap.contains(address))
         {
-            Global::currentFermenationDataMap.insert(address,dataMap[address]);
+            Global::currentFermenationDataMap.insert(address,dataMap.value(address));
         }
         else
         {
-            Global::currentFermenationDataMap[address] = dataMap[address];
+            Global::currentFermenationDataMap[address] = dataMap.value(address);
         }
     }
     for(int j=0; j<Global::ferDeviceInfo.Device_Number; j++)
@@ -225,15 +225,15 @@ void RenhuaiFerControlTabPageWidget::parseFerStepData(QMap<float,QString> dataMa
     for(uint i=0; i < valueNumber; i++)
     {
         float address = float(startAddrss + 2 * i);
-        ushortValues.append(dataMap[address].toUShort());
+        ushortValues.append(dataMap.value(address).toUShort());
 
         if(!Global::currentFermenationDataMap.contains(address))
         {
-            Global::currentFermenationDataMap.insert(address,dataMap[address]);
+            Global::currentFermenationDataMap.insert(address,dataMap.value(address));
         }
         else
         {
-            Global::currentFermenationDataMap[address] = dataMap[address];
+            Global::currentFermenationDataMap[address] = dataMap.value(address);
         }
     }
 

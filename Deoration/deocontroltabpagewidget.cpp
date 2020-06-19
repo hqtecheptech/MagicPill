@@ -590,27 +590,27 @@ void DeoControlTabPageWidget::parseDeodorationData(QMap<float,QString> dataMap)
     DeviceGroupInfo info = Global::getDeoDeviceGroupInfo(deviceIndex);
     DeviceNode deviceNode = Global::getDeodorationNodeInfoByName("FER_H2S");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->h2sLabel->setText(dataMap[address]);
+    ui->h2sLabel->setText(dataMap.value(address));
     deviceNode = Global::getDeodorationNodeInfoByName("FER_NH3");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->nh3Label->setText(dataMap[address]);
+    ui->nh3Label->setText(dataMap.value(address));
     deviceNode = Global::getDeodorationNodeInfoByName("FER_TEMP");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->tempLabel->setText(dataMap[address]);
+    ui->tempLabel->setText(dataMap.value(address));
 
     deviceNode = Global::getDeodorationNodeInfoByName("Temp_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->waterTemptureLabel->setText(dataMap[address]);
+    ui->waterTemptureLabel->setText(dataMap.value(address));
     deviceNode = Global::getDeodorationNodeInfoByName("PH_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->waterPhLabel->setText(dataMap[address]);
+    ui->waterPhLabel->setText(dataMap.value(address));
     deviceNode = Global::getDeodorationNodeInfoByName("Level_Switch_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->waterLevelValueLabel->setText(dataMap[address]);
+    ui->waterLevelValueLabel->setText(dataMap.value(address));
 
     deviceNode = Global::getDeodorationNodeInfoByName("Total_Current");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->aivLabel->setText(dataMap[address]);
+    ui->aivLabel->setText(dataMap.value(address));
 }
 
 void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
