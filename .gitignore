@@ -1,6 +1,7 @@
 # Not track building created files
 *-Debug/
 *-Release/
+*-Profile/
 **/*.pro.user
 **/*.autosave
 **/*.*~
