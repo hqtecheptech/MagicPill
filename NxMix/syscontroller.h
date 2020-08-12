@@ -1,0 +1,59 @@
+#ifndef SYSCONTROLLER_H
+#define SYSCONTROLLER_H
+
+#include <QObject>
+#include <QTimer>
+#include <QMutex>
+#include <QThread>
+#include <QSet>
+#include <QMap>
+#include "plcdatamanageworker.h"
+#include "data.h"
+#include "global.h"
+#include "sharehelper.h"
+#include "../dev_app/mhd_lib/inc/Share_Memory.h"
+
+class Syscontroller : public QObject
+{
+    Q_OBJECT
+public:
+    static Syscontroller* getInstance(DeviceType dataType, int groupId);
+    ControllerInfo getControllerStatus();
+    Plc_Db getPlcDataDb();
+    void setPlcControlDb(Plc_Db data);
+    void yhcSpeedUp(int deviceIndex, float value);
+    void yhcStart(int deviceIndex, bool value);
+    DeviceType getDataType();
+    int getGroupId();
+
+    ~Syscontroller();
+
+signals:
+    void resultReady();
+    void pollingDatas(DeviceType dataName, int groupId);
+    void plcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
+
+public slots:
+    void updateSysStatus();
+    void handlePlcDbUpdated(QSet<int> changedDeviceSet, QMap<float,QString> dataMap);
+    void applyControlRequest();
+    void handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet, QMap<float, QString> dataMap);
+
+private:
+    Syscontroller(DeviceType dataType, int groupId, QObject *parent = 0);
+    static Syscontroller* instance;
+    static QMutex* mutex;
+    QTimer *updateStatusTimer;
+    ShareHelper *ctrlShare, *dbShare;
+    //ShareHelper *yhcDbShare,
+    ControllerInfo ctrlInfo;
+    Plc_Db plcDataDb, plcControlDb;
+    QThread plcdataManageThread;
+    PlcDataManageWorker* pdmWorker;
+    DeviceType _dataType;
+    int _groupId;
+
+    void resetControlShare(int dataType, QMap<float, QString> controlData, Plc_Db* controlDb);
+};
+
+#endif // SYSCONTROLLER_H

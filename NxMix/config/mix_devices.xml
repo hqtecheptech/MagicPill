@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<device>
+  <areas devicenumber="1" runctrnumber="128">
+    <area name="MIX_BIN_STATE" datatype="r" start="0" diff="0">
+        <node id="5" name="ING_BIN_CURRENT_WEIGHT" cname="辅料仓当前重量" length="1" offset="0" diff="0.5"/>
+        <node id="5" name="ING_BIN_OUTPUT_WEIGHT" cname="辅料仓出料量" length="1" offset="1" diff="0.5"/>
+        <node id="5" name="ING_BIN_OUTPUT_RATE" cname="辅料仓出料速度" length="1" offset="2" diff="0.5"/>
+        <node id="5" name="BM_BIN_CURRENT_WEIGHT" cname="返混仓当前重量" length="1" offset="3" diff="0.5"/>
+        <node id="5" name="BM_BIN_OUTPUT_WEIGHT" cname="返混仓出料量" length="1" offset="4" diff="0.5"/>
+        <node id="5" name="BM_BIN_OUTPUT_RATE" cname="返混仓出料速度" length="1" offset="5" diff="0.5"/>
+        <node id="5" name="SLUG_BIN_1_CURRENT_WEIGHT" cname="1#污泥仓当前重量" length="1" offset="6" diff="0.5"/>
+        <node id="5" name="SLUG_BIN_1_OUTPUT_WEIGHT" cname="1#污泥仓出料量" length="1" offset="7" diff="0.5"/>
+        <node id="5" name="SLUG_BIN_1_CURRENT_RATE" cname="1#污泥仓出料速度" length="1" offset="8" diff="0.5"/>
+        <node id="5" name="SLUG_BIN_2_CURRENT_WEIGHT" cname="2#污泥仓当前重量" length="1" offset="9" diff="0.5"/>
+        <node id="5" name="SLUG_BIN_2_OUTPUT_WEIGHT" cname="2#污泥仓出料量" length="1" offset="10" diff="0.5"/>
+        <node id="5" name="SLUG_BIN_2_CURRENT_RATE" cname="2#污泥仓出料速度" length="1" offset="11" diff="0.5"/>
+        <node id="5" name="ING_BIN_HS_FT" cname="辅料仓油箱温度" length="1" offset="12" diff="0.5"/>
+        <node id="5" name="MIXER_HS_FT" cname="混料机油箱温度" length="1" offset="13" diff="0.5"/>
+        <node id="5" name="ING_WHEEL_PRESSURE" cname="辅料转盘压力" length="1" offset="14" diff="0.5"/>
+        <node id="5" name="BM_WHEEL_PRESSURE" cname="返混转盘压力" length="1" offset="15" diff="0.5"/>
+        <node id="5" name="ING_SPIRAL_PRESSURE" cname="辅料螺旋压力" length="1" offset="16" diff="0.5"/>
+        <node id="5" name="BM_SPIRAL_PRESSURE" cname="返混螺旋压力" length="1" offset="17" diff="0.5"/>
+        <node id="5" name="TOTAL_CURRENT" cname="总电流反馈" length="1" offset="18" diff="0.5"/>
+    </area>
+    <area name="RATE" datatype="w" start="2304" diff="0">
+        <node id="5" name="ING_SPIRAL_RATE" cname="辅料螺旋速度" length="1" offset="5" diff="0"/>
+        <node id="5" name="ING_WHEEL_RATE" cname="辅料转盘速度" length="1" offset="6" diff="0"/>
+        <node id="5" name="BM_SPIRAL_RATE" cname="返混螺旋速度" length="1" offset="5" diff="0"/>
+        <node id="5" name="BM_WHEEL_RATE" cname="返混转盘速度" length="1" offset="6" diff="0"/>
+        <node id="5" name="MIXER_SPIRAL_RATE" cname="混料机螺旋速度" length="1" offset="4" diff="0.5"/>
+    </area>
+    <area name="RATE_SETTING" datatype="w" start="2314" diff="0">
+        <node id="5" name="ING_SPIRAL_RATE_SETTING" cname="辅料螺旋速度设定值" length="1" offset="0" diff="0"/>
+        <node id="5" name="BM_SPIRAL_RATE_SETTING" cname="返混螺旋速度设定值" length="1" offset="0" diff="0"/>
+    </area>
+    <area name="RUNCTR" datatype="x0" start="2320" diff="0">
+        <node id="5" name="ING_SPIRAL_EM_RUN" cname="辅料仓螺旋电机运行反馈" length="128" offset="0" diff="0" alert0="辅料仓螺旋电机停止运行" alert1="辅料仓螺旋电机正在运行" priority="0"/>
+        <node id="5" name="ING_SPIRAL_EM_FAULT" cname="辅料仓螺旋电机故障反馈" length="128" offset="1" diff="0" alert0="辅料仓螺旋电机无故障" alert1="辅料仓螺旋电机故障" priority="1"/>
+        <node id="5" name="BM_WHEEL_EM_RUN" cname="混料机转盘电机运行反馈" length="128" offset="2" diff="0" alert0="混料机转盘电机停止运行" alert1="混料机转盘电机正在运行" priority="0"/>
+        <node id="5" name="BM_WHEEL_EM_FAULT" cname="混料机转盘电机故障反馈" length="128" offset="3" diff="0" alert0="混料机转盘电机无故障" alert1="混料机转盘电机故障"  priority="1"/>
+        <node id="5" name="CONVEYER_1_EM_RUN" cname="1#输送马达电机运行反馈" length="128" offset="4" diff="0" alert0="1#输送马达电机运行" alert1="1#输送马达电机正在运行" priority="0"/>
+        <node id="5" name="CONVEYER_1_EM_FAULT" cname="1#输送马达电机故障反馈" length="128" offset="5" diff="0" alert0="1#输送马达电机无故障" alert1="1#输送马达电机故障" priority="1"/>
+        <node id="5" name="ING_WHEEL_EM_RUN" cname="辅料转盘电机运行反馈" length="128" offset="6" diff="0" alert0="辅料转盘电机停止运行" alert1="辅料转盘电机正在运行" priority="0"/>
+        <node id="5" name="ING_WHEEL_EM_FAULT" cname="辅料转盘电机故障反馈" length="128" offset="7" diff="0" alert0="辅料转盘电机无故障" alert1="辅料转盘电机故障" priority="1"/>
+        <node id="5" name="SLUG_SPIRAL_1_EM_RUN" cname="1#污泥螺旋电机运行反馈" length="128" offset="8" diff="0" alert0="1#污泥螺旋电机停止运行" alert1="1#污泥螺旋电机正在运行"  priority="0"/>
+        <node id="5" name="SLUG_SPIRAL_1_EM_FAULT" cname="1#污泥螺旋电机故障反馈" length="128" offset="9" diff="0" alert0="1#污泥螺旋电机无故障" alert1="1#污泥螺旋电机故障"  priority="1"/>
+        <node id="5" name="SLUG_SPIRAL_2_EM_RUN" cname="2#污泥螺旋电机运行反馈" length="128" offset="10" diff="0" alert0="2#污泥螺旋电机停止运行" alert1="2#污泥螺旋电机正在运行"  priority="0"/>
+        <node id="5" name="SLUG_SPIRAL_2_EM_FAULT" cname="2#污泥螺旋电机故障反馈" length="128" offset="11" diff="0" alert0="2#污泥螺旋电机无故障" alert1="2#污泥螺旋电机故障"  priority="1"/>
+        <node id="5" name="SLUG_1_1_CY_EM_CORO" cname="1-1#污泥滑架电机正向运行反馈" length="128" offset="12" diff="0" alert0="1-1#污泥滑架电机停止" alert1="1-1#污泥滑架电机正转" priority="0"/>
+        <node id="5" name="SLUG_1_1_CY_EM_INVE" cname="1-1#污泥滑架电机反向运行反馈" length="128" offset="13" diff="0" alert0="1-1#污泥滑架电机停止" alert1="1-1#污泥滑架电机反转" priority="0"/>
+        <node id="5" name="SLUG_1_1_CY_EM_FAULT" cname="1-1#污泥滑架电机故障反馈" length="128" offset="14" diff="0" alert0="1-1#污泥滑架电机无故障" alert1="1-1#污泥滑架电机故障"  priority="1"/>
+        <node id="5" name="SLUG_1_2_CY_EM_CORO" cname="1-2#污泥滑架电机正向运行反馈" length="128" offset="15" diff="0" alert0="1-2#污泥滑架电机停止" alert1="1-2#污泥滑架电机正转" priority="0"/>
+        <node id="5" name="SLUG_1_2_CY_EM_INVE" cname="1-2#污泥滑架电机反向运行反馈" length="128" offset="16" diff="0" alert0="1-2#污泥滑架电机停止" alert1="1-2#污泥滑架电机反转" priority="0"/>
+        <node id="5" name="SLUG_1_2_CY_EM_FAULT" cname="1-2#污泥滑架电机故障反馈" length="128" offset="17" diff="0" alert0="1-2#污泥滑架电机无故障" alert1="1-2#污泥滑架电机故障"  priority="1"/>
+        <node id="5" name="SLUG_2_1_CY_EM_CORO" cname="2-1#污泥滑架电机正向运行反馈" length="128" offset="18" diff="0" alert0="2-1#污泥滑架电机停止" alert1="2-1#污泥滑架电机正转" priority="0"/>
+        <node id="5" name="SLUG_2_1_CY_EM_INVE" cname="2-1#污泥滑架电机反向运行反馈" length="128" offset="19" diff="0" alert0="2-1#污泥滑架电机停止" alert1="2-1#污泥滑架电机反转" priority="0"/>
+        <node id="5" name="SLUG_2_1_CY_EM_FAULT" cname="2-1#污泥滑架电机故障反馈" length="128" offset="20" diff="0" alert0="2-1#污泥滑架电机无故障" alert1="2-1#污泥滑架电机故障"  priority="1"/>
+        <node id="5" name="SLUG_2_2_CY_EM_CORO" cname="2-2#污泥滑架电机正向运行反馈" length="128" offset="21" diff="0" alert0="2-2#污泥滑架电机停止" alert1="2-2#污泥滑架电机正转" priority="0"/>
+        <node id="5" name="SLUG_2_2_CY_EM_INVE" cname="2-2#污泥滑架电机反向运行反馈" length="128" offset="22" diff="0" alert0="2-2#污泥滑架电机停止" alert1="2-2#污泥滑架电机反转" priority="0"/>
+        <node id="5" name="SLUG_2_2_CY_EM_FAULT" cname="2-2#污泥滑架电机故障反馈" length="128" offset="23" diff="0" alert0="2-2#污泥滑架电机无故障" alert1="2-2#污泥滑架电机故障"  priority="1"/>
+        <node id="5" name="CONVEYER_2_RUN" cname="2#输送机运行反馈" length="128" offset="24" diff="0" alert0="2#输送机停止运行" alert1="2#输送机正在运行"  priority="0"/>
+        <node id="5" name="CONVEYER_2_FAULT" cname="2#输送机故障反馈" length="128" offset="25" diff="0" alert0="2#输送机无故障" alert1="2#输送机故障"  priority="1"/>
+        <node id="5" name="CONVEYER_3_CORO" cname="3#输送机正转" length="128" offset="26" diff="0" alert0="3#输送机停止" alert1="3#输送机正转" priority="0"/>
+        <node id="5" name="CONVEYER_3_INVE" cname="3#输送机反转" length="128" offset="27" diff="0" alert0="3#输送机停止" alert1="3#输送机反转" priority="0"/>
+        <node id="5" name="CONVEYER_3_FAULT" cname="3#输送机故障反馈" length="128" offset="28" diff="0" alert0="3#输送机无故障" alert1="3#输送机故障"  priority="1"/>
+        <node id="5" name="FC_VALVE_1_CORO" cname="1#闸板阀正向运行反馈" length="128" offset="29" diff="0" alert0="1#闸板阀停止" alert1="1#闸板阀正转" priority="0"/>
+        <node id="5" name="FC_VALVE_1_INVE" cname="1#闸板阀反向运行反馈" length="128" offset="30" diff="0" alert0="1#闸板阀停止" alert1="1#闸板阀反转" priority="0"/>
+        <node id="5" name="FC_VALVE_1_FAULT" cname="1#闸板阀故障反馈" length="128" offset="31" diff="0" alert0="1#闸板阀无故障" alert1="1#闸板阀故障"  priority="1"/>
+        <node id="5" name="FC_VALVE_2_CORO" cname="2#闸板阀正向运行反馈" length="128" offset="32" diff="0" alert0="2#闸板阀停止" alert1="2#闸板阀正转" priority="0"/>
+        <node id="5" name="FC_VALVE_2_INVE" cname="2#闸板阀反向运行反馈" length="128" offset="33" diff="0" alert0="2#闸板阀停止" alert1="2#闸板阀反转" priority="0"/>
+        <node id="5" name="FC_VALVE_2_FAULT" cname="2#闸板阀故障反馈" length="128" offset="34" diff="0" alert0="2#闸板阀无故障" alert1="2#闸板阀故障"  priority="1"/>
+        <node id="5" name="ING_BIN_HEATER_RUN" cname="辅料仓加热器运行反馈" length="128" offset="35" diff="0" alert0="辅料仓加热器停止运行" alert1="辅料仓加热器正在运行"  priority="0"/>
+        <node id="5" name="ING_BIN_HEATER_FAULT" cname="辅料仓加热器故障反馈" length="128" offset="36" diff="0" alert0="辅料仓加热器无故障" alert1="辅料仓加热器故障"  priority="1"/>
+        <node id="5" name="ING_BIN_COOLER_RUN" cname="辅料仓冷却器运行反馈" length="128" offset="37" diff="0" alert0="辅料仓冷却器停止运行" alert1="辅料仓冷却器正在运行"  priority="0"/>
+        <node id="5" name="ING_BIN_COOLER_FAULT" cname="辅料仓冷却器故障反馈" length="128" offset="38" diff="0" alert0="辅料仓冷却器无故障" alert1="辅料仓冷却器故障"  priority="1"/>
+        <node id="5" name="MIXER_HEATER_RUN" cname="混料机加热器运行反馈" length="128" offset="39" diff="0" alert0="混料机加热器停止运行" alert1="混料机加热器正在运行"  priority="0"/>
+        <node id="5" name="MIXER_BIN_HEATER_FAULT" cname="混料机加热器故障反馈" length="128" offset="40" diff="0" alert0="混料机加热器无故障" alert1="混料机加热器故障"  priority="1"/>
+        <node id="5" name="MIXER_BIN_COOLER_RUN" cname="混料机冷却器运行反馈" length="128" offset="41" diff="0" alert0="混料机冷却器停止运行" alert1="混料机冷却器正在运行"  priority="0"/>
+        <node id="5" name="MIXER_BIN_COOLER_FAULT" cname="混料机冷却器故障反馈" length="128" offset="42" diff="0" alert0="混料机冷却器无故障" alert1="混料机冷却器故障"  priority="1"/>
+        <node id="5" name="CY_1_1_PUSH_IN_PLACE" cname="1-1滑架推出到位" length="128" offset="43" diff="0" alert0="1-1滑架推出未到位" alert1="1-1滑架推出到位"  priority="0"/>
+        <node id="5" name="CY_1_1_PLUG_IN_PLACE" cname="1-1滑架拉回到位" length="128" offset="44" diff="0" alert0="1-1滑架拉回未到位" alert1="1-1滑架拉回到位"  priority="0"/>
+        <node id="5" name="CY_1_2_PUSH_IN_PLACE" cname="1-2滑架推出到位" length="128" offset="45" diff="0" alert0="1-2滑架推出未到位" alert1="1-2滑架推出到位"  priority="0"/>
+        <node id="5" name="CY_1_2_PLUG_IN_PLACE" cname="1-2滑架拉回到位" length="128" offset="46" diff="0" alert0="1-2滑架拉回未到位" alert1="1-2滑架拉回到位"  priority="0"/>
+        <node id="5" name="CY_2_1_PUSH_IN_PLACE" cname="2-1滑架推出到位" length="128" offset="47" diff="0" alert0="2-1滑架推出未到位" alert1="2-1滑架推出到位"  priority="0"/>
+        <node id="5" name="CY_2_1_PLUG_IN_PLACE" cname="2-1滑架拉回到位" length="128" offset="48" diff="0" alert0="2-1滑架拉回未到位" alert1="2-1滑架拉回到位"  priority="0"/>
+        <node id="5" name="CY_2_2_PUSH_IN_PLACE" cname="2-2滑架推出到位" length="128" offset="49" diff="0" alert0="2-2滑架推出未到位" alert1="2-2滑架推出到位"  priority="0"/>
+        <node id="5" name="CY_2_2_PLUG_IN_PLACE" cname="2-2滑架拉回到位" length="128" offset="50" diff="0" alert0="2-2滑架拉回未到位" alert1="2-2滑架拉回到位"  priority="0"/>
+        <node id="5" name="ING_BIN_RO_FILTER_BLOCKING" cname="辅料仓回油过滤器堵塞反馈" length="128" offset="51" diff="0" alert0="辅料仓回油过滤器未堵塞" alert1="辅料仓回油过滤器堵塞"  priority="1"/>
+        <node id="5" name="ING_BIN_HS_OIL_LEVEL" cname="辅料仓液位低报警信号" length="128" offset="52" diff="0.5" alert0="辅料仓液位正常" alert1="辅料仓液位低" priority="1"/>
+        <node id="5" name="ING_SPIRAL_FILTER_BLOCKING" cname="辅料螺旋过滤器堵塞反馈" length="128" offset="53" diff="0" alert0="辅料螺旋过滤器未堵塞" alert1="辅料螺旋过滤器堵塞"  priority="1"/>
+        <node id="5" name="BM_SPIRAL_FILTER_BLOCKING" cname="返混螺旋过滤器堵塞反馈" length="128" offset="54" diff="0" alert0="返混螺旋过滤器未堵塞" alert1="返混螺旋过滤器堵塞"  priority="1"/>
+        <node id="5" name="MIXER_RO_FILTER_BLOCKING" cname="混料机回油过滤器堵塞反馈" length="128" offset="55" diff="0" alert0="混料机回油过滤器未堵塞" alert1="混料机回油过滤器堵塞" priority="1"/>
+        <node id="5" name="MIXER_HS_OIL_LEVEL" cname="混料机液位低报警信号" length="128" offset="56" diff="0" alert0="混料机液位正常" alert1="混料机液位低" priority="1"/>
+        <node id="5" name="ING_WHEEL_CORO" cname="辅料转盘正转" length="128" offset="57" diff="0" alert0="辅料转盘停止" alert1="辅料转盘正转" priority="0"/>
+        <node id="5" name="ING_WHEEL_INVE" cname="辅料转盘反转" length="128" offset="58" diff="0" alert0="辅料转盘停止" alert1="辅料转盘反转" priority="0"/>
+        <node id="5" name="ING_SPIRAL_CORO" cname="辅料螺旋正转" length="128" offset="59" diff="0" alert0="辅料螺旋停止" alert1="辅料螺旋正转" priority="0"/>
+        <node id="5" name="ING_SPIRAL_INVE" cname="辅料螺旋反转" length="128" offset="60" diff="0" alert0="辅料螺旋停止" alert1="辅料螺旋反转" priority="0"/>
+        <node id="5" name="BM_WHEEL_CORO" cname="返混转盘正转" length="128" offset="61" diff="0" alert0="返混转盘停止" alert1="返混转盘正转" priority="0"/>
+        <node id="5" name="BM_WHEEL_INVE" cname="返混转盘反转" length="128" offset="62" diff="0" alert0="返混转盘停止" alert1="返混转盘反转" priority="0"/>
+        <node id="5" name="BM_SPIRAL_CORO" cname="返混螺旋正转" length="128" offset="63" diff="0" alert0="返混螺旋停止" alert1="返混螺旋正转" priority="0"/>
+        <node id="5" name="BM_SPIRAL_INVE" cname="返混螺旋反转" length="128" offset="64" diff="0" alert0="返混螺旋停止" alert1="返混螺旋反转" priority="0"/>
+        <node id="5" name="MIXER_SPIRAL_CORO" cname="混料机螺旋正转" length="128" offset="65" diff="0" alert0="混料机螺旋停止" alert1="混料机螺旋正转" priority="0"/>
+        <node id="5" name="MIXER_SPIRAL_INVE" cname="混料机螺旋反转" length="128" offset="66" diff="0" alert0="混料机螺旋停止" alert1="混料机螺旋反转" priority="0"/>
+    </area>
+  </areas>
+</device>
