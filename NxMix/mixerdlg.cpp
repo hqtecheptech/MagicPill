@@ -537,60 +537,60 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     shpd_3_Fault = Global::getMixRunctrValueByName(deviceIndex, "CONVEYER_3_FAULT", dataMap);
     if(shpd_3_Fault == 1)
     {
-        ui->CONVEYER_3_RUN_label->setStyleSheet("background-image: url(:/pic/yellow_box.png);");
+        ui->BW_3_STATE_label->setStyleSheet("background-image: url(:/pic/yellow_box.png);");
     }
     else
     {
         coro1 = Global::getMixRunctrValueByName(deviceIndex, "CONVEYER_3_CORO", dataMap);
         inve1 = Global::getMixRunctrValueByName(deviceIndex, "CONVEYER_3_INVE", dataMap);
 
-        if(coro1 == 1)
+        if(coro1 && !inve1)
         {
-            ui->CONVEYER_3_RUN_label->setStyleSheet("background-image: url(:/pic/green_box.png);");
+            ui->BW_3_STATE_label->setStyleSheet("background-image: url(:/pic/green_box.png);");
         }
-        if (inve1 == 1)
+        else if (!coro1 && inve1)
         {
-            ui->CONVEYER_3_RUN_label->setStyleSheet("background-image: url(:/pic/deep_green_box.png);");
+            ui->BW_3_STATE_label->setStyleSheet("background-image: url(:/pic/deep_green_box.png);");
         }
-        if(!coro1 && !inve1)
+        else
         {
-            ui->CONVEYER_3_RUN_label->setStyleSheet("background-image: url(:/pic/red_box.png);");
+            ui->BW_3_STATE_label->setStyleSheet("background-image: url(:/pic/red_box.png);");
         }
     }
 
     shpd_1_Fault = Global::getMixRunctrValueByName(deviceIndex, "CONVEYER_1_EM_FAULT", dataMap);
     if(shpd_1_Fault == 1)
     {
-        ui->CONVEYER_1_RUN_label->setStyleSheet("background-image: url(:/pic/yellow_box.png);");
+        ui->BW_1_STATE_label->setStyleSheet("background-image: url(:/pic/yellow_box.png);");
     }
     else
     {
         value = Global::getMixRunctrValueByName(deviceIndex, "CONVEYER_1_EM_RUN", dataMap);
         if(value == 1)
         {
-            ui->CONVEYER_1_RUN_label->setStyleSheet("background-image: url(:/pic/green_box.png);");
+            ui->BW_1_STATE_label->setStyleSheet("background-image: url(:/pic/green_box.png);");
         }
         else
         {
-            ui->CONVEYER_1_RUN_label->setStyleSheet("background-image: url(:/pic/red_box.png);");
+            ui->BW_1_STATE_label->setStyleSheet("background-image: url(:/pic/red_box.png);");
         }
     }
 
     shpd_2_Fault = Global::getMixRunctrValueByName(deviceIndex, "CONVEYER_2_FAULT", dataMap);
     if(shpd_2_Fault == 1)
     {
-        ui->CONVEYER_2_RUN_label->setStyleSheet("background-image: url(:/pic/yellow_box.png);");
+        ui->BW_2_STATE_label->setStyleSheet("background-image: url(:/pic/yellow_box.png);");
     }
     else
     {
         value = Global::getMixRunctrValueByName(deviceIndex, "CONVEYER_2_RUN", dataMap);
         if(value == 1)
         {
-            ui->CONVEYER_2_RUN_label->setStyleSheet("background-image: url(:/pic/green_box.png);");
+            ui->BW_2_STATE_label->setStyleSheet("background-image: url(:/pic/green_box.png);");
         }
         else
         {
-            ui->CONVEYER_2_RUN_label->setStyleSheet("background-image: url(:/pic/red_box.png);");
+            ui->BW_2_STATE_label->setStyleSheet("background-image: url(:/pic/red_box.png);");
         }
     }
 

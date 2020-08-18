@@ -9,6 +9,7 @@ ControStatusDialog::ControStatusDialog(QWidget *parent) :
     ui(new Ui::ControStatusDialog)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::FramelessWindowHint);
 
     controlStatusModel = new QStandardItemModel(Global::mixDeviceInfo.Runctr_Num,3);
     controlStatusModel->setHeaderData(0,Qt::Horizontal,QStringLiteral("序号"));
