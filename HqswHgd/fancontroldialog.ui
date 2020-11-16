@@ -488,7 +488,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>手动</string>
+    <string>自动</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_17">
@@ -501,7 +501,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>自动</string>
+    <string>手动</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_22">
@@ -534,7 +534,7 @@
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>310</y>
+     <y>320</y>
      <width>251</width>
      <height>30</height>
     </rect>
@@ -568,9 +568,9 @@
    <property name="geometry">
     <rect>
      <x>260</x>
-     <y>360</y>
+     <y>380</y>
      <width>75</width>
-     <height>23</height>
+     <height>50</height>
     </rect>
    </property>
    <property name="text">
@@ -581,9 +581,9 @@
    <property name="geometry">
     <rect>
      <x>350</x>
-     <y>360</y>
+     <y>380</y>
      <width>75</width>
-     <height>23</height>
+     <height>50</height>
     </rect>
    </property>
    <property name="text">
@@ -621,8 +621,13 @@
      <x>40</x>
      <y>20</y>
      <width>111</width>
-     <height>22</height>
+     <height>40</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
    </property>
   </widget>
   <widget class="QLabel" name="label_24">
@@ -791,9 +796,9 @@
    <property name="geometry">
     <rect>
      <x>260</x>
-     <y>500</y>
+     <y>530</y>
      <width>75</width>
-     <height>23</height>
+     <height>50</height>
     </rect>
    </property>
    <property name="text">
@@ -804,9 +809,9 @@
    <property name="geometry">
     <rect>
      <x>350</x>
-     <y>500</y>
+     <y>530</y>
      <width>75</width>
-     <height>23</height>
+     <height>50</height>
     </rect>
    </property>
    <property name="text">
@@ -817,7 +822,7 @@
    <property name="geometry">
     <rect>
      <x>268</x>
-     <y>420</y>
+     <y>460</y>
      <width>120</width>
      <height>12</height>
     </rect>
@@ -830,7 +835,7 @@
    <property name="geometry">
     <rect>
      <x>280</x>
-     <y>450</y>
+     <y>490</y>
      <width>30</width>
      <height>30</height>
     </rect>
@@ -917,6 +922,19 @@
    </property>
    <property name="text">
     <string>修改</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="modifyFrePushButton">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>240</y>
+     <width>75</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>修改频率</string>
    </property>
   </widget>
  </widget>

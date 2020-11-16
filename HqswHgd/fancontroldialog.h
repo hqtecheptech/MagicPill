@@ -37,7 +37,6 @@ public slots:
     void updateFermentationData(QSet<int>, QMap<float,QString>);
 
 private slots:
-    void on_outputFreqSlider_valueChanged(int value);
     void on_fanOpenPushButton_clicked();
     void on_fanStopPushButton_clicked();
     void on_switchFanModePushButton_clicked();
@@ -60,6 +59,8 @@ private slots:
     void on_modifyOpenTimeButton_clicked();
 
     void on_modifyCloseTimeButton_clicked();
+
+    void on_modifyFrePushButton_clicked();
 
 private:
     Ui::FanControlDialog *ui;

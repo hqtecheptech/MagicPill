@@ -38,17 +38,20 @@ void SimpleDeoControlDialog::parseFermentationData(QMap<float, QString> dataMap)
     DeviceNode deviceNode = Global::getFermenationNodeInfoByName("WT_PH");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterPhValueLabel->setText(dataMap[address]);
+    float value = dataMap.value(address).toFloat();
+    ui->waterPhValueLabel->setText(QString::number(value, 'f', 2));
 
     deviceNode = Global::getFermenationNodeInfoByName("Level_Switch_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterLeverValueLabel->setText(dataMap[address]);
+    value = dataMap.value(address).toFloat();
+    ui->waterLeverValueLabel->setText(QString::number(value, 'f', 2));
 
     deviceNode = Global::getFermenationNodeInfoByName("Temp_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterTemptureLabel->setText(dataMap[address]);
+    value = dataMap.value(address).toFloat();
+    ui->waterTemptureLabel->setText(QString::number(value, 'f', 2));
 }
 
 void SimpleDeoControlDialog::parseFerRunCtrData(QMap<float, QString> dataMap)

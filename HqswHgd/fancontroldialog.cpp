@@ -72,11 +72,6 @@ void FanControlDialog::setCombBoxVisible(bool value)
     ui->fanIndexComboBox->setVisible(value);
 }
 
-void FanControlDialog::on_outputFreqSlider_valueChanged(int value)
-{
-    frequencySetting = value;
-}
-
 void FanControlDialog::on_fanOpenPushButton_clicked()
 {
     User *user = Identity::getInstance()->getUser();
@@ -89,66 +84,12 @@ void FanControlDialog::on_fanOpenPushButton_clicked()
         DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
         StreamPack bpack;
 
-        if(frequency == 0 && frequencySetting == 0)
+        if(frequency == 0)
         {
             msgBox->setText(QStringLiteral("当前风机频率为0，请先设置频率！"));
             msgBox->show();
             return;
         }
-
-        if(frequencySetting > 0)
-        {
-            bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Int,0,0,1,0,0,0};
-            //Length of ushort address and value, plus length of scrc.
-            bpack.bStartTime =stime;
-            bpack.bEndTime =etime;
-            bpack.bDataLength = 1;
-            bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
-
-            QList<ushort> addrs;
-            QList<int> values;
-            DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_HAND_FS");
-            ushort addr = deviceNode.Offset + (info.offset + tankIndex - info.startIndex)
-                    * Global::getLengthByDataType(deviceNode.DataType);
-            addrs.append(addr);
-            values.append(frequencySetting);
-
-            QByteArray allPackData, SData, crcData;
-            QDataStream out(&SData,QIODevice::WriteOnly);
-            out.setVersion(QDataStream::Qt_5_6); //设计数据流版本
-            out.setFloatingPointPrecision(QDataStream::SinglePrecision);
-            //QDataStream::BigEndian或QDataStream::LittleEndian
-            out.setByteOrder(QDataStream::LittleEndian);
-
-            allPackData.append((char*)&bpack, sizeof(bpack));
-
-            foreach(ushort item, addrs)
-            {
-                out << item;
-            }
-
-            foreach(int item, values)
-            {
-                out << item;
-            }
-
-            SData.insert(0, allPackData);
-
-            uint scrc = actionTcpClient->StreamLen_CRC32(SData);
-
-            QDataStream out1(&crcData,QIODevice::WriteOnly);
-            out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
-            out1.setFloatingPointPrecision(QDataStream::SinglePrecision);
-            //QDataStream::BigEndian或QDataStream::LittleEndian
-            out1.setByteOrder(QDataStream::LittleEndian);
-            out1 << scrc;
-
-            SData.append(crcData);
-
-            // Send frequency firstly.
-            actionTcpClient->sendRequestWithResults(SData);
-        }
-
 
         ushort offset = Global::getFermenationNodeInfoByName("FAN_HandStart_BOOL").Offset / 8;
         ushort index = Global::getFermenationNodeInfoByName("FAN_HandStart_BOOL").Offset % 8;
@@ -328,12 +269,18 @@ void FanControlDialog::parseFermentationData(QMap<float,QString> dataMap)
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
     ui->runFreqLabel->setText(dataMap[address]);
+
+
+    deviceNode = Global::getFermenationNodeInfoByName("FER_HAND_FS");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
+            * Global::getLengthByDataType(deviceNode.DataType);
     frequency = dataMap[address].toInt();
 
     deviceNode = Global::getFermenationNodeInfoByName("AIR_INPUT");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->airInputLabel->setText(dataMap[address]);
+    float value = dataMap.value(address).toFloat();
+    ui->airInputLabel->setText(QString::number(value, 'f', 2));
 
     deviceNode = Global::getFermenationNodeInfoByName("VALVE_OPEN_TIME");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
@@ -709,6 +656,82 @@ void FanControlDialog::on_modifyCloseTimeButton_clicked()
         SData.append(crcData);
 
         // Send frequency firstly.
+        actionTcpClient->sendRequestWithResults(SData);
+    }
+    else
+    {
+        msgBox->setText(QStringLiteral("请先登录后再进行操作！"));
+        msgBox->show();
+    }
+}
+
+void FanControlDialog::on_modifyFrePushButton_clicked()
+{
+    User *user = Identity::getInstance()->getUser();
+    if(user != Q_NULLPTR)
+    {
+        QDateTime currentdt = QDateTime::currentDateTime();
+        uint stime =currentdt.toTime_t();
+        uint etime =currentdt.toTime_t();
+
+        DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
+        StreamPack bpack;
+
+        frequencySetting = ui->outputFreqSlider->value();
+        if(frequencySetting == 0)
+        {
+            msgBox->setText(QStringLiteral("风机频率设置为0，请先设置频率！"));
+            msgBox->show();
+            return;
+        }
+
+        bpack = {sizeof(StreamPack),1,(quint16)Global::ferGroupShow,W_Send_Control,Int,0,0,1,0,0,0};
+        //Length of ushort address and value, plus length of scrc.
+        bpack.bStartTime =stime;
+        bpack.bEndTime =etime;
+        bpack.bDataLength = 1;
+        bpack.bStreamLength += (4+2)*bpack.bDataLength + 4;
+
+        QList<ushort> addrs;
+        QList<int> values;
+        DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_HAND_FS");
+        ushort addr = deviceNode.Offset + (info.offset + tankIndex - info.startIndex)
+                * Global::getLengthByDataType(deviceNode.DataType);
+        addrs.append(addr);
+        values.append(frequencySetting);
+
+        QByteArray allPackData, SData, crcData;
+        QDataStream out(&SData,QIODevice::WriteOnly);
+        out.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+        out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+        //QDataStream::BigEndian或QDataStream::LittleEndian
+        out.setByteOrder(QDataStream::LittleEndian);
+
+        allPackData.append((char*)&bpack, sizeof(bpack));
+
+        foreach(ushort item, addrs)
+        {
+            out << item;
+        }
+
+        foreach(int item, values)
+        {
+            out << item;
+        }
+
+        SData.insert(0, allPackData);
+
+        uint scrc = actionTcpClient->StreamLen_CRC32(SData);
+
+        QDataStream out1(&crcData,QIODevice::WriteOnly);
+        out1.setVersion(QDataStream::Qt_5_6); //设计数据流版本
+        out1.setFloatingPointPrecision(QDataStream::SinglePrecision);
+        //QDataStream::BigEndian或QDataStream::LittleEndian
+        out1.setByteOrder(QDataStream::LittleEndian);
+        out1 << scrc;
+
+        SData.append(crcData);
+
         actionTcpClient->sendRequestWithResults(SData);
     }
     else
