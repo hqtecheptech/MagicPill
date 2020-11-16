@@ -11,6 +11,7 @@ MixSettingDialog::MixSettingDialog(QWidget *parent) :
     ui->setupUi(this);
     //Avoid all windeows closed.
     //setAttribute(Qt::WA_QuitOnClose, false);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
 
     this->installEventFilter(this);
 

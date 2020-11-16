@@ -156,6 +156,83 @@ void MixerDlg::switchState()
         }
     }*/
 
+    if(lsoo1)
+    {
+        if(stateFlag)
+        {
+            ui->LS_1_OL_label->setText(QStringLiteral("漏油"));
+            ui->LS_1_OL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+        }
+        else
+        {
+            ui->LS_1_OL_label->setText(QStringLiteral("漏油"));
+            ui->LS_1_OL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 0, 0)");
+        }
+    }
+
+    if(lsoo2)
+    {
+        if(stateFlag)
+        {
+            ui->LS_2_OL_label->setText(QStringLiteral("漏油"));
+            ui->LS_2_OL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+        }
+        else
+        {
+            ui->LS_2_OL_label->setText(QStringLiteral("漏油"));
+            ui->LS_2_OL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 0, 0)");
+        }
+    }
+
+    if(lsoo3)
+    {
+        if(stateFlag)
+        {
+            ui->LS_3_OL_label->setText(QStringLiteral("漏油"));
+            ui->LS_3_OL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+        }
+        else
+        {
+            ui->LS_3_OL_label->setText(QStringLiteral("漏油"));
+            ui->LS_3_OL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 0, 0)");
+        }
+    }
+
+    if(lsol1 <= 0)
+    {
+        if(stateFlag)
+        {
+            ui->LS_1_LEVEL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+        }
+        else
+        {
+            ui->LS_1_LEVEL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 0, 0)");
+        }
+    }
+
+    if(lsol2 <= 0)
+    {
+        if(stateFlag)
+        {
+            ui->LS_2_LEVEL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+        }
+        else
+        {
+            ui->LS_2_LEVEL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 0, 0)");
+        }
+    }
+
+    if(lsol3 <= 0)
+    {
+        if(stateFlag)
+        {
+            ui->LS_3_LEVEL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+        }
+        else
+        {
+            ui->LS_3_LEVEL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 0, 0)");
+        }
+    }
 
     stateFlag = !stateFlag;
 }
@@ -507,8 +584,17 @@ void MixerDlg::parseData(QMap<float, QString> dataMap)
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("LS_1_LEVEL");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    value = dataMap.value(address).toFloat();
-    ui->LS_1_LEVEL_label->setText(QString::number(value, 'f', 3));
+    lsol1 = dataMap.value(address).toFloat();
+    ui->LS_1_LEVEL_label->setText(QString::number(lsol1, 'f', 3));
+
+    if(lsol1 <= 0)
+    {
+        ui->LS_1_LEVEL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+    }
+    else
+    {
+        ui->LS_1_LEVEL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 255)");
+    }
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("SY_1_PRESSURE");
@@ -555,8 +641,17 @@ void MixerDlg::parseData(QMap<float, QString> dataMap)
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("LS_2_LEVEL");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    value = dataMap.value(address).toFloat();
-    ui->LS_2_LEVEL_label->setText(QString::number(value, 'f', 3));
+    lsol2 = dataMap.value(address).toFloat();
+    ui->LS_2_LEVEL_label->setText(QString::number(lsol2, 'f', 3));
+
+    if(lsol2 <= 0)
+    {
+        ui->LS_2_LEVEL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+    }
+    else
+    {
+        ui->LS_2_LEVEL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 255)");
+    }
 
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("TM_2_PRESSURE");
@@ -579,8 +674,17 @@ void MixerDlg::parseData(QMap<float, QString> dataMap)
     info = Global::getMixDeviceGroupInfo(deviceIndex);
     deviceNode = Global::getMixNodeInfoByName("LS_3_LEVEL");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
-    value = dataMap.value(address).toFloat();
-    ui->LS_3_LEVEL_label->setText(QString::number(value, 'f', 3));
+    lsol3 = dataMap.value(address).toFloat();
+    ui->LS_3_LEVEL_label->setText(QString::number(lsol3, 'f', 3));
+
+    if(lsol3 <= 0)
+    {
+        ui->LS_3_LEVEL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+    }
+    else
+    {
+        ui->LS_3_LEVEL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 255)");
+    }
 }
 
 void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
@@ -644,14 +748,14 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     coro1 = Global::getMixRunctrValueByName(0, "TM_2_CORO", dataMap);
     inve1 = Global::getMixRunctrValueByName(0, "TM_2_INVE", dataMap);
     unloading = (coro1 || inve1)  & emRun;
-    ui->sp_em_1_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
+    ui->sp_em_2_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
 
     emRun = Global::getMixRunctrValueByName(0, "CONVEYER_3_RUN", dataMap);
     emFault = Global::getMixRunctrValueByName(0, "CONVEYER_3_FAULT", dataMap);
     coro1 = Global::getMixRunctrValueByName(0, "TM_3_CORO", dataMap);
     inve1 = Global::getMixRunctrValueByName(0, "TM_3_INVE", dataMap);
     unloading = (coro1 || inve1)  & emRun;
-    ui->sp_em_1_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
+    ui->sp_em_3_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
 
     emRun = Global::getMixRunctrValueByName(0, "MIXER_EM_RUN", dataMap);
     emFault = Global::getMixRunctrValueByName(0, "MIXER_EM_FAULT", dataMap);
@@ -659,6 +763,7 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
     inve1 = Global::getMixRunctrValueByName(0, "MIXER_INVE", dataMap);
     unloading = (coro1 || inve1)  & emRun;
     ui->mix_em_widget->setStatus(emRun, emFault, coro1, inve1, unloading);
+
 
     /*yxywLow = Global::getMixRunctrValueByName(deviceIndex, "ING_BIN_HS_OIL_LEVEL", dataMap);
     if(yxywLow == 1)
@@ -688,6 +793,42 @@ void MixerDlg::parseRunCtrData(QMap<float, QString> dataMap)
         {
             ui->BW_1_STATE_label->setStyleSheet("background-image: url(:/pic/red_box.png);");
         }
+    }
+
+    lsoo1 = Global::getMixRunctrValueByName(deviceIndex, "LS_1_OL", dataMap);
+    if(lsoo1 == 1)
+    {
+        ui->LS_1_OL_label->setText(QStringLiteral("漏油"));
+        ui->LS_1_OL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 0, 0)");
+    }
+    else
+    {
+        ui->LS_1_OL_label->setText(QStringLiteral("正常"));
+        ui->LS_1_OL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(0, 170, 0)");
+    }
+
+    lsoo2 = Global::getMixRunctrValueByName(deviceIndex, "LS_2_OL", dataMap);
+    if(lsoo2 == 1)
+    {
+        ui->LS_2_OL_label->setText(QStringLiteral("漏油"));
+        ui->LS_2_OL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+    }
+    else
+    {
+        ui->LS_2_OL_label->setText(QStringLiteral("正常"));
+        ui->LS_2_OL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(0, 170, 0)");
+    }
+
+    lsoo3 = Global::getMixRunctrValueByName(deviceIndex, "LS_3_OL", dataMap);
+    if(lsoo3 == 1)
+    {
+        ui->LS_3_OL_label->setText(QStringLiteral("漏油"));
+        ui->LS_3_OL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(255, 255, 0)");
+    }
+    else
+    {
+        ui->LS_3_OL_label->setText(QStringLiteral("正常"));
+        ui->LS_3_OL_label->setStyleSheet("border: 0px;background: transparent;background-color: rgb(0, 170, 0)");
     }
 }
 

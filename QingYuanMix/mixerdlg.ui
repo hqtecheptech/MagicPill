@@ -839,6 +839,55 @@ background-image: url(:/pic/field_bg.png);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QLabel" name="LS_2_OL_label">
+    <property name="geometry">
+     <rect>
+      <x>432</x>
+      <y>500</y>
+      <width>72</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>正常</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_107">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>500</y>
+      <width>72</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>油箱状态</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
   </widget>
   <widget class="QFrame" name="frame">
    <property name="geometry">
@@ -1501,18 +1550,42 @@ background-image: url(:/pic/field_bg.png);</string>
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="settingButton">
+   <widget class="QLabel" name="LS_1_OL_label">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>490</y>
-      <width>70</width>
-      <height>70</height>
+      <x>430</x>
+      <y>500</y>
+      <width>72</width>
+      <height>22</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>15</pointsize>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>正常</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_106">
+    <property name="geometry">
+     <rect>
+      <x>358</x>
+      <y>500</y>
+      <width>72</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
      </font>
     </property>
     <property name="styleSheet">
@@ -1520,13 +1593,10 @@ background-image: url(:/pic/field_bg.png);</string>
 background-image: url(:/pic/field_bg.png);</string>
     </property>
     <property name="text">
-     <string>设置</string>
+     <string>油箱状态</string>
     </property>
-    <property name="autoDefault">
-     <bool>true</bool>
-    </property>
-    <property name="default">
-     <bool>false</bool>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
@@ -2619,7 +2689,7 @@ background-image: url(:/pic/smalltitle.png);</string>
     <property name="geometry">
      <rect>
       <x>37</x>
-      <y>520</y>
+      <y>500</y>
       <width>72</width>
       <height>22</height>
      </rect>
@@ -2644,7 +2714,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>36</x>
-      <y>480</y>
+      <y>470</y>
       <width>72</width>
       <height>22</height>
      </rect>
@@ -2669,7 +2739,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>108</x>
-      <y>480</y>
+      <y>470</y>
       <width>72</width>
       <height>22</height>
      </rect>
@@ -2693,7 +2763,7 @@ background-image: url(:/pic/field_bg.png);</string>
     <property name="geometry">
      <rect>
       <x>109</x>
-      <y>520</y>
+      <y>500</y>
       <width>72</width>
       <height>22</height>
      </rect>
@@ -2806,6 +2876,55 @@ background-image: url(:/pic/field_bg.png);</string>
     </property>
     <property name="text">
      <string>3#刮板压力</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="LS_3_OL_label">
+    <property name="geometry">
+     <rect>
+      <x>109</x>
+      <y>530</y>
+      <width>72</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/pic/white_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>正常</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_108">
+    <property name="geometry">
+     <rect>
+      <x>37</x>
+      <y>530</y>
+      <width>72</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>油箱状态</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -3212,6 +3331,34 @@ border:0px</string>
     </property>
     <property name="text">
      <string>设置上下限</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="settingButton">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>10</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+background-image: url(:/pic/field_bg.png);</string>
+    </property>
+    <property name="text">
+     <string>设置</string>
+    </property>
+    <property name="autoDefault">
+     <bool>true</bool>
+    </property>
+    <property name="default">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>

@@ -139,6 +139,9 @@
         <node id="5" name="MIXER_CORO" cname="混料机正向阀启动" length="128" offset="82" diff="0" alert0="混料机正向阀停止" alert1="混料机正向阀启动" priority="0"/>
         <node id="5" name="MIXER_INVE" cname="混料机反向阀启动" length="128" offset="83" diff="0" alert0="混料机反向阀停止" alert1="混料机反向阀启动" priority="0"/>
         <node id="5" name="MIXER_UL" cname="混料机卸荷阀启动" length="128" offset="84" diff="0" alert0="混料机卸荷阀停止" alert1="混料机卸荷阀启动" priority="0"/>
+        <node id="5" name="LS_1_OL" cname="1#液压站漏油" length="128" offset="85" diff="0" alert0="1#液压站未漏油" alert1="1#液压站漏油" priority="0"/>
+        <node id="5" name="LS_2_OL" cname="2#液压站漏油" length="128" offset="86" diff="0" alert0="2#液压站未漏油" alert1="2#液压站漏油" priority="0"/>
+        <node id="5" name="LS_3_OL" cname="3#液压站漏油" length="128" offset="87" diff="0" alert0="3#液压站未漏油" alert1="3#液压站漏油" priority="0"/>
     </area>
   </areas>
 </device>

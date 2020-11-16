@@ -90,6 +90,9 @@ private:
     bool yxywLow, wnhjdjFault, wnzpdjFault, flzpdjFault, fllxdjFault, fhlxdjFault;
     bool wnjrFault, wnyxywLow, fljrFault, flyxywLow;
     bool hljFault, flczdFault, fhczdFault, shpd_1_Fault, shpd_2_Fault, shpd_3_Fault;
+    bool lsoo1, lsoo2, lsoo3;
+
+    float lsol1, lsol2, lsol3;
 
     TcpClientSocket* getServerConnectStateTcpClient;
     TcpClientSocket* getAllDataTcpClient;

@@ -10,6 +10,7 @@ MixDataRangeSetDialog::MixDataRangeSetDialog(QWidget *parent) :
     ui(new Ui::MixDataRangeSetDialog)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
 
     this->installEventFilter(this);
 
