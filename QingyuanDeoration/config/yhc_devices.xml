@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<device>
+  <areas devicenumber="1" runctrnumber="32">
+    <area name="YHC" datatype="r" start="0" diff="0.5">
+        <node id="6" name="Speed" cname="行进速度" length="1" offset="0" diff="0.5"/>
+        <node id="6" name="Pressure" cname="油缸压力" length="1" offset="1" diff="0.5"/>
+        <node id="6" name="Tempture" cname="油缸温度" length="1" offset="2" diff="0.5"/>
+        <node id="6" name="Level" cname="液油高度" length="1" offset="3" diff="0.5"/>
+        <node id="6" name="RevolvingSpeed" cname="转速" length="1" offset="3" diff="0.5"/>
+        <node id="6" name="Ampere1" cname="电流1" length="1" offset="3" diff="0.5"/>
+        <node id="6" name="Voltage" cname="电压" length="1" offset="3" diff="0.5"/>
+        <node id="6" name="Ampere2" cname="电流2" length="1" offset="3" diff="0.5"/>
+    </area>
+    <area name="YHC_SETTING" datatype="dw" start="1600" diff="0.5">
+        <node id="6" name="FER_TIME_1_SET_UDI" cname="第一阶段时间设定" length="1" offset="800" diff="0"/>
+        <node id="6" name="FER_TIME_2_SET_UDI" cname="第二阶段时间设定" length="1" offset="804" diff="0"/>
+        <node id="6" name="FER_TIME_3_SET_UDI" cname="第三阶段时间设定" length="1" offset="808" diff="0"/>
+        <node id="6" name="FER_TIME_4_SET_UDI" cname="第四阶段时间设定" length="1" offset="812" diff="0"/>
+        <node id="6" name="FER_TIME_5_SET_UDI" cname="第五阶段时间设定" length="1" offset="816" diff="0"/>
+    </area>
+    <area name="YHC_LOCATION" datatype="di" start="800" diff="0">
+      <node id="6" name="Start" length="1" offset="0" diff="0"/>
+      <node id="6" name="End" length="1" offset="1" diff="0"/>
+    </area>
+    <area name="TANK_STATE" datatype="w" start="2400" diff="0">
+      <node id="6" name="STEPCTR_UI" length="1" offset="0" diff="0"/>
+      <node id="6" name="STUFF_ID" length="1" offset="1" diff="0"/>
+    </area>
+    <area name="RUNCTR" datatype="x0" start="2600" diff="0">
+        <node id="6" name="Run_Signal" cname="1#移行机运行信号" length="32" offset="0" diff="0" alert0="1#移行机结束运行" alert1="1#移行机开始运行"  priority="1"/>
+        <node id="6" name="False_Signal" cname="1#移行机故障信号" length="32" offset="1" diff="0" alert0="1#移行机无故障" alert1="1#移行机故障"  priority="1"/>
+        <node id="6" name="FAN_VALVE_Remote" cname="风机组阀门远程信号" length="32" offset="0" diff="0" alert0="风机组阀门就地控制启动" alert1="风机组阀门远程控制启动" priority="0"/>
+        <node id="6" name="FAN_VALVE_Opened" cname="风机组阀门开到位信号" length="32" offset="1" diff="0" alert0="风机组阀门开未到位" alert1="风机组阀门已开到位" priority="0"/>
+        <node id="6" name="FAN_VALVE_Closed" cname="风机组阀门关到位信号" length="32" offset="2" diff="0" alert0="风机组阀门未关到位" alert1="风机组阀门已关到位" priority="0"/>
+        <node id="6" name="FAN_VALVE_Opening" cname="风机组阀门正在开信号" length="32" offset="3" diff="0" alert0="风机组阀门正在开信号" alert1="风机组阀门正在开信号" priority="0"/>
+        <node id="6" name="FAN_VALVE_Closing" cname="风机组阀门正在关信号" length="32" offset="4" diff="0" alert0="风机组阀门正在关信号" alert1="风机组阀门正在关信号" priority="0"/>
+        <node id="6" name="FAN_VALVE_Fault" cname="风机组阀门故障信号" length="32" offset="5" diff="0" alert0="风机组阀门无故障" alert1="风机组阀门故障" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_Remote" cname="风机组备用阀门远程信号" length="32" offset="6" diff="0" alert0="风机组备用阀门就地控制启动" alert1="风机组备用阀门远程控制启动" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_Opened" cname="风机组备用阀门开到位信号" length="32" offset="7" diff="0" alert0="风机组备用阀门未开到位" alert1="风机组备用阀门已开到位" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_Closed" cname="风机组备用阀门关到位信号" length="32" offset="8" diff="0" alert0="风机组备用阀门未关到位" alert1="风机组备用阀门已关到位" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_Opening" cname="风机组备用阀门正在开信号" length="32" offset="9" diff="0" alert0="风机组备用阀门正在开信号" alert1="风机组备用阀门正在开信号" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_Closing" cname="风机组备用阀门正在关信号" length="32" offset="10" diff="0" alert0="风机组备用阀门正在关信号" alert1="风机组备用阀门正在关信号" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_Fault" cname="风机组备用阀门故障信号" length="32" offset="11" diff="0" alert0="风机组备用阀门无故障" alert1="风机组备用阀门故障" priority="0"/>
+        <node id="6" name="FAN_VALVE_HAND_OPEN" cname="风机组阀门手动开阀" length="32" offset="12" diff="0" alert0="无动作" alert1="风机组阀门手动开阀" priority="0"/>
+        <node id="6" name="FAN_VALVE_HAND_CLOSE" cname="风机组阀门手动关阀" length="32" offset="13" diff="0" alert0="无动作" alert1="风机组阀门手动关阀" priority="0"/>
+        <node id="6" name="FAN_SPAREVALVE_HAND_OPEN" cname="风机组备用阀门手动开阀" length="32" offset="14" diff="0" alert0="无动作" alert1="风机组备用阀门手动开阀" priority="0"/>
+    </area>
+  </areas>
+</device>
