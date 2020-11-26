@@ -79,7 +79,7 @@ void RenhuaiNew::updateFerData(QSet<int> changedDeviceSet, QMap<float,QString> d
 {
     emit ferDataChanged(changedDeviceSet, dataMap);
 
-    for(int i=0; i<2; i++)
+    /*for(int i=0; i<2; i++)
     {
         DeviceNode node = Global::getFermenationNodeInfoByName("TOTAL_CURRENT_R");
         uint address = node.Offset + i * 4;
@@ -104,7 +104,16 @@ void RenhuaiNew::updateFerData(QSet<int> changedDeviceSet, QMap<float,QString> d
             strValue1.append("NH3:" + QString::number(envParamsArray.at(1)->getNh3(), 'f', 2) + " ppm  ");
             strValue1.append("H2S:" + QString::number(envParamsArray.at(1)->getH2s(), 'f', 2) + " ppm");
 
-    ui->tab_banner_label->setText(strValue + strSpan + strValue1);
+    ui->tab_banner_label->setText(strValue + strSpan + strValue1);*/
+
+    DeviceNode node = Global::getFermenationNodeInfoByName("TOTAL_CURRENT_R");
+    uint address = node.Offset;
+    envParamsArray[0]->setCurrA(dataMap[address].toFloat());
+
+    QString strSpan = "    ";
+
+    QString strValue = "TI:" + QString::number(envParamsArray.at(0)->getCurrA(), 'f', 2) + " A";
+    ui->tab_banner_label->setText(strValue + strSpan);
 }
 
 void RenhuaiNew::updateDeoData(QSet<int> changedDeviceSet, QMap<float,QString> dataMap)
