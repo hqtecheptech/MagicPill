@@ -1537,6 +1537,7 @@ int Global::getMixDeviceIndexByRunctrAddress(float address)
 
 DeviceGroupInfo Global::getDeoDeviceGroupInfo(int index)
 {
+    DeviceGroupInfo retVal;
     foreach(DeviceGroupInfo info, deoDeviceGroupInfos)
     {
         if(info.startIndex >= index && index < (info.startIndex + info.deviceNumber))
@@ -1544,10 +1545,12 @@ DeviceGroupInfo Global::getDeoDeviceGroupInfo(int index)
             return info;
         }
     }
+    return retVal;
 }
 
 DeviceGroupInfo Global::getFanValveDeviceGroupInfo(int index)
 {
+    DeviceGroupInfo retVal;
     foreach(DeviceGroupInfo info, fanValveDeviceGroupInfos)
     {
         if(index >= info.startIndex && index < (info.startIndex + info.deviceNumber))
@@ -1555,10 +1558,12 @@ DeviceGroupInfo Global::getFanValveDeviceGroupInfo(int index)
             return info;
         }
     }
+    return retVal;
 }
 
 DeviceGroupInfo Global::getFanDeviceGroupInfo(int index)
 {
+    DeviceGroupInfo retVal;
     foreach(DeviceGroupInfo info, fanDeviceGroupInfos)
     {
         if(index >= info.startIndex && index < (info.startIndex + info.deviceNumber))
@@ -1566,10 +1571,12 @@ DeviceGroupInfo Global::getFanDeviceGroupInfo(int index)
             return info;
         }
     }
+    return retVal;
 }
 
 DeviceGroupInfo Global::getFerDeviceGroupInfo(int index)
 {
+    DeviceGroupInfo retVal;
     foreach(DeviceGroupInfo info, ferDeviceGroupInfos)
     {
         if(index >= info.startIndex && index < (info.startIndex + info.deviceNumber))
@@ -1577,10 +1584,12 @@ DeviceGroupInfo Global::getFerDeviceGroupInfo(int index)
             return info;
         }
     }
+    return retVal;
 }
 
 DeviceGroupInfo Global::getYhcDeviceGroupInfo(int index)
 {
+    DeviceGroupInfo retVal;
     foreach(DeviceGroupInfo info, yhcDeviceGroupInfos)
     {
         if(index >= info.startIndex && index < (info.startIndex + info.deviceNumber))
@@ -1588,10 +1597,12 @@ DeviceGroupInfo Global::getYhcDeviceGroupInfo(int index)
             return info;
         }
     }
+    return retVal;
 }
 
 DeviceGroupInfo Global::getMixDeviceGroupInfo(int index)
 {
+    DeviceGroupInfo retVal;
     foreach(DeviceGroupInfo info, mixDeviceGroupInfos)
     {
         if(index >= info.startIndex && index < (info.startIndex + info.deviceNumber))
@@ -1599,10 +1610,12 @@ DeviceGroupInfo Global::getMixDeviceGroupInfo(int index)
             return info;
         }
     }
+    return retVal;
 }
 
 DeviceGroupInfo Global::getFerDeviceGroupInfoByGroupId(int groupId)
 {
+    DeviceGroupInfo retVal;
     foreach(DeviceGroupInfo info, ferDeviceGroupInfos)
     {
         if(groupId == info.groupId)
@@ -1610,10 +1623,12 @@ DeviceGroupInfo Global::getFerDeviceGroupInfoByGroupId(int groupId)
             return info;
         }
     }
+    return retVal;
 }
 
 DeviceGroupInfo Global::getYhcDeviceGroupInfoByGroupId(int groupId)
 {
+    DeviceGroupInfo retVal;
     foreach(DeviceGroupInfo info, yhcDeviceGroupInfos)
     {
         if(groupId == info.groupId)
@@ -1621,10 +1636,12 @@ DeviceGroupInfo Global::getYhcDeviceGroupInfoByGroupId(int groupId)
             return info;
         }
     }
+    return retVal;
 }
 
 DeviceGroupInfo Global::getMixDeviceGroupInfoByGroupId(int groupId)
 {
+    DeviceGroupInfo retVal;
     foreach(DeviceGroupInfo info, mixDeviceGroupInfos)
     {
         if(groupId == info.groupId)
@@ -1632,6 +1649,8 @@ DeviceGroupInfo Global::getMixDeviceGroupInfoByGroupId(int groupId)
             return info;
         }
     }
+
+    return retVal;
 }
 
 DeviceGroupInfo Global::getDeoDeviceGroupInfoByGroupId(int groupId)
