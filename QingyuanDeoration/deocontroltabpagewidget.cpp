@@ -637,6 +637,7 @@ void DeoControlTabPageWidget::switchBlowingImg()
     blowing = !blowing;
 }
 
+
 void DeoControlTabPageWidget::showEvent(QShowEvent *)
 {
     /*if(Global::ferGroupShow == 1)
@@ -814,62 +815,87 @@ void DeoControlTabPageWidget::parseDeodorationData(QMap<float,QString> dataMap)
     DeviceNode deviceNode = Global::getDeodorationNodeInfoByName("Temp_Read");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterTankTemptureLabel_1->setText(dataMap.value(address));
+    float value = dataMap.value(address).toFloat();
+    ui->waterTankTemptureLabel_1->setText(QString::number(value, 'f', 2));
     deviceNode = Global::getDeodorationNodeInfoByName("PH_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterTankPhLabel_1->setText(dataMap.value(address));
+    value = dataMap.value(address).toFloat();
+    ui->waterTankPhLabel_1->setText(QString::number(value, 'f', 2));
     deviceNode = Global::getDeodorationNodeInfoByName("Level_Switch_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterTankLevelValueLabel_1->setText(dataMap.value(address));
+    value = dataMap.value(address).toFloat();
+    ui->waterTankLevelValueLabel_1->setText(QString::number(value, 'f', 2));
 
     // Add 1 for temp use. Need refine.
     deviceNode = Global::getDeodorationNodeInfoByName("Temp_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex + 1)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterTankTemptureLabel_2->setText(dataMap.value(address));
+    value = dataMap.value(address).toFloat();
+    ui->waterTankTemptureLabel_2->setText(QString::number(value, 'f', 2));
     deviceNode = Global::getDeodorationNodeInfoByName("PH_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex + 1)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterTankPhLabel_2->setText(dataMap.value(address));
+    value = dataMap.value(address).toFloat();
+    ui->waterTankPhLabel_2->setText(QString::number(value, 'f', 2));
     deviceNode = Global::getDeodorationNodeInfoByName("Level_Switch_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex + 1)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterTankLevelValueLabel_2->setText(dataMap.value(address));
+    value = dataMap.value(address).toFloat();
+    ui->waterTankLevelValueLabel_2->setText(QString::number(value, 'f', 2));
 
     // Add 2 for temp use. Need refine.
     deviceNode = Global::getDeodorationNodeInfoByName("Temp_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex + 2)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterTankTemptureLabel_3->setText(dataMap.value(address));
+    value = dataMap.value(address).toFloat();
+    ui->waterTankTemptureLabel_3->setText(QString::number(value, 'f', 2));
     deviceNode = Global::getDeodorationNodeInfoByName("PH_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex + 2)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterTankPhLabel_3->setText(dataMap.value(address));
+    value = dataMap.value(address).toFloat();
+    ui->waterTankPhLabel_3->setText(QString::number(value, 'f', 2));
     deviceNode = Global::getDeodorationNodeInfoByName("Level_Switch_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex + 2)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterTankLevelValueLabel_3->setText(dataMap.value(address));
+    value = dataMap.value(address).toFloat();
+    ui->waterTankLevelValueLabel_3->setText(QString::number(value, 'f', 2));
 
     // Add 3 for temp use. Need refine.
     deviceNode = Global::getDeodorationNodeInfoByName("Temp_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex + 3)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterTankTemptureLabel_4->setText(dataMap.value(address));
+    value = dataMap.value(address).toFloat();
+    ui->waterTankTemptureLabel_4->setText(QString::number(value, 'f', 2));
     deviceNode = Global::getDeodorationNodeInfoByName("PH_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex + 3)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterTankPhLabel_4->setText(dataMap.value(address));
+    value = dataMap.value(address).toFloat();
+    ui->waterTankPhLabel_4->setText(QString::number(value, 'f', 2));
     deviceNode = Global::getDeodorationNodeInfoByName("Level_Switch_Read");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex + 3)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->waterTankLevelValueLabel_4->setText(dataMap.value(address));
+    value = dataMap.value(address).toFloat();
+    ui->waterTankLevelValueLabel_4->setText(QString::number(value, 'f', 2));
+
+    // Add 4 for temp use. Need refine.
+    deviceNode = Global::getDeodorationNodeInfoByName("PH_Read");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex + 4)
+            * Global::getLengthByDataType(deviceNode.DataType);
+    value = dataMap.value(address).toFloat();
+    ui->waterTankPhLabel_5->setText(QString::number(value, 'f', 2));
+    deviceNode = Global::getDeodorationNodeInfoByName("Level_Switch_Read");
+    address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex + 4)
+            * Global::getLengthByDataType(deviceNode.DataType);
+    value = dataMap.value(address).toFloat();
+    ui->waterTankLevelValueLabel_5->setText(QString::number(value, 'f', 2));
 
     deviceNode = Global::getDeodorationNodeInfoByName("Total_Current");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->aivLabel->setText(dataMap.value(address));
+    value = dataMap.value(address).toFloat();
+    ui->aivLabel->setText(QString::number(value, 'f', 2));
 }
 
 void DeoControlTabPageWidget::parseRunCtrData(QMap<float,QString> dataMap)
