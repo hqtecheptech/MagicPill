@@ -1409,6 +1409,7 @@ DeviceNode Global::getYhcNodeInfoByRunctrAddress(float address)
 DeviceNode Global::getMixNodeInfoByRunctrAddress(float address)
 {
     uint blockSize = mixDeviceInfo.RunCtr_Block_Size  / 8;
+    DeviceNode node;
 
     int temp = (int)floor(address);
     int blockOffset = (temp - mixDeviceInfo.Runctr_Address) % blockSize;
@@ -1418,9 +1419,12 @@ DeviceNode Global::getMixNodeInfoByRunctrAddress(float address)
     {
         if(mixDeviceNodes.at(i).DataType == "x0" && mixDeviceNodes.at(i).Offset == offset)
         {
-            return mixDeviceNodes.at(i);
+            node = mixDeviceNodes.at(i);
+            return node;
         }
     }
+
+    return node;
 }
 
 QString Global::getNodeNameByAddress(ushort address, QVector<DeviceNode> deviceNodes)

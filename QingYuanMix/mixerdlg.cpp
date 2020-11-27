@@ -278,17 +278,18 @@ void MixerDlg::dispatchData(QSet<int> changedDeviceSet, QMap<float, QString> dat
         uint temp = i % 8;
         float index = float(temp) / 10;
         float dictAddress = index + startAddrss + step;
-        QVariant tempValue = dataMap[dictAddress];
+        QVariant tempValue = dataMap.value(dictAddress);
         boolValues.append(tempValue.toBool());
 
         if(!Global::currentMixDataMap.contains(dictAddress))
         {
-            Global::currentMixDataMap.insert(dictAddress,dataMap[dictAddress]);
+            Global::currentMixDataMap.insert(dictAddress,dataMap.value(dictAddress));
         }
         else
         {
-            if(Global::currentMixDataMap[dictAddress] != dataMap[dictAddress]
-                    && Global::getMixNodeInfoByRunctrAddress(dictAddress).Priority == 1)
+            DeviceNode tempNode = Global::getMixNodeInfoByRunctrAddress(dictAddress);
+            if(Global::currentMixDataMap.value(dictAddress) != dataMap.value(dictAddress)
+                    && tempNode.Priority == 1)
             {
                 uint tankIndex = i / Global::mixDeviceInfo.RunCtr_Block_Size;
                 DeviceGroupInfo info = Global::getMixDeviceGroupInfo(tankIndex);
@@ -300,23 +301,24 @@ void MixerDlg::dispatchData(QSet<int> changedDeviceSet, QMap<float, QString> dat
 
                 try
                 {
-                    qDebug() << "QDateTime::currentDateTime()" << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-                    newItemList.append(new QStandardItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")));
+                    //qDebug() << "QDateTime::currentDateTime()" << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+                    QString ct = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+                    newItemList.append(new QStandardItem(ct));
                     newItemList.append(new QStandardItem(QString::number((tankIndex + info.startIndex)+1)));
                     if(tempValue.toBool())
                     {
-                        newItemList.append(new QStandardItem(Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert1));
+                        newItemList.append(new QStandardItem(Global::mixRunCtrDeviceNodes.value(i % Global::mixDeviceInfo.RunCtr_Block_Size).Alert1));
                         simpleAlert = QString::number(Global::alertIndex) + ": " +
                                 QString::number(tankIndex+1) + "#" +
-                                Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert1 + " " +
+                                Global::mixRunCtrDeviceNodes.value(i % Global::mixDeviceInfo.RunCtr_Block_Size).Alert1 + " " +
                                 QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
                     }
                     else
                     {
-                        newItemList.append(new QStandardItem(Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert0));
+                        newItemList.append(new QStandardItem(Global::mixRunCtrDeviceNodes.value(i % Global::mixDeviceInfo.RunCtr_Block_Size).Alert0));
                         simpleAlert = QString::number(Global::alertIndex) + ": " +
                                 QString::number(tankIndex+1) + "#" +
-                                Global::mixRunCtrDeviceNodes[i % Global::mixDeviceInfo.RunCtr_Block_Size].Alert0 + " " +
+                                Global::mixRunCtrDeviceNodes.value(i % Global::mixDeviceInfo.RunCtr_Block_Size).Alert0 + " " +
                                 QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
                     }
@@ -349,7 +351,7 @@ void MixerDlg::dispatchData(QSet<int> changedDeviceSet, QMap<float, QString> dat
                     qDebug() << "ex.what" << ex.what();
                 }
             }
-            Global::currentMixDataMap[dictAddress] = dataMap[dictAddress];
+            Global::currentMixDataMap[dictAddress] = dataMap.value(dictAddress);
         }
     }
 }

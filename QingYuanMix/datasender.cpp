@@ -22,7 +22,7 @@ DataSender::DataSender(QTcpSocket *sock)
 {
     _tcpSocket = sock;
     connect(_tcpSocket,SIGNAL(readyRead()),this,SLOT(dataReceive()));
-    //connect(_tcpSocket, &QAbstractSocket::disconnected, _tcpSocket, &QObject::deleteLater);
+    connect(_tcpSocket, &QAbstractSocket::disconnected, _tcpSocket, &QObject::deleteLater);
 }
 
 DataSender::~DataSender()
