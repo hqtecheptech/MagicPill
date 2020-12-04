@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<device>
+  <areas devicenumber="1" runctrnumber="64">
+    <area name="YHC_FPJ_DATA" datatype="r" start="0" diff="0.5">
+        <node id="6" name="Yhc_Total_Voltage" cname="移行车总电压" length="1" offset="0" diff="0.5" priority="1"/>
+        <node id="6" name="Yhc_Total_Ampere" cname="移行车总电流" length="1" offset="1" diff="0.5" priority="1"/>
+        <node id="6" name="Yhc_Pressure" cname="移行车压力反馈" length="1" offset="2" diff="0.5" priority="1"/>
+        <node id="6" name="Yhc_Hs_Oil_Level" cname="移行车液压站油位" length="1" offset="3" diff="0.5" priority="1"/>
+        <node id="6" name="Yhc_Hs_Tempture" cname="移行车液压站温度" length="1" offset="4" diff="0.5" priority="1"/>
+        <node id="6" name="SPAIR" cname="备用" length="1" offset="5" diff="0.5" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="1" offset="6" diff="0.5" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="1" offset="7" diff="0.5" alert0="" alert1="" priority="0"/>
+        <node id="6" name="Fpj_Total_Voltage" cname="翻抛机总电压" length="1" offset="8" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Total_Ampere" cname="翻抛机总电流" length="1" offset="9" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_RightBottom" cname="翻抛机右下测距距离" length="1" offset="10" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_RightMiddle" cname="翻抛机右中测距距离" length="1" offset="11" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_RightTop" cname="翻抛机右上测距距离" length="1" offset="12" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Hs_1_Tempture" cname="翻抛机1#液压站温度" length="1" offset="13" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Left_Walking_Pressure" cname="翻抛机左履带行走压力" length="1" offset="14" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Right_Walking_Pressure" cname="翻抛机右履带行走压力" length="1" offset="15" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Roller_Lifting_Pressure" cname="翻抛机滚筒提升压力" length="1" offset="16" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Left_Roller_Rotation_Pressure" cname="翻抛机左滚筒旋转压力" length="1" offset="17" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Right_Roller_Rotation_Pressure" cname="翻抛机右滚筒旋转压力" length="1" offset="18" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Sweeping_Motor_Pressure" cname="翻抛机清扫马达压力" length="1" offset="19" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Hs_1_Oil_Level" cname="翻抛机1#液压站油位" length="1" offset="20" diff="0.5" priority="1"/>
+    </area>
+    <area name="YHC_FPJ_OTHER" datatype="dw" start="1792" diff="0.5">
+        <node id="6" name="Fpj_Left_Servo_Pulse" cname="翻抛机左侧伺服脉冲" length="1" offset="0" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Right_Servo_Pulse" cname="翻抛机右侧伺服脉冲" length="1" offset="1" diff="0.5" priority="1"/>
+    </area>
+    <area name="YHC_FPJ_SETTING" datatype="w" start="2304" diff="0">
+        <node id="6" name="Yhc_Walking_Speed" cname="移行车行走速度设定值读取" length="1" offset="0" diff="0.5" priority="1"/>
+        <node id="6" name="Yhc_Encoder_Cycle_Num" cname="移行车编码器圈数" length="1" offset="1" diff="0.5" priority="1"/>
+        <node id="6" name="SPAIR" cname="备用" length="1" offset="2" diff="0.5" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="1" offset="3" diff="0.5" alert0="" alert1="" priority="0"/>
+        <node id="6" name="Fpj_Left_Track_Encoder_Cycle_Num" cname="翻抛机左履带编码器圈数" length="1" offset="4" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Right_Track_Encoder_Cycle_Num" cname="翻抛机右履带编码器圈数" length="1" offset="5" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Left_Roller_Speed" cname="翻抛机左滚筒转速" length="1" offset="6" diff="0.5" priority="1"/>
+        <node id="6" name="Fpj_Right_Roller_Speed" cname="翻抛机右滚筒转速" length="1" offset="7" diff="0.5" priority="1"/>
+    </area>
+    <area name="RUNCTR" datatype="x0" start="2320" diff="0">
+        <node id="6" name="YHC_CONTROL_MODE" cname="移行车控制方式" length="64" offset="0" diff="0" alert0="遥控器控制" alert1="移行车面板控制" priority="0"/>
+        <node id="6" name="YHC_REMOTE_CONTROL" cname="移行车按键板控制移行车" length="64" offset="1" diff="0" alert0="" alert1="移行车按键板控制移行车" priority="0"/>
+        <node id="6" name="YHC_KP_FPJ_CONTROL" cname="移行车按键板控制翻抛机" length="64" offset="2" diff="0" alert0="" alert1="移行车按键板控制翻抛机" priority="0"/>
+        <node id="6" name="WALKING_CV_STATE" cname="移行车行走正向运行" length="64" offset="3" diff="0" alert0="移行车行走正向未运行" alert1="移行车行走正向运行" priority="0"/>
+        <node id="6" name="WALKING_IV_STATE" cname="移行车行走反向运行" length="64" offset="4" diff="0" alert0="移行车行走反向未运行" alert1="移行车行走反向运行" priority="0"/>
+        <node id="6" name="CF_RUN" cname="散热风扇运行" length="64" offset="5" diff="0" alert0="散热风扇未运行" alert1="散热风扇运行" priority="0"/>
+        <node id="6" name="CT_RV_STATE" cname="移行车搭轨正向运行" length="64" offset="6" diff="0" alert0="移行车搭轨正向未运行" alert1="移行车搭轨正向运行" priority="0"/>
+        <node id="6" name="CT_DV_STATE" cname="移行车搭轨反向运行" length="64" offset="7" diff="0" alert0="移行车搭轨反向未运行" alert1="移行车搭轨反向运行" priority="0"/>
+        <node id="6" name="HS_F_IN_PLACE" cname="移行车前进到位" length="64" offset="8" diff="0" alert0="移行车前进未到位" alert1="移行车前进到位" priority="0"/>
+        <node id="6" name="HS_B_IN_PLACE" cname="移行车后退到位" length="64" offset="9" diff="0" alert0="移行车后退未到位" alert1="移行车后退到位" priority="0"/>
+        <node id="6" name="FPJ_IN_PLACE" cname="翻抛机回归到位信号" length="64" offset="10" diff="0" alert0="翻抛机回归未到位" alert1="翻抛机回归到位" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="11" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="12" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="13" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="14" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="15" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="EM_FAULT" cname="移行车液压电机故障信号" length="64" offset="16" diff="0" alert0="移行车液压电机运行正常" alert1="移行车液压电机运行故障" priority="1"/>
+        <node id="6" name="YHC_CF_FAULT" cname="移行车散热风扇故障信号" length="64" offset="17" diff="0" alert0="移行车散热风扇正常" alert1="移行车散热风扇故障" priority="1"/>
+        <node id="6" name="YHC_OC_FAULT" cname="移行车油路故障信号" length="64" offset="18" diff="0" alert0="移行车油路正常" alert1="移行车油路故障" priority="1"/>
+        <node id="6" name="YHC_HS_LEVEL" cname="移行车液压站液位信号" length="64" offset="19" diff="0" alert0="移行车液压站液位正常" alert1="移行车液压站液位低" priority="1"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="20" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="21" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="22" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="23" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="FPJ_CONTROL_MODE" cname="翻抛机控制方式" length="64" offset="24" diff="0" alert0="遥控器或移行车面板控制" alert1="翻面板（自身）控制" priority="0"/>
+        <node id="6" name="FPJ_REMOTE_CONTROL_MODE_1" cname="翻抛机远程控制方式1" length="64" offset="25" diff="0" alert0="" alert1="移行车面板控制" priority="0"/>
+        <node id="6" name="FPJ_REMOTE_CONTROL_MODE_2" cname="翻抛机远程控制方式2" length="64" offset="26" diff="0" alert0="" alert1="遥控器控制" priority="0"/>
+        <node id="6" name="FPJ_ROLLER_F_RUN" cname="翻抛机前进运行" length="64" offset="27" diff="0" alert0="翻抛机前进停止" alert1="翻抛机前进运行" priority="0"/>
+        <node id="6" name="FPJ_ROLLER_B_RUN" cname="翻抛机后退运行" length="64" offset="28" diff="0" alert0="翻抛机后退停止" alert1="翻抛机后退运行" priority="0"/>
+        <node id="6" name="FPJ_ROLLER_R_RUN" cname="翻抛机滚筒上升运行信号" length="64" offset="29" diff="0" alert0="翻抛机滚筒上升未运行" alert1="翻抛机滚筒上升运行" priority="0"/>
+        <node id="6" name="FPJ_ROLLER_D_RUN" cname="翻抛机滚筒下降运行信号" length="64" offset="30" diff="0" alert0="翻抛机滚筒下降未运行" alert1="翻抛机滚筒下降运行" priority="0"/>
+        <node id="6" name="FPJ_ROLLER_CORO_RUN" cname="翻抛机滚筒正转运行" length="64" offset="31" diff="0" alert0="翻抛机滚筒正转未运行" alert1="翻抛机滚筒正转运行" priority="0"/>
+        <node id="6" name="FPJ_ROLLER_INVE_RUN" cname="翻抛机滚筒反转运行" length="64" offset="32" diff="0" alert0="翻抛机滚筒反转未运行" alert1="翻抛机滚筒反转运行" priority="0"/>
+        <node id="6" name="FPJ_SPOOL_RUN" cname="翻抛机卷盘运行" length="64" offset="33" diff="0" alert0="翻抛机卷盘未运行" alert1="翻抛机卷盘运行" priority="0"/>
+        <node id="6" name="FPJ_SWEEPING" cname="翻抛机清扫运行" length="64" offset="34" diff="0" alert0="翻抛机清扫未运行" alert1="翻抛机清扫运行" priority="0"/>
+        <node id="6" name="FPJ_COOLER_1_RUN" cname="翻抛机左侧散热器运行" length="35" offset="32" diff="0" alert0="翻抛机左侧散热器未运行" alert1="翻抛机左侧散热器运行" priority="0"/>
+        <node id="6" name="FPJ_COOLER_2_RUN" cname="翻抛机右侧散热器运行" length="36" offset="33" diff="0" alert0="翻抛机右侧散热器未运行" alert1="翻抛机右侧散热器运行" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="37" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="38" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="39" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="40" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="FPJ_F_IN_PLACE" cname="翻抛机前进到位信号" length="64" offset="41" diff="0" alert0="翻抛机前进未到位" alert1="翻抛机前进到位" priority="0"/>
+        <node id="6" name="FPJ_B_IN_PLACE" cname="翻抛机后退到位信号" length="64" offset="42" diff="0" alert0="翻抛机后退未到位" alert1="翻抛机后退到位" priority="0"/>
+        <node id="6" name="FPJ_ROLLER_R_IN_PLACE" cname="翻抛机滚筒上升到位信号" length="43" offset="29" diff="0" alert0="翻抛机滚筒上升未到位" alert1="翻抛机滚筒上升到位" priority="0"/>
+        <node id="6" name="FPJ_ROLLER_D_IN_PLACE" cname="翻抛机滚筒下降到位信号" length="44" offset="30" diff="0" alert0="翻抛机滚筒下降未到位" alert1="翻抛机滚筒下降到位" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="45" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="46" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="47" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="FPJ_SERVO_1_FAULT" cname="翻抛机1#伺服器故障" length="64" offset="48" diff="0" alert0="翻抛机1#伺服器正常" alert1="翻抛机1#伺服器故障" priority="1"/>
+        <node id="6" name="FPJ_COOLER_1_FAULT" cname="翻抛机1#散热器故障" length="64" offset="49" diff="0" alert0="翻抛机1#散热器正常" alert1="翻抛机1#散热器故障" priority="1"/>
+        <node id="6" name="FPJ_SPOOL_FAULT" cname="翻抛机卷盘电机故障" length="64" offset="50" diff="0" alert0="翻抛机卷盘电机正常" alert1="翻抛机卷盘电机故障" priority="1"/>
+        <node id="6" name="FPJ_SWEEPING_EM_FAULT" cname="翻抛机清扫电机故障" length="64" offset="51" diff="0" alert0="翻抛机清扫电机正常" alert1="翻抛机清扫电机故障" priority="1"/>
+        <node id="6" name="FPJ_LIFTING_EM_FAULT" cname="翻抛机提升电机故障" length="64" offset="52" diff="0" alert0="翻抛机提升电机正常" alert1="翻抛机提升电机故障" priority="1"/>
+        <node id="6" name="FPJ_ROLLER_EM_FAULT" cname="翻抛机滚筒电机故障" length="64" offset="53" diff="0" alert0="翻抛机滚筒电机正常" alert1="翻抛机滚筒电机故障" priority="1"/>
+        <node id="6" name="FPJ_WALKING_OC_EM_FAULT" cname="翻抛机行走油路故障" length="64" offset="54" diff="0" alert0="翻抛机行走油路正常" alert1="翻抛机行走油路故障" priority="1"/>
+        <node id="6" name="FPJ_LIFTING_OC_EM_FAULT" cname="翻抛机提升油路故障" length="64" offset="55" diff="0" alert0="翻抛机提升油路正常" alert1="翻抛机油路提升故障" priority="1"/>
+        <node id="6" name="FPJ_ROLLER_OC_EM_FAULT" cname="翻抛机滚筒油路故障" length="64" offset="56" diff="0" alert0="翻抛机滚筒油路正常" alert1="翻抛机滚筒油路故障" priority="1"/>
+        <node id="6" name="HS_LEVEL" cname="液压站液位信号" length="64" offset="57" diff="0" alert0="液压站液位正常" alert1="液压站液位低" priority="1"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="58" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="59" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="60" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="61" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="62" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="64" offset="63" diff="0" alert0="" alert1="" priority="0"/>
+    </area>
+  </areas>
+</device>
