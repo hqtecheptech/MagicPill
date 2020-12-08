@@ -39,9 +39,9 @@ background-repeat:no-repeat;</string>
    <widget class="QLabel" name="r_label">
     <property name="geometry">
      <rect>
-      <x>73</x>
+      <x>70</x>
       <y>116</y>
-      <width>50</width>
+      <width>60</width>
       <height>25</height>
      </rect>
     </property>
@@ -63,9 +63,9 @@ background-repeat:no-repeat;</string>
    <widget class="QLabel" name="l_label">
     <property name="geometry">
      <rect>
-      <x>74</x>
+      <x>71</x>
       <y>55</y>
-      <width>50</width>
+      <width>60</width>
       <height>25</height>
      </rect>
     </property>
