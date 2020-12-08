@@ -124,7 +124,7 @@ void YhcRunStatusDialog::showStatus()
     }
 
     em_fault = Global::getYhcRunctrValueByName(_deviceIndex, "EM_FAULT", Global::currentYhcDataMap);
-    if(em_fault)
+    if(!em_fault)
     {
         ui->EM_FAULT_label->setStyleSheet("background-image: url(:/pic/wheel_run.png)");
     }
@@ -134,7 +134,7 @@ void YhcRunStatusDialog::showStatus()
     }
 
     heater_fault = Global::getYhcRunctrValueByName(_deviceIndex, "YHC_CF_FAULT", Global::currentYhcDataMap);
-    if(heater_fault)
+    if(!heater_fault)
     {
         ui->YHC_CF_FAULT_label->setStyleSheet("background-image: url(:/pic/wheel_run.png)");
     }
@@ -144,7 +144,7 @@ void YhcRunStatusDialog::showStatus()
     }
 
     oc_fault = Global::getYhcRunctrValueByName(_deviceIndex, "YHC_OC_FAULT", Global::currentYhcDataMap);
-    if(oc_fault)
+    if(!oc_fault)
     {
         ui->YHC_OC_FAULT_label->setStyleSheet("background-image: url(:/pic/wheel_run.png)");
     }
@@ -203,7 +203,7 @@ void YhcRunStatusDialog::swithState()
         }
     }
 
-    if(!hs_level)
+    if(hs_level)
     {
         if(stateFlag)
         {
