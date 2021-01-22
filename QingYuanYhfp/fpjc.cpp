@@ -195,7 +195,7 @@ void Fpjc::updateWatch()
     deviceNode = Global::getYhcNodeInfoByName("Fpj_Hs_1_Oil_Level");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     qDebug() << "Fpj_Hs_1_Oil_Level value: " << Global::currentYhcDataMap.value(address);
-    float hl1 = Global::currentYhcDataMap.value(address).toUShort();
+    float hl1 = Global::currentYhcDataMap.value(address).toFloat();
 
     ui->fpjWatchsWidget->updateLeftCenterPlate(ht1, hl1);
 

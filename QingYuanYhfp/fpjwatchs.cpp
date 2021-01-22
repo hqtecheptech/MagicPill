@@ -45,7 +45,7 @@ void FpjWatchs::setRightCenterPlateRange(int leftMin, int leftMax, int rightMin,
 
 void FpjWatchs::updateLeftTopPlate(int leftValue, int rightValue)
 {
-    //ui->leftTopWidget->updatePlates(leftValue, rightValue);
+    ui->leftTopWidget->updatePlates(leftValue, rightValue);
 }
 
 void FpjWatchs::updateRightTopPlate(int leftValue, int rightValue)
