@@ -130,7 +130,7 @@
      <rect>
       <x>565</x>
       <y>30</y>
-      <width>741</width>
+      <width>850</width>
       <height>45</height>
      </rect>
     </property>
@@ -145,7 +145,7 @@
      <string notr="true">color: rgb(250, 250, 250);</string>
     </property>
     <property name="text">
-     <string>清远智能发酵处理系统</string>
+     <string>清远市城市污泥好氧发酵智能控制系统</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

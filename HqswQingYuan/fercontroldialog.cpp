@@ -386,16 +386,40 @@ void FerControlDialog::parseFermentationData(QMap<float,QString> dataMap)
     DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_WT_R");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->weightTemptureLabel->setText(dataMap[address]);
+    float temValue = dataMap.value(address).toFloat();
+    if(temValue > -20 && temValue <= 100)
+    {
+        ui->weightTemptureLabel->setText(QString::number(temValue, 'f', 2));
+    }
+    else
+    {
+        ui->weightTemptureLabel->setText("ERR");
+    }
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_HT_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             *  Global::getLengthByDataType(deviceNode.DataType);
-    ui->highTemptureLabel->setText(dataMap[address]);
+    temValue = dataMap.value(address).toFloat();
+    if(temValue > -20 && temValue <= 100)
+    {
+        ui->highTemptureLabel->setText(QString::number(temValue, 'f', 2));
+    }
+    else
+    {
+        ui->highTemptureLabel->setText("ERR");
+    }
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_MT_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
-    ui->midTemptureLabel->setText(dataMap[address]);
+    temValue = dataMap.value(address).toFloat();
+    if(temValue > -20 && temValue <= 100)
+    {
+        ui->midTemptureLabel->setText(QString::number(temValue, 'f', 2));
+    }
+    else
+    {
+        ui->midTemptureLabel->setText("ERR");
+    }
 
     //deviceNode = Global::getFermenationNodeInfoByName("FER_LT_R");
     //address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
@@ -404,12 +428,28 @@ void FerControlDialog::parseFermentationData(QMap<float,QString> dataMap)
     deviceNode = Global::getFermenationNodeInfoByName("FER_ET_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->envTemptureLabel->setText(dataMap[address]);
+    temValue = dataMap.value(address).toFloat();
+    if(temValue > -20 && temValue <= 100)
+    {
+        ui->envTemptureLabel->setText(QString::number(temValue, 'f', 2));
+    }
+    else
+    {
+        ui->envTemptureLabel->setText("ERR");
+    }
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_HM_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
             *  Global::getLengthByDataType(deviceNode.DataType);
-    ui->envhumidityLabel->setText(dataMap[address]);
+    temValue = dataMap.value(address).toFloat();
+    if(temValue >= 0 && temValue <= 100)
+    {
+        ui->envhumidityLabel->setText(QString::number(temValue, 'f', 2));
+    }
+    else
+    {
+        ui->envhumidityLabel->setText("ERR");
+    }
 
     /*deviceNode = Global::getFermenationNodeInfoByName("FER_CO_R");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) * 4;
@@ -520,14 +560,30 @@ void FerControlDialog::parseFerStartEndTime(QMap<float,QString> dataMap)
             Global::getLengthByDataType(deviceNode.DataType);
     uint runtime = dataMap[address].toUInt();
     QDateTime dt = QDateTime::fromTime_t(runtime);
-    ui->ferStartTimeLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
+    if(dt.date().year() == QDateTime::currentDateTime().date().year()
+        || dt.date().year() == QDateTime::currentDateTime().date().year() - 1)
+    {
+        ui->ferStartTimeLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
+    }
+    else
+    {
+        ui->ferStartTimeLabel->setText("");
+    }
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_END_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex) *
             Global::getLengthByDataType(deviceNode.DataType);
     runtime = dataMap[address].toUInt();
     dt = QDateTime::fromTime_t(runtime);
-    ui->ferEndTimeLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
+    if(dt.date().year() == QDateTime::currentDateTime().date().year()
+        || dt.date().year() == QDateTime::currentDateTime().date().year() - 1)
+    {
+        ui->ferEndTimeLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
+    }
+    else
+    {
+        ui->ferEndTimeLabel->setText("");
+    }
 }
 
 void FerControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
@@ -537,6 +593,7 @@ void FerControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
     isFanRun = Global::getFerRunctrValueByName(tankIndex,"FAN_Run_BOOL", dataMap);
     //isFerPaused = Global::getFerRunctrValueByName(tankIndex,"FER_Pause", dataMap);
     isFerStarted = Global::getFerRunctrValueByName(tankIndex,"FER_State_BOOL", dataMap);
+    isManualFerStart = Global::getFerRunctrValueByName(tankIndex,"Aeration_Start", dataMap);
     if(isFerStarted)
     {
         ui->ferStateLabel->setText(QStringLiteral("发酵中..."));
@@ -547,6 +604,28 @@ void FerControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
         else
         {
             ui->aerationStateLabel->setText(QStringLiteral("曝气终止"));
+        }
+
+        /*if(isManualFerStart)
+        {
+            ui->customFerButton->setEnabled(false);
+            ui->startFerButton->setEnabled(true);
+        }
+        else
+        {
+            ui->customFerButton->setEnabled(true);
+            ui->startFerButton->setEnabled(false);
+        }*/
+
+        if(isManualFerStart)
+        {
+            ui->customFerButton->setEnabled(true);
+            ui->startFerButton->setEnabled(false);
+        }
+        else
+        {
+            ui->customFerButton->setEnabled(false);
+            ui->startFerButton->setEnabled(false);
         }
         /*ui->pauseFerButton->setEnabled(true);
         if(isFerPaused)
@@ -563,6 +642,8 @@ void FerControlDialog::parseFerRunCtrData(QMap<float,QString> dataMap)
         //ui->pauseFerButton->setEnabled(false);
         ui->ferStateLabel->setText(QStringLiteral("发酵终止"));
         ui->aerationStateLabel->setText(QStringLiteral(""));
+        ui->customFerButton->setEnabled(true);
+        ui->startFerButton->setEnabled(true);
     }
     ui->endFerButton->setEnabled(isFerStarted);
 

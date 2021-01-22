@@ -13,6 +13,8 @@ RenhuaiNew::RenhuaiNew(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->exitButton->setVisible(false);
+
     uint valueNumber = Global::ferDeviceInfo.Enviroment_Num;
     for(uint i=0; i < valueNumber; i++)
     {
@@ -173,9 +175,10 @@ void RenhuaiNew::timerEvent( QTimerEvent *event )
 void RenhuaiNew::on_loginButton_clicked()
 {
     loginDialog->show();
-    qDebug() << "QApplication::desktop()->width()" << QApplication::desktop()->width();
-    qDebug() << "QApplication::desktop()->height()" << QApplication::desktop()->height();
-    loginDialog->move((1920 - loginDialog->width())/2,(1080 - loginDialog->height())/2);
+    loginDialog->move(20, 20);
+    //qDebug() << "QApplication::desktop()->width()" << QApplication::desktop()->width();
+    //qDebug() << "QApplication::desktop()->height()" << QApplication::desktop()->height();
+    //loginDialog->move((1920 - loginDialog->width())/2,(1080 - loginDialog->height())/2);
 }
 
 void RenhuaiNew::updateLoginState()
@@ -221,6 +224,7 @@ void RenhuaiNew::on_logoutPushButton_clicked()
     else
     {
         loginDialog->show();
+        loginDialog->move(20,20);
     }
 }
 
@@ -230,6 +234,7 @@ void RenhuaiNew::on_switchUserPushButton_clicked()
     if(user != Q_NULLPTR)
     {
         loginDialog->show();
+        loginDialog->move(20,20);
     }
 }
 

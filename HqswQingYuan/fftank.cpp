@@ -198,7 +198,15 @@ void FFTank::parseFermentationData(QMap<float,QString> dataMap)
     DeviceNode deviceNode = Global::getFermenationNodeInfoByName("FER_WT_R");
     float address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
                             * Global::getLengthByDataType(deviceNode.DataType);
-    ui->wtValueLabel->setText(dataMap[address]);
+    float temValue = dataMap.value(address).toFloat();
+    if(temValue >= 0 && temValue <= 100)
+    {
+        ui->wtValueLabel->setText(QString::number(temValue, 'f', 2));
+    }
+    else
+    {
+        ui->wtValueLabel->setText("ERR");
+    }
 }
 
 void FFTank::parseFerStartEndTime(QMap<float,QString> dataMap)
@@ -212,7 +220,15 @@ void FFTank::parseFerStartEndTime(QMap<float,QString> dataMap)
     //qDebug() << "Start time = " << dataMap[address];
     uint runtime = dataMap[address].toUInt();
     QDateTime dt = QDateTime::fromTime_t(runtime);
-    ui->startTimeValueLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
+    if(dt.date().year() == QDateTime::currentDateTime().date().year()
+            || dt.date().year() == QDateTime::currentDateTime().date().year() - 1)
+    {
+        ui->startTimeValueLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
+    }
+    else
+    {
+        ui->startTimeValueLabel->setText("");
+    }
 
     deviceNode = Global::getFermenationNodeInfoByName("FER_END_UDI");
     address = deviceNode.Offset + (info.offset + deviceIndex - info.startIndex)
@@ -220,7 +236,15 @@ void FFTank::parseFerStartEndTime(QMap<float,QString> dataMap)
     //qDebug() << "End time = " << dataMap[address];
     runtime = dataMap[address].toUInt();
     dt = QDateTime::fromTime_t(runtime);
-    ui->endTimeValueLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
+    if(dt.date().year() == QDateTime::currentDateTime().date().year()
+        || dt.date().year() == QDateTime::currentDateTime().date().year() - 1)
+    {
+        ui->endTimeValueLabel->setText(dt.toString("yyyy-MM-dd hh:mm"));
+    }
+    else
+    {
+        ui->endTimeValueLabel->setText("");
+    }
 }
 
 void FFTank::parseFerRunTimeData(QMap<float,QString> dataMap)
