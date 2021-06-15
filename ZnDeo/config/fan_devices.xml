@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<device>
+  <areas devicenumber="5" runctrnumber="32">
+      <area name="AERATION_FAN_HZ" datatype="r" start="320" diff="0">
+        <node id="4" name="FER_RF_R" cname="风机手动运行频率设定" length="5" offset="320" diff="0.5"/>
+      </area>
+      <area name="AERATION_FAN_HZ_SETTING" datatype="dw" start="320" diff="0">
+        <node id="4" cname="风机手动运行频率设定" name="AerationHZ_Fan_HandRun_HzSet" length="10" offset="15760" diff="0.5"/>
+      </area>
+      <area name="RUNCTR" datatype="x0" start="35000" diff="0">
+        <node id="4" name="FAN_Remote_SIGNAL" cname="风机远程信号" length="32" offset="0" diff="0" alert0="风机就地控制启动" alert1="风机远程控制启动" priority="0"/>
+        <node id="4" name="FAN_Run_SIGNAL" cname="风机运行信号" length="32" offset="1" diff="0" alert0="风机结束运行" alert1="风机开始运行" priority="0"/>
+        <node id="4" name="FAN_Fault_SIGNAL" cname="风机故障信号" length="32" offset="2" diff="0" alert0="风机无故障" alert1="风机故障" priority="0"/>
+        <node id="4" name="FAN_HandStart" cname="风机手动开启" length="32" offset="3" diff="0" alert0="无动作" alert1="风机手动开启" priority="0"/>
+        <node id="4" name="FAN_HandStop" cname="风机手动关闭" length="32" offset="4" diff="0" alert0="无动作" alert1="风机手动关闭" priority="0"/>
+        <node id="4" name="FAN_HandOut" cname="风机手动运行输出" length="32" offset="5" diff="0" alert0="风机手动运行输出" alert1="风机手动运行输出" priority="0"/>
+        <node id="4" name="FAN_AutoOut" cname="风机自动运行输出" length="32" offset="6" diff="0" alert0="风机自动运行输出" alert1="风机自动运行输出" priority="0"/>
+        <node id="4" name="FAN_SPARE_USE" cname="使用备用风机" length="32" offset="7" diff="0" alert0="无动作" alert1="使用备用风机" priority="0"/>
+        <node id="4" name="FAN_SPARE_INUSE" cname="使用备用风机状态显示" length="32" offset="8" diff="0" alert0="未使用备用风机状态" alert1="使用备用风机状态" priority="0"/>
+        <node id="4" name="FAN_SPARE_RUN" cname="备用风机投入输出" length="32" offset="9" diff="0" alert0="备用风机投入输出" alert1="备用风机投入输出" priority="0"/>
+        <node id="4" name="FAN_Auto_BOOL" cname="风机手动自动信号" length="32" offset="10" diff="0" alert0="风机手动信号" alert1="风机自动信号" priority="0"/>
+        <node id="4" name="FAN_SPARE_NOUSE" cname="不使用备用风机" length="32" offset="11" diff="0" alert0="无动作" alert1="不使用备用风机" priority="0"/>
+        <node id="4" name="FAN_SPARE_NOT_INUSE" cname="未使用备用风机状态显示" length="32" offset="12" diff="0" alert0="未使用备用风机状态显示" alert1="未使用备用风机状态显示" priority="0"/>
+      </area>
+  </areas>
+</device>

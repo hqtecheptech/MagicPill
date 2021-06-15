@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<device>
+  <areas devicenumber="1" runctrnumber="64">
+    <area name="DEODORATION" datatype="r" start="0" diff="0.5">
+        <node id="2" name="Temp_Read" length="2" offset="0" diff="0.5" priority="1"/>
+        <node id="2" name="PH_Read" length="2" offset="1" diff="0.5" priority="1"/>
+        <node id="2" name="Level_Switch_Read" length="2" offset="2" diff="0.5" priority="1"/>
+        <node id="2" name="NH3" length="2" offset="3" diff="0.5" priority="1"/>
+        <node id="2" name="H2S" length="2" offset="4" diff="0.5" priority="1"/>
+        <node id="2" name="Total_Current" length="1" offset="5" diff="0.5" priority="1"/>
+    </area>
+    <area name="DEODORATION_SETTING" datatype="dw" start="1792" diff="0.5">
+        <node id="2" name="HMI_TimeStartSet_Hour_First" cname="一号风机时钟第一次启动时间设定-时" category="Deodoration_Setting" length="1" offset="12" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_TimeStartSet_Min_First" cname="一号风机时钟第一次启动时间设定-分" category="Deodoration_Setting" length="1" offset="16" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_TimeStopSet_Hour_First" cname="一号风机时钟第一次停止时间设定-时" category="Deodoration_Setting" length="1" offset="28" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_TimeStopSet_Min_First" cname="一号风机时钟第一次停止时间设定-分" category="Deodoration_Setting" length="1" offset="32" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_TimeStartSet_Hour_Second" cname="一号风机时钟第二次启动时间设定-时" category="Deodoration_Setting" length="1" offset="20" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_TimeStartSet_Min_Second" cname="一号风机时钟第二次启动时间设定-分" category="Deodoration_Setting" length="1" offset="24" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_TimeStopSet_Hour_Second" cname="一号风机时钟第二次停止时间设定-时" category="Deodoration_Setting" length="1" offset="36" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_TimeStopSet_Min_Second" cname="一号风机时钟第二次停止时间设定-分" category="Deodoration_Setting" length="1" offset="40" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_PumpTimeStartSet_Hour_First" cname="喷淋泵第一次启动时间设定-时" category="Deodoration_Setting" length="1" offset="44" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_PumpTimeStartSet_Min_First" cname="喷淋泵第一次启动时间设定-分" category="Deodoration_Setting" length="1" offset="48" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_PumpTimeStopSet_Hour_First" cname="喷淋泵第一次停止时间设定-时" category="Deodoration_Setting" length="1" offset="52" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_PumpTimeStopSet_Min_First" cname="喷淋泵第一次停止时间设定-分" category="Deodoration_Setting" length="1" offset="56" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_PumpTimeStartSet_Hour_Second" cname="喷淋泵第二次启动时间设定-时" category="Deodoration_Setting" length="1" offset="60" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_PumpTimeStartSet_Min_Second" cname="喷淋泵第二次启动时间设定-分" category="Deodoration_Setting" length="1" offset="64" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_PumpTimeStopSet_Hour_Second" cname="喷淋泵第二次停止时间设定-时" category="Deodoration_Setting" length="1" offset="68" diff="0.5" priority="1"/>
+        <node id="2" name="HMI_PumpTimeStopSet_Min_Second" cname="喷淋泵第二次停止时间设定-分" category="Deodoration_Setting" length="1" offset="72" diff="0.5" priority="1"/>
+    </area>
+    <area name="RUNCTR" datatype="x0" start="2320" diff="0">
+        <node id="2" name="Fan_1_Auto" cname="1#风机自动运行反馈" length="64" offset="124" diff="0" alert0="1#风机手动运行" alert1="1#风机自动运行" priority="0"/>
+        <node id="2" name="Fan_1_StandBy" cname="1#风机投入/备用" length="64" offset="129" diff="0" alert0="1#引风机备用" alert1="1#风机投入" priority="0"/>
+        <node id="2" name="Fan_1_Start_Write" cname="1#风机上位机启动" length="64" offset="129" diff="0" alert0="" alert1="1#风机启动" priority="0"/>
+        <node id="2" name="Fan_1_Stop_Write" cname="1#风机上位机停止" length="64" offset="129" diff="0" alert0="" alert1="1#风机停止" priority="0"/>
+        <node id="2" name="Pump_1_Auto" cname="1#水泵自动运行反馈" length="64" offset="8" diff="0" alert0="1#水泵手动运行" alert1="1#水泵自动运行" priority="0"/>
+        <node id="2" name="Pump_1_StandBy" cname="1#水泵投入/备用" length="64" offset="8" diff="0" alert0="1#水泵备用" alert1="1#水泵投入" priority="0"/>
+        <node id="2" name="Pump_1_Start_Signal" cname="1#水泵启动信号" length="64" offset="133" diff="0" alert0="" alert1="1#水泵启动" priority="0"/>
+        <node id="2" name="Pump_1_Stop_Signal" cname="1#水泵停止信号" length="64" offset="133" diff="0" alert0="" alert1="1#水泵停止" priority="0"/>
+        <node id="2" name="Pump_2_Auto" cname="2#水泵自动运行反馈" length="64" offset="8" diff="0" alert0="2#水泵手动运行" alert1="2#水泵自动运行" priority="0"/>
+        <node id="2" name="Pump_2_StandBy" cname="2#水泵投入/备用" length="64" offset="8" diff="0" alert0="2#水泵备用" alert1="2#水泵投入" priority="0"/>
+        <node id="2" name="Pump_2_Start_Signal" cname="2#水泵启动信号" length="64" offset="133" diff="0" alert0="" alert1="2#水泵启动" priority="0"/>
+        <node id="2" name="Pump_2_Stop_Signal" cname="2#水泵停止信号" length="64" offset="133" diff="0" alert0="" alert1="2#水泵停止" priority="0"/>
+        <node id="2" name="Pump_PL_1_Auto" cname="1#喷淋水泵自动运行反馈" length="64" offset="11" diff="0" alert0="1#喷淋水泵手动运行" alert1="1#喷淋水泵自动运行" priority="1"/>
+        <node id="2" name="Pump_PL_1_StandBy" cname="1#喷淋水泵投入/备用" length="64" offset="11" diff="0" alert0="1#喷淋水泵备用" alert1="1#喷淋水泵投入" priority="1"/>
+        <node id="2" name="Pump_PL_1_Start_Signal" cname="1#喷淋水泵启动信号" length="64" offset="133" diff="0" alert0="" alert1="1#喷淋水泵启动" priority="0"/>
+        <node id="2" name="Pump_PL_1_Stop_Signal" cname="1#喷淋水泵停止信号" length="64" offset="133" diff="0" alert0="" alert1="1#喷淋水泵停止" priority="0"/>
+        <node id="2" name="Pump_PL_2_Auto" cname="2#喷淋水泵自动运行反馈" length="64" offset="11" diff="0" alert0="2#喷淋水泵手动运行" alert1="2#喷淋水泵自动运行" priority="1"/>
+        <node id="2" name="Pump_PL_2_StandBy" cname="2#喷淋水泵投入/备用" length="64" offset="11" diff="0" alert0="2#喷淋水泵备用" alert1="2#喷淋水泵投入" priority="1"/>
+        <node id="2" name="Pump_PL_2_Start_Signal" cname="2#喷淋水泵启动信号" length="64" offset="133" diff="0" alert0="2#喷淋水泵停止" alert1="2#喷淋水泵已启动" priority="0"/>
+        <node id="2" name="Pump_PL_2_Stop_Signal" cname="2#喷淋水泵停止信号" length="64" offset="133" diff="0" alert0="" alert1="2#喷淋水泵停止" priority="0"/>
+        <node id="2" name="ValveBW_1_Auto" cname="1#补水阀自动运行反馈" length="64" offset="4" diff="0" alert0="1#补水电磁阀结束运行" alert1="1#补水电磁阀开始运行" priority="0"/>
+        <node id="2" name="ValveBW_1_Start" cname="1#补水阀打开" length="64" offset="4" diff="0" alert0="" alert1="1#补水阀打开" priority="0"/>
+        <node id="2" name="ValveBW_1_Stop" cname="1#补水阀停止" length="64" offset="4" diff="0" alert0="" alert1="1#补水阀停止" priority="0"/>
+        <node id="2" name="ValveBW_2_Auto" cname="2#补水阀自动运行反馈" length="64" offset="4" diff="0" alert0="1#补水电磁阀结束运行" alert1="1#补水电磁阀开始运行" priority="0"/>
+        <node id="2" name="ValveBW_2_Start" cname="2#补水阀打开" length="64" offset="4" diff="0" alert0="2#补水阀未打开" alert1="2#补水阀打开" priority="0"/>
+        <node id="2" name="ValveBW_2_Stop" cname="2#补水阀停止" length="64" offset="4" diff="0" alert0="" alert1="2#补水阀停止" priority="0"/>
+        <node id="2" name="Fan_1_Run_Signal" cname="1#引风机运行信号" length="64" offset="0" diff="0" alert0="1#引风机结束运行" alert1="1#引风机开始运行" priority="0"/>
+        <node id="2" name="Fan_1_False_Signal" cname="1#引风机故障信号" length="64" offset="1" diff="0" alert0="1#引风机无故障" alert1="1#引风机故障" priority="1"/>
+        <node id="2" name="Pump_1_Run_Signal" cname="北1#水泵运行信号" length="64" offset="8" diff="0" alert0="北1#水泵结束运行" alert1="北1#水泵开始运行" priority="0"/>
+        <node id="2" name="Pump_1_False_Signal" cname="北1#水泵故障信号" length="64" offset="9" diff="0" alert0="北1#水泵无故障" alert1="北1#水泵故障" priority="1"/>
+        <node id="2" name="Pump_2_Run_Signal" cname="北2#水泵运行信号" length="64" offset="8" diff="0" alert0="北2#水泵结束运行" alert1="北2#水泵开始运行" priority="0"/>
+        <node id="2" name="Pump_2_False_Signal" cname="北2#水泵故障信号" length="64" offset="9" diff="0" alert0="北2#水泵无故障" alert1="北2#水泵故障" priority="1"/>
+        <node id="2" name="Pump_PL_1_Run_Signal" cname="南1#喷淋水泵运行信号" length="64" offset="10" diff="0" alert0="南1#喷淋水泵结束运行" alert1="南1#喷淋水泵开始运行" priority="0"/>
+        <node id="2" name="Pump_PL_1_False_Signal" cname="南1#喷淋水泵故障信号" length="64" offset="11" diff="0" alert0="南1#喷淋水泵无故障" alert1="南1#喷淋水泵故障" priority="1"/>
+        <node id="2" name="Pump_PL_2_Run_Signal" cname="南2#喷淋水泵运行信号" length="64" offset="10" diff="0" alert0="南2#喷淋水泵结束运行" alert1="南2#喷淋水泵开始运行" priority="0"/>
+        <node id="2" name="Pump_PL_2_False_Signal" cname="南2#喷淋水泵故障信号" length="64" offset="11" diff="0" alert0="南2#喷淋水泵无故障" alert1="南2#喷淋水泵故障" priority="1"/>
+        <node id="2" name="Pump_Am_1_Run_Signal" cname="北侧加药隔离泵运行反馈" length="64" offset="11" diff="0" alert0="北侧加药隔离泵结束运行" alert1="北侧加药隔离泵运行" priority="0"/>
+        <node id="2" name="Pump_Am_1_False_Signal" cname="北侧加药隔离泵故障反馈" length="64" offset="18" diff="0" alert0="北侧加药隔离泵无故障" alert1="北侧加药隔离泵故障" priority="1"/>
+        <node id="2" name="Backup_Em_1_Run_Signal" cname="备用电机运行反馈" length="64" offset="11" diff="0" alert0="备用电机结束运行" alert1="备用电机运行" priority="0"/>
+        <node id="2" name="Backup_Em_1_False_Signal" cname="备用电机故障反馈" length="64" offset="18" diff="0" alert0="备用电机无故障" alert1="备用电机故障" priority="1"/>
+        <node id="2" name="ValveBW_1_Run_Signal" cname="1#补水阀运行反馈" length="64" offset="4" diff="0" alert0="1#补水电磁阀结束运行" alert1="1#补水电磁阀开始运行" priority="0"/>
+        <node id="2" name="ValveBW_2_Run_Signal" cname="2#补水阀运行反馈" length="64" offset="4" diff="0" alert0="2#补水电磁阀结束运行" alert1="2#补水电磁阀开始运行" priority="0"/>
+        <node id="2" name="ValveBW_3_Run_Signal" cname="3#补水阀运行反馈" length="64" offset="4" diff="0" alert0="3#补水电磁阀结束运行" alert1="3#补水电磁阀开始运行" priority="0"/>
+        <node id="2" name="PL_Valve_1_Opened_Signal" cname="1#喷淋阀开到位信号" length="64" offset="16" diff="0" alert0="1#喷淋阀未开到位" alert1="1#喷淋阀已开到位" priority="0"/>
+        <node id="2" name="PL_Valve_1_Closed_Signal" cname="1#喷淋阀关到位信号" length="64" offset="17" diff="0" alert0="1#喷淋阀未关到位" alert1="1#喷淋阀已关到位" priority="0"/>
+        <node id="2" name="PL_Valve_2_Opened_Signal" cname="1#喷淋阀开到位信号" length="64" offset="16" diff="0" alert0="2#喷淋阀未开到位" alert1="2#喷淋阀已开到位" priority="0"/>
+        <node id="2" name="PL_Valve_2_Closed_Signal" cname="1#喷淋阀关到位信号" length="64" offset="17" diff="0" alert0="2#喷淋阀未关到位" alert1="2#喷淋阀已关到位" priority="0"/>
+        <node id="2" name="Tank_1_Level_High_Signal" cname="1#水箱液位高信号" length="64" offset="114" diff="0" alert0="1#水箱液位正常" alert1="1#水箱液位高" priority="0"/>
+        <node id="2" name="Tank_1_Level_Middle_Signal" cname="1#水箱液位中信号" length="64" offset="114" diff="0" alert0="1#水箱液位正常" alert1="1#水箱液位中" priority="0"/>
+        <node id="2" name="Tank_1_Level_Low_Signal" cname="1#水箱液位低信号" length="64" offset="114" diff="0" alert0="1#水箱液位正常" alert1="1#水箱液位低" priority="1"/>
+        <node id="2" name="Tank_2_Level_High_Signal" cname="2#水箱液位高信号" length="64" offset="114" diff="0" alert0="2#水箱液位正常" alert1="2#水箱液位高" priority="0"/>
+        <node id="2" name="Tank_2_Level_Middle_Signal" cname="2#水箱液位中信号" length="64" offset="114" diff="0" alert0="2#水箱液位正常" alert1="2#水箱液位中" priority="0"/>
+        <node id="2" name="Tank_2_Level_Low_Signal" cname="2#水箱液位低信号" length="64" offset="114" diff="0" alert0="2#水箱液位正常" alert1="2#水箱液位低" priority="1"/>
+        <node id="2" name="Tank_3_Level_High_Signal" cname="3#水箱液位高信号" length="64" offset="114" diff="0" alert0="3#水箱液位正常" alert1="3#水箱液位高" priority="0"/>
+        <node id="2" name="Tank_3_Level_Middle_Signal" cname="3#水箱液位中信号" length="64" offset="114" diff="0" alert0="3#水箱液位正常" alert1="3#水箱液位中" priority="0"/>
+        <node id="2" name="Tank_3_Level_Low_Signal" cname="3#水箱液位低信号" length="64" offset="114" diff="0" alert0="3#水箱液位正常" alert1="3#水箱液位低" priority="1"/>
+        <node id="2" name="Remote_Auto_Switch" cname="远程切换自动" length="64" offset="115" diff="0" alert0="远程切换手动" alert1="远程切换手动" priority="0"/>
+    </area>
+  </areas>
+</device>
