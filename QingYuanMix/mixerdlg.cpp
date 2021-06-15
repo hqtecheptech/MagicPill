@@ -52,7 +52,7 @@ MixerDlg::MixerDlg(QWidget *parent) :
 
     readDataTimer = new QTimer(this);
     connect(readDataTimer, SIGNAL(timeout()), this, SLOT(readData()));
-    readDataTimer->start(500);
+    readDataTimer->start(1000);
 
     mixSettingDlg = new MixSettingDialog();
     alertHisDlg = new AlertHistoryDialog(this);
