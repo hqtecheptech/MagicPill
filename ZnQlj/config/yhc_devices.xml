@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<device>
+  <areas devicenumber="1" runctrnumber="96">
+    <area name="YHC_FPJ_DATA" datatype="r" start="0" diff="0.5">
+        <node id="6" name="QLJ_Total_Voltage" cname="取料机总电压" length="1" offset="0" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_Total_Ampere" cname="取料机总电流" length="1" offset="1" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_Hs_Tempture" cname="取料机液压站温度" length="1" offset="4" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_Hs_Oil_Level" cname="取料机液压站油位" length="1" offset="3" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_CP_L_Pressure" cname="取料机链板升降压力" length="1" offset="2" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_CP_W_Pressure" cname="取料机链板旋转压力" length="1" offset="2" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_MS_MOVE_Pressure" cname="取料机主螺旋移动压力" length="1" offset="2" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_MS_W_Pressure" cname="取料机主螺旋旋转压力" length="1" offset="2" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_SS_MOVE_Pressure" cname="取料机短螺旋移动压力" length="1" offset="2" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_SS_W_Pressure" cname="取料机短螺旋旋转压力" length="1" offset="2" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_PS_1_Pressure" cname="取料机1#推铲压力" length="1" offset="2" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_PS_2_Pressure" cname="取料机2#推铲压力" length="1" offset="2" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_SG_Pressure" cname="取料机闸门压力" length="1" offset="2" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_MIXER_Pressure" cname="取料机混料器压力" length="1" offset="2" diff="0.5" priority="1"/>
+        <node id="6" name="SPAIR" cname="备用" length="1" offset="5" diff="0.5" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="1" offset="6" diff="0.5" alert0="" alert1="" priority="0"/>
+    </area>
+    <area name="YHC_FPJ_OTHER" datatype="dw" start="1792" diff="0.5">
+    </area>
+    <area name="YHC_FPJ_SETTING" datatype="w" start="2304" diff="0">
+        <node id="6" name="QLJ_Walking_Speed" cname="移行车当前速度值" length="1" offset="0" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_Left_Track_Encoder_Cycle_Num" cname="取料机1#履带编码器圈数" length="1" offset="4" diff="0.5" priority="1"/>
+        <node id="6" name="QLJ_Right_Track_Encoder_Cycle_Num" cname="取料机2#履带编码器圈数" length="1" offset="5" diff="0.5" priority="1"/>
+    </area>
+    <area name="RUNCTR" datatype="x0" start="2320" diff="0">
+        <node id="6" name="QLJ_REMOTE_CONTROL" cname="遥控器控制取料机" length="96" offset="0" diff="0" alert0="" alert1="遥控器控制取料机" priority="0"/>
+        <node id="6" name="QLJ_KP_CONTROL" cname="就地面板控制取料机" length="96" offset="1" diff="0" alert0="" alert1="就地面板控制取料机" priority="0"/>
+        <node id="6" name="QLJ_F_RUN" cname="取料机前进运行" length="96" offset="46" diff="0" alert0="取料机前进停止" alert1="取料机前进运行" priority="0"/>
+        <node id="6" name="QLJ_B_RUN" cname="取料机后退运行" length="96" offset="47" diff="0" alert0="取料机后退停止" alert1="取料机后退运行" priority="0"/>
+        <node id="6" name="QLJ_CP_R_RUN" cname="取料机链板上升运行" length="96" offset="52" diff="0" alert0="取料机链板上升未运行" alert1="取料机链板上升运行" priority="0"/>
+        <node id="6" name="QLJ_CP_D_RUN" cname="取料机链板下降运行" length="96" offset="53" diff="0" alert0="取料机链板下降未运行" alert1="取料机链板下降运行" priority="0"/>
+        <node id="6" name="QLJ_CP_W_RUN" cname="取料机链板旋转运行" length="96" offset="54" diff="0" alert0="取料机链板旋转未运行" alert1="取料机链板旋转运行" priority="0"/>
+        <node id="6" name="QLJ_MS_RV_STATE" cname="取料机主螺旋正向运行" length="96" offset="6" diff="0" alert0="取料机主螺旋正向未运行" alert1="取料机主螺旋正向运行" priority="0"/>
+        <node id="6" name="QLJ_MS_DV_STATE" cname="取料机主螺旋反向运行" length="96" offset="7" diff="0" alert0="取料机主螺旋反向未运行" alert1="取料机主螺旋反向运行" priority="0"/>
+        <node id="6" name="QLJ_MS_W_RUN" cname="取料机主螺旋旋转运行" length="96" offset="54" diff="0" alert0="取料机主螺旋旋转未运行" alert1="取料机主螺旋旋转运行" priority="0"/>
+        <node id="6" name="QLJ_SS_RV_STATE" cname="取料机短螺旋正向运行" length="96" offset="6" diff="0" alert0="取料机短螺旋正向未运行" alert1="取料机短螺旋正向运行" priority="0"/>
+        <node id="6" name="QLJ_SS_DV_STATE" cname="取料机短螺旋反向运行" length="96" offset="7" diff="0" alert0="取料机短螺旋反向未运行" alert1="取料机短螺旋反向运行" priority="0"/>
+        <node id="6" name="QLJ_SS_W_RUN" cname="取料机短螺旋旋转运行" length="96" offset="54" diff="0" alert0="取料机短螺旋旋转未运行" alert1="取料机短螺旋旋转运行" priority="0"/>
+        <node id="6" name="QLJ_PS_1_UP_RUN" cname="取料机1#推铲上升运行" length="96" offset="54" diff="0" alert0="取料机1#推铲上升未运行" alert1="取料机1#推铲上升运行" priority="0"/>
+        <node id="6" name="QLJ_PS_1_DOWN_RUN" cname="取料机1#推铲下降运行" length="96" offset="54" diff="0" alert0="取料机1#推铲下降未运行" alert1="取料机1#推铲下降运行" priority="0"/>
+        <node id="6" name="QLJ_PS_2_UP_RUN" cname="取料机2#推铲上升运行" length="96" offset="54" diff="0" alert0="取料机2#推铲上升未运行" alert1="取料机2#推铲上升运行" priority="0"/>
+        <node id="6" name="QLJ_PS_2_DOWN_RUN" cname="取料机2#推铲下降运行" length="96" offset="54" diff="0" alert0="取料机2#推铲下降未运行" alert1="取料机2#推铲下降运行" priority="0"/>
+        <node id="6" name="QLJ_SG_OPEN_RUN" cname="取料机闸门开启运行" length="96" offset="54" diff="0" alert0="取料机闸门开启未运行" alert1="取料机闸门开启运行" priority="0"/>
+        <node id="6" name="QLJ_SG_CLOSE_RUN" cname="取料机闸门关闭运行" length="96" offset="54" diff="0" alert0="取料机闸门关闭未运行" alert1="取料机闸门关闭运行" priority="0"/>
+        <node id="6" name="QLJ_MIXER_RUN" cname="取料机混料器运行" length="96" offset="54" diff="0" alert0="取料机混料器未运行" alert1="取料机混料器运行" priority="0"/>
+        <node id="6" name="QLJ_AM_PUMP_RUN" cname="取料机加药水泵运行" length="96" offset="54" diff="0" alert0="取料机加药水泵未运行" alert1="取料机加药水泵运行" priority="0"/>
+        <node id="6" name="QLJ_COOLER_1_RUN" cname="取料机1#散热器运行" length="96" offset="56" diff="0" alert0="取料机1#散热器未运行" alert1="取料机1#散热器运行" priority="0"/>
+        <node id="6" name="QLJ_COOLER_2_RUN" cname="取料机2#散热器运行" length="96" offset="57" diff="0" alert0="取料机2#散热器未运行" alert1="取料机2#散热器运行" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="96" offset="14" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="96" offset="15" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="QLJ_F_IN_PLACE" cname="取料机前进到位信号" length="96" offset="63" diff="0" alert0="取料机前进未到位" alert1="取料机前进到位" priority="0"/>
+        <node id="6" name="QLJ_B_IN_PLACE" cname="取料机后退到位信号" length="96" offset="64" diff="0" alert0="取料机后退未到位" alert1="取料机后退到位" priority="0"/>
+        <node id="6" name="QLJ_CP_R_IN_PLACE" cname="取料机链板上升到位" length="96" offset="52" diff="0" alert0="取料机链板上升未到位" alert1="取料机链板上升到位" priority="0"/>
+        <node id="6" name="QLJ_CP_D_IN_PLACE" cname="取料机链板下降到位" length="96" offset="53" diff="0" alert0="取料机链板下降未到位" alert1="取料机链板下降到位" priority="0"/>
+        <node id="6" name="QLJ_CP_W_IN_PLACE" cname="取料机链板旋转到位" length="96" offset="54" diff="0" alert0="取料机链板旋转未到位" alert1="取料机链板旋转到位" priority="0"/>
+        <node id="6" name="QLJ_MS_RV_IN_PLACE" cname="取料机主螺旋正向到位" length="96" offset="6" diff="0" alert0="取料机主螺旋正向未到位" alert1="取料机主螺旋正向到位" priority="0"/>
+        <node id="6" name="QLJ_MS_DV_IN_PLACE" cname="取料机主螺旋反向到位" length="96" offset="7" diff="0" alert0="取料机主螺旋反向未到位" alert1="取料机主螺旋反向到位" priority="0"/>
+        <node id="6" name="QLJ_MS_W_IN_PLACE" cname="取料机主螺旋旋转到位" length="96" offset="54" diff="0" alert0="取料机主螺旋旋转未到位" alert1="取料机主螺旋旋转到位" priority="0"/>
+        <node id="6" name="QLJ_SS_RV_IN_PLACE" cname="取料机短螺旋正向到位" length="96" offset="6" diff="0" alert0="取料机短螺旋正向未到位" alert1="取料机短螺旋正向到位" priority="0"/>
+        <node id="6" name="QLJ_SS_DV_IN_PLACE" cname="取料机短螺旋反向到位" length="96" offset="7" diff="0" alert0="取料机短螺旋反向未到位" alert1="取料机短螺旋反向到位" priority="0"/>
+        <node id="6" name="QLJ_SS_W_IN_PLACE" cname="取料机短螺旋旋转到位" length="96" offset="54" diff="0" alert0="取料机短螺旋旋转未到位" alert1="取料机短螺旋旋转到位" priority="0"/>
+        <node id="6" name="QLJ_PS_1_UP_IN_PLACE" cname="取料机1#推铲上升到位" length="96" offset="54" diff="0" alert0="取料机1#推铲上升未到位" alert1="取料机1#推铲上升到位" priority="0"/>
+        <node id="6" name="QLJ_PS_1_DOWN_IN_PLACE" cname="取料机1#推铲下降到位" length="96" offset="54" diff="0" alert0="取料机1#推铲下降未到位" alert1="取料机1#推铲下降到位" priority="0"/>
+        <node id="6" name="QLJ_PS_2_UP_IN_PLACE" cname="取料机2#推铲上升到位" length="96" offset="54" diff="0" alert0="取料机2#推铲上升未到位" alert1="取料机2#推铲上升到位" priority="0"/>
+        <node id="6" name="QLJ_PS_2_DOWN_IN_PLACE" cname="取料机2#推铲下降到位" length="96" offset="54" diff="0" alert0="取料机2#推铲下降未到位" alert1="取料机2#推铲下降到位" priority="0"/>
+        <node id="6" name="QLJ_SG_OPEN_IN_PLACE" cname="取料机闸门开启到位" length="96" offset="54" diff="0" alert0="取料机闸门开启未到位" alert1="取料机闸门开启到位" priority="0"/>
+        <node id="6" name="QLJ_SG_CLOSE_IN_PLACE" cname="取料机闸门关闭到位" length="96" offset="54" diff="0" alert0="取料机闸门关闭未到位" alert1="取料机闸门关闭到位" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="96" offset="14" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="96" offset="15" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="96" offset="14" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="QLJ_WALKING_FAULT" cname="取料机行走故障" length="96" offset="70" diff="0" alert0="取料机行走正常" alert1="取料机行走故障" priority="1"/>
+        <node id="6" name="QLJ_CP_L_FAULT" cname="取料机链板升降故障" length="96" offset="52" diff="0" alert0="取料机链板升降正常" alert1="取料机链板升降故障" priority="0"/>
+        <node id="6" name="QLJ_CP_W_FAULT" cname="取料机链板旋转故障" length="96" offset="52" diff="0" alert0="取料机链板旋转正常" alert1="取料机链板旋转故障" priority="0"/>
+        <node id="6" name="QLJ_MS_MOVE_FAULT" cname="取料机主螺旋移动故障" length="96" offset="52" diff="0" alert0="取料机主螺旋移动正常" alert1="取料机主螺旋移动故障" priority="0"/>
+        <node id="6" name="QLJ_MS_W_FAULT" cname="取料机主螺旋旋转故障" length="96" offset="52" diff="0" alert0="取料机主螺旋旋转正常" alert1="取料机主螺旋旋转故障" priority="0"/>
+        <node id="6" name="QLJ_SS_MOVE_FAULT" cname="取料机短螺旋移动故障" length="96" offset="52" diff="0" alert0="取料机短螺旋移动正常" alert1="取料机短螺旋移动故障" priority="0"/>
+        <node id="6" name="QLJ_SS_W_FAULT" cname="取料机短螺旋旋转故障" length="96" offset="52" diff="0" alert0="取料机短螺旋旋转正常" alert1="取料机短螺旋旋转故障" priority="0"/>
+        <node id="6" name="QLJ_PS_1_FAULT" cname="取料机1#推铲故障" length="96" offset="52" diff="0" alert0="取料机1#推铲正常" alert1="取料机1#推铲故障" priority="0"/>
+        <node id="6" name="QLJ_PS_2_FAULT" cname="取料机2#推铲故障" length="96" offset="52" diff="0" alert0="取料机2#推铲正常" alert1="取料机2#推铲故障" priority="0"/>
+        <node id="6" name="QLJ_SG_FAULT" cname="取料机闸门故障" length="96" offset="52" diff="0" alert0="取料机闸门正常" alert1="取料机闸门故障" priority="0"/>
+        <node id="6" name="QLJ_MIXER_FAULT" cname="取料机混料器故障" length="96" offset="52" diff="0" alert0="取料机混料器正常" alert1="取料机混料器故障" priority="0"/>
+        <node id="6" name="QLJ_AM_PUMP_FAULT" cname="取料机加药水泵故障" length="96" offset="52" diff="0" alert0="取料机加药水泵正常" alert1="取料机加药水泵故障" priority="0"/>
+        <node id="6" name="QLJ_COOLER_1_FAULT" cname="取料机1#散热器故障" length="96" offset="52" diff="0" alert0="取料机1#散热器正常" alert1="取料机1#散热器故障" priority="0"/>
+        <node id="6" name="QLJ_COOLER_2_FAULT" cname="取料机2#散热器故障" length="96" offset="52" diff="0" alert0="取料机2#散热器正常" alert1="取料机2#散热器故障" priority="0"/>
+        <node id="6" name="QLJ_OT_LEVEL" cname="取料机油箱液位信号" length="96" offset="80" diff="0" alert0="取料机油箱液位正常" alert1="取料机油箱液位低" priority="1"/>
+        <node id="6" name="QLJ_WT_LEVEL" cname="取料机水箱液位信号" length="96" offset="81" diff="0" alert0="取料机水箱液位正常" alert1="取料机水箱液位低" priority="1"/>
+        <node id="6" name="SPAIR" cname="备用" length="96" offset="82" diff="0" alert0="" alert1="" priority="0"/>
+        <node id="6" name="SPAIR" cname="备用" length="96" offset="83" diff="0" alert0="" alert1="" priority="0"/>
+    </area>
+  </areas>
+</device>
