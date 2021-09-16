@@ -110,5 +110,9 @@
         <file>pic/coro.png</file>
         <file>pic/total_current.png</file>
         <file>pic/mixer_current.png</file>
+        <file>pic/zpyl.png</file>
+        <file>pic/wnzp.png</file>
+        <file>pic/wnlx.png</file>
+        <file>pic/lxyl.png</file>
     </qresource>
 </RCC>
