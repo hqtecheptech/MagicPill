@@ -38,7 +38,7 @@ Syscontroller::Syscontroller(DeviceType dataType, int groupId, QObject *parent) 
 
     updateStatusTimer = new QTimer(this);
     connect( updateStatusTimer, SIGNAL(timeout()), this, SLOT(updateSysStatus()) );
-    updateStatusTimer->start(200);
+    updateStatusTimer->start(1000);
 }
 
 Syscontroller *Syscontroller::getInstance(DeviceType dataType, int groupId)
@@ -186,6 +186,17 @@ void Syscontroller::applyControlRequest()
 
 void Syscontroller::handlePlcControl(StreamPack pack, QSet<int> changedDeviceSet, QMap<float, QString> dataMap)
 {
+    /*QFile file("actionLog");
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+    {
+        qDebug() << "Open log file failed!";
+    }
+    else
+    {
+        file.write("Action Received.");
+        file.close();
+    }*/
+
     Ctr_Block ctrBlock;
     ctrlShare->LockShare();
     qDebug() << "handlePlcControl ctrlShare locked!";

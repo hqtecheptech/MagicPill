@@ -90,6 +90,7 @@ public:
     static QMap<float,QString> currentFanValveGroupDataMap;
     static QMap<float,QString> currentYhcDataMap;
     static QMap<float,QString> currentMixDataMap;
+    static QMap<float,QString> currentDataMap;
 
     static bool getFerRunctrValueByName(int deviceIndex, QString name, QMap<float,QString> dataMap);
     static bool getDeoRunctrValueByName(int deviceIndex, QString name, QMap<float,QString> dataMap);
@@ -113,7 +114,7 @@ public:
     static int getFerDataIndexByName(QString name, int deviceIndex);
 
     static uint getLengthByDataType(QString dataType);
-    static int getPruPid();
+    static int getPid(QString pn);
 
     static int alertIndex;
     static bool isPrint;

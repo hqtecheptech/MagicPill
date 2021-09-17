@@ -32,6 +32,17 @@ void TaskManager::processNewConnection()
 
 void TaskManager::handleAcceptError(QAbstractSocket::SocketError error)
 {
+    QFile file("actionLog");
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+    {
+        qDebug() << "Open log file failed!";
+    }
+    else
+    {
+        file.write("Sokect Error./r/n");
+        file.close();
+    }
+
     qDebug() << "SocketError" << error;
 }
 
@@ -73,6 +84,17 @@ void TaskManager::sendHeartbeat()
 
 void TaskManager::handleConnectionUpdate(bool connected)
 {
+    QFile file("serverLog");
+    if(!file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+    {
+        qDebug() << "Open log file failed!";
+    }
+    else
+    {
+        file.write("Connection Updated./r/n");
+        file.close();
+    }
+
     if(!connected)
     {
         QTcpServer *oldTcpServer = tcpServer;
@@ -85,6 +107,7 @@ void TaskManager::handleConnectionUpdate(bool connected)
 void TaskManager::listeningTask()
 {
     if(tcpServer->listen(QHostAddress::Any, _port))
+    //if(tcpServer->listen(QHostAddress(Global::serverInfo.IP), _port))
     {
        qDebug()<<"tcpServer init";
        connect(tcpServer, SIGNAL(newConnection()), this, SLOT(processNewConnection()));

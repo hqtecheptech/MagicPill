@@ -1926,7 +1926,7 @@ uint Global::getLengthByDataType(QString dataType)
     return length;
 }
 
-int Global::getPruPid()
+int Global::getPid(QString pn)
 {
     QProcess *cmd = new QProcess;
     QString strArg;
@@ -1938,7 +1938,7 @@ int Global::getPruPid()
     while(cmd->canReadLine())
     {
         retStr = cmd->readLine();
-        if(retStr.contains("dev_app"))
+        if(retStr.contains(pn))
         {
             retStr.trimmed();
             QStringList strList = retStr.split(" ", QString::SkipEmptyParts);

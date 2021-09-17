@@ -2,7 +2,7 @@
 
 SwServer::SwServer(QObject *parent) : QObject(parent)
 {
-    taskManager = new TaskManager(8000, this);
+    taskManager = new TaskManager(Global::serverInfo.Port, this);
     taskManager->moveToThread(&taskManageThread);
     connect(&taskManageThread, SIGNAL(finished()), taskManager, SLOT(deleteLater()));
     connect(this, SIGNAL(startListenTask()), taskManager, SLOT(listeningTask()));

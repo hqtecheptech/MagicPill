@@ -60,7 +60,8 @@ enum CommandType
     W_Update_PlcData, //更新PLC数据
     W_Send_Control,  //发送控制命令
     W_Updata_Config,  //更新配置
-    W_Heart_Beat      //发送心跳包
+    W_Heart_Beat,      //发送心跳包
+    W_Updata_System_Time = 32 //更新系统时间
 };
 
 enum DataType

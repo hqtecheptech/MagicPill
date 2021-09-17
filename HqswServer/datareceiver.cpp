@@ -76,6 +76,17 @@ void DataReceiver::dataReceive()
 
     if(bDevice.bCommandType == W_Send_Control)
     {
+        QFile file("controlLog");
+        if(!file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
+        {
+            qDebug() << "File open issue.";
+        }
+        else
+        {
+            file.write("Received control request!/r/n");
+            file.close();
+        }
+
         QByteArray byteAdress, byteValues;
         QMap<float,QString> dataMap;
 
@@ -279,6 +290,30 @@ void DataReceiver::dataReceive()
             }
 
             sendReply(bDevice, result);
+        }
+    }
+    else if(bDevice.bCommandType == W_Updata_System_Time)
+    {
+        QByteArray bytes = sDataWithoutCRC.mid(sizeof(bDevice), 4);
+        uint timeT = 0;
+        memcpy(&timeT,bytes,4);
+        uint ct = QDateTime::currentDateTime().toTime_t();
+        uint t = qAbs(timeT - ct);
+        if(t > 1800)
+        {
+            QDateTime dt = QDateTime::fromTime_t(timeT); //yyyy-MM-dd hh:mm
+            QString strTimeArg = dt.toString("yyyy") + dt.toString("MM") + dt.toString("dd") + dt.toString("hh")
+                     + dt.toString("mm")  + dt.toString("ss");
+            strTimeArg = strTimeArg.mid(0, strTimeArg.length() - 2)   + ".0";
+            QProcess *cmd = new QProcess;
+            QString strArg = "date --set " + strTimeArg;
+            cmd->start(strArg);
+            cmd->waitForReadyRead();
+            cmd->waitForFinished();
+            strArg = "hwclock --systohc";
+            cmd->start(strArg);
+            cmd->waitForReadyRead();
+            cmd->waitForFinished();
         }
     }
     else if(bDevice.bCommandType == r_AllCacheData)

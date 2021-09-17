@@ -42,7 +42,17 @@ void PlcDataManageWorker::getSharedDatas(DeviceType dataName, int groupId)
         dbSh->GetShardMemory((void *)&plcdata, sizeof(Plc_Db));
         //dbSh->UnlockShare();
 
+        //Temp for Jintai
         DeviceGroupInfo groupInfo;
+        /*groupInfo = Global::getYhcDeviceGroupInfoByGroupId(groupId);
+        parseYhcServerData(groupInfo, plcdata);
+        groupInfo = Global::getFerDeviceGroupInfoByGroupId(groupId);
+        parseFerServerData(groupInfo, plcdata);
+        groupInfo = Global::getDeoDeviceGroupInfoByGroupId(groupId);
+        parseDeoServerData(groupInfo, plcdata);
+        groupInfo = Global::getMixDeviceGroupInfoByGroupId(groupId);
+        parseMixServerData(groupInfo, plcdata);*/
+
         switch(dataName)
         {
             case YHC:
