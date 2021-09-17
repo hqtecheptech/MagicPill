@@ -18,6 +18,12 @@ public:
 private slots:
     void on_closePushButton_clicked();
 
+public slots:
+    void updateAlertForm(QString alert);
+
+signals:
+    void alertReceived(QString alert);
+
 private:
     Ui::AlertHistoryDialog *ui;
 };

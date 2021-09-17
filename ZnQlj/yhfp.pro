@@ -58,7 +58,8 @@ SOURCES += main.cpp\
     yhcrunstatusdialog.cpp \
     fpjrunstatusdialog.cpp \
     controstatusdialog.cpp \
-    mixdatarangesetdialog.cpp
+    mixdatarangesetdialog.cpp \
+    mytimerthread.cpp
 
 HEADERS  += mainwindow.h \
     yhcc.h \
@@ -104,7 +105,8 @@ HEADERS  += mainwindow.h \
     yhcrunstatusdialog.h \
     fpjrunstatusdialog.h \
     controstatusdialog.h \
-    mixdatarangesetdialog.h
+    mixdatarangesetdialog.h \
+    mytimerthread.h
 
 FORMS    += mainwindow.ui \
     yhcc.ui \

@@ -45,11 +45,11 @@ Yhcc::Yhcc(QWidget *parent) :
 
     //ui->titleLabel->setStyleSheet(titleLabelStypeStr);
 
-    checkNetStateTimer = new QTimer(this);
+    /*checkNetStateTimer = new QTimer(this);
     connect(checkNetStateTimer, SIGNAL(timeout()), this, SLOT(getNetState()));
 
     testTimer = new QTimer(this);
-    connect(testTimer, SIGNAL(timeout()), this, SLOT(wirteTestData()));
+    connect(testTimer, SIGNAL(timeout()), this, SLOT(wirteTestData()));*/
 
     /*controller = Syscontroller::getInstance(Global::systemConfig.deviceType, Global::systemConfig.deviceGroup);
     if(controller != Q_NULLPTR)
@@ -67,10 +67,11 @@ Yhcc::Yhcc(QWidget *parent) :
 
     connect(this, SIGNAL(dataUpdate(QSet<int>, QMap<float,QString>)), this,SLOT(updateData(QSet<int>, QMap<float,QString>)));
 
-    dbWorker = new DatabaseWorker;
+    dbWorker = new DatabaseWorker(this);
     dbWorker->moveToThread(&dbThread);
     connect(&dbThread, &QThread::finished, dbWorker, &QObject::deleteLater);
     connect(this, SIGNAL(histDataReady(HistData)), dbWorker, SLOT(saveHistData(HistData)));
+    //connect(this, SIGNAL(alertReady(QString)), dbWorker, SLOT(saveAlert(QString)));
     dbThread.start();
 
     psWorker = new ParseServerDataWorker;
@@ -90,6 +91,7 @@ Yhcc::Yhcc(QWidget *parent) :
 
     hisDlg = new HistoryDlg(this);
     alertHisDlg = new AlertHistoryDialog(this);
+    connect(this, SIGNAL(alertReady(QString)), alertHisDlg, SLOT(updateAlertForm(QString)));
     //runStatusDlg = new YhcRunStatusDialog(this);
     runStatusDlg = new FpjRunStatusDialog(this);
 
@@ -98,6 +100,8 @@ Yhcc::Yhcc(QWidget *parent) :
 
     ui->ylzsChartWidget->setRange(300, 100);
     ui->dydlChartWidget->setRange(500, 450);
+
+    connect(this, SIGNAL(simpleAlertReady(QString)), ui->hisWidget, SLOT(addAlertTable(QString)));
 }
 
 Yhcc::~Yhcc()
@@ -206,7 +210,7 @@ void Yhcc::showEvent(QShowEvent *)
         netManageThread.start();
     }
 
-    QTimer::singleShot(5000, this, SLOT(getNetState()));
+    /*QTimer::singleShot(5000, this, SLOT(getNetState()));
     if(!checkNetStateTimer->isActive())
     {
         checkNetStateTimer->start(10000);
@@ -215,7 +219,7 @@ void Yhcc::showEvent(QShowEvent *)
     if(!testTimer->isActive())
     {
         testTimer->start(3000);
-    }
+    }*/
 }
 
 void Yhcc::closeEvent(QCloseEvent *)
@@ -357,17 +361,15 @@ void Yhcc::dispatchData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap
 
                     try
                     {
-                        QList<QStandardItem *> newItemList;
-                        QList<QStandardItem *> newSimpleItemList;
                         Global::alertIndex += 1;
                         QString simpleAlert;
+                        QString alert;
 
-                        qDebug() << "QDateTime::currentDateTime()" << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-                        newItemList.append(new QStandardItem(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")));
-                        newItemList.append(new QStandardItem(QString::number((tankIndex + info.startIndex)+1)));
+                        alert += QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") + ";";
+                        alert += QString::number((tankIndex + info.startIndex)+1) + ";";
                         if(tempValue.toBool())
                         {
-                            newItemList.append(new QStandardItem(Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert1));
+                            alert += Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert1 + ";";
                             simpleAlert = QString::number(Global::alertIndex) + ": " +
                                     QString::number(tankIndex+1) + "#" +
                                     Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert1 + " " +
@@ -375,46 +377,37 @@ void Yhcc::dispatchData(QSet<int> changedDeviceSet, QMap<float, QString> dataMap
                         }
                         else
                         {
-                            newItemList.append(new QStandardItem(Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert0));
+                            alert += Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert0 + ";";
                             simpleAlert = QString::number(Global::alertIndex) + ": " +
                                     QString::number(tankIndex+1) + "#" +
                                     Global::yhcRunCtrDeviceNodes[i % Global::yhcDeviceInfo.RunCtr_Block_Size].Alert0 + " " +
                                     QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
                         }
-                        QStandardItem *simpleAlertItem = new QStandardItem(simpleAlert);
-                        newSimpleItemList.append(simpleAlertItem);
 
                         if(Identity::getInstance()->getUser() != Q_NULLPTR)
                         {
-                            newItemList.append(new QStandardItem(Identity::getInstance()->getUser()->getUsername()));
+                            alert += Identity::getInstance()->getUser()->getUsername();
                         }
                         else
                         {
-                            newItemList.append(new QStandardItem(""));
+                            alert += " ";
                         }
 
-
-                        if(UiGlobal::simpleAlertsModel->rowCount() > 200)
-                        {
-                           UiGlobal::simpleAlertsModel->removeRow(UiGlobal::simpleAlertsModel->rowCount() - 1);
-                        }
-                        UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
-
+                        emit simpleAlertReady(simpleAlert);
 
                         if(Global::getYhcNodeInfoByRunctrAddress(dictAddress).Priority == 1)
                         {
-                            if(UiGlobal::alertsModel->rowCount() > 200)
-                            {
-                               UiGlobal::alertsModel->removeRow(UiGlobal::alertsModel->rowCount() - 1);
-                            }
-                            UiGlobal::alertsModel->insertRow(0, newItemList);
+                            emit alertReady(alert);
                         }
                     }
                     catch(exception ex)
                     {
                         qDebug() << "ex.what" << ex.what();
                     }
+
+                    qDebug() << "UiGlobal::simpleAlertsModel: " << UiGlobal::simpleAlertsModel->rowCount();
+                    qDebug() << "UiGlobal::alertsModel: " << UiGlobal::alertsModel->rowCount();
 
                     Global::currentYhcDataMap[dictAddress] = dataMap[dictAddress];
                 }

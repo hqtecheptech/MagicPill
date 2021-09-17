@@ -8,11 +8,17 @@ YhcRunStatusDialog::YhcRunStatusDialog(QWidget *parent) :
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
 
-    timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(showStatus()));
+    //timer = new QTimer(this);
+    //connect(timer, SIGNAL(timeout()), this, SLOT(showStatus()));
 
-    switchStateTimer = new QTimer(this);
-    connect(switchStateTimer, SIGNAL(timeout()), this, SLOT(swithState()));
+    //switchStateTimer = new QTimer(this);
+    //connect(switchStateTimer, SIGNAL(timeout()), this, SLOT(swithState()));
+
+    timer = new MyTimerThread(1, this);
+    connect(timer, SIGNAL(timeout()),this,SLOT(showStatus()));
+
+    switchStateTimer = new MyTimerThread(1, this);
+    connect(switchStateTimer, SIGNAL(timeout()),this,SLOT(swithState()));
 }
 
 YhcRunStatusDialog::~YhcRunStatusDialog()
@@ -22,8 +28,8 @@ YhcRunStatusDialog::~YhcRunStatusDialog()
 
 void YhcRunStatusDialog::showStatus()
 {
-    DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(_deviceIndex);
-    DeviceNode deviceNode = Global::getYhcNodeInfoByName("Yhc_Encoder_Cycle_Num");
+    info = Global::getYhcDeviceGroupInfo(_deviceIndex);
+    deviceNode = Global::getYhcNodeInfoByName("Yhc_Encoder_Cycle_Num");
     float address = deviceNode.Offset + (info.offset + _deviceIndex - info.startIndex) * Global::getLengthByDataType(deviceNode.DataType);
     ui->Yhc_Encoder_Cycle_Num_label->setText(Global::currentYhcDataMap.value(address));
 
@@ -230,7 +236,16 @@ void YhcRunStatusDialog::setDeviceIndex(int deviceIndex)
 
 void YhcRunStatusDialog::showEvent(QShowEvent *)
 {
-    if(!timer->isActive())
+    if(!timer->isRunning())
+    {
+        timer->start();
+    }
+
+    if(!switchStateTimer->isRunning())
+    {
+        switchStateTimer->start();
+    }
+    /*if(!timer->isActive())
     {
         timer->start(1000);
     }
@@ -238,12 +253,12 @@ void YhcRunStatusDialog::showEvent(QShowEvent *)
     if(!switchStateTimer->isActive())
     {
         switchStateTimer->start(300);
-    }
+    }*/
 }
 
 void YhcRunStatusDialog::closeEvent(QCloseEvent *)
 {
-    if(timer->isActive())
+    /*if(timer->isActive())
     {
         timer->stop();
     }
@@ -251,6 +266,18 @@ void YhcRunStatusDialog::closeEvent(QCloseEvent *)
     if(switchStateTimer->isActive())
     {
         switchStateTimer->stop();
+    }*/
+
+    if(switchStateTimer->isRunning())
+    {
+        switchStateTimer->quit();
+        switchStateTimer->wait();
+    }
+
+    if(timer->isRunning())
+    {
+        timer->quit();
+        timer->wait();
     }
 }
 

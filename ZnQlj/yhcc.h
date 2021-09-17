@@ -79,6 +79,8 @@ signals:
     void serverConnectionChanged(bool isConnected);
     void dataUpdate(QSet<int>, QMap<float,QString>);
     void serverDataReceived(QByteArray);
+    void simpleAlertReady(QString);
+    void alertReady(QString);
 
 public slots:
     void handleControllerResult();

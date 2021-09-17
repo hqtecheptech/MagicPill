@@ -16,8 +16,13 @@ public:
     explicit ControlHistory(QWidget *parent = 0);
     ~ControlHistory();
 
+public slots:
+    void addAlertTable(QString alert);
+
 private:
     Ui::ControlHistory *ui;
+
+    QStandardItemModel* simpleAlertsModel = new QStandardItemModel(0,1);
 };
 
 #endif // CONTROLHISTORY_H

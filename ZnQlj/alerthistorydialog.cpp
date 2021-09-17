@@ -7,6 +7,8 @@ AlertHistoryDialog::AlertHistoryDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
+
+    connect(this, SIGNAL(alertReceived(QString)), ui->hisWidget, SLOT(updateAlerts(QString)));
 }
 
 AlertHistoryDialog::~AlertHistoryDialog()
@@ -17,4 +19,9 @@ AlertHistoryDialog::~AlertHistoryDialog()
 void AlertHistoryDialog::on_closePushButton_clicked()
 {
     close();
+}
+
+void AlertHistoryDialog::updateAlertForm(QString alert)
+{
+    emit alertReceived(alert);
 }

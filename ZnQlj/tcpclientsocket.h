@@ -15,7 +15,6 @@ private:
     bool status;
     int port;
     QHostAddress *serverIP;
-    QTcpSocket *tcpSocket;
     quint32 StreamLength = 0;
     QByteArray sData;
     void clear();

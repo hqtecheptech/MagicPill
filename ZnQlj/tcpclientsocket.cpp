@@ -11,8 +11,7 @@ TcpClientSocket::TcpClientSocket(QObject *parent) : QTcpSocket(parent)
     qDebug() << "port:" << port;
     serverIP = new QHostAddress(Global::serverInfo.IP);
     qDebug() << "serverIP:" << Global::serverInfo.IP;
-    tcpSocket = new QTcpSocket();
-    connect(tcpSocket,SIGNAL(readyRead()),this,SLOT(dataReceived()));
+    connect(this,SIGNAL(readyRead()),this,SLOT(dataReceived()));
 }
 
 void TcpClientSocket::clear()
@@ -24,7 +23,7 @@ void TcpClientSocket::clear()
 void TcpClientSocket::dataReceived()
 {
     QDataStream in(&sData,QIODevice::ReadOnly);
-    sData.append(tcpSocket->readAll());
+    sData.append(readAll());
     in.setVersion(QDataStream::Qt_5_6); //设计数据流版本
     in.setFloatingPointPrecision(QDataStream::SinglePrecision);
     //in.setByteOrder(QDataStream::BigEndian);    //设置读数据高位在前 ****
@@ -62,7 +61,7 @@ void TcpClientSocket::dataReceived()
     {
         qDebug() << "Crc check fail! ";
         clear();
-        tcpSocket->close();
+        close();
         return;
     }
 
@@ -73,15 +72,15 @@ void TcpClientSocket::dataReceived()
     clear();
     emit updateClients(sDataWithoutCRC);
 
-    tcpSocket->close();
+    close();
 }
 
 void TcpClientSocket::sendTestConnectRequest()
 {
-    tcpSocket->abort(); //取消已有的连接
-    tcpSocket->connectToHost(*serverIP,port);
+    abort(); //取消已有的连接
+    connectToHost(*serverIP,port);
     const int timeout=500;
-    if(!tcpSocket->waitForConnected(timeout))
+    if(!waitForConnected(timeout))
     {
         emit updateConnectState(false);
         return;
@@ -93,10 +92,10 @@ void TcpClientSocket::sendRequest(StreamPack requestPack)
 {
     //qDebug() << "send request" << requestPack.bDataLength;
     requestPack.bStreamLength += 4;
-    tcpSocket->abort(); //取消已有的连接
-    tcpSocket->connectToHost(*serverIP,port);
+    abort(); //取消已有的连接
+    connectToHost(*serverIP,port);
     const int timeout=500;
-    if(!tcpSocket->waitForConnected(timeout))
+    if(!waitForConnected(timeout))
     {
         emit updateConnectState(false);
         return;
@@ -130,24 +129,24 @@ void TcpClientSocket::sendRequest(StreamPack requestPack)
 
         SData.append(crcData);
 
-        tcpSocket->write(SData);
-        tcpSocket->waitForBytesWritten();
+        write(SData);
+        waitForBytesWritten();
     }
 
 }
 
 int TcpClientSocket::sendRequestWithResults(QByteArray data)
 {
-    tcpSocket->abort(); //取消已有的连接
-    tcpSocket->connectToHost(*serverIP,port);
+    abort(); //取消已有的连接
+    connectToHost(*serverIP,port);
     const int timeout=5000;
-    if(!tcpSocket->waitForConnected(timeout))
+    if(!waitForConnected(timeout))
     {
         return 0;
     }
 
-    tcpSocket->write(data);
-    tcpSocket->waitForBytesWritten();
+    write(data);
+    waitForBytesWritten();
 
     return 1;
 }
@@ -164,10 +163,10 @@ int TcpClientSocket::sendRequestWithResults(QByteArray data)
 int TcpClientSocket::sendRequestWithResult(StreamPack requestPack, QVariant dataToSend, int dataLength)
 {
     requestPack.bStreamLength += 4 + dataLength;
-    tcpSocket->abort(); //取消已有的连接
-    tcpSocket->connectToHost(*serverIP,port);
+    abort(); //取消已有的连接
+    connectToHost(*serverIP,port);
     const int timeout=500;
-    if(!tcpSocket->waitForConnected(timeout))
+    if(!waitForConnected(timeout))
     {
         return 0;
     }
@@ -283,8 +282,8 @@ int TcpClientSocket::sendRequestWithResult(StreamPack requestPack, QVariant data
 
         len = SData.length();
 
-        tcpSocket->write(SData);
-        tcpSocket->waitForBytesWritten();
+        write(SData);
+        waitForBytesWritten();
     }
 
     return 1;

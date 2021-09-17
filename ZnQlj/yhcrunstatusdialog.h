@@ -7,6 +7,7 @@
 #include <data.h>
 #include <dataformat.h>
 #include <global.h>
+#include "mytimerthread.h"
 
 namespace Ui {
 class YhcRunStatusDialog;
@@ -37,11 +38,16 @@ private slots:
 private:
     Ui::YhcRunStatusDialog *ui;
 
-    QTimer *timer;
-    QTimer *switchStateTimer;
+    //QTimer *timer;
+    //QTimer *switchStateTimer;
     int _deviceIndex = 0;
     bool oc_fault, em_fault, heater_fault, hs_level, filter_blocking;
     bool stateFlag = false;
+    DeviceGroupInfo info;
+    DeviceNode deviceNode;
+    MyTimerThread *timer;
+    MyTimerThread *switchStateTimer;
+
 };
 
 #endif // YHCRUNSTATUSDIALOG_H

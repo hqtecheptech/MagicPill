@@ -5,6 +5,9 @@
 #include "data.h"
 #include "sqlitehelper.h"
 
+#include "QStandardItem"
+#include "QList"
+
 class DatabaseWorker : public QObject
 {
     Q_OBJECT
@@ -18,6 +21,8 @@ signals:
 public slots:
     void saveHistData(HistData hist);
     void queryHistDatas(HistData hist);
+    void clearAlertItem(QList<QStandardItem*> alert);
+    void saveAlert(QString alert);
 
 private:
     SQLiteHelper dbHelper;
@@ -34,6 +39,10 @@ private:
                      "[value] varchar(20) NOT NULL, "
                      "[index] integer NOT NULL, "
                      "[insertTime] varchar(30) NOT NULL);";
+
+    QString simpleAlertTable = "simple_alert";
+    QString schema1 = "create table simple_alert([alertId] integer PRIMARY KEY AUTOINCREMENT, "
+                     "[value] varchar(100) NOT NULL);";
 };
 
 #endif // DATABASEWORKER_H

@@ -9,7 +9,7 @@ ControlHistory::ControlHistory(QWidget *parent) :
     ui(new Ui::ControlHistory)
 {
     ui->setupUi(this);
-    ui->hisTableView->setModel(UiGlobal::simpleAlertsModel);
+    ui->hisTableView->setModel(simpleAlertsModel);
     ui->hisTableView->horizontalHeader()->setVisible(false);
     ui->hisTableView->verticalHeader()->setVisible(false);
     ui->hisTableView->setShowGrid(false);
@@ -72,4 +72,14 @@ ControlHistory::ControlHistory(QWidget *parent) :
 ControlHistory::~ControlHistory()
 {
     delete ui;
+}
+
+void ControlHistory::addAlertTable(QString alert)
+{
+    if(simpleAlertsModel->rowCount() > 200)
+    {
+        simpleAlertsModel->removeRow(simpleAlertsModel->rowCount()-1);
+    }
+    QStandardItem * newSimpleItem =  new QStandardItem(alert);
+    simpleAlertsModel->insertRow(0, newSimpleItem);
 }

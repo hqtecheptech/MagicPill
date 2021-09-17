@@ -364,7 +364,7 @@ color:rgb(200, 200, 200);</string>
     <enum>QFrame::NoFrame</enum>
    </property>
    <property name="text">
-    <string>移行车控制</string>
+    <string>取料机控制</string>
    </property>
    <property name="textFormat">
     <enum>Qt::PlainText</enum>
@@ -562,15 +562,15 @@ background-image: url(:/pic/no_cellphone_signal.png);</string>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>yhcWatchs</class>
-   <extends>QWidget</extends>
-   <header>yhcwatchs.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>ControlHistory</class>
    <extends>QWidget</extends>
    <header>controlhistory.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>yhcWatchs</class>
+   <extends>QWidget</extends>
+   <header>yhcwatchs.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -9,6 +9,11 @@ DatabaseWorker::DatabaseWorker(QObject *parent) : QObject(parent)
     {
         emit dbError("OK");
     }
+    dbCreated = sqlHelper.createTable(db, simpleAlertTable, schema1);
+    if(dbCreated)
+    {
+        emit dbError("OK");
+    }
 }
 
 void DatabaseWorker::saveHistData(HistData hist)
@@ -54,4 +59,29 @@ void DatabaseWorker::saveHistData(HistData hist)
 void DatabaseWorker::queryHistDatas(HistData hist)
 {
 
+}
+
+void DatabaseWorker::clearAlertItem(QList<QStandardItem *> alert)
+{
+    qDeleteAll(alert.begin(), alert.end());
+    alert.clear();
+}
+
+void DatabaseWorker::saveAlert(QString alert)
+{
+    QString strSql;
+    strSql += "insert into simple_alert([alertId], [value]) values (";
+    strSql += "null, ";
+    strSql += "'" + alert + "'";
+    strSql += ");";
+
+    bool result = dbHelper.insert(db, simpleAlertTable, strSql);
+    if(result)
+    {
+        //qDebug() << "mission completed !";
+    }
+    else
+    {
+        //qDebug() << "mission failed !";
+    }
 }
