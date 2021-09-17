@@ -114,5 +114,6 @@
         <file>pic/wnzp.png</file>
         <file>pic/wnlx.png</file>
         <file>pic/lxyl.png</file>
+        <file>pic/lx.png</file>
     </qresource>
 </RCC>

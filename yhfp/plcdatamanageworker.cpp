@@ -189,7 +189,7 @@ void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Pl
                 uint tankIndex = i / Global::yhcDeviceInfo.RunCtr_Block_Size;
                 DeviceGroupInfo info = Global::getYhcDeviceGroupInfo(tankIndex);
 
-                QList<QStandardItem *> newItemList;
+                /*QList<QStandardItem *> newItemList;
                 QList<QStandardItem *> newSimpleItemList;
                 Global::alertIndex += 1;
                 QString simpleAlert;
@@ -214,7 +214,7 @@ void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Pl
 
                 }
                 QStandardItem *simpleAlertItem = new QStandardItem(simpleAlert);
-                newSimpleItemList.append(simpleAlertItem);
+                newSimpleItemList.append(simpleAlertItem);*/
 
                 /*if(Identity::getInstance()->getUser() != Q_NULLPTR)
                 {
@@ -225,13 +225,13 @@ void PlcDataManageWorker::parseYhcServerData(DeviceGroupInfo groupInfo, const Pl
                     newItemList.append(new QStandardItem(""));
                 }*/
 
-                int count = Global::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
+                /*int count = Global::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
                 if(count > 50)
                 {
                     Global::simpleAlertsModel->removeRows(ALERT_COUNT, count, QModelIndex());
                 }
                 Global::simpleAlertsModel->insertRow(0, newSimpleItemList);
-                Global::alertsModel->insertRow(0, newItemList);
+                Global::alertsModel->insertRow(0, newItemList);*/
             }
         }
     }
@@ -381,7 +381,7 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
                 uint tankIndex = i / Global::ferDeviceInfo.RunCtr_Block_Size;
                 DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
 
-                QList<QStandardItem *> newItemList;
+                /*QList<QStandardItem *> newItemList;
                 QList<QStandardItem *> newSimpleItemList;
                 Global::alertIndex += 1;
                 QString simpleAlert;
@@ -406,7 +406,7 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
 
                 }
                 QStandardItem *simpleAlertItem = new QStandardItem(simpleAlert);
-                newSimpleItemList.append(simpleAlertItem);
+                newSimpleItemList.append(simpleAlertItem);*/
 
                 /*if(Identity::getInstance()->getUser() != Q_NULLPTR)
                 {
@@ -417,13 +417,13 @@ void PlcDataManageWorker::parseFerServerData(DeviceGroupInfo groupInfo, const Pl
                     newItemList.append(new QStandardItem(""));
                 }*/
 
-                int count = Global::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
+                /*int count = Global::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
                 if(count > 50)
                 {
                     Global::simpleAlertsModel->removeRows(ALERT_COUNT, count, QModelIndex());
                 }
                 Global::simpleAlertsModel->insertRow(0, newSimpleItemList);
-                Global::alertsModel->insertRow(0, newItemList);
+                Global::alertsModel->insertRow(0, newItemList);*/
             }
         }
     }
@@ -573,7 +573,7 @@ void PlcDataManageWorker::parseMixServerData(DeviceGroupInfo groupInfo, const Pl
                 uint tankIndex = i / Global::mixDeviceInfo.RunCtr_Block_Size;
                 DeviceGroupInfo info = Global::getMixDeviceGroupInfo(tankIndex);
 
-                QList<QStandardItem *> newItemList;
+                /*QList<QStandardItem *> newItemList;
                 QList<QStandardItem *> newSimpleItemList;
                 Global::alertIndex += 1;
                 QString simpleAlert;
@@ -598,7 +598,7 @@ void PlcDataManageWorker::parseMixServerData(DeviceGroupInfo groupInfo, const Pl
 
                 }
                 QStandardItem *simpleAlertItem = new QStandardItem(simpleAlert);
-                newSimpleItemList.append(simpleAlertItem);
+                newSimpleItemList.append(simpleAlertItem);*/
 
                 /*if(Identity::getInstance()->getUser() != Q_NULLPTR)
                 {
@@ -609,13 +609,13 @@ void PlcDataManageWorker::parseMixServerData(DeviceGroupInfo groupInfo, const Pl
                     newItemList.append(new QStandardItem(""));
                 }*/
 
-                int count = Global::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
+                /*int count = Global::simpleAlertsModel->rowCount(QModelIndex()) - ALERT_COUNT;
                 if(count > 50)
                 {
                     Global::simpleAlertsModel->removeRows(ALERT_COUNT, count, QModelIndex());
                 }
                 Global::simpleAlertsModel->insertRow(0, newSimpleItemList);
-                Global::alertsModel->insertRow(0, newItemList);
+                Global::alertsModel->insertRow(0, newItemList);*/
             }
         }
     }
