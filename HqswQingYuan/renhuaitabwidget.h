@@ -31,12 +31,14 @@ private slots:
     void handleServerConnectionChanged(bool isServerConnected);
     void handleFerDataUpdate(QSet<int>, QMap<float,QString> dataMap);
     void handleDeoDataUpdate(QSet<int>, QMap<float,QString> dataMap);
+    void alertUpdate(QString alert);
 
 signals:
     void dataChanged();
     void serverConnectionChanged(bool isServerConnected);
     void ferDataUpdate(QSet<int>, QMap<float,QString>);
     void deoDataUpdate(QSet<int>, QMap<float,QString> dataMap);
+    void alertReceived(QString alert);
 };
 
 #endif // RENHUAITABWIDGET_H

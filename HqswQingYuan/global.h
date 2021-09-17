@@ -71,6 +71,7 @@ public:
 
     static DeviceNode getYhcNodeInfoByRunctrAddress(float address);
     static DeviceNode getMixNodeInfoByRunctrAddress(float address);
+    static DeviceNode getFerNodeInfoByRunctrAddress(float address);
 
     static DeviceGroupInfo getDeoDeviceGroupInfo(int index);
     static DeviceGroupInfo getFanValveDeviceGroupInfo(int index);

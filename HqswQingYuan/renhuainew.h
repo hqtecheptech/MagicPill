@@ -63,6 +63,7 @@ public slots:
     void updateServerConnectionChanged(bool isServerConnected);
     void updateFerData(QSet<int>,QMap<float,QString>);
     void updateDeoData(QSet<int>,QMap<float,QString>);
+    void updateAlert(QString alter);
 
 signals:
     void ferDataChanged(QSet<int>, QMap<float,QString>);

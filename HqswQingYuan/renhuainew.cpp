@@ -44,6 +44,7 @@ RenhuaiNew::RenhuaiNew(QWidget *parent) :
     connect(Identity::getInstance(),SIGNAL(logout()),this,SLOT(updateLoginState()));
     loginDialog = new LoginDialog(this);
     connect(loginDialog, SIGNAL(LogingStateChanged()),this,SLOT(updateLoginState()));
+    connect(tabWidget,SIGNAL(alertReceived(QString)),this,SLOT(updateAlert(QString)));
     connect(tabWidget,SIGNAL(dataChanged()),this,SLOT(updateDataChanged()));
     connect(tabWidget,SIGNAL(serverConnectionChanged(bool)),this,SLOT(updateServerConnectionChanged(bool)));
     connect(tabWidget,SIGNAL(ferDataUpdate(QSet<int>, QMap<float,QString>)),SLOT(updateFerData(QSet<int>, QMap<float,QString>)));
@@ -121,6 +122,11 @@ void RenhuaiNew::updateFerData(QSet<int> changedDeviceSet, QMap<float,QString> d
 void RenhuaiNew::updateDeoData(QSet<int> changedDeviceSet, QMap<float,QString> dataMap)
 {
     emit deoDataChanged(changedDeviceSet, dataMap);
+}
+
+void RenhuaiNew::updateAlert(QString alter)
+{
+    alertQueryDialog->updateAlerts(alter);
 }
 
 void RenhuaiNew::updateServerConnectionChanged(bool isServerConnected)

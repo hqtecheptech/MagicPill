@@ -1312,6 +1312,26 @@ DeviceNode Global::getMixNodeInfoByCname(QString cname)
     }
 }
 
+DeviceNode Global::getFerNodeInfoByRunctrAddress(float address)
+{
+    DeviceNode node;
+    uint blockSize = ferDeviceInfo.RunCtr_Block_Size  / 8;
+
+    int temp = (int)floor(address);
+    int blockOffset = (temp - ferDeviceInfo.Runctr_Address) % blockSize;
+    int offset = blockOffset * 8 + (int)(address * 10.0 - temp * 10.0 + 0.5);
+
+    for(int i=0; i<ferDeviceNodes.length();i++)
+    {
+        if(ferDeviceNodes.at(i).DataType == "x0" && ferDeviceNodes.at(i).Offset == offset)
+        {
+            return ferDeviceNodes.at(i);
+        }
+    }
+
+    return node;
+}
+
 DeviceNode Global::getYhcNodeInfoByRunctrAddress(float address)
 {
     uint blockSize = yhcDeviceInfo.RunCtr_Block_Size  / 8;

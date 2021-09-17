@@ -19,11 +19,16 @@ public:
 protected:
     void showEvent(QShowEvent *);
 
+public slots:
+    void updateAlerts(QString alert);
+
 private slots:
     void on_pushButton_clicked();
 
 private:
     Ui::AlertQueryDialog *ui;
+
+    QStandardItemModel* alertsModel = new QStandardItemModel(0,4);
 };
 
 #endif // ALERTQUERYDIALOG_H

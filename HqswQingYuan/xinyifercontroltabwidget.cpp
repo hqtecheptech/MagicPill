@@ -33,6 +33,7 @@ XinyiFerControlTabWidget::XinyiFerControlTabWidget(QWidget *parent) :
 
     AlertHistoryForm *alertHistory = new AlertHistoryForm(this);
     ui->alert_history_horizontalLayout->addWidget(alertHistory);
+    connect(this, SIGNAL(simpleAlertReady(QString)), alertHistory, SLOT(addAlertTable(QString)));
 
     getServerConnectStateTcpClient = new TcpClientSocket(this);
     connect(getServerConnectStateTcpClient, SIGNAL(updateConnectState(bool)), this, SLOT(localServerConnected(bool)));
@@ -41,7 +42,7 @@ XinyiFerControlTabWidget::XinyiFerControlTabWidget(QWidget *parent) :
     //getAllFanDataTcpClient = new TcpClientSocket(this);
     //connect(getAllFanDataTcpClient, SIGNAL(updateClients(QByteArray)), this, SLOT(showFanData(QByteArray)));
 
-    myTimerThread = new MyTimerThread(2, this);
+    myTimerThread = new QTimer(this);
     connect(myTimerThread, SIGNAL(timeout()),this,SLOT(read_server_data()));
 }
 
@@ -53,15 +54,19 @@ XinyiFerControlTabWidget::~XinyiFerControlTabWidget()
         workerThread.wait();
     }
 
-    if(myTimerThread->isRunning())
+    /*if(myTimerThread->isRunning())
     {
         myTimerThread->quit();
         myTimerThread->wait();
     }
+    myTimerThread->deleteLater();*/
+
+    if(myTimerThread->isActive())
+    {
+        myTimerThread->stop();
+    }
 
     workerThread.deleteLater();
-
-    myTimerThread->deleteLater();
 
     delete ui;
 }
@@ -214,10 +219,16 @@ void XinyiFerControlTabWidget::showEvent(QShowEvent *event)
     {
         workerThread.start();
     }
-    if(!myTimerThread->isRunning())
+
+    if(!myTimerThread->isActive())
+    {
+        myTimerThread->start(500);
+    }
+
+    /*if(!myTimerThread->isRunning())
     {
         myTimerThread->start();
-    }
+    }*/
 }
 
 void XinyiFerControlTabWidget::closeEvent(QCloseEvent *event)
@@ -284,7 +295,7 @@ void XinyiFerControlTabWidget::dispatchFerData(QSet<int> changedDeviceSet, QMap<
                 uint tankIndex = i / Global::ferDeviceInfo.RunCtr_Block_Size;
                 DeviceGroupInfo info = Global::getFerDeviceGroupInfo(tankIndex);
 
-                QList<QStandardItem *> newItemList;
+                /*QList<QStandardItem *> newItemList;
                 QList<QStandardItem *> newSimpleItemList;
                 Global::alertIndex += 1;
                 QString simpleAlert;
@@ -322,6 +333,48 @@ void XinyiFerControlTabWidget::dispatchFerData(QSet<int> changedDeviceSet, QMap<
 
                 UiGlobal::simpleAlertsModel->insertRow(0, newSimpleItemList);
                 UiGlobal::alertsModel->insertRow(0, newItemList);
+                Global::currentFermenationDataMap[dictAddress] = dataMap[dictAddress];*/
+
+                Global::alertIndex += 1;
+                QString simpleAlert;
+                QString alert;
+
+                alert += QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss") + ";";
+                alert += QString::number((tankIndex + info.startIndex)+1) + ";";
+                if(tempValue.toBool())
+                {
+                    alert += Global::ferRunCtrDeviceNodes[i % Global::ferDeviceInfo.RunCtr_Block_Size].Alert1 + ";";
+                    simpleAlert = QString::number(Global::alertIndex) + ": " +
+                            QString::number(tankIndex+1) + "#" +
+                            Global::ferRunCtrDeviceNodes[i % Global::ferDeviceInfo.RunCtr_Block_Size].Alert1 + " " +
+                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+                }
+                else
+                {
+                    alert += Global::ferRunCtrDeviceNodes[i % Global::ferDeviceInfo.RunCtr_Block_Size].Alert0 + ";";
+                    simpleAlert = QString::number(Global::alertIndex) + ": " +
+                            QString::number(tankIndex+1) + "#" +
+                            Global::ferRunCtrDeviceNodes[i % Global::ferDeviceInfo.RunCtr_Block_Size].Alert0 + " " +
+                            QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+
+                }
+
+                if(Identity::getInstance()->getUser() != Q_NULLPTR)
+                {
+                    alert += Identity::getInstance()->getUser()->getUsername();
+                }
+                else
+                {
+                    alert += " ";
+                }
+
+                emit simpleAlertReady(simpleAlert);
+
+                if(Global::getFerNodeInfoByRunctrAddress(dictAddress).Priority == 1)
+                {
+                    emit alertReady(alert);
+                }
+
                 Global::currentFermenationDataMap[dictAddress] = dataMap[dictAddress];
             }
         }

@@ -39,7 +39,7 @@ private:
     ParseServerDataWorker *worker;
 
     QVector<BaseTankWidget*> tanks;
-    MyTimerThread *myTimerThread;
+    QTimer *myTimerThread;
 
     QPixmap fanOpenBgImg;
     QPixmap fanCloseBgImg;
@@ -71,6 +71,8 @@ signals:
     void serverConnectionChanged(bool isConnected);
     void dataUpdate(QSet<int>, QMap<float,QString>);
     void serverDataReceived(QByteArray);
+    void alertReady(QString);
+    void simpleAlertReady(QString);
 
 private slots:
     void read_server_data();

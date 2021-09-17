@@ -32,19 +32,19 @@
         <node id="1" name="FER_STEPCTR_UI" cname="发酵运行步骤" length="18" offset="1" diff="0"/>
     </area>
     <area name="RUNCTR" datatype="x0" start="2320" diff="0">
-        <node id="1" name="FER_Startctr_BOOL" cname="远程开始发酵使能" length="24" offset="0" diff="0" alert0="无动作" alert1="远程开始发酵" priority="0"/>
-        <node id="1" name="FER_Stopctr_BOOL" cname="远程结束发酵使能" length="24" offset="1" diff="0" alert0="无动作" alert1="远程停止发酵" priority="0"/>
-        <node id="1" name="FAN_HandStart_BOOL" cname="远程风机手动启动" length="24" offset="2" diff="0" alert0="无动作" alert1="远程风机手动启动" priority="0"/>
-        <node id="1" name="FAN_HandStop_BOOL" cname="远程风机手动关闭" length="24" offset="3" diff="0" alert0="无动作" alert1="远程风机手动关闭" priority="0"/>
-        <node id="1" name="Aeration_Start" cname="远程手动爆气方案启动" length="24" offset="4" diff="0" alert0="无动作" alert1="远程手动爆气方案启动" priority="0"/>
-        <node id="1" name="Aeration_Stop" cname="远程手动曝气方案停止" length="24" offset="5" diff="0" alert0="无动作" alert1="远程手动曝气方案停止" priority="0"/>
-        <node id="1" name="FER_Auto_BOOL" cname="远程发酵手动自动使能" length="24" offset="6" diff="0" alert0="远程手动发酵" alert1="远程发酵自动" priority="0"/>
-        <node id="1" name="FER_Pause" cname="发酵暂停" length="24" offset="7" diff="0" alert0="发酵继续" alert1="发酵暂停"  priority="1"/>
-        <node id="1" name="FER_State_BOOL" cname="发酵状态" length="24" offset="8" diff="0" alert0="发酵停止" alert1="发酵运行中"  priority="1"/>
-        <node id="1" name="FAN_Open_Timeout_BOOL" cname="风机开超时故障" length="24" offset="9" diff="0" alert0="风机开未超时" alert1="风机开超时"  priority="1"/>
-        <node id="1" name="FAN_Close_Timeout_BOOL" cname="风机关超时故障" length="24" offset="10" diff="0" alert0="风机关未超时" alert1="风机关超时"  priority="1"/>
-        <node id="1" name="FAN_Run_BOOL" cname="风机运行状态" length="24" offset="11" diff="0" alert0="风机停止运行" alert1="风机正在运行" priority="0"/>
-        <node id="1" name="FAN_FAULT_BOOL" cname="风机故障状态" length="24" offset="12" diff="0" alert0="风机无故障" alert1="风机故障" priority="0"/>
+        <node id="1" name="FER_Startctr_BOOL" cname="远程开始发酵使能" length="16" offset="0" diff="0" alert0="无动作" alert1="远程开始发酵" priority="0"/>
+        <node id="1" name="FER_Stopctr_BOOL" cname="远程结束发酵使能" length="16" offset="1" diff="0" alert0="无动作" alert1="远程停止发酵" priority="0"/>
+        <node id="1" name="FAN_HandStart_BOOL" cname="远程风机手动启动" length="16" offset="2" diff="0" alert0="无动作" alert1="远程风机手动启动" priority="0"/>
+        <node id="1" name="FAN_HandStop_BOOL" cname="远程风机手动关闭" length="16" offset="3" diff="0" alert0="无动作" alert1="远程风机手动关闭" priority="0"/>
+        <node id="1" name="Aeration_Start" cname="远程手动爆气方案启动" length="16" offset="4" diff="0" alert0="无动作" alert1="远程手动爆气方案启动" priority="0"/>
+        <node id="1" name="Aeration_Stop" cname="远程手动曝气方案停止" length="16" offset="5" diff="0" alert0="无动作" alert1="远程手动曝气方案停止" priority="0"/>
+        <node id="1" name="FER_Auto_BOOL" cname="远程发酵手动自动使能" length="16" offset="6" diff="0" alert0="远程手动发酵" alert1="远程发酵自动" priority="0"/>
+        <node id="1" name="FER_Pause" cname="发酵暂停" length="16" offset="7" diff="0" alert0="发酵继续" alert1="发酵暂停"  priority="1"/>
+        <node id="1" name="FER_State_BOOL" cname="发酵状态" length="16" offset="8" diff="0" alert0="发酵停止" alert1="发酵运行中"  priority="1"/>
+        <node id="1" name="FAN_Open_Timeout_BOOL" cname="风机开超时故障" length="16" offset="9" diff="0" alert0="风机开未超时" alert1="风机开超时"  priority="1"/>
+        <node id="1" name="FAN_Close_Timeout_BOOL" cname="风机关超时故障" length="16" offset="10" diff="0" alert0="风机关未超时" alert1="风机关超时"  priority="1"/>
+        <node id="1" name="FAN_Run_BOOL" cname="风机运行状态" length="16" offset="11" diff="0" alert0="风机停止运行" alert1="风机正在运行" priority="0"/>
+        <node id="1" name="FAN_FAULT_BOOL" cname="风机故障状态" length="16" offset="12" diff="0" alert0="风机无故障" alert1="风机故障" priority="0"/>
     </area>
   </areas>
 </device>
